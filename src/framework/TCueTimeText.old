@@ -1,0 +1,352 @@
+//---------------------------------------------------------------------
+//
+//	File:	TCueTimeText.cpp
+//
+//	Author:	Gene Z. Ragan
+//
+//	Date:	01.31.98
+//
+//	Desc:	This class impliments the start and end time fields
+//			that are displayed in the cue rect.  The user can select
+//			individual fields and modify the time therein.
+//
+//	Copyright ©1998 mediapede Software
+//
+//---------------------------------------------------------------------
+
+// Includes
+#include <app/Application.h>
+#include <assert.h>
+#include <stdio.h>
+#include <ctype.h>
+
+#include "AppConstants.h"
+
+#include "TCueView.h"
+#include "TCueChannel.h"
+#include "TCueTimeText.h"
+
+
+//---------------------------------------------------------------------
+//	Constructor
+//---------------------------------------------------------------------
+//
+//
+
+TCueTimeText::TCueTimeText(TCueView *parent, BRect bounds, char *name, uint32 resizing) : 
+			  BTextView(bounds, name, bounds, resizing,B_FRAME_EVENTS | B_PULSE_NEEDED)
+{	
+
+	// Save parent cue
+	m_Parent = parent;
+	
+	// Perform default initialization
+	SetTextRect(Bounds());
+	SetAlignment(B_ALIGN_CENTER);
+	
+}
+
+
+//---------------------------------------------------------------------
+//	Destructor
+//---------------------------------------------------------------------
+//
+//
+
+TCueTimeText::~TCueTimeText()
+{	
+}
+
+
+//---------------------------------------------------------------------
+//	Draw
+//---------------------------------------------------------------------
+//
+//	Draw contents
+//
+
+void TCueTimeText::Draw(BRect inRect)
+{
+	// Save colors
+	rgb_color saveColor = HighColor();
+		
+	// Restore color
+	SetHighColor(saveColor);
+	
+	BTextView::Draw(inRect);
+}
+
+
+//---------------------------------------------------------------------
+//	MouseDown
+//---------------------------------------------------------------------
+//
+//
+
+void TCueTimeText::MouseDown(BPoint where)
+{
+	// Do nothing if locked...
+	if ( m_Parent->IsLocked() || m_Parent->GetChannel()->IsLocked() )
+		return;
+		
+	BTextView::MouseDown(where);	
+}
+
+
+//---------------------------------------------------------------------
+//	MouseUp
+//---------------------------------------------------------------------
+//
+//
+
+void TCueTimeText::MouseUp(BPoint where)
+{	
+	// Do nothing if locked...
+	if ( m_Parent->IsLocked() || m_Parent->GetChannel()->IsLocked() )
+		return;
+
+	BTextView::MouseUp(where);	
+}
+
+
+//---------------------------------------------------------------------
+//	MouseMoved
+//---------------------------------------------------------------------
+//
+//
+
+void TCueTimeText::MouseMoved(BPoint where, uint32 code, const BMessage *message)
+{
+	// Do nothing if locked...
+	if ( m_Parent->IsLocked() || m_Parent->GetChannel()->IsLocked() )
+		return;
+
+	BTextView::MouseMoved(where, code, message);	
+}
+
+
+//---------------------------------------------------------------------
+//	KeyDown
+//---------------------------------------------------------------------
+//
+//
+
+void TCueTimeText::KeyDown(const char *bytes, int32 numBytes)
+{
+	char theChar = *bytes;
+		
+	// Do nothing if locked...
+	if ( m_Parent->IsLocked() || m_Parent->GetChannel()->IsLocked() )
+		return;
+
+	// Accept numbers, delete and arrows
+	if( isdigit(theChar) || IsBackspace(theChar) || IsArrows(theChar) || IsDelete(theChar) )
+	{
+		BTextView::KeyDown(bytes, numBytes);
+	}
+	// Tab key moves us through the time elements
+	else if( IsTab(theChar) )
+	{
+		;//beep();
+	}
+	// Illegal character
+	else
+		;//beep();
+}
+
+
+//---------------------------------------------------------------------
+//	MakeFocus
+//---------------------------------------------------------------------
+//
+//
+
+void TCueTimeText::MakeFocus(bool focusState)
+{
+	// Do nothing if locked...
+	if ( m_Parent->IsLocked() || m_Parent->GetChannel()->IsLocked() )
+		return;
+
+	BTextView::MakeFocus(focusState);
+}
+
+
+
+//---------------------------------------------------------------------
+//	MessageReceived
+//---------------------------------------------------------------------
+//
+//
+
+void TCueTimeText::MessageReceived(BMessage *message)
+{
+	// Do nothing if locked...
+	if ( m_Parent->IsLocked() || m_Parent->GetChannel()->IsLocked() )
+		return;
+
+	BTextView::MessageReceived(message);
+}
+
+#pragma mark === Input Routines ===
+
+
+//---------------------------------------------------------------------
+//	AcceptsDrop
+//---------------------------------------------------------------------
+//
+//
+
+bool TCueTimeText::AcceptsDrop(const BMessage *message)
+{
+	return false;
+}
+
+//---------------------------------------------------------------------
+//	AcceptsPaste
+//---------------------------------------------------------------------
+//
+//
+
+bool TCueTimeText::AcceptsPaste(BClipboard *clipboard)
+{
+	return false;
+}
+
+//---------------------------------------------------------------------
+//	InsertText
+//---------------------------------------------------------------------
+//
+//	We only allow the user to enter numbers
+//
+
+void  TCueTimeText::InsertText(const char *text, int32 length, int32 offset, const text_run_array *runs)
+{	
+	BTextView::InsertText(text, length, offset, runs);
+}
+
+
+
+//---------------------------------------------------------------------
+//	LockOutAlphabet
+//---------------------------------------------------------------------
+//
+//	Disaalow entry of alphabetic characters
+//
+
+void  TCueTimeText::LockOutAlphabet()
+{
+	DisallowChar('A');
+	DisallowChar('B');
+	DisallowChar('C');
+	DisallowChar('D');
+	DisallowChar('E');
+	DisallowChar('F');
+	DisallowChar('G');
+	DisallowChar('H');
+	DisallowChar('I');
+	DisallowChar('J');
+	DisallowChar('K');
+	DisallowChar('L');
+	DisallowChar('M');
+	DisallowChar('N');
+	DisallowChar('O');
+	DisallowChar('P');
+	DisallowChar('Q');
+	DisallowChar('R');
+	DisallowChar('S');
+	DisallowChar('T');
+	DisallowChar('U');
+	DisallowChar('V');
+	DisallowChar('W');
+	DisallowChar('X');
+	DisallowChar('Y');
+	DisallowChar('Z');
+}
+
+
+//---------------------------------------------------------------------
+//	IsBackspace
+//---------------------------------------------------------------------
+//
+//	Check to see if character is backspace
+//
+
+bool  TCueTimeText::IsBackspace(char theChar)
+{
+	switch(theChar)
+	{
+		case B_BACKSPACE:
+			return true;
+			
+		default:
+			return false;
+	
+	}
+}
+
+
+//---------------------------------------------------------------------
+//	IsArrows
+//---------------------------------------------------------------------
+//
+//	Check to see if character is one of the arrow keys
+//
+
+bool  TCueTimeText::IsArrows(char theChar)
+{
+	switch(theChar)
+	{
+		case B_UP_ARROW:
+		case B_LEFT_ARROW:
+		case B_DOWN_ARROW:
+		case B_RIGHT_ARROW:
+			return true;
+			
+		default:
+			return false;
+	
+	}
+}
+
+//---------------------------------------------------------------------
+//	IsDelete
+//---------------------------------------------------------------------
+//
+//	Check to see if character is the delete key
+//
+
+bool  TCueTimeText::IsDelete(char theChar)
+{
+	switch(theChar)
+	{
+		case B_DELETE:
+			return true;
+			
+		default:
+			return false;
+	
+	}
+}
+
+
+//---------------------------------------------------------------------
+//	IsTab
+//---------------------------------------------------------------------
+//
+//	Check to see if character is the tab key
+//
+
+bool  TCueTimeText::IsTab(char theChar)
+{
+	switch(theChar)
+	{
+		case B_TAB:
+			return true;
+			
+		default:
+			return false;
+	
+	}
+}
+
+

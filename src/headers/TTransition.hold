@@ -1,0 +1,235 @@
+//---------------------------------------------------------------------
+//
+//	File:	TTransition.h
+//
+//	Author:	Gene Z. Ragan
+//
+//	Date:	03.03.98
+//
+//	Desc:	Cue transition routines
+//
+//	Copyright ©1998 mediapede Software
+//
+//---------------------------------------------------------------------
+
+#pragma once
+
+
+// Forward Declarations
+class TTransition;
+
+// Callback Definitions
+typedef	void (*TransitionProc)( BView *src, BView *mask, BView *dst, BRect srcR, BRect dstR, 
+						  		short percentDone, short selector, long *refCon, TTransition *aChore);
+typedef void (*TransferProc)(BRegion *rgn, bool outTransition, long refCon);
+
+// Class Definition			  
+class	TTransition
+{	
+	public:
+		bool		m_IsDone;
+	
+		TTransition( BView *src, BView *mask, BView *dst, BRect srcR, BRect dstR, long transitionID, 
+					 long duration, long startOffset, short xferMode, rgb_color *opColor, bool isOutTransition,
+					 TransferProc transferProc, long transferRefCon, BView *aPane);
+		~TTransition();
+		
+		void			Start();
+		void			Stop();
+		void			Reset();
+		virtual	void	Perform(long *maxSleep);
+		void			ForceUpdate();
+		void			SetUpdateParms(BView *src, BView *mask, BView *dst, BRect srcR, BRect dstR, BRegion *clipR);
+		void			SetDestRect(BRect aRect);
+		void			SkipNextFrame();
+		
+		// Inlines
+		inline bool				IsDone(){ return m_IsDone; }
+		inline short			GetTransferMode(){ return m_XferMode; }
+		inline long				GetTransferRefCon(){ return m_TransferRefCon; }
+		inline	TransferProc	GetTransferProc(){ return m_TransferProc; }
+		inline long				GetDuration(){ return m_Duration; }		
+		
+	private:
+		TransitionProc	m_Proc;
+		BView			*m_SrcView;
+		BView 			*m_MaskView;
+		BView			*m_DstView;
+		BRect			m_SrcRect;
+		BRect			m_DstRect;
+		long			m_ID;
+		long			m_Duration;
+		long			m_StartTime;
+		long			m_RefCon;
+		bool			m_Force;
+		bool			m_IsInited;
+		bool			m_SkipNextFrame;
+		rgb_color		m_OpColor;
+		short			m_XferMode;
+		TransferProc	m_TransferProc;
+		long			m_TransferRefCon;
+		BView			*m_View;
+		
+		bool			m_HasUpdateParms;
+		BView			*m_UpdateSrc;
+		BView			*m_UpdateMask;
+		BView			*m_UpdateDst;
+		BRect			m_UpdateSrcR;
+		BRect 			m_UpdateDstR;
+		BRegion 		*m_UpdateClip;
+
+};
+
+
+// Possible values of selector
+#define	INIT_TRANSITION		0
+#define	NORMAL_TRANSITION	1
+#define	UPDATE_TRANSITION	2
+#define	KILL_TRANSITION		3
+#define	OFFSET_DEST_RECT	4
+
+// Transition Prototypes
+void IrisSquareIn( BView *src, BView *mask, BView *dst, BRect srcR, BRect dstR, short percentDone, short selector, long *m_RefCon, TTransition *aChore);
+void _IrisSquareIn(	BView *src, BView *mask, BView *dst, BRect srcR, BRect dstR, short percentDone, short selector, long *m_RefCon, TTransition *aChore, bool outTransition);
+
+/*
+// TRANSITIONS IN
+void	WipeRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WipeDown(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WipeLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WipeUp(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisCircle(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisOval(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisSquare(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisRectangle(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OpenCurtains(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CloseCurtains(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	BlindsRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	BlindsDown(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	BlindsLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	BlindsUp(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisCircleIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisOvalIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisSquareIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisRectangleIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WipeTopLeftToBottomRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WipeTopRightToBottomLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WipeBottomLeftToTopRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WipeBottomRightToTopLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisDiamond(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	IrisDiamondIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WipeClockwise(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WipeCounterClockwise(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	RevealRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	RevealLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	RevealDown(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	RevealUp(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+// void	ChunkyDissolve(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	FineDissolve(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ZoomRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ZoomDown(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ZoomLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ZoomUp(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ZoomOut(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	NarrowHStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WideHStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	NarrowVStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	WideVStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	FineDissolve2(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OneBitFineDissolve(BView * src, BView * dst, long transition, long tTime);
+void	FadeBlack(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	FadeWhite(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CourseDissolve1(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CourseDissolve2(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CourseDissolve3(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CourseDissolve4(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CourseDissolve5(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CourseDissolve6(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CourseDissolve7(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CourseDissolve8(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	CourseDissolve9(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+
+// TRANSITIONS OUT
+void	OWipeRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWipeDown(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWipeLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWipeUp(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisCircle(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisOval(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisSquare(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisRectangle(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OOpenCurtains(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCloseCurtains(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OBlindsRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OBlindsDown(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OBlindsLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OBlindsUp(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisCircleIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisOvalIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisSquareIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisRectangleIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWipeTopLeftToBottomRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWipeTopRightToBottomLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWipeBottomLeftToTopRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWipeBottomRightToTopLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisDiamond(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OIrisDiamondIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWipeClockwise(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWipeCounterClockwise(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ORevealRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ORevealLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ORevealDown(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ORevealUp(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+//void	OChunkyDissolve(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OFineDissolve(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OZoomRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OZoomDown(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OZoomLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OZoomUp(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OZoomOut(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ONarrowHStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWideHStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	ONarrowVStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OWideVStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCourseDissolve1(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCourseDissolve2(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCourseDissolve3(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCourseDissolve4(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCourseDissolve5(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCourseDissolve6(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCourseDissolve7(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCourseDissolve8(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+void	OCourseDissolve9(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore);
+
+// TRANSITIONS COMMON CODE
+void	_IrisCircle(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_IrisOval(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_IrisSquare(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_IrisRectangle(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_OpenCurtains(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_CloseCurtains(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_BlindsRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_BlindsDown(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_BlindsUp(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_BlindsLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_IrisCircleIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_IrisOvalIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_IrisSquareIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_IrisRectangleIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_WipeTopLeftToBottomRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_WipeTopRightToBottomLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_WipeBottomLeftToTopRight(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_WipeBottomRightToTopLeft(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_IrisDiamond(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_IrisDiamondIn(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_WipeClockwise(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_WipeCounterClockwise(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_ChunkyDissolve(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition, short chunkSize);
+void	_FineDissolve(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_NarrowHStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_WideHStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_NarrowVStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_WideVStrips(BView * src, BView * mask, BView * dst, BRect srcR, BRect dstR, short percentDone, short selector, long *refCon, TTransition *aChore, bool outTransition);
+void	_DoFade(bool black, BView * src, BView * dst, BRect srcR, BRect dstR, TTransition *aChore);
+
+*/
