@@ -337,7 +337,7 @@ void TPauseCue::MessageReceived(BMessage *message)
 	{	
 		case PAUSE_DONE_MSG:
 			TPlaybackEngine *theEngine;
-			message->FindPointer("PlaybackEngine", &theEngine);
+			message->FindPointer("PlaybackEngine", (void**)&theEngine);
 			theEngine->Resume();
 			break;
 			

@@ -88,10 +88,10 @@ TCueSheetView::TCueSheetView(BMessage *data) : BView(data)
 	rgb_color			 *color;
 	timecode_type 		*timeCode;
 	
-	data->FindData("StageColor", B_RGB_COLOR_TYPE, (void **)&color, &numBytes );
+	data->FindData("StageColor", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes );
 	m_StageColor = *color;
 
-	data->FindData("TimeFormat", B_ANY_TYPE, (void **)&timeCode, &numBytes );
+	data->FindData("TimeFormat", B_ANY_TYPE, (const void **)&timeCode, &numBytes );
 	m_TimeFormat = *timeCode;
 
 	// Extract our member variables from the archive

@@ -63,7 +63,7 @@ TAudioEditor::TAudioEditor(BRect bounds, entry_ref *ref, TAudioCue *theCue): BWi
 	
 	// Get path to tmp
 	BPath path;
-	find_directory(B_COMMON_TEMP_DIRECTORY, &path);
+	find_directory(B_SYSTEM_TEMP_DIRECTORY, &path);
 	
 	// Get node info
 	node_ref nref; 

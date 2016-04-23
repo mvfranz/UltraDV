@@ -231,9 +231,9 @@ TCueView::TCueView(BMessage *data) : BView (data), BMediaNode("CueNode")
 	ssize_t 	numBytes;
 	rgb_color	*color;
 	
-	data->FindData("LowColor", B_RGB_COLOR_TYPE, (void **)&color, &numBytes );
+	data->FindData("LowColor", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes );
 	m_LowColor = *color;
-	data->FindData("HighColor", B_RGB_COLOR_TYPE, (void **)&color, &numBytes );
+	data->FindData("HighColor", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes );
 	m_HighColor = *color;
 
 	data->FindInt32("DrawingMode", m_DrawingMode);
@@ -271,7 +271,7 @@ TCueView::TCueView(BMessage *data) : BView (data), BMediaNode("CueNode")
 	data->FindBool("ShowDuration", &m_ShowDuration);
 	
 	CueDisplay *displayMode;
-	data->FindData("CueDisplayMode", B_ANY_TYPE, (void **)&displayMode, &numBytes);
+	data->FindData("CueDisplayMode", B_ANY_TYPE, (const void **)&displayMode, &numBytes);
 	m_CueDisplayMode = *displayMode;
 
 	// Create resize zones

@@ -27,7 +27,7 @@
 #define PROGRESS	printf
 #define LOOP		
 
-media_raw_video_format vid_format = { 29.97,1,0,239,B_VIDEO_TOP_LEFT_RIGHT,1,1,{B_RGB32,320,240,320*4,0,0}};
+media_raw_video_format video_format = { 29.97,1,0,239,B_VIDEO_TOP_LEFT_RIGHT,1,1,{B_RGB32,320,240,320*4,0,0}};
 
 //---------------------------------------------------------------
 
@@ -51,7 +51,7 @@ AVIConsumer::AVIConsumer(
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
 	{
 		mConnectionActive[i] = false;
-		mFormat[i] = vid_format;
+		mFormat[i] = video_format;
 		mWindow[i] = NULL;
 		mView[i] = NULL;
 		mBitmap[i] = NULL;
@@ -424,7 +424,7 @@ AVIConsumer::GetNextInput(
 		out_input->destination = mDestination[mConnectionCount];
 		out_input->source = media_source::null;
 		out_input->node = Node();
-		out_input->format.u.raw_video = vid_format;
+		out_input->format.u.raw_video = video_format;
 		out_input->format.type = B_MEDIA_RAW_VIDEO;
 		sprintf(out_input->name, "AVIConsumer %d", mConnectionCount);
 		*cookie = 1;

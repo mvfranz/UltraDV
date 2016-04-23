@@ -84,10 +84,10 @@ TVideoEditorText::TVideoEditorText(BMessage *data) : BView(data)
 	data->FindInt32("MessageID", &m_MessageID);		
 	data->FindFloat("TextSize", &m_TextSize);		
 
-	data->FindData("Font", B_ANY_TYPE, (void **)&font, &numBytes);
+	data->FindData("Font", B_ANY_TYPE, (const void **)&font, &numBytes);
 	m_Font = *font;
 	
-	data->FindData("Color", B_RGB_COLOR_TYPE, (void **)&color, &numBytes);   
+	data->FindData("Color", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes);
 	m_Color = *color;
 	
 	// Set up our key stroke counter

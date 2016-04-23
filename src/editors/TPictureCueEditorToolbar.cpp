@@ -171,3 +171,30 @@ void TPictureCueEditorToolbar::Draw(BRect updateRect)
 	// Restore Environment
 	PopState();
 }
+
+void TPictureCueEditorToolbar::KeyDown(const char *bytes, int32 numBytes)
+{
+
+	BView::KeyDown(bytes, numBytes);
+}
+
+
+#pragma mark -
+#pragma mark === Message Handling ===
+
+//---------------------------------------------------------------------
+//	MessageReceived
+//---------------------------------------------------------------------
+//
+//
+
+void TPictureCueEditorToolbar::MessageReceived(BMessage* message)
+{
+	switch (message->what)
+	{
+		default:
+			// Passes PICTURE_DURATION_MSG on up to the parent
+			BView::MessageReceived(message);
+			break;
+	}
+}

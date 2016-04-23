@@ -103,7 +103,7 @@ TVisualCue::TVisualCue(BMessage *theMessage) : TCueView(theMessage)
 		
 	ssize_t 		numBytes;
 	DisplayQuality	*quality;	
-	theMessage->FindData("DisplayQuality", B_ANY_TYPE, (void **)&quality, &numBytes );
+	theMessage->FindData("DisplayQuality", B_ANY_TYPE, (const void **)&quality, &numBytes );
 	m_DisplayQuality = *quality;
 										
 	// 	Set the file to none.  The bitmap data was passed in to us,
