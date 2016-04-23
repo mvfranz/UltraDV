@@ -1,0 +1,219 @@
+
+#include <OS.h>
+
+#include "TimedBufferQueue.h"
+
+
+
+#if defined(__GNUC__) && defined(__INTEL__)
+//#include <multimap.h>
+#include <multimap>
+#include <realtime_allocator.h>
+typedef multimap<bigtime_t, BBuffer *, less<bigtime_t>, realtime_allocator<BBuffer *, realtime_blocks_256> > buffer_map;
+#else
+#include <map>
+typedef multimap<bigtime_t, BBuffer *> buffer_map;
+#endif
+
+
+class _buffer_queue_imp {
+public:
+
+	buffer_map m_buffers;
+	int32 m_lock_count;
+	int32 m_lock_sem;
+
+	_buffer_queue_imp() {
+		m_lock_count = 1;
+		m_lock_sem = create_sem(0, "_buffer_queue_imp");
+	}
+	~_buffer_queue_imp() {
+		delete_sem(m_lock_sem);
+	}
+	bool lock() {
+		if (atomic_add(&m_lock_count, -1) < 1) {
+			status_t err = acquire_sem(m_lock_sem);
+			if (err < B_OK) return false;
+		}
+		return true;
+	}
+	void unlock() {
+		if (atomic_add(&m_lock_count, 1) < 0) {
+			release_sem(m_lock_sem);
+		}
+	}
+};
+
+
+BTimedBufferQueue::BTimedBufferQueue()
+{
+	m_queue = new _buffer_queue_imp;
+	_m_buffer_count = 0;
+}
+
+BTimedBufferQueue::~BTimedBufferQueue()
+{
+	delete m_queue;
+}
+
+
+status_t
+BTimedBufferQueue::PushBuffer(
+	BBuffer * buffer,
+	bigtime_t time)
+{
+	if (!m_queue->lock()) return B_ERROR;
+	try {
+		m_queue->m_buffers.insert(buffer_map::value_type(time, buffer));
+		atomic_add(&_m_buffer_count, 1);
+		m_queue->unlock();
+	}
+	catch (...) {
+		m_queue->unlock();
+		return B_ERROR;
+	}
+	return B_OK;
+}
+
+BBuffer *
+BTimedBufferQueue::PopFirstBuffer(
+	bigtime_t * out_time)
+{
+	BBuffer * buf = 0;
+	if (!m_queue->lock()) return 0;
+	try {
+		buffer_map::iterator i(m_queue->m_buffers.begin());
+		if (i != m_queue->m_buffers.end()) {
+			buf = (*i).second;
+			if (out_time) {
+				*out_time = (*i).first;
+			}
+			atomic_add(&_m_buffer_count, -1);
+			m_queue->m_buffers.erase(i);
+		}
+		m_queue->unlock();
+	}
+	catch (...) {
+		m_queue->unlock();
+	}
+	return buf;
+}
+
+bool
+BTimedBufferQueue::HasBuffers()
+{
+#if 1
+	return _m_buffer_count > 0;
+#else
+	if (!m_queue->lock()) return false;
+	bool ret = m_queue->m_buffers.size() > 0;
+	m_queue->unlock();
+	return ret;
+#endif
+}
+
+bigtime_t
+BTimedBufferQueue::TimeOfFirstBuffer()
+{
+	if (!m_queue->lock()) return false;
+	bigtime_t ret = 0;
+	buffer_map::iterator i(m_queue->m_buffers.begin());
+	if (i != m_queue->m_buffers.end()) {
+		ret = (*i).first;
+	}
+	m_queue->unlock();
+	return ret;
+}
+
+BBuffer *
+BTimedBufferQueue::PeekFirstBufferAtOrAfter(
+	bigtime_t time,
+	bigtime_t * out_time)
+{
+	BBuffer * buf = 0;
+	if (!m_queue->lock()) return 0;
+	try {
+		buffer_map::iterator i(m_queue->m_buffers.lower_bound(time));
+		if (i != m_queue->m_buffers.end()) {
+			buf = (*i).second;
+			if (out_time) {
+				*out_time = (*i).first;
+			}
+		}
+		m_queue->unlock();
+	}
+	catch (...) {
+		m_queue->unlock();
+	}
+	return buf;
+}
+
+status_t
+BTimedBufferQueue::RemoveBuffer(
+	BBuffer * buffer)
+{
+	status_t err = B_ERROR;
+	if (!m_queue->lock()) return B_ERROR;
+	try {
+		buffer_map::iterator i(m_queue->m_buffers.begin());
+		while (i != m_queue->m_buffers.end()) {
+			if ((*i).second == buffer) {
+				atomic_add(&_m_buffer_count, -1);
+				m_queue->m_buffers.erase(i);
+				err = B_OK;
+				break;
+			}
+			i++;
+		}
+		m_queue->unlock();
+	}
+	catch (...) {
+		m_queue->unlock();
+	}
+	return err;
+}
+
+status_t
+BTimedBufferQueue::FlushBefore(
+	bigtime_t time)
+{
+	status_t err = B_ERROR;
+	if (!m_queue->lock()) return B_ERROR;
+	try {
+		buffer_map::iterator i(m_queue->m_buffers.begin());
+		buffer_map::iterator e(m_queue->m_buffers.lower_bound(time));
+		while (i != e) {
+			atomic_add(&_m_buffer_count, -1);
+			m_queue->m_buffers.erase(i++);
+		}
+		err = B_OK;
+		m_queue->unlock();
+	}
+	catch (...) {
+		m_queue->unlock();
+	}
+	return err;
+}
+
+status_t
+BTimedBufferQueue::FlushFromAndAfter(
+	bigtime_t time)
+{
+	status_t err = B_ERROR;
+	if (!m_queue->lock()) return B_ERROR;
+	try {
+		buffer_map::iterator i(m_queue->m_buffers.lower_bound(time));
+		buffer_map::iterator e(m_queue->m_buffers.end());
+		while (i != e) {
+			atomic_add(&_m_buffer_count, -1);
+			m_queue->m_buffers.erase(i++);
+		}
+		err = B_OK;
+		m_queue->unlock();
+	}
+	catch (...) {
+		m_queue->unlock();
+	}
+	return err;
+}
+
