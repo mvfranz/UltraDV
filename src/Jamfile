@@ -14,8 +14,8 @@ SEARCH_SOURCE += [ FDirName $(TOP) src add-ons codecs ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues action ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues media ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src add-ons effects ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src add-ons effects rotation ] ;
+#SEARCH_SOURCE += [ FDirName $(TOP) src add-ons effects ] ;
+#SEARCH_SOURCE += [ FDirName $(TOP) src add-ons effects rotation ] ;
 
 # Data and resources
 SEARCH_SOURCE += [ FDirName $(TOP) src data ] ;
