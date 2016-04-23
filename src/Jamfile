@@ -15,6 +15,7 @@ SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues action ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues media ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src add-ons effects ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src add-ons effects rotation ] ;
 
 # Data and resources
 SEARCH_SOURCE += [ FDirName $(TOP) src data ] ;
@@ -27,11 +28,18 @@ SEARCH_SOURCE += [ FDirName $(TOP) src framework ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src headers ] ;
 
+SEARCH_SOURCE += [ FDirName $(TOP) src nodes ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src nodes avi_reader ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src nodes avi_writer ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src nodes shared ] ;
+
 SEARCH_SOURCE += [ FDirName $(TOP) src sorter ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src transitions ] ;
 
 Application UltraDV :
+	# framework
+
 	AppAlerts.cpp
 	AppGlobals.cpp
 	AppUtils.cpp
@@ -132,7 +140,8 @@ Application UltraDV :
 	TPaletteStatusView.cpp
 	TPasteCues.cpp
 	TPictureCueEditor.cpp
-	TPictureCueEditorToolbar.cpp
+	# double file
+	#TPictureCueEditorToolbar.cpp
 	TPlaybackList.cpp
 	TPointerButton.cpp
 	TPolygon.cpp
@@ -153,10 +162,10 @@ Application UltraDV :
 	TSoundRecorder.cpp
 	TStageCue.cpp
 	TStageCueMenu.cpp
-	TStageMovieCue.cpp
-	TStagePictureCue.cpp
+	#TStageMovieCue.cpp
+	#TStagePictureCue.cpp
 	TStageSetup.cpp
-	TStageTextView.cpp
+	#TStageTextView.cpp
 	TStageToolButton.cpp
 	TStageTools.cpp
 	TStageToolsView.cpp
@@ -201,7 +210,142 @@ Application UltraDV :
 	TVisualEffect.cpp
 	TZoomButton.cpp
 
-	: be media $(TARGET_LIBSTDC++) tracker translation localestub 
+	# cues/action
+	TActionCue.cpp
+	TButtonCue.cpp
+	TCDCue.cpp
+	TControlCue.cpp
+	TMarkerCue.cpp
+	TPauseCue.cpp
+	#TPauseSetup.cpp
+	TVideoCue.cpp
+
+	# cues/media
+
+	# double files
+	#TAnimationCue.cpp
+	#TAudioCue.cpp
+	#TMIDICue.cpp
+	#TMovieCue.cpp
+	#TVideoCue.cpp
+
+	TPictureCue.cpp
+	TTextCue.cpp
+
+
+	# effects/rotation
+	# double file
+	#TRotateDialog.cpp
+
+	#TRotationEffect.cpp
+
+	# editors
+	TAudioEditor.cpp
+	TAudioEditorMenus.cpp
+	TAudioEditorToolbar.cpp
+	TAudioEditorView.cpp
+	TAudioPlayButton.cpp
+	TAudioScalerView.cpp
+	TAudioTimelineView.cpp
+	TAudioZoomInButton.cpp
+	TAudioZoomOutButton.cpp
+	TMIDIEditor.cpp
+	TMIDIEditorChannel.cpp
+	TMIDIEditorView.cpp
+	#double file
+	#TPictureCueEditor.cpp
+	TPictureCueEditorToolbar.cpp
+	TPictureCueEditorView.cpp
+	TPictureDurationDialog.cpp
+	TVideoEditor.cpp
+	TVideoEditorControlsView.cpp
+	TVideoEditorMenus.cpp
+	TVideoEditorShuttle.cpp
+	TVideoEditorText.cpp
+	TVideoEditorTransport.cpp
+	TVideoEditorView.cpp
+
+	# engines
+	TAudioEngine.cpp
+	TMIDIEngine.cpp
+	TPlaybackEngine.cpp
+
+	# sorter
+	TSorterBar.cpp
+	TSorterContainer.cpp
+	TSorterIconListItem.cpp
+	TSorterList.cpp
+	TSorterListItem.cpp
+
+	# nodes avi_writer
+	AVIConsumer.cpp
+
+	# The main defined there conflicts of course with the main app's
+	# TODO: get out of it at least.
+	#AVIWriterApp.cpp
+
+	# nodes avi_reader
+	AVIAddOn.cpp
+
+	# The main defined there conflicts of course with the main app's
+	#AVIApp.cpp
+
+	AVIProducer.cpp
+	AVIView.cpp
+	AVIViewer.cpp
+	AVIWindow.cpp
+	make_media_addon.cpp
+	#TBitmapView.cpp
+
+	# nodes shared
+	AVIUtils.cpp
+	InfoAlert.cpp
+	TAppleVideoCodec.cpp
+	TAudioCodec.cpp
+	TCinepakCodec.cpp
+	# double
+	#TimedBufferQueue.cpp
+	TMSRLECodec.cpp
+	TMSVideoCodec.cpp
+	TPCMCodec.cpp
+	TRGBCodec.cpp
+	TRIFFReader.cpp
+	TRIFFWriter.cpp
+	TVideoCodec.cpp
+
+	# transitions
+	TRevealBottomLeftTopRightIn.cpp
+	TRevealBottomRightTopLeftIn.cpp
+	TRevealDownIn.cpp
+	TRevealDownOut.cpp
+	TRevealLeftIn.cpp
+	TRevealLeftOut.cpp
+	TRevealRightIn.cpp
+	TRevealRightOut.cpp
+	TRevealTopLeftBottomRightIn.cpp
+	TRevealTopRightBottomLeftIn.cpp
+	TRevealUpIn.cpp
+	TRevealUpOut.cpp
+	TTransitionView.cpp
+	TWipeBottomLeftToTopRightIn.cpp
+	TWipeBottomLeftToTopRightOut.cpp
+	TWipeBottomRightToTopLeftIn.cpp
+	TWipeBottomRightToTopLeftOut.cpp
+	TWipeDownIn.cpp
+	TWipeDownOut.cpp
+	TWipeLeftIn.cpp
+	TWipeLeftOut.cpp
+	TWipeRightIn.cpp
+	TWipeRightOut.cpp
+	TWipeTopLeftToBottomRightIn.cpp
+	TWipeTopLeftToBottomRightOut.cpp
+	TWipeTopRightToBottomLeftIn.cpp
+	TWipeTopRightToBottomLeftOut.cpp
+	TWipeUpIn.cpp
+	TWipeUpOut.cpp
+	WipeTopRightToBottomLeftIn.cpp
+
+	: be media midi $(TARGET_LIBSTDC++) tracker translation localestub 
 	: Museum.rdef
 ;
 
