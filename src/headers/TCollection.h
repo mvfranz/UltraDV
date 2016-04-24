@@ -22,7 +22,7 @@ class TCollection
 
 	public:	
 		TCollection();
-		~TCollection();
+		virtual ~TCollection();
 						
 		// Member Functions
 		virtual int32		GetNumItems();	// Retrieve size of collection

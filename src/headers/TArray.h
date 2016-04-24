@@ -37,7 +37,7 @@ class TArray : public TCollection
 			
 		// Member Functions
 		TArray( int32 elementSize);
-		~TArray();
+		virtual ~TArray();
 
 		virtual void	SetBlockSize( int16 aBlockSize);	
 		virtual void	InsertAtIndex( void *itemPtr, int32 index);
