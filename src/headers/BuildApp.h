@@ -17,7 +17,7 @@
 
 // Enable/disable debugging
 #ifndef DEBUG
-#define DEBUG true
+#define DEBUG false
 #endif
 
 #include <Be.h>
