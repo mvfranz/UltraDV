@@ -12,7 +12,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef _TACTIONCUE_H_
+#define _TACTIONCUE_H_
 
 // Forward Declarations
 // ABH class TCueView;
@@ -61,3 +62,5 @@ class	TActionCue : public TCueView
 
 
 
+
+#endif	// _TACTIONCUE_H_

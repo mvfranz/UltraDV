@@ -12,7 +12,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef _TCDCUE_H_
+#define _TCDCUE_H_
 
 // Forward Declarations
 class TCueView;
@@ -60,3 +61,5 @@ class	TCDCue : public TCueView
 
 
 
+
+#endif	// _TCDCUE_H_

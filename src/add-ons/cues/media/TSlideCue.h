@@ -12,7 +12,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef _TSLIDECUE_H_
+#define _TSLIDECUE_H_
 
 // Forward Declarations
 class TCueView;
@@ -60,3 +61,5 @@ class	TSlideCue : public TCueView
 
 
 
+
+#endif	// _TSLIDECUE_H_

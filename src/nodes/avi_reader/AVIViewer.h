@@ -12,7 +12,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef _AVIVIEWER_H_
+#define _AVIVIEWER_H_
 
 //	Includes
 // ABH include file does not exist #include <TrinityDefs.h>
@@ -43,3 +44,5 @@ class AVIViewer : public BBufferConsumer
 		
 };
 
+
+#endif	// _AVIVIEWER_H_

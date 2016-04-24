@@ -12,7 +12,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef _TMARKERCUE_H_
+#define _TMARKERCUE_H_
 
 // Forward Declarations
 class TCueView;
@@ -60,3 +61,5 @@ class	TMarkerCue : public TCueView
 
 
 
+
+#endif	// _TMARKERCUE_H_

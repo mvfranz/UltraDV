@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _RLE_H_
+#define _RLE_H_
 
 // Typedefs
 typedef enum
@@ -50,3 +51,4 @@ class PackerApp : public BApplication
 		// Utility Routines
 		bool 		CompareScanlineBuffers( BMallocIO *lastBuffer, BMallocIO *outBuffer);
 };
+#endif	// _RLE_H_

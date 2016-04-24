@@ -12,7 +12,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef _TCONTROLCUE_H_
+#define _TCONTROLCUE_H_
 
 // Forward Declarations
 class TCueView;
@@ -60,3 +61,5 @@ class	TControlCue : public TCueView
 
 
 
+
+#endif	// _TCONTROLCUE_H_

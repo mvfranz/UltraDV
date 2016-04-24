@@ -12,7 +12,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef _TVIDEOCUE_H_
+#define _TVIDEOCUE_H_
 
 // Class Definition
 class	TVideoCue : public TCueView
@@ -57,3 +58,5 @@ class	TVideoCue : public TCueView
 
 
 
+
+#endif	// _TVIDEOCUE_H_
