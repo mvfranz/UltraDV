@@ -100,14 +100,14 @@ const int32 kTimeHeight 		= 100;
 //
 //
 
-main()
+int main()
 {	
 	
 	BApplication *theApp = new MuseumApp();
 	theApp->Run();	
 	delete(theApp);
-	
-	return(0);
+
+	return 0;
 }
 
 
