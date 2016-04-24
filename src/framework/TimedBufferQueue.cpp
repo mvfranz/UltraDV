@@ -24,7 +24,7 @@ using namespace std;
 #endif
 #endif
 
-#define assert(X)
+//#define assert(X)
 //#include "realtime_allocator.h"
 
 // ABH typedef multimap<bigtime_t, BBuffer *, less<bigtime_t>, realtime_allocator<BBuffer *, realtime_blocks_256> > buffer_map;
