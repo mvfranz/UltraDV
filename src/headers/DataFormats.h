@@ -1,8 +1,5 @@
 //	DataFormats.h
 
-#pragma once
-
-
 #ifndef _DATAFORMATS_H_
 #define _DATAFORMATS_H_
 

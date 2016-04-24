@@ -1,7 +1,8 @@
 /*	TBitmapStream.h
  */
 
-#pragma once
+#ifndef __TBITMAP_STREAM_H
+#define __TBITMAP_STREAM_H
 
 #include <DataIO.h>
 #include "Datatypes.h"
@@ -43,4 +44,4 @@ protected:
 		bool					fDetached;
 };
 
-
+#endif

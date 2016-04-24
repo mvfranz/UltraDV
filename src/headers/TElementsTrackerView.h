@@ -11,7 +11,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once 
+#ifndef __TELEMENTS_TRACKER_VIEW_H
+#define __TELEMENTS_TRACKER_VIEW_H
 
 
 // Class Declarations
@@ -39,5 +40,4 @@ class TElementsTrackerView: public BView
 		TElementsView	*m_Parent;
 };		
 
-
-
+#endif

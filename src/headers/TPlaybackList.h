@@ -14,7 +14,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef _TPLAYBACKLIST_H_
+#define _TPLAYBACKLIST_H_
 
 // ABH missing include
 #include <be/support/List.h>
@@ -66,3 +67,5 @@ class TCueEvent
 	protected:
 
 };
+
+#endif	// _TPLAYBACKLIST_H_

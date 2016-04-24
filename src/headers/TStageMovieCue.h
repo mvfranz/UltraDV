@@ -8,7 +8,8 @@
 //
 //-------------------------------------------------------------------
 
-#pragma once 
+#ifndef _TSTAGEMOVIECUE_H_
+#define _TSTAGEMOVIECUE_H_
 
 #include "TStageCue.h"
 
@@ -87,3 +88,5 @@ class TStageMovieCue : public TStageCue
 												
 };
 
+
+#endif	// _TSTAGEMOVIECUE_H_

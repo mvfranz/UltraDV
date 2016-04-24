@@ -14,8 +14,8 @@
 //
 //---------------------------------------------------------------------
 
-
-#pragma once
+#ifndef _TNUMBERTEXT_H_
+#define _TNUMBERTEXT_H_
 
 // Forward Declarations
 class TCueView;
@@ -56,3 +56,5 @@ class TNumberTextView : public BTextView
 		bool IsDelete(char theChar);
 		bool IsTab(char theChar);
 };
+
+#endif	// _TNUMBERTEXT_H_

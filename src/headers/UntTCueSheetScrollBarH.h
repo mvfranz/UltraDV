@@ -12,8 +12,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
-
+#ifndef _UNTTCUESHEETSCROLLBARH_H_
+#define _UNTTCUESHEETSCROLLBARH_H_
 
 //------------------------------------------------------------------------------
 
@@ -52,3 +52,5 @@ public:
 };
 
 
+
+#endif	// _UNTTCUESHEETSCROLLBARH_H_

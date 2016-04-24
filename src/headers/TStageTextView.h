@@ -8,7 +8,8 @@
 //
 //-------------------------------------------------------------------
 
-#pragma once 
+#ifndef _TSTAGETEXTVIEW_H_
+#define _TSTAGETEXTVIEW_H_
 
 #include "TStageCue.h"
 
@@ -39,3 +40,5 @@ class TStageTextView : public TStageCue
 
 
 
+
+#endif	// _TSTAGETEXTVIEW_H_

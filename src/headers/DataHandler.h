@@ -2,8 +2,6 @@
 //	This is the interface published by a data translator module
 /*	$Id: DataHandler.h,v 1.1 1997/07/22 21:27:07 hplus Exp $ */
 
-#pragma once
-
 #ifndef _DATAHANDLER_H_
 #define _DATAHANDLER_H_
 

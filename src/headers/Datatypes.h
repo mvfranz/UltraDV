@@ -3,8 +3,6 @@
 //	These functions allow for easy translation of 
 //	unknown data into known types.
 
-#pragma once
-
 #ifndef _DATATYPES_H_
 #define _DATATYPES_H_
 

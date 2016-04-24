@@ -8,7 +8,8 @@
 //
 //-------------------------------------------------------------------
 
-#pragma once 
+#ifndef _TSTAGEPICTURECUE_H_
+#define _TSTAGEPICTURECUE_H_
 
 #include "TStageCue.h"
 
@@ -86,3 +87,5 @@ class TStagePictureCue : public TStageCue
 		BRect		m_LeftMiddleResize;
 												
 };
+
+#endif	// _TSTAGEPICTURECUE_H_

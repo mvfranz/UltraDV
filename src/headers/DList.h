@@ -4,8 +4,6 @@
  *	$Id: DList.h,v 1.1 1997/07/22 21:27:06 hplus Exp $
  */
 
-#pragma once
-
 #ifndef _DLIST_H
 	#define _DLIST_H
 

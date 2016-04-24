@@ -11,7 +11,8 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef _TPICTUREFILTER_H_
+#define _TPICTUREFILTER_H_
 
 // Class Definition
 class TPictureFilter : public BRefFilter 
@@ -22,3 +23,5 @@ class TPictureFilter : public BRefFilter
 		bool	Filter(const entry_ref *, BNode *, struct stat *, const char *mimetype) = 0;
 
 };
+
+#endif	// _TPICTUREFILTER_H_
