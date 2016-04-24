@@ -12,11 +12,13 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
-
+#ifndef _FILEIO_H
+#define _FILEIO_H
 
 // Function prototypes
 bool OpenCueSheet();
 
 void ShowFileOpenPanel();
 void HideFileOpenPanel();
+
+#endif
