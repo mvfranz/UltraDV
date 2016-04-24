@@ -12,7 +12,9 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once
+#ifndef __TACTIONCUE_PALETTE_H
+#define __TACTIONCUE_PALETTE_H
+
 
 class TActionCuePalette: public BWindow
 {
@@ -34,3 +36,4 @@ class TActionCuePalette: public BWindow
 		
 };
 
+#endif

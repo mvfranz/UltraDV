@@ -12,7 +12,9 @@
 //
 //---------------------------------------------------------------------
 
-#pragma once 
+#ifndef __TACTIONCUE_PALETTE_VIEW_H
+#define __TACTIONCUE_PALETTE_VIEW_H
+
 
 // Messages
 #define ACTION_CUE_MSG 		'actc'
@@ -59,5 +61,4 @@ class TActionCuePaletteView: public BView
 
 };		
 
-
-
+#endif
