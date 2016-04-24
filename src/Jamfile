@@ -14,8 +14,6 @@ SEARCH_SOURCE += [ FDirName $(TOP) src add-ons codecs ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues action ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues media ] ;
-#SEARCH_SOURCE += [ FDirName $(TOP) src add-ons effects ] ;
-#SEARCH_SOURCE += [ FDirName $(TOP) src add-ons effects rotation ] ;
 
 # Data and resources
 SEARCH_SOURCE += [ FDirName $(TOP) src data ] ;
@@ -54,13 +52,11 @@ Application UltraDV :
 	TActionCuePalette.cpp
 	TActionCuePaletteView.cpp
 	TAddChannel.cpp
-	TAnimationCue.cpp
 	TArray.cpp
 	TAudibleEffect.cpp
 	TAudioCaptureToolbar.cpp
 	TAudioCaptureWindow.cpp
 	TAudioCompressionView.cpp
-	TAudioCue.cpp
 	TAudioLevelsView.cpp
 	TAudioSampleView.cpp
 	TAudioSettingsDialog.cpp
@@ -119,11 +115,9 @@ Application UltraDV :
 	TMediaCuePaletteView.cpp
 	TMediaTabView.cpp
 	TMIDIConductor.cpp
-	TMIDICue.cpp
 	TMIDIFile.cpp
 	TMIDITrack.cpp
 	TMouseWatcher.cpp
-	TMovieCue.cpp
 	TMuseumClipboard.cpp
 	TMuseumIcons.cpp
 	TMuseumMenus.cpp
@@ -139,9 +133,6 @@ Application UltraDV :
 	TOpacitySlider.cpp
 	TPaletteStatusView.cpp
 	TPasteCues.cpp
-	TPictureCueEditor.cpp
-	# double file
-	#TPictureCueEditorToolbar.cpp
 	TPlaybackList.cpp
 	TPointerButton.cpp
 	TPolygon.cpp
@@ -222,22 +213,12 @@ Application UltraDV :
 
 	# cues/media
 
-	# double files
-	#TAnimationCue.cpp
-	#TAudioCue.cpp
-	#TMIDICue.cpp
-	#TMovieCue.cpp
-	#TVideoCue.cpp
-
+	TAnimationCue.cpp
+	TAudioCue.cpp
+	TMIDICue.cpp
+	TMovieCue.cpp
 	TPictureCue.cpp
 	TTextCue.cpp
-
-
-	# effects/rotation
-	# double file
-	#TRotateDialog.cpp
-
-	#TRotationEffect.cpp
 
 	# editors
 	TAudioEditor.cpp
@@ -252,8 +233,7 @@ Application UltraDV :
 	TMIDIEditor.cpp
 	TMIDIEditorChannel.cpp
 	TMIDIEditorView.cpp
-	#double file
-	#TPictureCueEditor.cpp
+	TPictureCueEditor.cpp
 	TPictureCueEditorToolbar.cpp
 	TPictureCueEditorView.cpp
 	TPictureDurationDialog.cpp
@@ -295,7 +275,6 @@ Application UltraDV :
 	AVIViewer.cpp
 	AVIWindow.cpp
 	make_media_addon.cpp
-	#TBitmapView.cpp
 
 	# nodes shared
 	AVIUtils.cpp
@@ -303,8 +282,6 @@ Application UltraDV :
 	TAppleVideoCodec.cpp
 	TAudioCodec.cpp
 	TCinepakCodec.cpp
-	# double
-	#TimedBufferQueue.cpp
 	TMSRLECodec.cpp
 	TMSVideoCodec.cpp
 	TPCMCodec.cpp

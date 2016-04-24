@@ -16,7 +16,9 @@
 #define __BUILDAPP_H__
 
 // Enable/disable debugging
-#define DEBUG 	true
+#ifndef DEBUG
+#define DEBUG true
+#endif
 
 #include <Be.h>
 
