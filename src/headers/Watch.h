@@ -5,7 +5,8 @@
 //
 // ABH
 
-#define TRACE
+#ifndef _WATCH_H
+#define _WATCH_H
 
 #ifdef TRACE
 #ifndef WATCH
@@ -13,4 +14,4 @@
 #endif // WATCH
 #endif // TRACE
 
-
+#endif
