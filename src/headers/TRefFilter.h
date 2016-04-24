@@ -33,7 +33,7 @@ class TRefFilter : public BRefFilter
 {
 	public:
 		TRefFilter(FilterType filterType);
-		~TRefFilter(void);
+		virtual ~TRefFilter(void);
 		
 //	bool Filter(const entry_ref *, BNode *, struct stat_beos *, const char *);
 //	bool Filter(const entry_ref *, BNode *, struct stat_beos *, const char *mimetype);
