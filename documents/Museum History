@@ -1,0 +1,141 @@
+//---------------------------------------------------------------------
+//
+//	File:	Museum History
+//
+//---------------------------------------------------------------------
+
+//	11.15.98
+**	gzr
+	
+	••	PlaybackEngine is now node based
+	••	A bunch of other stuff I will document when I get back
+	
+//	11.14.98
+**	gzr
+	
+	••	3:00am: Waiting for 183 file compile housecleaning...
+	••	Removed TVideoRecordButton.cpp/.h
+	••	Removed TAudioRecordButton.cpp/.h
+	••	Removed TAudioCaptureView.cpp/.h
+	••	Removed TCueLockButton.cpp/.h
+	••	Removed TCueMuteButton.cpp/.h
+	••	Removed TCuePathButton.cpp/.h
+	••	Removed MediapedeVideo.h
+			We are using the TRIFFReader/Writer module now...
+
+//	11.12.98
+**	gzr
+	
+	••	Create TCueEffectView.cpp to represent TCueEffect visual appearnece
+	
+//	11.11.98
+**	gzr
+
+	••	Rolled in Mike's Effects classes
+	••	AppUtils.cpp
+		Renamed LengthToPixels() to TimeToPixels().  Makes more sense...
+	••	TCueView.cpp
+			Implimented drawing of effects
+			Worked on cue effect display
+	••	TVisualCue.cpp
+			Modified content display code to handle cue effects tray
+	••	TTransitionTimer.cpp / .h
+			Removed obsolete source
+
+//	11.10.98
+**	gzr
+
+	••	Removed TTransportText
+	••	All Cues
+		Worked on playback routines.  Removed old play methods  Added new methods:
+			PlayCue
+			StopCue
+			PauseCue
+			ResumeCue
+
+//	11.09.98
+**	gzr
+
+	••	TAudioEngine.cpp
+		Modified engine to use new BSound and BSoundPlayer classes.  Removed old mixing code
+		and all references to deprecated BDACStream and BSubscriber
+		
+//	11.06.98
+**	gzr
+
+	••	TCueView.cpp
+		TVisualCue.cpp
+			Modified ResizeLeft and REsizeRight routines to handle scolled channel offset
+			
+	••	TCueChannel.cpp
+			Changed cue insertion, nudging, etc. to be time based rather than pixel based
+
+	••	TCueChannel.cpp
+			Modified GetNeighborRightPoint and GetNeighborLeftPoint to handle scrolled
+			channel offset
+			
+	••	Removed TIconDragView.cpp from project
+
+//	11.03.98
+**	gzr
+
+	••	Removed old chunk byte swapping routines from AppUtils.cpp
+	••	Remove Init() function that used of Chunk structs from:
+		**	TCueChannel.cpp
+
+
+//	11.02.98
+**	gzr
+
+	••	Fixed bug in TBitmapButton.  Handler being set in constructor even if Looper is NULL;	
+	••	Modified TTimeLineView.cpp to be MediaNode	
+	••	Modified TTransportPaletteView.cpp to start TimeSource	
+	••	Removed TTick.cpp, TTransportButton.cpp, TTransportPlayButton.cpp from project
+
+//	10.31.98
+**	gzr
+
+	••	Modified TPlaybackEngine.cpp
+	
+	••	Added TimeListener thread to TCueView.cpp
+	
+	••	Modified TCueSheetWindow.cpp for new PlaybackEngine
+	
+	••	Modified TTimePaletteView.cpp for new PlaybackEngine
+
+//	10.30.98
+**	gzr
+
+	••	Worked on bugs in TCompositor.cpp
+	
+	••	Remove BSynth m_InternalSynth from MuseumApp.h
+	
+	••	Removed LAZLO, MIES and MUSEUM #defines from BuildApp.h
+	
+//	10.21.98
+**	gzr
+
+	••	Modified TVisualCue.cpp	and TVisualCue.h massively.  Removed all references to 
+		keyframes, transitions, paths, etc.
+		
+	••	Removed TKeyframe and TVisualKeyframe from project
+	
+	••	Modified TBitmapButton to stop white background flicker during update
+	
+	••	Modified TCueChannel to handle expansion of Cue Effects Tray
+	
+//	10.20.98
+**	gzr
+
+	••	Removed TVideoEditorButton and TPictureEditorButton from source tree and project.
+		Modified TVideoEditor.cpp and TPictureCueEdiotrToolbar.cpp
+	
+	••	Modified TBitmapButton to handle shared bitmap resources.  m_Ownership flag
+		determines whether or not to free bitmap buffers.
+
+
+//	10.07.98
+**	gzr
+
+	••	Modified VideoSettings and VideoEditor Modules.  Be sure to roll them into Mike's 
+		changes.
