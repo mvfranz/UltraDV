@@ -35,13 +35,13 @@
 //---------------------------------------------------------------------
 //
 //
-								
-TAudioSettingsTabView::TAudioSettingsTabView(TAudioSettingsView *parent, BRect frame, const char *name) :  
+
+TAudioSettingsTabView::TAudioSettingsTabView(TAudioSettingsView *parent, BRect frame, const char *name) :
 //				BTabView(frame, name, B_WIDTH_AS_USUAL, B_FOLLOW_ALL, B_WILL_DRAW|B_FULL_UPDATE_ON_RESIZE|B_NAVIGABLE_JUMP|B_FRAME_EVENTS|B_NAVIGABLE)
 				BTabView(frame, name)
 {
 	fParent = parent,
-	
+
 	Init();
 }
 
@@ -77,38 +77,38 @@ TAudioSettingsTabView::~TAudioSettingsTabView()
 //
 //
 
-void TAudioSettingsTabView::Init() 
+void TAudioSettingsTabView::Init()
 {
 	BMessage *theMessage = NULL;
-		
+
 	// Create all the tab views
-			
+
 	// Get SoundCompressionView from resource
-	BTab *compressionTab = new BTab(); 
+	BTab *compressionTab = new BTab();
 	theMessage = GetWindowFromResource("SoundCompressionView");
 	ASSERT(theMessage);
-	fCompressionView = new TAudioCompressionView(theMessage);	
-	AddTab(fCompressionView, compressionTab); 
-	compressionTab->SetLabel("Compression"); 
-	
+	fCompressionView = new TAudioCompressionView(theMessage);
+	AddTab(fCompressionView, compressionTab);
+	compressionTab->SetLabel("Compression");
+
 	// Get SoundSampleView from resource
-	BTab *sampleTab = new BTab(); 
+	BTab *sampleTab = new BTab();
 	theMessage = GetWindowFromResource("SoundSampleView");
-	ASSERT(theMessage);		
+	ASSERT(theMessage);
 	fSampleView = new TAudioSampleView(this, theMessage);
-	AddTab(fSampleView, sampleTab); 
-	sampleTab->SetLabel("Sample"); 
-	
+	AddTab(fSampleView, sampleTab);
+	sampleTab->SetLabel("Sample");
+
 	// Get SoundSourceView from resource
 	BTab *sourceTab = new BTab();
 	theMessage = GetWindowFromResource("SoundSourceView");
-	ASSERT(theMessage);		
+	ASSERT(theMessage);
 	fSourceView = new TAudioSourceView(theMessage);
 	AddTab(fSourceView, sourceTab);
-	sourceTab->SetLabel("Source"); 
+	sourceTab->SetLabel("Source");
 
 }
-	
+
 #pragma mark -
 #pragma mark === Archiving Functions ===
 
@@ -118,15 +118,15 @@ void TAudioSettingsTabView::Init()
 //
 //
 
-BArchivable *TAudioSettingsTabView::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TAudioSettingsTabView::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TAudioSettingsTabView") ) 
-		return new TAudioSettingsTabView(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TAudioSettingsTabView") )
+		return new TAudioSettingsTabView(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -135,19 +135,19 @@ BArchivable *TAudioSettingsTabView::Instantiate(BMessage *archive)
 
 status_t TAudioSettingsTabView::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BTabView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
 	{
-					
+
 	}
-	
+
 	return myErr;
 }
 
@@ -164,11 +164,11 @@ void TAudioSettingsTabView::MessageReceived(BMessage *message)
 {
 	switch (message->what)
 	{
-		
+
 		default:
 			BTabView::MessageReceived(message);
-			break;	
-	}		
+			break;
+	}
 }
 
 //---------------------------------------------------------------------
@@ -180,7 +180,7 @@ void TAudioSettingsTabView::MessageReceived(BMessage *message)
 
 void TAudioSettingsTabView::WindowActivated(bool state)
 {
-	
+
 	BTabView::WindowActivated(state);
 }
 
@@ -195,10 +195,10 @@ void TAudioSettingsTabView::WindowActivated(bool state)
 //
 
 void TAudioSettingsTabView::Draw(BRect updateRect)
-{	
+{
 	// Inform parent
 	BTabView::Draw(updateRect);
-}	
+}
 
 
 #pragma mark -
@@ -230,9 +230,9 @@ void TAudioSettingsTabView::Draw(BRect updateRect)
 
 void TAudioSettingsTabView::MouseDown(BPoint where)
 {
-					
+
 	// Inform parent
-	BTabView::MouseDown(where);			
+	BTabView::MouseDown(where);
 }
 
 
@@ -245,7 +245,7 @@ void TAudioSettingsTabView::MouseDown(BPoint where)
 
 void TAudioSettingsTabView::MouseUp(BPoint where)
 {
-	
+
 	// Inform parent
 	BTabView::MouseUp(where);
 }
@@ -259,23 +259,23 @@ void TAudioSettingsTabView::MouseUp(BPoint where)
 //
 
 void TAudioSettingsTabView::MouseMoved( BPoint where, uint32 code, const BMessage *message )
-{				
+{
 	switch(code)
 	{
-		
+
 		case B_ENTERED_VIEW:
 			break;
-	
-		case B_INSIDE_VIEW:		
+
+		case B_INSIDE_VIEW:
 			break;
-		
-		case B_EXITED_VIEW:	
+
+		case B_EXITED_VIEW:
 			break;
-		
+
 		default:
 			break;
 	}
-	
+
 	BTabView::MouseMoved(where, code, message);
 }
 

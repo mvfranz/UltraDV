@@ -21,7 +21,7 @@
 
 // Constants
 
-	 
+
 //---------------------------------------------------------------------
 //	Constructor
 //---------------------------------------------------------------------
@@ -56,7 +56,7 @@ TStageTextView::~TStageTextView()
 
 void TStageTextView::Draw(BRect updateRect)
 {
-	
+
 
 }
 
@@ -74,36 +74,36 @@ void TStageTextView::Draw(BRect updateRect)
 //
 
 void TStageTextView::MouseDown(BPoint where)
-{	
-	
+{
+
 	// Wait a short while before dragging
 	snooze(100 * 1000);
-	
-	// Is button down?  They are dragging or resizing the view...	
+
+	// Is button down?  They are dragging or resizing the view...
 	// Check to see if button is down
 	uint32 	buttons = 0;
 	BPoint	mousePt, savePt;
-			
-	GetMouse(&mousePt, &buttons, true);	
+
+	GetMouse(&mousePt, &buttons, true);
 	ConvertToParent(&mousePt);
 	savePt = mousePt;
-			
+
 	while (buttons)
-	{				
+	{
 		if (mousePt != savePt)
 		{
 			// Convert to parents coordinate system
 			ConvertToParent(&mousePt);
-			
+
 			MoveBy( ( mousePt.x - savePt.x) , (mousePt.y - savePt.y) );
-			
+
 			// Save mouse location for next compare
 			savePt = mousePt;
 		}
-		
+
 		GetMouse(&mousePt, &buttons, true);
 	}
-	
+
 	// Update the rects
 	fChannelCue->SetArea(Frame());
 }

@@ -55,14 +55,14 @@ BRect TCuePosition::Enclosure(bool transformed) const
 		if (fcorners[i].y > r.bottom)
 			r.bottom = fcorners[i].y;
 	}
-	
+
 	if (transformed) {
 		r.left = TransformX(r.left);
 		r.right = TransformX(r.right);
 		r.top = TransformY(r.top);
 		r.bottom = TransformY(r.bottom);
 	}
-	
+
 	return r;
 }
 
@@ -74,21 +74,21 @@ BRect TCuePosition::Enclosure(bool transformed) const
 
 bool TCuePosition::Contains(BPoint pt, bool transformed) const
 {
-//	NOTE: this was lifted by gzr from some *unknown* source... mo 
+//	NOTE: this was lifted by gzr from some *unknown* source... mo
 //
-// 	Shoot a test ray along +X axis.  The strategy is to compare vertex Y values 
-//	to the testing point's Y and quickly discard edges which are entirely to one 
-//	side of the test ray.  Note that CONVEX and WINDING code can be added 
-//	as for the CrossingsTest() code; it is left out here for clarity. 
+// 	Shoot a test ray along +X axis.  The strategy is to compare vertex Y values
+//	to the testing point's Y and quickly discard edges which are entirely to one
+//	side of the test ray.  Note that CONVEX and WINDING code can be added
+//	as for the CrossingsTest() code; it is left out here for clarity.
 //
-//	Input 2D polygon _pgon_ with _numverts_ number of vertices and test point 
-//	_point_, returns 1 if inside, 0 if outside. 
+//	Input 2D polygon _pgon_ with _numverts_ number of vertices and test point
+//	_point_, returns 1 if inside, 0 if outside.
 
 	//	Get number of points in polygon
 	int32 numVerts = 4;
 	const BPoint* vertex0;
 	const BPoint* vertex1;
-	
+
 	// Use transformed or non-transformed data, as appropriate
 	BPoint xCorners[4];
 	if (transformed) {
@@ -104,47 +104,47 @@ bool TCuePosition::Contains(BPoint pt, bool transformed) const
 		vertex0 = &fcorners[numVerts - 1];
 		vertex1 = &fcorners[0];
 	}
-		
+
 	//	Get test bit for above/below X axis
-	bool yflag0 = ( vertex0->y >= pt.y ); 
+	bool yflag0 = ( vertex0->y >= pt.y );
     bool inside_flag = 0;
-    for (int j = numVerts + 1; --j; ) 
-	{ 
+    for (int j = numVerts + 1; --j; )
+	{
 		bool yflag1 = ( vertex1->y >= pt.y );
-		
-		//	Check if endpoints straddle (are on opposite sides) of X axis 
-		//	(i.e. the Y's differ); if so, +X ray could intersect this edge. 
-		//	The old test also checked whether the endpoints are both to the 
-		//	right or to the left of the test point.  However, given the faster 
-		//	intersection point computation used below, this test was found to 
-		//	be a break-even proposition for most polygons and a loser for 
-		//	triangles (where 50% or more of the edges which survive this test 
-		//	will cross quadrants and so have to have the X intersection computed 
-		//	anyway).  I credit Joseph Samosky with inspiring me to try dropping 
-		//	the "both left or both right" part of my code. 
-        if ( yflag0 != yflag1 ) 
-		{ 
-			//	Check intersection of pgon segment with +X ray. 
-			//	Note if >= point's X; if so, the ray hits it. 
-			//	The division operation is avoided for the ">=" test by checking 
-			//	the sign of the first vertex wrto the test point; idea inspired 
-			//	by Joseph Samosky's and Mark Haigh-Hutchinson's different 
-			//	polygon inclusion tests. 
-            if (((vertex1->y - pt.y) * (vertex0->x - vertex1->x) >= 
-            		(vertex1->x- pt.x ) * (vertex0->y-vertex1->y)) == yflag1) 
-			{ 
-                inside_flag = !inside_flag ; 
-            } 
-        } 
+
+		//	Check if endpoints straddle (are on opposite sides) of X axis
+		//	(i.e. the Y's differ); if so, +X ray could intersect this edge.
+		//	The old test also checked whether the endpoints are both to the
+		//	right or to the left of the test point.  However, given the faster
+		//	intersection point computation used below, this test was found to
+		//	be a break-even proposition for most polygons and a loser for
+		//	triangles (where 50% or more of the edges which survive this test
+		//	will cross quadrants and so have to have the X intersection computed
+		//	anyway).  I credit Joseph Samosky with inspiring me to try dropping
+		//	the "both left or both right" part of my code.
+        if ( yflag0 != yflag1 )
+		{
+			//	Check intersection of pgon segment with +X ray.
+			//	Note if >= point's X; if so, the ray hits it.
+			//	The division operation is avoided for the ">=" test by checking
+			//	the sign of the first vertex wrto the test point; idea inspired
+			//	by Joseph Samosky's and Mark Haigh-Hutchinson's different
+			//	polygon inclusion tests.
+            if (((vertex1->y - pt.y) * (vertex0->x - vertex1->x) >=
+            		(vertex1->x- pt.x ) * (vertex0->y-vertex1->y)) == yflag1)
+			{
+                inside_flag = !inside_flag ;
+            }
+        }
 
 		//	Move to the next pair of vertices, retaining info as possible
-		yflag0 = yflag1; 
-		
-		vertex0 = vertex1; 
-		vertex1++;
-    } 
+		yflag0 = yflag1;
 
-	return( inside_flag ) ; 
+		vertex0 = vertex1;
+		vertex1++;
+    }
+
+	return( inside_flag ) ;
 }
 
 //---------------------------------------------------------------------

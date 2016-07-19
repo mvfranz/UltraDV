@@ -50,13 +50,13 @@
 //
 //
 
-TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow *parent) : 
+TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow *parent) :
 			   BView(bounds, "TimelineView", B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW),
 			   BMediaNode("TimelineNode")
 {
 	// Set CueSheet parent
 	fCueSheetWindow = parent;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -70,23 +70,23 @@ TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow *parent) :
 //
 
 TTimelineView::TTimelineView(BMessage *message) : BView(message), BMediaNode("TimelineNode")
-{	
+{
 	fCueSheetWindow = NULL;
-	
+
 	// Set up time rect
 	const BRect bounds = Bounds();
-	
-	// Load position indicator	
+
+	// Load position indicator
 	fIndicator = GetIcon16FromResource("Position");
 
-	// Set white bits to B_TRANSPARENT_8_BIT	
+	// Set white bits to B_TRANSPARENT_8_BIT
 	// gzr: to do... Why does 63 == white?
 	int32 bitsLength = fIndicator->BitsLength();
 	for ( int32 index = 0; index < bitsLength; index++)
 	{
 		unsigned char color = ((unsigned char *)fIndicator->Bits())[index];
-		if (color == 63)	
-		{	
+		if (color == 63)
+		{
 			((unsigned char *)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
 		}
 	}
@@ -103,16 +103,16 @@ TTimelineView::~TTimelineView()
 {
 	//	Signal threads to quit
 	fTimeToQuit = true;
-	
+
 	//	Quit service thread
 	if (write_port_etc(fPort, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
 		kill_thread(fServiceThread);
-	
+
 	status_t result;
 	wait_for_thread(fServiceThread, &result);
 
 	//	Wait for Run thread
-	wait_for_thread(fRunThread, &result);		
+	wait_for_thread(fRunThread, &result);
 
 	// Free Indicator
 	delete fIndicator;
@@ -128,13 +128,13 @@ TTimelineView::~TTimelineView()
 //
 //
 
-BArchivable *TTimelineView::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TTimelineView::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TTimelineView") ) 
-		return new TTimelineView(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TTimelineView") )
+		return new TTimelineView(archive);
+
+	return NULL;
 }
 
 
@@ -146,33 +146,33 @@ BArchivable *TTimelineView::Instantiate(BMessage *archive)
 
 status_t TTimelineView::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TTimelineView");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{		
-		
-		}		
+		{
+
+		}
 	}
-	
-	Looper()->Unlock();	
-	
+
+	Looper()->Unlock();
+
 	return myErr;
 }
-			
+
 //---------------------------------------------------------------------
 //	Init
 //---------------------------------------------------------------------
@@ -180,10 +180,10 @@ status_t TTimelineView::Archive(BMessage *data, bool deep) const
 //	Perform default initialization tasks
 
 void TTimelineView::Init()
-{		
+{
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
-	
+
 	//	Set up member variables
 	fTimeToQuit	= false;
 	fIsPlaying 	= false;
@@ -191,36 +191,36 @@ void TTimelineView::Init()
 
 	// Set up time rect
 	const BRect bounds = Bounds();
-	
+
 	// Set up indicator rect
 	fIndicatorRect.Set( bounds.left, bounds.top, bounds.left+kIndicatorWidth, bounds.top+kIndicatorHeight);
-	
-	// Load position indicator	
+
+	// Load position indicator
 	fIndicator = GetIcon16FromResource("Position");
-	
-	// Set white bits to B_TRANSPARENT_8_BIT	
+
+	// Set white bits to B_TRANSPARENT_8_BIT
 	// gzr: to do... Why does 63 == white?
 	int32 bitsLength = fIndicator->BitsLength();
 	for ( int32 index = 0; index < bitsLength; index++)
 	{
 		unsigned char color = ((unsigned char *)fIndicator->Bits())[index];
-		if (color == 63)	
-		{	
+		if (color == 63)
+		{
 			((unsigned char *)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
 		}
 	}
-	
+
 	//	Create our port
 	fPort = create_port(2, "TimeLinePort");
-			
+
 	//	Create port service thread
 	fServiceThread = spawn_thread(service_routine, "TTimelineView:Service", B_NORMAL_PRIORITY, this);
-	resume_thread(fServiceThread);	
-	
+	resume_thread(fServiceThread);
+
 	//	Create run thread
-	fRunThread = spawn_thread(run_routine, "TTimelineView::Run", B_NORMAL_PRIORITY, this);	
+	fRunThread = spawn_thread(run_routine, "TTimelineView::Run", B_NORMAL_PRIORITY, this);
 	resume_thread(fRunThread);
-	
+
 }
 
 #pragma mark -
@@ -238,27 +238,27 @@ void TTimelineView::MouseDown(BPoint where)
 	// Do nothing if we are playing
 	if ( fCueSheetWindow->GetPlaybackEngine()->IsPlaying() )
 		return;
-		
+
 	// Activate cue sheet
 	Window()->Activate(true);
-				
+
 	const BRect bounds = Bounds();
 
 	// Reset cue drag flag
 	static_cast<MuseumApp *>(be_app)->fIsCueDrag = false;
-	
+
 	// Clip out Header and right side of indicator zone
 	PushState();
-	
+
 	// Set up redraw color
 	SetHighColor(kBeShadow);
-								
-	// Draw new position. 				
-	TrackIndicator(where);	
-	
+
+	// Draw new position.
+	TrackIndicator(where);
+
 	// Launch mouse tracking thread
 	fMouseTracker = StartMouseWatcher(this);
-     						 	
+
 	// Restore environment
 	PopState();
 }
@@ -272,7 +272,7 @@ void TTimelineView::MouseDown(BPoint where)
 //
 
 void TTimelineView::MouseUp(BPoint where)
-{	
+{
 	// Do nothing if we are playing
 	if ( fCueSheetWindow->GetPlaybackEngine()->IsPlaying() )
 		return;
@@ -293,11 +293,11 @@ void TTimelineView::MouseMoved( BPoint where, uint32 code, const BMessage *messa
 	// Do nothing if we are playing
 	if ( fCueSheetWindow->GetPlaybackEngine()->IsPlaying() )
 		return;
-		
+
 	// Exit if panel is open
 	if ( fCueSheetWindow->IsPanelOpen())
 		return;
-		
+
 	// Determine type of movement
 	switch(code)
 	{
@@ -311,17 +311,17 @@ void TTimelineView::MouseMoved( BPoint where, uint32 code, const BMessage *messa
 			// Send tick off the screen
 			where.x = 0;
 			break;
-		
+
 		default:
 			break;
 	}
-	
-	// Only update the tick if we aren't tracking position indicator		
-	uint32 	buttons = 0;	
-	
+
+	// Only update the tick if we aren't tracking position indicator
+	uint32 	buttons = 0;
+
 	Window()->CurrentMessage()->FindInt32("buttons", (int32 *)&buttons);
 	if (!buttons)
-		UpdateTimeTick(where);	
+		UpdateTimeTick(where);
 
 }
 
@@ -347,49 +347,49 @@ void TTimelineView::MessageReceived(BMessage *message)
 					TrackPlayback();
 				}
 				break;
-				
+
 			// We need to redraw the tick
 			case UPDATE_TIMELINE_MSG:
-				{		
-					BPoint where;						
+				{
+					BPoint where;
 					if (message->FindPoint("Where", &where) == B_OK)
 						UpdateTimeTick(where);
 				}
 				break;
-				
+
 			// Mouse Tracking Messages
 			case MW_MOUSE_MOVED:
 				{
 					BPoint mousePt;
 					message->FindPoint("where", &mousePt);
-					
+
 					// Track the position indicator
 					TrackIndicator(mousePt);
-					
+
 					// If the mouse location is outside of the window bounds, scroll the view
 					BPoint scrollPt = ConvertToParent(mousePt);
 					if (scrollPt.x > fCueSheetWindow->Bounds().right)
 					{
-						TCueSheetScrollBarH *theScroll = fCueSheetWindow->GetScrollH(); 
+						TCueSheetScrollBarH *theScroll = fCueSheetWindow->GetScrollH();
 						float theVal = theScroll->Value();
-						theScroll->SetValue( theVal + kTickSpacing);					
+						theScroll->SetValue( theVal + kTickSpacing);
 					}
 					else if (scrollPt.x < ( fCueSheetWindow->Bounds().left + kHeaderWidth) )
 					{
-						TCueSheetScrollBarH *theScroll = fCueSheetWindow->GetScrollH(); 
+						TCueSheetScrollBarH *theScroll = fCueSheetWindow->GetScrollH();
 						float theVal = theScroll->Value();
-						theScroll->SetValue( theVal - kTickSpacing);					
-					}										
+						theScroll->SetValue( theVal - kTickSpacing);
+					}
 				}
 				break;
-				
+
 			//	Update stage
 			case MW_MOUSE_UP:
 				break;
-				
+
 			default:
-				BView::MessageReceived(message);						
-				break;			
+				BView::MessageReceived(message);
+				break;
 		}
 }
 
@@ -413,90 +413,90 @@ void TTimelineView::Draw(BRect updateRect)
 
 	drawing_mode saveMode = DrawingMode();
 	SetDrawingMode(B_OP_COPY);
-	
+
 	//
 	// Draw Ticks and Time Indicators
 	//
-	
+
 	//	Calculate indicator zone
 	const BRect bounds = Bounds();
 	const BRect indicatorZone(bounds.left, bounds.top, bounds.right, bounds.top+kIndicatorHeight);
-	
+
 	// Draw indicator zone
 	if (updateRect.Intersects(indicatorZone) )
 	{
 		SetHighColor(kBeShadow);
-		BRect fillRect = updateRect & indicatorZone;	
+		BRect fillRect = updateRect & indicatorZone;
 		FillRect(fillRect);
 		SetHighColor(kBlack);
 		startPt.Set(fillRect.left, indicatorZone.bottom);
 		endPt.Set(fillRect.right, indicatorZone.bottom);
-		StrokeLine(startPt, endPt);		
+		StrokeLine(startPt, endPt);
 	}
-	
+
 	// Draw timeline
 	BPoint 	textPt;
 	char 	timeStr[256];
-	
+
 	// The update rect should always be sized to the visible area of the timeline to avoid drawing glitchs
 	BRect frame 	 	= Window()->Bounds();
 	BRect timeBounds 	= Bounds();
 	updateRect.left 	= frame.left + timeBounds.left;
 	updateRect.right 	= frame.right + timeBounds.left;
 	updateRect.top 		= indicatorZone.bottom+1;
-	
+
 	// Do background fill
 	SetHighColor(kWhite);
 	FillRect(updateRect);
-	
+
 	// Draw black line at bottom of timeline
 	SetHighColor(kBlack);
 	startPt.Set(updateRect.right, Bounds().bottom);
 	endPt.Set(updateRect.left, Bounds().bottom);
 	StrokeLine(startPt, endPt);
-	
+
 	// updateRect.left should be divisible by kTickSpacing.  Force it to be...
 	int32 left = updateRect.left;
 	int32 mod = left % kTickSpacing;
-	updateRect.left -= mod;  
-			
+	updateRect.left -= mod;
+
 	// Set up variables here to increase efficiency in loop
 	//
-	
-	BFont font; 
-   	GetFont(&font); 
-	SetFont(be_plain_font);   
-   	SetHighColor(kBlack);   	
-	
+
+	BFont font;
+   	GetFont(&font);
+	SetFont(be_plain_font);
+   	SetHighColor(kBlack);
+
 	// Text drawing point
 	int16 textPtY = ( (timeBounds.Height() - indicatorZone.Height()) / 2);
 	textPtY += indicatorZone.bottom+4;
-					
+
 	// Get time variables
 	uint32 	 	 unitMSec 	= GetUnitMSec( GetCurrentTimeFormat(), GetCurrentResolution() );
-	uint32 	 	 roundVar   = (StartTime() + Duration()) + 9; 
+	uint32 	 	 roundVar   = (StartTime() + Duration()) + 9;
 	timecode_type timeFormat = GetCurrentTimeFormat();
-	
+
 	for (int32 index = updateRect.left / kTickSpacing * kTickSpacing;  index < updateRect.right + kTickSpacing; index += kTickSpacing)
-	{							
+	{
 		// Move pen to proper area.  We are fudging here to center the text over the tick
 		startPt.Set( index - 26, timeBounds.bottom - 2);
-		
-		// Get time		
-		int32 time = index / kTickSpacing * unitMSec;								
-		
+
+		// Get time
+		int32 time = index / kTickSpacing * unitMSec;
+
 		// If we are in frames/10ths resolution, round time up to nearest value.
-		// 9 turns out to work for all time formats.		
+		// 9 turns out to work for all time formats.
 		if ( GetCurrentResolution() == 0)
 			time += 9;
-			
+
 		// Now draw time text.
 		TimeToString(time, timeFormat, timeStr, FALSE);
-						
+
 		// Skip 00:00:00:00
 		if (time > 9)
 		{
-			// Add in rounding factor...		
+			// Add in rounding factor...
 			if (time <= roundVar)
 			{
 				BPoint textPt;
@@ -505,30 +505,30 @@ void TTimelineView::Draw(BRect updateRect)
 				DrawString(timeStr, textPt);
 			}
 		}
-			
+
 		// Draw main ticks...
 		//
-		
-		// Top		
+
+		// Top
 		startPt.Set( index, indicatorZone.bottom);
 		endPt.Set( startPt.x, indicatorZone.bottom+kTickHeight);
 		StrokeLine(startPt, endPt);
-		
+
 		// Bottom
 		startPt.Set( index, timeBounds.bottom);
 		endPt.Set( startPt.x, timeBounds.bottom-kTickHeight);
 		StrokeLine(startPt, endPt);
-		
+
 		// Draw intermediate ticks from last main tick
-		DrawSubTicks(index);			
+		DrawSubTicks(index);
 	}
-	
-	// Draw position indicator	
+
+	// Draw position indicator
 	DrawIndicator();
-		
+
 	// Restore environment
 	SetDrawingMode(saveMode);
-	PopState();	
+	PopState();
 }
 
 
@@ -542,15 +542,15 @@ void TTimelineView::Draw(BRect updateRect)
 void TTimelineView::DrawSubTicks(int32 index)
 {
 	BPoint startPt, endPt;
-	
+
 	const BRect timeBounds = Bounds();
-	
+
 	//	Calculate indicator zone
 	const BRect indicatorZone(timeBounds.left, timeBounds.top, timeBounds.right, timeBounds.top+kIndicatorHeight);
-	
+
 	int16 fpsValue 	= GetFPSValue( GetCurrentTimeFormat() );
-	
-	int16 numTicks;	
+
+	int16 numTicks;
 	switch( GetCurrentResolution() )
 	{
 
@@ -558,53 +558,53 @@ void TTimelineView::DrawSubTicks(int32 index)
 		case 0:
 			numTicks = 0;
 			break;
-		
+
 		// 1/4 Second
 		case 1:
-			numTicks = kTickSpacing/ ( (fpsValue-1) / 4 ); 
+			numTicks = kTickSpacing/ ( (fpsValue-1) / 4 );
 			break;
-			
+
 		// Half Second
-		case 2:						
-			numTicks = kTickSpacing/ ( (fpsValue-1)/2 ); 
+		case 2:
+			numTicks = kTickSpacing/ ( (fpsValue-1)/2 );
 			break;
-			
+
 		// One Second
-		case 3:						
+		case 3:
 			numTicks = kTickSpacing/(fpsValue-1);
 			break;
-			
+
 		// 2 Seconds
-		case 4:						
-			numTicks = 2; 
+		case 4:
+			numTicks = 2;
 			break;
-			
+
 		// 5 Seconds
-		case 5:						
+		case 5:
 			numTicks = 5;
 			break;
-			
+
 		// 10 Seconds
-		case 6:						
+		case 6:
 			numTicks = 10;
 			break;
-			
+
 		// 30 Seconds
-		case 7:						
+		case 7:
 			numTicks = 30;
 			break;
-			
+
 		// 1 Minute
-		case 8:						
+		case 8:
 			numTicks = 10;
 			break;
-			
+
 		// 5 Minutes
-		case 9:						
+		case 9:
 			numTicks = 10;
 			break;
 	}
-	
+
 	if (numTicks > 0)
 	{
 		for (int32 lastIndex = index; lastIndex < (index+kTickSpacing); lastIndex+=numTicks)
@@ -613,7 +613,7 @@ void TTimelineView::DrawSubTicks(int32 index)
 			startPt.Set( lastIndex, indicatorZone.bottom);
 			endPt.Set( startPt.x, indicatorZone.bottom+(kTickHeight/2));
 			StrokeLine(startPt, endPt);
-			
+
 			// Bottom tick
 			startPt.Set( lastIndex, timeBounds.bottom);
 			endPt.Set( startPt.x, timeBounds.bottom-(kTickHeight/2));
@@ -632,57 +632,57 @@ void TTimelineView::DrawSubTicks(int32 index)
 
 void TTimelineView::UpdateTimeTick(BPoint where)
 {
-		
+
 	//
 	// Set up the environment
 	//
-	
+
 	Looper()->Lock();
-	
+
 	// Clip out Indicator Zone
-	BRect bounds 	= Bounds();	
+	BRect bounds 	= Bounds();
 	bounds.top 	 	+= kIndicatorZoneHeight+1;
 	bounds.bottom 	-= 1;
-				
+
 	// Set up environment
 	PushState();
-				
+
 	// 	Only proceed if we have moved in the X coordinate space.  We don't care about Y.
 	//	This avoids flicker in the time indicator palette
 	if (where.x == fLastTick.x)
 	{
 		PopState();
-		Looper()->Unlock();		
+		Looper()->Unlock();
 		return;
 	}
-	
-	// 	Cleanup and draw indicator and save position for next pass through	
+
+	// 	Cleanup and draw indicator and save position for next pass through
 	BPoint startPt, endPt;
 	SetHighColor(kBlack);
 	SetDrawingMode(B_OP_INVERT);
-					
+
 	// Erase last indicator tick
 	startPt.Set(fLastTick.x, bounds.top);
 	endPt.Set(fLastTick.x, bounds.bottom);
 	StrokeLine(startPt, endPt);
-	
-	// Draw the new indicator tick		
+
+	// Draw the new indicator tick
 	startPt.Set(where.x, bounds.top);
 	endPt.Set(where.x, bounds.bottom);
 	StrokeLine(startPt, endPt);
-	
+
 	// Save position
 	fLastTick = where;
-								
+
 	// 	Send a message to the Locator Palette telling it about the new tick time
-	// 	We don't need to do this during playback.  The playback engines handles 
+	// 	We don't need to do this during playback.  The playback engines handles
 	//	it at that time.
 	if (!IsPlaying())
-	{			
-		BMessage *message = new BMessage(UPDATE_TIMELINE_MSG);									
+	{
+		BMessage *message = new BMessage(UPDATE_TIMELINE_MSG);
 		uint32 theTime = PixelsToTime((where.x), GetCurrentTimeFormat(), GetCurrentResolution());
 		message->AddInt32("TheTime", theTime);
-		
+
 		// Inform Locator
 		TTimePalette *timePalette = static_cast<MuseumApp *>(be_app)->GetTimePalette();
 		if (timePalette)
@@ -691,16 +691,16 @@ void TTimelineView::UpdateTimeTick(BPoint where)
 			timePalette->GetTimePaletteView()->MessageReceived(message);
 			timePalette->Unlock();
 		}
-							
+
 		// Clean up message
 		delete message;
 	}
-			
+
 	// Restore environment
 	PopState();
-	
+
 	Looper()->Unlock();
-}	
+}
 
 
 //---------------------------------------------------------------------
@@ -714,22 +714,22 @@ void TTimelineView::DrawIndicator()
 {
 	// Set up environment
 	PushState();
-	
+
 	drawing_mode saveMode = DrawingMode();
 	SetDrawingMode(B_OP_OVER);
-	
-	SetHighColor(kBeShadow);	
+
+	SetHighColor(kBeShadow);
 	BPoint drawPt(fIndicatorRect.left, fIndicatorRect.top);
-	
+
 	// Make sure it isn't outside the timeline bounds
 	ClipIndicatorRect();
 
 	// Draw indicator in new location
 	DrawBitmap(fIndicator, drawPt);
-	
+
 	// Draw the indicator line down all views
 	// We do this by sending a message out to all of the cue channels
-	// and they will draw the line where indicated	
+	// and they will draw the line where indicated
 	BMessage *message = new BMessage(UPDATE_INDICATOR_MSG);
 	drawPt.Set( fIndicatorRect.left + (fIndicatorRect.Width() / 2), fIndicatorRect.top);
 	message->AddPoint("IndicatorPoint", drawPt);
@@ -739,7 +739,7 @@ void TTimelineView::DrawIndicator()
 	fCueSheetWindow->GetCueSheetView()->MessageReceived(message);
 	fCueSheetWindow->Unlock();
 	delete message;
-	
+
 	// Restore environment
 	SetDrawingMode(saveMode);
 
@@ -751,37 +751,37 @@ void TTimelineView::DrawIndicator()
 //	DrawIndicator
 //---------------------------------------------------------------------
 //
-//	Draw the position indicator at the proper location and clean 
+//	Draw the position indicator at the proper location and clean
 //	up last position
 //
 
 void TTimelineView::DrawIndicator(BRect oldPosition)
 {
-	
+
 	// Set up environment
 	PushState();
-	
+
 	drawing_mode saveMode = DrawingMode();
 	SetDrawingMode(B_OP_OVER);
 
 	SetHighColor(kBeShadow);
-	
+
 	BPoint drawPt(fIndicatorRect.left, fIndicatorRect.top);
-	
+
 	// Clean up last indicator position.  We clip two pixels off the bottom
 	// so as not to overdraw border line.
 	oldPosition.bottom -= 2;
 	FillRect(oldPosition);
-	
+
 	// Make sure it isn't outside the timeline bounds
 	ClipIndicatorRect();
 
 	// Draw indicator in new location
 	DrawBitmap(fIndicator, drawPt);
-	
+
 	// Draw the indicator line down all views
 	// We do this by sending a message out to all of the cue channels
-	// and they will draw the line where indicated	
+	// and they will draw the line where indicated
 	BMessage *message = new BMessage(UPDATE_INDICATOR_MSG);
 	drawPt.Set( fIndicatorRect.left + (fIndicatorRect.Width() / 2), fIndicatorRect.top);
 	message->AddPoint("IndicatorPoint", drawPt);
@@ -789,11 +789,11 @@ void TTimelineView::DrawIndicator(BRect oldPosition)
 	// Force message into the application
 	fCueSheetWindow->GetCueSheetView()->MessageReceived(message);
 	delete message;
-	
+
 	// Restore environment
 	SetDrawingMode(saveMode);
 	PopState();
-		
+
 }
 
 //---------------------------------------------------------------------
@@ -812,7 +812,7 @@ void TTimelineView::FrameResized(float new_width, float new_height)
 
 #pragma mark -
 #pragma mark === Resolution Handling ===
- 
+
 //---------------------------------------------------------------------
 //	ResolutionChanged
 //---------------------------------------------------------------------
@@ -821,7 +821,7 @@ void TTimelineView::FrameResized(float new_width, float new_height)
 //
 
 void TTimelineView::ResolutionChanged(int32 resizePixels)
-{	
+{
 	// Force redraw
 	Invalidate();
 }
@@ -835,8 +835,8 @@ void TTimelineView::ResolutionChanged(int32 resizePixels)
 //
 
 void TTimelineView::TrackIndicator(BPoint mousePt)
-{			
-	
+{
+
 	//	Don't allow scroll out of bounds
 	//if (mousePt.x > indicatorZone.right)
 	//	mousePt.x = indicatorZone.right;
@@ -844,32 +844,32 @@ void TTimelineView::TrackIndicator(BPoint mousePt)
 	//	Left side
 	if (mousePt.x < 0)
 		mousePt.x = 0;
-		
+
 	// Move indicator to mouse position and track it while mouse button is down
 	BRect	oldRect;
 	uint32 	buttons = 0;
-							
-	// Save oldRect for redraw														
-	oldRect = fIndicatorRect;	
+
+	// Save oldRect for redraw
+	oldRect = fIndicatorRect;
 	fIndicatorRect.left = mousePt.x - (kIndicatorWidth/2);
-	fIndicatorRect.right = fIndicatorRect.left + kIndicatorWidth;	
-	
+	fIndicatorRect.right = fIndicatorRect.left + kIndicatorWidth;
+
 	// Exit if there is no change in position
 	if (oldRect == fIndicatorRect)
 		return;
 
-	// Draw new position. 				
-	DrawIndicator(oldRect);	
-	
+	// Draw new position.
+	DrawIndicator(oldRect);
+
 	// Update current time
 	uint32 theTime = PixelsToTime((mousePt.x), GetCurrentTimeFormat(), GetCurrentResolution());
 	fCueSheetWindow->GetCueSheetView()->SetCurrentTime(theTime);
-	
+
 	//	Tell cue sheet about new time as well.  This will inform all cues and will
 	//	update their visibility on the stage
 	BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
 	BPoint drawPt( fIndicatorRect.left + (fIndicatorRect.Width() / 2)+1, fIndicatorRect.top);
-	message->AddPoint("Where", drawPt);	
+	message->AddPoint("Where", drawPt);
 	message->AddInt32("TheTime", theTime);
 	fCueSheetWindow->GetCueSheetView()->MessageReceived(message);
 
@@ -877,12 +877,12 @@ void TTimelineView::TrackIndicator(BPoint mousePt)
 	TTransportPalette *theTransport = static_cast<MuseumApp *>(be_app)->GetTransport();
 	if (theTransport)
 		theTransport->PostMessage(message, theTransport->GetTransportPaletteView());
-	
+
 	// Update indicator tick
 	UpdateTimeTick(drawPt);
-	
+
 	// Clean up
-	delete message;		
+	delete message;
 }
 
 
@@ -897,25 +897,25 @@ void TTimelineView::TrackIndicator(BPoint mousePt)
 //
 
 void TTimelineView::TrackPlayback()
-{				
+{
 	// Move indicator to current time position
 	BRect	oldRect;
 	uint32 	buttons = 0;
-	
+
 	// Get current time position in pixels
 	int32 position = TimeToPixels( GetCurrentTime() - StartTime(), GetCurrentTimeFormat(), GetCurrentResolution());
-							
-	// Save oldRect for redraw														
-	oldRect = fIndicatorRect;	
+
+	// Save oldRect for redraw
+	oldRect = fIndicatorRect;
 	fIndicatorRect.left  = position - (kIndicatorWidth/2);
-	fIndicatorRect.right = fIndicatorRect.left + kIndicatorWidth;	
-	
+	fIndicatorRect.right = fIndicatorRect.left + kIndicatorWidth;
+
 	// Draw new position and update indicator tick
 	BPoint drawPt( fIndicatorRect.left + (fIndicatorRect.Width() / 2)+1, fIndicatorRect.top);
 	fCueSheetWindow->Lock();
 	UpdateTimeTick(drawPt);
-	DrawIndicator(oldRect);	
-	fCueSheetWindow->Unlock();	
+	DrawIndicator(oldRect);
+	fCueSheetWindow->Unlock();
 }
 
 #pragma mark -
@@ -954,12 +954,12 @@ void TTimelineView::ClipIndicatorRect()
 //
 
 void TTimelineView::AttachedToWindow()
-{			
+{
 	if(fCueSheetWindow == NULL)
 	{
-		fCueSheetWindow = (TCueSheetWindow *)Window();		
+		fCueSheetWindow = (TCueSheetWindow *)Window();
 	}
-	
+
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }
@@ -1021,7 +1021,7 @@ BMediaAddOn* TTimelineView::AddOn( int32 *internal_id) const
 status_t TTimelineView::service_routine(void * data)
 {
 	((TTimelineView *)data)->ServiceRoutine();
-	
+
 	return 0;
 }
 
@@ -1041,25 +1041,25 @@ void TTimelineView::ServiceRoutine()
 		status_t 		err  = 0;
 		int32 			code = 0;
 		char 			msg[B_MEDIA_MESSAGE_SIZE];
-		
-		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);		
-		
-		if (err == B_TIMED_OUT) 
+
+		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);
+
+		if (err == B_TIMED_OUT)
 			continue;
-		
+
 		if (err < B_OK)
 		{
 			printf("TTimePalette::ServiceRoutine: Unexpected error in read_port(): %x\n", err);
 			continue;
 		}
-		
+
 		// dispatch message
 		if (code == 0x60000000)
-			break;		
-		
+			break;
+
 		if ( (BMediaNode::HandleMessage(code, msg, err)) )
-		{				
-			BMediaNode::HandleBadMessage(code, msg, err); 
+		{
+			BMediaNode::HandleBadMessage(code, msg, err);
 		}
 
 	}
@@ -1075,7 +1075,7 @@ void TTimelineView::ServiceRoutine()
 
 status_t TTimelineView::run_routine(void *data)
 {
-	((TTimelineView *)data)->RunRoutine();	
+	((TTimelineView *)data)->RunRoutine();
 	return 0;
 }
 
@@ -1093,12 +1093,12 @@ void TTimelineView::RunRoutine()
 	while(!fTimeToQuit)
 	{
 		snooze(5000);
-	
+
 		//	Are we running?
 		if (TimeSource()->IsRunning())
 		{
 			//	Draw playback head
-			TrackPlayback();		
+			TrackPlayback();
 		}
 	}
 }

@@ -7,7 +7,7 @@
 //	Date:	05.15.98
 //
 ///	Desc:	Class encapsulation the BeOS TThread
-//							
+//
 //	Copyright ©1998 mediapede Software
 //
 //---------------------------------------------------------------------
@@ -26,7 +26,7 @@
 // static thread rotuine
 
 static status_t thread_mainthread(void *data)
-{	
+{
 	TThread *aThread = (TThread *)data;
   	return aThread->ThreadMain();
 }
@@ -54,7 +54,7 @@ TThread::TThread(const char *aName, long aPriority) : fThreadID(-1)
 TThread::~TThread()
 {
 	int32 exitStatus;
-	
+
 	Kill();
 	WaitForExit(&exitStatus);
 }

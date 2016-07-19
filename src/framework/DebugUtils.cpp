@@ -27,10 +27,10 @@
 //	DebugAlert
 //---------------------------------------------------------------------
 //
-//	
+//
 
 void DebugAlert(char *theString)
-{	
+{
 	BAlert *theAlert = new BAlert("Debug", theString, "Thanks");
 	theAlert->Go();
 }
@@ -41,7 +41,7 @@ void DebugAlert(char *theString)
 //---------------------------------------------------------------------
 //
 // Dump coordinates of rect to stdout
-//	
+//
 
 void DumpRect(BRect theRect)
 {
@@ -56,7 +56,7 @@ void DumpRect(BRect theRect)
 //---------------------------------------------------------------------
 //
 // Dump coordinates of point to stdout
-//	
+//
 
 void DumpPoint(BPoint thePoint)
 {

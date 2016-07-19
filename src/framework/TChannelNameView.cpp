@@ -33,7 +33,7 @@
 #include "TChannelName.h"
 
 
-	 
+
 //---------------------------------------------------------------------
 //	Constructor
 //---------------------------------------------------------------------
@@ -41,10 +41,10 @@
 //
 
 TChannelNameView::TChannelNameView( TCueChannel *channel, BRect bounds, const char *name, const char *text, uint32 resizeFlags, uint32 flags) :
-							BStringView(bounds, name, text, resizeFlags, flags)			
+							BStringView(bounds, name, text, resizeFlags, flags)
 {
 	fChannel = channel;
-	
+
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
 }
@@ -81,15 +81,15 @@ TChannelNameView::~TChannelNameView()
 //
 //
 
-BArchivable *TChannelNameView::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TChannelNameView::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TChannelNameView") ) 
-		return new TChannelNameView(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TChannelNameView") )
+		return new TChannelNameView(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -98,31 +98,31 @@ BArchivable *TChannelNameView::Instantiate(BMessage *archive)
 
 status_t TChannelNameView::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BStringView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TChannelNameView");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{	
-			
-		}				
+		{
+
+		}
 	}
-	
-	
+
+
 	Looper()->Unlock();
-	
+
 	return myErr;
 }
 
@@ -138,16 +138,16 @@ status_t TChannelNameView::Archive(BMessage *data, bool deep) const
 void TChannelNameView::Draw(BRect bounds)
 {
 	PushState();
-	
-	// Fill background	
+
+	// Fill background
 	SetHighColor(kHeaderGrey);
 	FillRect(bounds);
-	
+
 	// Draw text
 	SetHighColor(kBlack);
 	SetLowColor(kHeaderGrey);
 	BStringView::Draw(bounds);
-	
+
 	PopState();
 }
 
@@ -161,7 +161,7 @@ void TChannelNameView::Draw(BRect bounds)
 void TChannelNameView::MessageReceived(BMessage *message)
 {
 
-	BStringView::MessageReceived(message);						
+	BStringView::MessageReceived(message);
 
 }
 
@@ -178,7 +178,7 @@ void TChannelNameView::MouseDown(BPoint pt)
 	// Do nothing if we are playing
 	if ( ((TCueSheetWindow *)fChannel->Window())->GetPlaybackEngine()->IsPlaying() )
 		return;
-		
+
 	// If the option key is down, allow user to change the text
 	if ( IsOptionKeyDown() )
 	{
@@ -186,11 +186,11 @@ void TChannelNameView::MouseDown(BPoint pt)
 		BMessage *theMessage = GetWindowFromResource("ChannelNameWindow");
 		TChannelName *theDialog = new TChannelName(theMessage, fChannel);
 		ASSERT(theDialog);
-		
+
 		// Move it under the mouse
 		ConvertToScreen(&pt);
 		theDialog->MoveTo(pt.x, pt.y);
-		
+
 		// Show the dialog
 		theDialog->Show();
 	}
@@ -199,7 +199,7 @@ void TChannelNameView::MouseDown(BPoint pt)
 	{
 		if ( IsShiftKeyDown() == false )
 			fChannel->GetCueSheet()->DeselectAllCues();
-			
+
 		fChannel->SelectAllCues();
 	}
 }

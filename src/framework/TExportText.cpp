@@ -29,7 +29,7 @@
 #include "TExportText.h"
 
 
-	 
+
 //---------------------------------------------------------------------
 //	Constructor
 //---------------------------------------------------------------------
@@ -37,10 +37,10 @@
 //
 
 TExportText::TExportText( TExportTimeView *parent, BRect bounds, const char *name, const char *text, uint32 resizeFlags, uint32 flags) :
-							BStringView(bounds, name, text, resizeFlags, flags)			
+							BStringView(bounds, name, text, resizeFlags, flags)
 {
 	fParent = parent;
-	
+
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
 }
@@ -66,16 +66,16 @@ TExportText::~TExportText()
 void TExportText::Draw(BRect bounds)
 {
 	PushState();
-	
-	// Fill background	
+
+	// Fill background
 	SetHighColor(kKhaki);
 	FillRect(bounds);
-	
+
 	// Draw text
 	SetHighColor(kBlack);
 	SetLowColor(kKhaki);
 	BStringView::Draw(bounds);
-	
+
 	PopState();
 }
 
@@ -89,7 +89,7 @@ void TExportText::Draw(BRect bounds)
 void TExportText::MessageReceived(BMessage *message)
 {
 
-	BStringView::MessageReceived(message);						
+	BStringView::MessageReceived(message);
 
 }
 
@@ -107,7 +107,7 @@ void TExportText::MouseDown(BPoint pt)
 	// Do nothing if we are playing
 	if ( ((TCueSheetWindow *)fChannel->Window())->IsPlaying() )
 		return;
-		
+
 	// If the option key is down, allow user to change the text
 	if ( IsOptionKeyDown() )
 	{
@@ -115,11 +115,11 @@ void TExportText::MouseDown(BPoint pt)
 		BMessage *theMessage = GetWindowFromResource("ChannelNameWindow");
 		TChannelName *theDialog = new TChannelName(theMessage, fChannel);
 		ASSERT(theDialog);
-		
+
 		// Move it under the mouse
 		ConvertToScreen(&pt);
 		theDialog->MoveTo(pt.x, pt.y);
-		
+
 		// Show the dialog
 		theDialog->Show();
 	}
@@ -128,7 +128,7 @@ void TExportText::MouseDown(BPoint pt)
 	{
 		if ( IsShiftKeyDown() == false )
 			fChannel->GetCueSheet()->DeselectAllCues();
-			
+
 		fChannel->SelectAllCues();
 	}
 	*/

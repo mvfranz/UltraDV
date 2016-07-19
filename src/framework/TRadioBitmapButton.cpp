@@ -7,7 +7,7 @@
 //	Date:	08.13.98
 //
 //	Desc:	Variant on the Bitmap button object which treats all sibling
-//			TRadioBitmapButton objects as radio buttons. 
+//			TRadioBitmapButton objects as radio buttons.
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -27,7 +27,7 @@
 //
 
 	// Variant ala BPictureButton which requires a call to SetHandler()
-TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* off, 
+TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* off,
 		BBitmap* on, BMessage *message, uint32 resizingMode, uint32 flags) :
 		// defaults
 		//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
@@ -37,13 +37,13 @@ TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* 
 {
 }
 
-TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* off, 
-		BBitmap* on, BHandler *handler, BMessage *message, uint32 resizingMode, 
+TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* off,
+		BBitmap* on, BHandler *handler, BMessage *message, uint32 resizingMode,
 		uint32 flags) :
 		// defaults
 		//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
 		//		flags = B_WILL_DRAW | B_NAVIGABLE
-	TBitmapButton(bounds, name, off, on, handler, message, B_TWO_STATE_BUTTON, 
+	TBitmapButton(bounds, name, off, on, handler, message, B_TWO_STATE_BUTTON,
 			resizingMode, flags),
 	fBeingTracked(false)
 {
@@ -74,7 +74,7 @@ void TRadioBitmapButton::SetValue(int32 value)
 		return;
 
 	// Default behavior
-	TBitmapButton::SetValue(value);	
+	TBitmapButton::SetValue(value);
 
 	// Turn off all siblings for an 'on' message
 	if (value && Parent()) {

@@ -7,7 +7,7 @@
 //	Date:	02.16.98
 //
 ///	Desc:	Expand All Toolbar button.  Clicking causes all channels to
-//			expand to expanded size 
+//			expand to expanded size
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -41,17 +41,17 @@ TExpandAllButton::TExpandAllButton(TToolbar *parent, BRect bounds, const char *n
 {
 	// Save parent view
 	fParent = parent;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap = onBitmap;
-		
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -66,7 +66,7 @@ TExpandAllButton::TExpandAllButton(BMessage *data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	fOffBitmap = GetIcon16FromResource("ExpandDown");
 	fOnBitmap  = GetIcon16FromResource("ExpandUp");
 }
@@ -93,7 +93,7 @@ TExpandAllButton::~TExpandAllButton()
 //	Perform default initialization tasks
 
 void TExpandAllButton::Init()
-{        	
+{
 }
 
 #pragma mark -
@@ -105,15 +105,15 @@ void TExpandAllButton::Init()
 //
 //
 
-BArchivable *TExpandAllButton::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TExpandAllButton::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TExpandAllButton") ) 
-		return new TExpandAllButton(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TExpandAllButton") )
+		return new TExpandAllButton(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -122,32 +122,32 @@ BArchivable *TExpandAllButton::Instantiate(BMessage *archive)
 
 status_t TExpandAllButton::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TExpandAllButton");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{		
-	
+		{
+
 		}
 	}
-	
+
 	Looper()->Unlock();
-	
+
 	return myErr;
-}	
+}
 
 #pragma mark -
 #pragma mark === Drawing Routines
@@ -162,7 +162,7 @@ void TExpandAllButton::Draw(BRect updateRect)
 {
 	// Draw proper bitmap state, if fState is true, draw on bitmap
 	if (fMouseDown)
-		DrawBitmap(fOffBitmap, B_ORIGIN);		
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 	else
 		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
@@ -177,7 +177,7 @@ void TExpandAllButton::Draw(BRect updateRect)
 //
 
 void TExpandAllButton::MouseDown(BPoint where)
-{				
+{
 
 	DoClick();
 
@@ -196,13 +196,13 @@ void TExpandAllButton::MouseDown(BPoint where)
 //
 
 void TExpandAllButton::AttachedToWindow()
-{			
+{
 	if(fParent == NULL)
 	{
 		fParent 	= (TToolbar *)Parent();
-		fHandler 	= (TToolbar *)Parent();					
+		fHandler 	= (TToolbar *)Parent();
 	}
-	
+
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }
@@ -219,23 +219,23 @@ void TExpandAllButton::AttachedToWindow()
 
 void TExpandAllButton::DoClick()
 {
-	
+
 	// We will always be in the up osition when we start.
 	// First, set the button state to down and force a redraw...
-	fMouseDown = true; 
-	Draw(Bounds()); 
-			
-	// Create and send message to channel and header		
+	fMouseDown = true;
+	Draw(Bounds());
+
+	// Create and send message to channel and header
 	BMessage *message = new BMessage(EXPAND_ALL_BUTTON_MSG);
 	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
 	delete message;
-	
+
 	// Wait a short while before restoring to up position
 	snooze(100 * 1000);
-	
+
 	// Restore and invalidate
-	fMouseDown = false; 
-	Draw(Bounds()); 
+	fMouseDown = false;
+	Draw(Bounds());
 }
 
 

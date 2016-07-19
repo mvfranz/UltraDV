@@ -74,19 +74,19 @@ status_t Benaphore::Lock(void)
 	{
 		if (m_sem_id < B_NO_ERROR)
 			return m_sem_id;
-		
+
 		return B_ERROR;
 	}
-	
+
 	status_t err = B_NO_ERROR;
-	
+
 	// Increment the benaphore count and aquire the semaphore if
 	// necessary. Note: atomic_add() returns the previous value of
 	// m_ben_cnt.
 	if (atomic_add(&m_ben_cnt, 1) > 0)
 		while ((err = acquire_sem(m_sem_id)) == B_INTERRUPTED)
 			;
-	
+
 	// Invalidate on failure. This is only to disallow the Benaphore
 	// from being used by anyone not caught in the crossfire. At this
 	// point there is still a risk of being in a bizarre state.
@@ -95,7 +95,7 @@ status_t Benaphore::Lock(void)
 		atomic_add(&m_ben_cnt, -1);
 		m_valid = false;
 	}
-	
+
 	return err;
 }
 

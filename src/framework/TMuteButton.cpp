@@ -6,7 +6,7 @@
 //
 //	Date:	02.07.98
 //
-//	Desc:	Mute button object.  The fIsMuted flag in the Cue Channel acts as 
+//	Desc:	Mute button object.  The fIsMuted flag in the Cue Channel acts as
 //			the state flag
 //
 //	Copyright ©1998 mediapede Software
@@ -43,17 +43,17 @@ TMuteButton::TMuteButton(TCueChannel *parent, BRect bounds, const char *name, BB
 {
 	// Save parent view
 	fChannel = parent;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap = onBitmap;
-	
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 
 	// Perform default initialization
 	Init();
@@ -66,9 +66,9 @@ TMuteButton::TMuteButton(TCueChannel *parent, BRect bounds, const char *name, BB
 //
 
 TMuteButton::TMuteButton(BMessage *data) : BView(data)
-{	
+{
 	fHandler = NULL;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
 
@@ -97,7 +97,7 @@ TMuteButton::~TMuteButton()
 void TMuteButton::Init()
 {
 	// We don't need a background color
-	SetViewColor(B_TRANSPARENT_32_BIT);        	
+	SetViewColor(B_TRANSPARENT_32_BIT);
 }
 
 
@@ -110,15 +110,15 @@ void TMuteButton::Init()
 //
 //
 
-BArchivable *TMuteButton::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TMuteButton::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TMuteButton") ) 
-		return new TMuteButton(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TMuteButton") )
+		return new TMuteButton(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -127,31 +127,31 @@ BArchivable *TMuteButton::Instantiate(BMessage *archive)
 
 status_t TMuteButton::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TMuteButton");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{	
-			
-		}				
+		{
+
+		}
 	}
-	
-	
+
+
 	Looper()->Unlock();
-	
+
 	return myErr;
 }
 
@@ -183,21 +183,21 @@ void TMuteButton::Draw(BRect updateRect)
 //
 
 void TMuteButton::MouseDown(BPoint where)
-{	
+{
 	// Force redraw to reflect new state
 	Invalidate();
-	
-	// Create and send message		
+
+	// Create and send message
 	BMessage *muteMessage = new BMessage(MUTE_BUTTON_MSG);
 	short id = fChannel->GetID();
-	muteMessage->AddInt16("ChannelID", fChannel->GetID());								
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(muteMessage, fChannel);	
+	muteMessage->AddInt16("ChannelID", fChannel->GetID());
+	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(muteMessage, fChannel);
 	// Clean up
 	delete muteMessage;
-		
+
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	fMouseDown = true; 
+	fMouseDown = true;
 }
 
 
@@ -211,10 +211,10 @@ void TMuteButton::MouseDown(BPoint where)
 void TMuteButton::MouseUp(BPoint where)
 {
 
-	
+
 	// Set flag that we have been clicked. When the MouseUp method
-	// is implimented we can remove this		
-	fMouseDown = false; 
+	// is implimented we can remove this
+	fMouseDown = false;
 }
 
 #pragma mark -
@@ -230,13 +230,13 @@ void TMuteButton::MouseUp(BPoint where)
 //
 
 void TMuteButton::AttachedToWindow()
-{			
+{
 	if (fHandler == NULL)
 	{
 		// Set target
 		fHandler = (TCueSheetWindow *)Window();
 
-	}	
+	}
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }
@@ -252,5 +252,5 @@ void TMuteButton::AttachedToWindow()
 
 void TMuteButton::SetChannel(TCueChannel *channel)
 {
-	fChannel = channel;	
+	fChannel = channel;
 }

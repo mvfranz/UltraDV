@@ -44,10 +44,10 @@ TCueSheetScrollBarH::TCueSheetScrollBarH( TCueSheetWindow *parent, BRect frame, 
 					BScrollBar( frame, "HCueScroll", target, min, max, B_HORIZONTAL)
 {
 	fCueSheetWindow = parent;
-	
+
 	// Do default initialization
 	Init();
-}					
+}
 
 
 //---------------------------------------------------------------------
@@ -58,12 +58,12 @@ TCueSheetScrollBarH::TCueSheetScrollBarH( TCueSheetWindow *parent, BRect frame, 
 //
 
 TCueSheetScrollBarH::TCueSheetScrollBarH(BMessage *data ) : BScrollBar(data)
-{		
+{
 	fCueSheetWindow = NULL;
-	
+
 	// Do default initialization
 	Init();
-}					
+}
 
 
 //---------------------------------------------------------------------
@@ -87,13 +87,13 @@ TCueSheetScrollBarH::~TCueSheetScrollBarH()
 //
 //
 
-BArchivable *TCueSheetScrollBarH::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TCueSheetScrollBarH::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TCueSheetScrollBarH") ) 
-		return new TCueSheetScrollBarH(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TCueSheetScrollBarH") )
+		return new TCueSheetScrollBarH(archive);
+
+	return NULL;
 }
 
 
@@ -105,30 +105,30 @@ BArchivable *TCueSheetScrollBarH::Instantiate(BMessage *archive)
 
 status_t TCueSheetScrollBarH::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BScrollBar::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TCueSheetScrollBarH");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{		
-		
-		}		
+		{
+
+		}
 	}
-	
-	Looper()->Unlock();	
-	
+
+	Looper()->Unlock();
+
 	return myErr;
 }
 
@@ -141,7 +141,7 @@ status_t TCueSheetScrollBarH::Archive(BMessage *data, bool deep) const
 
 void TCueSheetScrollBarH::Init()
 {
-	// 	Get current scroll value and save it in our tracking variable.  
+	// 	Get current scroll value and save it in our tracking variable.
 	//	We use this value to scroll the HeaderZone in concert with
 	//	the CueSheetView
 	fLastValue = Value();
@@ -154,51 +154,51 @@ void TCueSheetScrollBarH::Init()
 //
 
 void TCueSheetScrollBarH::ValueChanged(float newValue)
-{		
+{
 	// Pass message to base class
 	BScrollBar::ValueChanged(newValue);
-	
+
 	// We need to offset the Export Zone, TimeLine and CueChannels...
 	if (newValue != fLastValue)
-	{				
+	{
 		if (newValue > fLastValue)
 		{
 			fCueSheetWindow->GetExportZone()->ScrollBy(newValue - fLastValue, 0);
 			fCueSheetWindow->GetTimeline()->ScrollBy(newValue - fLastValue, 0);
-			
+
 			//	Handle cue channels
 			BList *channelList = fCueSheetWindow->GetCueSheetView()->GetChannelList();
 			for (int32 channelNum = 0; channelNum < channelList->CountItems(); channelNum++)
 			{
 				TCueChannel *theChannel = (TCueChannel *)channelList->ItemAt(channelNum);
 				if (theChannel)
-					theChannel->ScrollBy(newValue - fLastValue, 0);				
-			}		
+					theChannel->ScrollBy(newValue - fLastValue, 0);
+			}
 		}
-		else			
+		else
 		{
 			fCueSheetWindow->GetExportZone()->ScrollBy(-(fLastValue - newValue), 0);
 			fCueSheetWindow->GetTimeline()->ScrollBy(-(fLastValue - newValue), 0);
-			
+
 			//	Handle cue channels
 			BList *channelList = fCueSheetWindow->GetCueSheetView()->GetChannelList();
 			for (int32 channelNum = 0; channelNum < channelList->CountItems(); channelNum++)
 			{
 				TCueChannel *theChannel = (TCueChannel *)channelList->ItemAt(channelNum);
 				if (theChannel)
-					theChannel->ScrollBy(-(fLastValue - newValue), 0);				
-			}		
+					theChannel->ScrollBy(-(fLastValue - newValue), 0);
+			}
 
 		}
-			
+
 		// Force a redraw of the items
-		fCueSheetWindow->GetExportZone()->Invalidate();		
+		fCueSheetWindow->GetExportZone()->Invalidate();
 		BRect bounds = fCueSheetWindow->GetTimeline()->Bounds();
 		fCueSheetWindow->GetTimeline()->Invalidate(bounds);
-		
+
 		// Save value for next compare
-		fLastValue = newValue;		
-	}		
+		fLastValue = newValue;
+	}
 }
 
 #pragma mark -
@@ -214,12 +214,12 @@ void TCueSheetScrollBarH::ValueChanged(float newValue)
 //
 
 void TCueSheetScrollBarH::AttachedToWindow()
-{			
+{
 	if(fCueSheetWindow == NULL)
 	{
-		fCueSheetWindow = (TCueSheetWindow *)Window();		
+		fCueSheetWindow = (TCueSheetWindow *)Window();
 	}
-	
+
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }

@@ -40,17 +40,17 @@ TZoomButton::TZoomButton(TToolbar *parent, BRect bounds, const char *name, BBitm
 {
 	// Save parent view
 	fParent = parent;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap = onBitmap;
-		
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -93,7 +93,7 @@ TZoomButton::~TZoomButton()
 //	Perform default initialization tasks
 
 void TZoomButton::Init()
-{        	
+{
 }
 
 
@@ -106,15 +106,15 @@ void TZoomButton::Init()
 //
 //
 
-BArchivable *TZoomButton::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TZoomButton::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TZoomButton") ) 
-		return new TZoomButton(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TZoomButton") )
+		return new TZoomButton(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -123,32 +123,32 @@ BArchivable *TZoomButton::Instantiate(BMessage *archive)
 
 status_t TZoomButton::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TZoomButton");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{		
-	
+		{
+
 		}
 	}
-	
+
 	Looper()->Unlock();
-	
+
 	return myErr;
-}	
+}
 
 #pragma mark -
 #pragma mark === Drawing Routines
@@ -163,7 +163,7 @@ void TZoomButton::Draw(BRect updateRect)
 {
 	// Draw proper bitmap state, if fState is true, draw on bitmap
 	if (fMouseDown)
-		DrawBitmap(fOffBitmap, B_ORIGIN);		
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 	else
 		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
@@ -179,23 +179,23 @@ void TZoomButton::Draw(BRect updateRect)
 
 void TZoomButton::MouseDown(BPoint where)
 {
-				
+
 	// Force redraw to reflect new state
 	//Invalidate();
-	
-	// Create and send message to channel and header		
+
+	// Create and send message to channel and header
 	//BMessage *message = new BMessage(CHANNEL_EXPAND_MSG);
 	//(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
 	//delete message;
-		
+
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
 	if (fMouseDown)
-		fMouseDown = false; 
+		fMouseDown = false;
 	else
-		fMouseDown = true; 
-		
-	Invalidate(); 
+		fMouseDown = true;
+
+	Invalidate();
 }
 
 //---------------------------------------------------------------------
@@ -208,13 +208,13 @@ void TZoomButton::MouseDown(BPoint where)
 //
 
 void TZoomButton::AttachedToWindow()
-{			
+{
 	if(fParent == NULL)
 	{
 		fParent 	= (TToolbar *)Parent();
-		fHandler 	= (TToolbar *)Parent();					
+		fHandler 	= (TToolbar *)Parent();
 	}
-	
+
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }

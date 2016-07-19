@@ -7,7 +7,7 @@
 //	Date:	05.05.98
 //
 //	Desc:	Undo object base class
-//			
+//
 //	Copyright ©1998 mediapede Software
 //
 //---------------------------------------------------------------------
@@ -28,7 +28,7 @@
 TUndo::TUndo()
 {
 
-}	
+}
 
 //---------------------------------------------------------------------
 //	Destructor
@@ -63,7 +63,7 @@ void TUndo::CreateObjectSnapshot()
 void TUndo::SaveObjectSnapshot()
 {
 
-}	
+}
 
 //---------------------------------------------------------------------
 //	Undo
@@ -75,4 +75,4 @@ void TUndo::SaveObjectSnapshot()
 void TUndo::Undo()
 {
 
-}	
+}

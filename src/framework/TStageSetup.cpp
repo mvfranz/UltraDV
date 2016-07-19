@@ -38,9 +38,9 @@
 
 TStageSetup::TStageSetup(TStageWindow *theStage, BMessage *theMessage) : BWindow(theMessage)
 {
-		
+
 	fStage = theStage;
-	
+
 	// Default initialization
 	Init();
 }
@@ -65,43 +65,43 @@ TStageSetup::~TStageSetup()
 //
 
 void TStageSetup::Init()
-{		
+{
 	fStage->Lock();
-	
+
 	// Save the current stade color
 	fSaveColor = fStage->GetStageView()->ViewColor();
-	
-	// Get dialog items			
+
+	// Get dialog items
 	fDimesionsBox 	= (BBox *)FindView("DimensionBox");
 	fSettingsBox	= (BBox *)FindView("SettingsBox");
 	fColorBox		= (BBox *)FindView("ColorBox");
-	
+
 	fWidth 		= (BTextControl *)FindView("WidthText");
 	fHeight 		= (BTextControl *)FindView("HeightText");
 	fXPos  		= (BTextControl *)FindView("XPosText");
 	fYPos 			= (BTextControl *)FindView("YPosText");
-	
+
 	fTitleText 	= (BTextControl *)FindView("TitleText");
-	
+
 	fCenterCheck 	= (BCheckBox *)FindView("CenterCheck");
-	fTitleCheck	= (BCheckBox *)FindView("TitleCheck");	
-	
+	fTitleCheck	= (BCheckBox *)FindView("TitleCheck");
+
 	fStageColor 	= (BColorControl *)FindView("StageColor");
-	
+
 	// Set up dialog items
 	char 	tmpStr[64];
 	int32	tmpNum;
-	
+
 	// Width
 	tmpNum = fStage->Bounds().Width();
 	sprintf(tmpStr, "%d", tmpNum);
 	fWidth->SetText( tmpStr );
-	
+
 	// Height
 	tmpNum = fStage->Bounds().Height();
 	sprintf(tmpStr, "%d", tmpNum);
 	fHeight->SetText( tmpStr );
-	
+
 	// X Position
 	tmpNum = fStage->Frame().left;
 	sprintf(tmpStr, "%d", tmpNum);
@@ -111,13 +111,13 @@ void TStageSetup::Init()
 	tmpNum = fStage->Frame().top;
 	sprintf(tmpStr, "%d", tmpNum);
 	fYPos->SetText( tmpStr );
-	
+
 	fStage->Unlock();
 }
 
 
 //-------------------------------------------------------------------
-//	Function:	MessageReceived		
+//	Function:	MessageReceived
 //-------------------------------------------------------------------
 //
 //
@@ -128,12 +128,12 @@ void TStageSetup::MessageReceived(BMessage* message)
 	switch(message->what)
 	{
 		// User pressed OK button.  Update channel name with text in control field
-		case OK_MSG:	
-			GetDialogSettings();		
+		case OK_MSG:
+			GetDialogSettings();
 			Lock();
 			Quit();
 			break;
-			
+
 		// Restore backgorund color if changed
 		case CANCEL_MSG:
 			{
@@ -146,11 +146,11 @@ void TStageSetup::MessageReceived(BMessage* message)
 				Quit();
 			}
 			break;
-			
+
 		case CENTER_CHECK_MSG:
 		case TITLE_CHECK_MSG:
 			break;
-			
+
 		// Update the stage color
 		case STAGE_COLOR_MSG:
 			fStage->Lock();
@@ -158,17 +158,17 @@ void TStageSetup::MessageReceived(BMessage* message)
 			fStage->GetStageView()->Invalidate();
 			fStage->Unlock();
 			break;
-	
+
 		default:
-			BWindow::MessageReceived(message);						
+			BWindow::MessageReceived(message);
 			break;
 	}
-	
+
 }
 
 
 //-------------------------------------------------------------------
-//	Function:	GetDialogSettings		
+//	Function:	GetDialogSettings
 //-------------------------------------------------------------------
 //
 //	Retrieve dialog settings and apply them to the current cue sheet
@@ -178,7 +178,7 @@ void TStageSetup::GetDialogSettings()
 {
 	// Get new stage size
 	int32 width, height, xpos, ypos;
-	
+
 	width = atoi(fWidth->Text());
 	height = atoi(fHeight->Text());
 	xpos = atoi(fXPos->Text());
@@ -186,6 +186,6 @@ void TStageSetup::GetDialogSettings()
 
 	fStage->ResizeTo(width, height);
 	fStage->MoveTo(xpos, ypos);
-		
+
 }
 

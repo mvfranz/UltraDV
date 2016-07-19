@@ -60,13 +60,13 @@ void TStatusView::Init()
 {
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
-	
+
 	// Set up the bounding rectangles for the Text Display and Tick Indicator areas
 	BRect area = Bounds();
-	
+
 	// Set up status text
 	strcpy(fText, "");
-				
+
 }
 
 #pragma mark -
@@ -79,24 +79,24 @@ void TStatusView::Init()
 //
 
 void TStatusView::MessageReceived(BMessage* message)
-{	
-	
+{
+
 	switch (message->what)
 	{
 		// Update the status bar to display name of media cue
 		case UPDATE_STATUS_TEXT_MSG:
 			char *theStr;
 			message->FindString("StatusText",(const char **) &theStr);
-			strcpy(fText, theStr);	
+			strcpy(fText, theStr);
 			Invalidate();
 			break;
-			
+
 		default:
 			BView::MessageReceived(message);
 			break;
 	}
 
-}	
+}
 
 
 #pragma mark -
@@ -111,20 +111,20 @@ void TStatusView::MessageReceived(BMessage* message)
 void TStatusView::Draw(BRect updateRect)
 {
 	BPoint startPt, endPt;
-		
+
 	// Save old colors
 	PushState();
-	
+
 	BRect bounds = Bounds();
-	
+
 	// Fill
 	SetHighColor(kBlueGrey);
-	FillRect( bounds );	
-			
+	FillRect( bounds );
+
 	// Outline entire area
 	SetHighColor(kDarkGrey);
 	StrokeRect(bounds);
-	
+
 	// Draw highlight at top
 	SetHighColor(kBeGrey);
 	startPt.Set(bounds.left+1, bounds.bottom-1);
@@ -133,14 +133,14 @@ void TStatusView::Draw(BRect updateRect)
 	startPt.Set(bounds.left+1, bounds.top+1);
 	endPt.Set(bounds.right-1, bounds.top+1);
 	StrokeLine(startPt, endPt);
-							
+
 	// Draw text
-	SetFont(be_plain_font);   
+	SetFont(be_plain_font);
 	SetHighColor(kBlack);
 	SetLowColor(kBlueGrey);
 	endPt.Set( Bounds().left+5, (Bounds().Height() / 2) + 4 );
-	DrawString(fText, endPt); 
-	
+	DrawString(fText, endPt);
+
 	// Restore environment
 	PopState();
 }

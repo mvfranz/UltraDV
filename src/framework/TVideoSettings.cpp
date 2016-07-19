@@ -28,7 +28,7 @@
 //
 
 TVideoSettings::TVideoSettings()
-{			
+{
 	Init();
 }
 
@@ -53,7 +53,7 @@ TVideoSettings::~TVideoSettings()
 //
 
 void TVideoSettings::Init()
-{	
+{
 	// Compression
 	fVideoCompressionSettings.fCompressor = kNone;
 
@@ -67,7 +67,7 @@ void TVideoSettings::Init()
 	fVideoSourceSettings.fDigitizer	= kTurboTVPhilips;
 	fVideoSourceSettings.fInput		= kComposite;
 	fVideoSourceSettings.fFormat		= kNTSC_M;
-	
+
 	fVideoSourceSettings.fFilters.fGammaCorrection	= true;
 	fVideoSourceSettings.fFilters.fLumaCoring		= true;
 	fVideoSourceSettings.fFilters.fErrorDiffusion	= true;

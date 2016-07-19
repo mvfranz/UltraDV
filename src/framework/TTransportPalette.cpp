@@ -48,8 +48,8 @@
 //------------------------------------------------------------------
 //
 //
-	        							        								
-TTransportPalette::TTransportPalette(BRect bounds):BWindow( bounds, "Transport", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL, 
+
+TTransportPalette::TTransportPalette(BRect bounds):BWindow( bounds, "Transport", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
 									  B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE),
 									  BMediaNode("TransportNode")
 {
@@ -70,16 +70,16 @@ TTransportPalette::~TTransportPalette()
 {
 	//	Signal threads to quit
 	fTimeToQuit = true;
-	
+
 	//	Quit service thread
 	if (write_port_etc(fPort, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
 		kill_thread(fServiceThread);
-	
+
 	status_t result;
 	wait_for_thread(fServiceThread, &result);
 
 	//	Wait for Run thread
-	wait_for_thread(fRunThread, &result);		
+	wait_for_thread(fRunThread, &result);
 }
 
 
@@ -87,7 +87,7 @@ TTransportPalette::~TTransportPalette()
 //
 //	Function:	Init()
 //
-//	Desc:		
+//	Desc:
 //
 //------------------------------------------------------------------
 //
@@ -96,7 +96,7 @@ TTransportPalette::~TTransportPalette()
 void TTransportPalette::Init()
 {
 	Lock();
-	
+
 	//	Set up member variables
 	fTimeToQuit	= false;
 	fIsPlaying 	= false;
@@ -105,21 +105,21 @@ void TTransportPalette::Init()
 	//
 	// Create background bitmap
 	//
-	
+
 	// Get application info
 	app_info info;
-	
+
 	be_app->GetAppInfo(&info);
 	BFile file(&info.ref, O_RDONLY);
 	if (file.InitCheck())
 		return;
-	
+
 	size_t 		size;
 	BBitmap 	*data;
-	
+
 	BResources res(&file);
 	data = (BBitmap *)res.FindResource('bits', "Transport", &size);
-	if (!data)			
+	if (!data)
 		return;
 
 	BRect bitmapRect = Bounds();
@@ -129,24 +129,24 @@ void TTransportPalette::Init()
 
 	// Create MediaCueView and add it to the window
 	fTransportView = new TTransportPaletteView(Bounds(), bitmap);
-	
+
 	// Add view to frame
 	AddChild(fTransportView);
-	
+
 	//	Create our port
 	fPort = create_port(3, "TransportPort");
-			
+
 	//	Create port service thread
 	fServiceThread = spawn_thread(service_routine, "Transport:Service", B_NORMAL_PRIORITY, this);
-	resume_thread(fServiceThread);	
-	
+	resume_thread(fServiceThread);
+
 	//	Create run thread
-	fRunThread = spawn_thread(run_routine, "Transport::Run", B_NORMAL_PRIORITY, this);	
+	fRunThread = spawn_thread(run_routine, "Transport::Run", B_NORMAL_PRIORITY, this);
 	resume_thread(fRunThread);
 
-	
+
 	Unlock();
-	
+
 	// Show window
 	//Show();
 }
@@ -156,21 +156,21 @@ void TTransportPalette::Init()
 //
 //	Function:	MessageReceived()
 //
-//	Desc:		
+//	Desc:
 //
 //------------------------------------------------------------------
 //
 //
 
 void TTransportPalette::MessageReceived(BMessage* message)
-{	
+{
 	switch(message->what)
 	{
 		default:
-			BWindow::MessageReceived(message);						
-			break;					
-	}			
-}	
+			BWindow::MessageReceived(message);
+			break;
+	}
+}
 
 
 
@@ -183,8 +183,8 @@ void TTransportPalette::MessageReceived(BMessage* message)
 //
 
 bool TTransportPalette::QuitRequested()
-{		
-	Hide();	
+{
+	Hide();
 	return false;
 }
 
@@ -194,7 +194,7 @@ bool TTransportPalette::QuitRequested()
 //------------------------------------------------------------------
 //	ControlPort
 //------------------------------------------------------------------
-//	
+//
 //	Return nodes control port
 //
 
@@ -207,7 +207,7 @@ port_id TTransportPalette::ControlPort() const
 //------------------------------------------------------------------
 //	ControlPort
 //------------------------------------------------------------------
-//	
+//
 //	No an addon.  Return NULL
 //
 
@@ -230,7 +230,7 @@ BMediaAddOn	*TTransportPalette::AddOn(int32 * internal_id) const
 status_t TTransportPalette::service_routine(void * data)
 {
 	((TTransportPalette *)data)->ServiceRoutine();
-	
+
 	return 0;
 }
 
@@ -250,22 +250,22 @@ void TTransportPalette::ServiceRoutine()
 		status_t 		err  = 0;
 		int32 			code = 0;
 		char 			msg[B_MEDIA_MESSAGE_SIZE];
-		
-		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);		
-		
-		if (err == B_TIMED_OUT) 
+
+		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);
+
+		if (err == B_TIMED_OUT)
 			continue;
-		
+
 		if (err < B_OK)
 		{
 			printf("TTransportPalette::ServiceRoutine: Unexpected error in read_port(): %x\n", err);
 			continue;
 		}
-		
+
 		// dispatch message
 		if (code == 0x60000000)
-			break;		
-		
+			break;
+
 		HandleMessage(code, &msg, err);
 	}
 }
@@ -280,7 +280,7 @@ void TTransportPalette::ServiceRoutine()
 
 status_t TTransportPalette::run_routine(void *data)
 {
-	((TTransportPalette *)data)->RunRoutine();	
+	((TTransportPalette *)data)->RunRoutine();
 	return 0;
 }
 
@@ -295,18 +295,18 @@ status_t TTransportPalette::run_routine(void *data)
 
 void TTransportPalette::RunRoutine()
 {
-	char text[12];	
-	
+	char text[12];
+
 	while(!fTimeToQuit)
 	{
 		snooze(50000);
-	
+
 		//	Update media_server
 		if (TimeSource()->IsRunning())
 		{
-			//	Update text						
-			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);						
+			//	Update text
+			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
 			fTransportView->GetTransportText()->SetText(text);
-		}		
+		}
 	}
 }

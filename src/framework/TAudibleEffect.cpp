@@ -50,7 +50,7 @@ BArchivable* TAudibleEffect::Instantiate(BMessage* data)
 	// NOTE: this is an error. We can't instantiate this class
 	// since it is an abstract base class.
 	ASSERT(false);
-	return 0; 
+	return 0;
 }
 
 status_t TAudibleEffect::Archive(BMessage* data, bool deep) const
@@ -59,7 +59,7 @@ status_t TAudibleEffect::Archive(BMessage* data, bool deep) const
 	status_t err = BArchivable::Archive(data, deep);
 	if (err != B_OK)
 		return err;
-	
+
 	// NOTE: we don't instantiate this class --- it's an ABC ---
 	// so we don't add the class name data
 

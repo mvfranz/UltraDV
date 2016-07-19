@@ -44,17 +44,17 @@ TLockButton::TLockButton(TCueChannel *parent, BRect bounds, const char *name, BB
 {
 	// Save parent view
 	fChannel = parent;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap = onBitmap;
-		
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -67,9 +67,9 @@ TLockButton::TLockButton(TCueChannel *parent, BRect bounds, const char *name, BB
 //
 
 TLockButton::TLockButton(BMessage *data) : BView(data)
-{	
+{
 	fHandler = NULL;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
 
@@ -97,9 +97,9 @@ TLockButton::~TLockButton()
 //	Perform default initialization tasks
 
 void TLockButton::Init()
-{  
+{
 	// We don't need a background color
-	SetViewColor(B_TRANSPARENT_32_BIT);      	
+	SetViewColor(B_TRANSPARENT_32_BIT);
 }
 
 
@@ -112,15 +112,15 @@ void TLockButton::Init()
 //
 //
 
-BArchivable *TLockButton::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TLockButton::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TLockButton") ) 
-		return new TLockButton(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TLockButton") )
+		return new TLockButton(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -129,31 +129,31 @@ BArchivable *TLockButton::Instantiate(BMessage *archive)
 
 status_t TLockButton::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TLockButton");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{	
-			
-		}				
+		{
+
+		}
 	}
-	
-	
+
+
 	Looper()->Unlock();
-	
+
 	return myErr;
 }
 
@@ -186,18 +186,18 @@ void TLockButton::Draw(BRect updateRect)
 
 void TLockButton::MouseDown(BPoint where)
 {
-				
+
 	// Force redraw to reflect new state
 	Invalidate();
-	
-	// Create and send message to channel		
+
+	// Create and send message to channel
 	BMessage *message = new BMessage(LOCK_CHANNEL_MSG);
 	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
 	delete message;
-		
+
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	fMouseDown = true; 
+	fMouseDown = true;
 }
 
 
@@ -210,10 +210,10 @@ void TLockButton::MouseDown(BPoint where)
 
 void TLockButton::MouseUp(BPoint where)
 {
-	
+
 	// Set flag that we have been clicked. When the MouseUp method
-	// is implimented we can remove this		
-	fMouseDown = false; 
+	// is implimented we can remove this
+	fMouseDown = false;
 }
 
 #pragma mark -
@@ -229,13 +229,13 @@ void TLockButton::MouseUp(BPoint where)
 //
 
 void TLockButton::AttachedToWindow()
-{			
+{
 	if (fHandler == NULL)
 	{
 		// Set target
 		fHandler = (TCueSheetWindow *)Window();
 
-	}	
+	}
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }
@@ -252,5 +252,5 @@ void TLockButton::AttachedToWindow()
 
 void TLockButton::SetChannel(TCueChannel *channel)
 {
-	fChannel = channel;	
+	fChannel = channel;
 }

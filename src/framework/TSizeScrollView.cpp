@@ -8,7 +8,7 @@
 //
 //	Desc:	This class is derived from BScrollView, with an additional
 //			wrinkle: it has a size control and sends sizing messages
-//			to its container window. Other interface behaves like 
+//			to its container window. Other interface behaves like
 //			BScrollView.
 //
 //	Copyright ©1998 mediapede Software
@@ -71,7 +71,7 @@ TSizeScrollView::~TSizeScrollView()
 void TSizeScrollView::Init()
 {
 	// Grey background
-	SetViewColor(kBeGrey); 
+	SetViewColor(kBeGrey);
 }
 
 #pragma mark -
@@ -89,25 +89,25 @@ void TSizeScrollView::MessageReceived(BMessage *theMessage)
 	{
 		// Mouse moved. Send resize message to parent
 		case MW_MOUSE_MOVED:
-			{							
-				BPoint mousePt;				
+			{
+				BPoint mousePt;
 				if ( theMessage->FindPoint("where", &mousePt) == B_OK)
 				{
 					// Conver mousePt to screen coordinate
 					ConvertToScreen(&mousePt);
-					
-					// Get new window bounds					
+
+					// Get new window bounds
 					BRect frame = Window()->Frame();
 					frame.right		= mousePt.x;
 					frame.bottom 	= mousePt.y;
-					
+
 					// Adjust size to keep mouse centered in DragRect
 					BRect dragRect;
 					GetDragRect(&dragRect);
-					
+
 					frame.right += dragRect.Width() / 2;
 					frame.bottom += dragRect.Height() / 2;
-					
+
 					// Resize
 					Window()->ResizeTo(frame.Width(), frame.Height());
 				}
@@ -117,7 +117,7 @@ void TSizeScrollView::MessageReceived(BMessage *theMessage)
 		default:
 			BView::MessageReceived(theMessage);
 			break;
-			
+
 	}
 }
 
@@ -133,12 +133,12 @@ void TSizeScrollView::MouseDown(BPoint where)
 	// Check and see if we are in our DragRect
 	BRect dragRect;
 	GetDragRect(&dragRect);
-		
+
 	if ( dragRect.Contains(where) )
 	{
 		StartMouseWatcher(this);
 	}
-	
+
 }
 
 #pragma mark -
@@ -166,115 +166,115 @@ void TSizeScrollView::Draw(BRect updateRect)
 void TSizeScrollView::DrawDragRect()
 {
 	PushState();
-		
+
 	BRect dragRect;
 	GetDragRect(&dragRect);
-	
+
 	// Fill with background color
 	SetHighColor(kBeGrey);
 	FillRect(dragRect);
-	
+
 	// Only draw texture if we are active
 
 	if ( Window()->IsActive() )
 	{
-	
+
 		// Draw shadow dots
 		BPoint startPt, endPt;
 		SetHighColor(kDkGrey);
-		
+
 		// Top row
 		startPt.Set(dragRect.right-2, dragRect.top+3);
-		endPt.Set(dragRect.right-2, dragRect.top+3);					
+		endPt.Set(dragRect.right-2, dragRect.top+3);
 		StrokeLine(startPt, endPt);
-		
+
 		// Second Row
 		startPt.Set(dragRect.right-2, dragRect.top+6);
-		endPt.Set(dragRect.right-2, dragRect.top+6);					
+		endPt.Set(dragRect.right-2, dragRect.top+6);
 		StrokeLine(startPt, endPt);
-		
+
 		startPt.x 	-= 3;
 		endPt.x 	-= 3;
 		StrokeLine(startPt, endPt);
-		
+
 		// Third Row
 		startPt.Set(dragRect.right-2, dragRect.top+9);
-		endPt.Set(dragRect.right-2, dragRect.top+9);					
+		endPt.Set(dragRect.right-2, dragRect.top+9);
 		StrokeLine(startPt, endPt);
-	
+
 		startPt.x 	-= 3;
 		endPt.x 	-= 3;
 		StrokeLine(startPt, endPt);
-	
+
 		startPt.x 	-= 3;
 		endPt.x 	-= 3;
 		StrokeLine(startPt, endPt);
-	
+
 		// Bottom Row
 		startPt.Set(dragRect.left+3, dragRect.top+12);
-		endPt.Set(dragRect.left+3, dragRect.top+12);				
+		endPt.Set(dragRect.left+3, dragRect.top+12);
 		StrokeLine(startPt, endPt);
-		
+
 		startPt.x 	+= 3;
 		endPt.x 	+= 3;
 		StrokeLine(startPt, endPt);
-		
+
 		startPt.x 	+= 3;
 		endPt.x 	+= 3;
 		StrokeLine(startPt, endPt);
-		
+
 		startPt.x 	+= 3;
 		endPt.x 	+= 3;
 		StrokeLine(startPt, endPt);
-		
+
 		// Draw Hilight dots
 		SetHighColor(kWhite);
-		
+
 		// Top row
 		startPt.Set(dragRect.right-1, dragRect.top+4);
-		endPt.Set(dragRect.right-1, dragRect.top+4);					
+		endPt.Set(dragRect.right-1, dragRect.top+4);
 		StrokeLine(startPt, endPt);
-		
+
 		// Second Row
 		startPt.Set(dragRect.right-1, dragRect.top+7);
-		endPt.Set(dragRect.right-1, dragRect.top+7);					
+		endPt.Set(dragRect.right-1, dragRect.top+7);
 		StrokeLine(startPt, endPt);
-		
+
 		startPt.x 	-= 3;
 		endPt.x 	-= 3;
 		StrokeLine(startPt, endPt);
-		
+
 		// Third Row
 		startPt.Set(dragRect.right-1, dragRect.top+10);
-		endPt.Set(dragRect.right-1, dragRect.top+10);					
+		endPt.Set(dragRect.right-1, dragRect.top+10);
 		StrokeLine(startPt, endPt);
-	
+
 		startPt.x 	-= 3;
 		endPt.x 	-= 3;
 		StrokeLine(startPt, endPt);
-	
+
 		startPt.x 	-= 3;
 		endPt.x 	-= 3;
 		StrokeLine(startPt, endPt);
-	
+
 		// Bottom Row
 		startPt.Set(dragRect.left+4, dragRect.top+13);
-		endPt.Set(dragRect.left+4, dragRect.top+13);				
+		endPt.Set(dragRect.left+4, dragRect.top+13);
 		StrokeLine(startPt, endPt);
-		
+
 		startPt.x 	+= 3;
 		endPt.x 	+= 3;
 		StrokeLine(startPt, endPt);
-		
+
 		startPt.x 	+= 3;
 		endPt.x 	+= 3;
 		StrokeLine(startPt, endPt);
-		
+
 		startPt.x 	+= 3;
 		endPt.x 	+= 3;
 		StrokeLine(startPt, endPt);
 	}
-		
+
 	PopState();
 }
 
@@ -290,11 +290,11 @@ void TSizeScrollView::DrawDragRect()
 
 void TSizeScrollView::GetDragRect(BRect *dragRect)
 {
-	*dragRect 		= Bounds();	
+	*dragRect 		= Bounds();
 	// TODO: respect the size of the scroll bars for this
 	static const int kDragRectWidth = 14;
 	static const int kDragRectHeight = 14;
 
 	dragRect->left 	= dragRect->right - kDragRectWidth;
-	dragRect->top 	= dragRect->bottom - kDragRectHeight;	
+	dragRect->top 	= dragRect->bottom - kDragRectHeight;
 }

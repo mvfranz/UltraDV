@@ -36,7 +36,7 @@
 //
 
 TRotateSlider::TRotateSlider( TRotateDialog *dialog, TNumberTextControl *rotateText, TVisualCue *theCue, BRect frame, const char *name, const char *label, BMessage *message, int32 minValue,
-				  int32 maxValue, thumb_style thumbType, uint32 resizingMode, uint32 flags) : 
+				  int32 maxValue, thumb_style thumbType, uint32 resizingMode, uint32 flags) :
 				  TSlider(frame, name, label, message, minValue, maxValue, thumbType, resizingMode, flags)
 {
 	// Set up member variables
@@ -83,10 +83,10 @@ void TRotateSlider::SetValue(int32 value)
 {
 	// Pass to parent
 	TSlider::SetValue(value);
-	
+
 	//	Update cue
 	fCue->SetRotation(value);
-	
+
 	//	Update text
 	if (fTextControl != NULL)
 	{
@@ -94,7 +94,7 @@ void TRotateSlider::SetValue(int32 value)
 		sprintf(newStr, "%d", value);
 		fTextControl->SetText(newStr);
 	}
-	
+
 	// Update cue
 	if (fCue != NULL)
 	{
@@ -107,7 +107,7 @@ void TRotateSlider::SetValue(int32 value)
 				fStageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
 				fStageView->Draw( fCue->GetDrawArea());
 				fStage->Unlock();
-			}		
+			}
 		}
 		//	Draw bounding box
 		else

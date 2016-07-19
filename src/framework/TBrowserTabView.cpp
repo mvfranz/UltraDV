@@ -35,8 +35,8 @@
 //---------------------------------------------------------------------
 //
 //
-								
-TBrowserTabView::TBrowserTabView( BRect frame, const char *name) :  
+
+TBrowserTabView::TBrowserTabView( BRect frame, const char *name) :
 //				BTabView(frame, name, B_WIDTH_AS_USUAL, B_FOLLOW_ALL, B_WILL_DRAW|B_FULL_UPDATE_ON_RESIZE|B_NAVIGABLE_JUMP|B_FRAME_EVENTS|B_NAVIGABLE)
 				BTabView(frame, name)
 {
@@ -75,26 +75,26 @@ TBrowserTabView::~TBrowserTabView()
 //
 //
 
-void TBrowserTabView::Init() 
+void TBrowserTabView::Init()
 {
 	BRect bounds = Bounds();
 
-	bounds.InsetBy(5,5); 
-	bounds.bottom -= TabHeight(); 
-	
+	bounds.InsetBy(5,5);
+	bounds.bottom -= TabHeight();
+
 	// Create all the tab views
-	
+
 	// Create Elements tab. By default, the media tab is up
 	// and active.
 	AddTab(new TMediaTabView(bounds));
-	
+
 	// Create Transitions tab
-	AddTab(new TTransitionsTabView(bounds)); 
+	AddTab(new TTransitionsTabView(bounds));
 
 	// Create Settings tab
-	AddTab(new TSettingsTabView(bounds)); 	
+	AddTab(new TSettingsTabView(bounds));
 }
-	
+
 #pragma mark -
 #pragma mark === Archiving Functions ===
 
@@ -104,15 +104,15 @@ void TBrowserTabView::Init()
 //
 //
 
-BArchivable *TBrowserTabView::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TBrowserTabView::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TBrowserTabView") ) 
-		return new TBrowserTabView(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TBrowserTabView") )
+		return new TBrowserTabView(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -121,21 +121,21 @@ BArchivable *TBrowserTabView::Instantiate(BMessage *archive)
 
 status_t TBrowserTabView::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BTabView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
 	{
-					
+
 	}
-	
+
 	Looper()->Unlock();
-	
+
 	return myErr;
 }
 
@@ -160,7 +160,7 @@ void TBrowserTabView::MessageReceived(BMessage *message)
 			tabView->MessageReceived(message);
 			break;
 		}
-			
+
 		// Some cue is adding an entry_ref to our browser
 		case ADD_REF_MSG:
 		{
@@ -169,11 +169,11 @@ void TBrowserTabView::MessageReceived(BMessage *message)
 			tabView->MessageReceived(message);
 			break;
 		}
-	
+
 		default:
 			BTabView::MessageReceived(message);
-			break;	
-	}		
+			break;
+	}
 }
 
 //---------------------------------------------------------------------
@@ -185,7 +185,7 @@ void TBrowserTabView::MessageReceived(BMessage *message)
 
 void TBrowserTabView::WindowActivated(bool state)
 {
-	
+
 	BTabView::WindowActivated(state);
 }
 
@@ -200,16 +200,16 @@ void TBrowserTabView::WindowActivated(bool state)
 //
 
 void TBrowserTabView::Draw(BRect updateRect)
-{	
+{
 	// Save environment
 	//PushState();
-	
+
 	// Restore
 	//PopState();
-	
+
 	// Inform parent
 	BTabView::Draw(updateRect);
-}	
+}
 
 
 #pragma mark -
@@ -241,9 +241,9 @@ void TBrowserTabView::Draw(BRect updateRect)
 
 void TBrowserTabView::MouseDown(BPoint where)
 {
-					
+
 	// Inform parent
-	BTabView::MouseDown(where);			
+	BTabView::MouseDown(where);
 }
 
 
@@ -256,7 +256,7 @@ void TBrowserTabView::MouseDown(BPoint where)
 
 void TBrowserTabView::MouseUp(BPoint where)
 {
-	
+
 	// Inform parent
 	BTabView::MouseUp(where);
 }
@@ -270,23 +270,23 @@ void TBrowserTabView::MouseUp(BPoint where)
 //
 
 void TBrowserTabView::MouseMoved( BPoint where, uint32 code, const BMessage *message )
-{				
+{
 	switch(code)
 	{
-		
+
 		case B_ENTERED_VIEW:
 			break;
-	
-		case B_INSIDE_VIEW:		
+
+		case B_INSIDE_VIEW:
 			break;
-		
-		case B_EXITED_VIEW:	
+
+		case B_EXITED_VIEW:
 			break;
-		
+
 		default:
 			break;
 	}
-	
+
 	BTabView::MouseMoved(where, code, message);
 }
 

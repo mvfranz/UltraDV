@@ -34,7 +34,7 @@
 
 TNewProjectBox::TNewProjectBox(BMessage *data) : BBox(data)
 {
-	
+
 }
 
 //-------------------------------------------------------------------
@@ -45,10 +45,10 @@ TNewProjectBox::TNewProjectBox(BMessage *data) : BBox(data)
 
 BArchivable *TNewProjectBox::Instantiate(BMessage *data)
 {
-	if ( validate_instantiation(data, "TNewProjectBox") ) 
-		return new TNewProjectBox(data); 
-		
-	return NULL; 
+	if ( validate_instantiation(data, "TNewProjectBox") )
+		return new TNewProjectBox(data);
+
+	return NULL;
 }
 
 
@@ -66,23 +66,23 @@ void TNewProjectBox::Draw(BRect bounds)
 	BBox::Draw(drawRect);
 
 	PushState();
-	
-	// Get TNewProject window	
+
+	// Get TNewProject window
 	TNewProject *theWindow = static_cast<TNewProject *>(Window());
-	
+
 	if (theWindow)
 	{
 		// Get selected item
 		int32 theItem = theWindow->GetSelectedItem();
-		
+
 		// Get preset list from parent Window
 		BList *presetList = theWindow->GetPresetsList();
 		if (presetList)
 		{
 			// Draw our text items
-			SetHighColor(kBlack);	
+			SetHighColor(kBlack);
 			SetFont(be_plain_font);
-						
+
 			TPreset *preset =  static_cast<TPreset *>(presetList->ItemAt(theItem));
 			if (preset)
 			{
@@ -104,7 +104,7 @@ void TNewProjectBox::Draw(BRect bounds)
 				DrawString(preset->fDescription04, textPt);
 				textPt.y += 15;
 				DrawString(preset->fDescription05, textPt);
-				
+
 				// Timebase
 				SetFontSize(12);
 				textPt.x -= 10;
@@ -115,7 +115,7 @@ void TNewProjectBox::Draw(BRect bounds)
 				textPt.y += 15;
 				//DrawString(preset->fTimebase, textPt);
 				DrawString("24fps", textPt);
-				
+
 				// Frame Size
 				SetFontSize(12);
 				textPt.x -= 10;
@@ -127,7 +127,7 @@ void TNewProjectBox::Draw(BRect bounds)
 				char tmpStr[65];
 				sprintf(tmpStr, "%d x %d", preset->fFrameWidth, preset->fFrameHeight);
 				DrawString(tmpStr, textPt);
-				
+
 				// Video Compression
 				SetFontSize(12);
 				textPt.x -= 10;
@@ -137,7 +137,7 @@ void TNewProjectBox::Draw(BRect bounds)
 				textPt.x += 10;
 				textPt.y += 15;
 				DrawString("Unknown", textPt);
-				
+
 				// Audio Compression
 				SetFontSize(12);
 				textPt.x -= 10;
@@ -149,10 +149,10 @@ void TNewProjectBox::Draw(BRect bounds)
 				DrawString("Unknown", textPt);
 
 				//video_compressor_type	fVideoCompressor;
-				//audio_compressor_type	fAudioCompressor;				
+				//audio_compressor_type	fAudioCompressor;
 			}
 		}
-	} 
-		
+	}
+
 	PopState();
 }

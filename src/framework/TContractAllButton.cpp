@@ -7,7 +7,7 @@
 //	Date:	02.16.98
 //
 ///	Desc:	Contract All Toolbar button.  Clicking causes all channels to
-//			contract to collapsed size 
+//			contract to collapsed size
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -41,17 +41,17 @@ TContractAllButton::TContractAllButton(TToolbar *parent, BRect bounds, const cha
 {
 	// Save parent view
 	fParent = parent;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap  = onBitmap;
-		
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -66,7 +66,7 @@ TContractAllButton::TContractAllButton(BMessage *data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-		
+
 	fOffBitmap = GetIcon16FromResource("ContractDown");
 	fOnBitmap  = GetIcon16FromResource("ContractUp");
 
@@ -94,7 +94,7 @@ TContractAllButton::~TContractAllButton()
 //	Perform default initialization tasks
 
 void TContractAllButton::Init()
-{        	
+{
 }
 
 #pragma mark -
@@ -106,15 +106,15 @@ void TContractAllButton::Init()
 //
 //
 
-BArchivable *TContractAllButton::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TContractAllButton::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TContractAllButton") ) 
-		return new TContractAllButton(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TContractAllButton") )
+		return new TContractAllButton(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -123,32 +123,32 @@ BArchivable *TContractAllButton::Instantiate(BMessage *archive)
 
 status_t TContractAllButton::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TContractAllButton");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{		
-	
+		{
+
 		}
 	}
-	
+
 	Looper()->Unlock();
-	
+
 	return myErr;
-}				
+}
 
 #pragma mark -
 #pragma mark === Drawing Functions ===
@@ -163,7 +163,7 @@ void TContractAllButton::Draw(BRect updateRect)
 {
 	// Draw proper bitmap state, if fState is true, draw on bitmap
 	if (fMouseDown)
-		DrawBitmap(fOffBitmap, B_ORIGIN);		
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 	else
 		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
@@ -178,7 +178,7 @@ void TContractAllButton::Draw(BRect updateRect)
 //
 
 void TContractAllButton::MouseDown(BPoint where)
-{				
+{
 	DoClick();
 }
 
@@ -196,13 +196,13 @@ void TContractAllButton::MouseDown(BPoint where)
 //
 
 void TContractAllButton::AttachedToWindow()
-{			
+{
 	if(fParent == NULL)
 	{
 		fParent 	= (TToolbar *)Parent();
-		fHandler 	= (TToolbar *)Parent();					
+		fHandler 	= (TToolbar *)Parent();
 	}
-	
+
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }
@@ -220,22 +220,22 @@ void TContractAllButton::AttachedToWindow()
 
 void TContractAllButton::DoClick()
 {
-	
+
 	// We will always be in the up position when we start.
 	// First, set the button state to down and force a redraw...
-	fMouseDown = true; 
-	Draw(Bounds()); 
-			
-	// Create and send message to channel and header		
+	fMouseDown = true;
+	Draw(Bounds());
+
+	// Create and send message to channel and header
 	BMessage *message = new BMessage(CONTRACT_ALL_BUTTON_MSG);
 	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
 		(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet(), NULL );
 	delete message;
-	
+
 	// Wait a short while before restoring to up position
 	snooze(100 * 1000);
-	
+
 	// Restore and invalidate
-	fMouseDown = false; 
-	Draw(Bounds()); 
+	fMouseDown = false;
+	Draw(Bounds());
 }

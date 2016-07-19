@@ -45,8 +45,8 @@ const BRect kMediaCueBounds(10, 50, 20+kCueIconWidth, 60+((kCueIconHeight+kCueTe
 //------------------------------------------------------------------
 //
 //
-	        							        								
-TActionCuePalette::TActionCuePalette():BWindow( kMediaCueBounds, "Action", B_FLOATING_WINDOW_LOOK, B_FLOATING_ALL_WINDOW_FEEL, 
+
+TActionCuePalette::TActionCuePalette():BWindow( kMediaCueBounds, "Action", B_FLOATING_WINDOW_LOOK, B_FLOATING_ALL_WINDOW_FEEL,
 									  B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
 {
 	Init();
@@ -71,7 +71,7 @@ TActionCuePalette::~TActionCuePalette()
 //
 //	Function:	Init()
 //
-//	Desc:		
+//	Desc:
 //
 //------------------------------------------------------------------
 //
@@ -80,15 +80,15 @@ TActionCuePalette::~TActionCuePalette()
 void TActionCuePalette::Init()
 {
 	Lock();
-		
+
 	// Create MediaCueView and add it to the window
 	fCueView = new TActionCuePaletteView(Bounds());
-	
+
 	// Add view to frame
 	AddChild(fCueView);
-	
+
 	Unlock();
-	
+
 	// Show window
 	Show();
 }
@@ -98,7 +98,7 @@ void TActionCuePalette::Init()
 //
 //	Function:	Refresh()
 //
-//	Desc:		
+//	Desc:
 //
 //------------------------------------------------------------------
 //
@@ -107,7 +107,7 @@ void TActionCuePalette::Init()
 void TActionCuePalette::Refresh()
 {
 	Lock();
-	Unlock();	
+	Unlock();
 }
 
 
@@ -115,23 +115,23 @@ void TActionCuePalette::Refresh()
 //
 //	Function:	MessageReceived()
 //
-//	Desc:		
+//	Desc:
 //
 //------------------------------------------------------------------
 //
 //
 
 void TActionCuePalette::MessageReceived(BMessage* message)
-{		
+{
 	switch (message->what)
 	{
-	
+
 		default:
-		BWindow::MessageReceived(message);						
+		BWindow::MessageReceived(message);
 		break;
 
 	}
-}	
+}
 
 
 //------------------------------------------------------------------
@@ -143,7 +143,7 @@ void TActionCuePalette::MessageReceived(BMessage* message)
 //
 
 bool TActionCuePalette::QuitRequested()
-{		
+{
 	be_app->PostMessage(ACTION_PALETTE_CLOSE_MSG);
 	return true;
-}	
+}

@@ -7,8 +7,8 @@
 //	Date:	03.17.98
 //
 ///	Desc:	List that contains cue events
-//			
-//						
+//
+//
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -55,7 +55,7 @@ TPlaybackList::~TPlaybackList()
 	for ( int32 index = 0; index < totalItems; index++)
 	{
 		TPlaybackEvent *playbackEvent = (TPlaybackEvent *)ItemAt(index);
-		
+
 		// We have an event.  Clean up all items in it.
 		if (playbackEvent)
 		{
@@ -63,30 +63,30 @@ TPlaybackList::~TPlaybackList()
 			for ( int32 cueIndex = 0; cueIndex < totalCueEvents; cueIndex++)
 			{
 				TCueEvent *cueEvent = (TCueEvent *)playbackEvent->fCueEvents.ItemAt(cueIndex);
-				
+
 				// Clean up cue events
 				if (cueEvent)
 				{
 					int32 totalEvents = cueEvent->fEvents.CountItems();
 					for ( int32 eventIndex = 0; eventIndex < totalEvents; eventIndex++)
-					{					
+					{
 						BMessage *message = (BMessage *)cueEvent->fEvents.ItemAt(eventIndex);
 						if (message)
 						{
-							delete message;						
+							delete message;
 							message = NULL;
 						}
 					}
-					
+
 					delete cueEvent;
 				}
-				
-			}			
+
+			}
 			// Clean up playbackEvent
 			free(playbackEvent);
-		}		
-	} 
-	
+		}
+	}
+
 }
 
 
@@ -94,7 +94,7 @@ TPlaybackList::~TPlaybackList()
 //  PlaybackEvent Class
 //
 //	Contains reference time and list of cues that have an event at
-//	the reference time.		
+//	the reference time.
 
 //---------------------------------------------------------------------
 //	Constructor
@@ -122,8 +122,8 @@ TPlaybackEvent::~TPlaybackEvent()
 //
 //  CueEvent Class
 //
-// 	
-//	Contains a cue and a list of all events that happen at 
+//
+//	Contains a cue and a list of all events that happen at
 //	the reference time.
 //
 

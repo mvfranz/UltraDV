@@ -8,14 +8,14 @@
 //
 //	Desc:
 //
-//	TCueData is a class which handles the data which supports an 
-//	ultraDV cue. The primary function of the class is to stream 
-//	data out to the application for	display and/or playback. The 
-//	cue will be asked to respond in real-time as well as during 
+//	TCueData is a class which handles the data which supports an
+//	ultraDV cue. The primary function of the class is to stream
+//	data out to the application for	display and/or playback. The
+//	cue will be asked to respond in real-time as well as during
 //	non-real-time operations like scrubbing, or editing.
-//	
-//	The class has other supporting behaviors regarding the MIME types 
-//	it supports, sample icons, and the like. But its main responsibilities 
+//
+//	The class has other supporting behaviors regarding the MIME types
+//	it supports, sample icons, and the like. But its main responsibilities
 //	are for pulling data from a file and streaming it out to ultraDV.
 //
 //---------------------------------------------------------------------
@@ -71,7 +71,7 @@ BArchivable* TCueData::Instantiate(BMessage* data)
 	// NOTE: this is an error. We can't instantiate this class
 	// since it is an abstract base class.
 	ASSERT(false);
-	return 0; 
+	return 0;
 }
 
 status_t TCueData::Archive(BMessage* data, bool deep) const
@@ -80,7 +80,7 @@ status_t TCueData::Archive(BMessage* data, bool deep) const
 	status_t err = BArchivable::Archive(data, deep);
 	if (err != B_OK)
 		return err;
-	
+
 	// NOTE: we don't instantiate this class --- it's an ABC ---
 	// so we don't add the class name data
 
@@ -95,7 +95,7 @@ status_t TCueData::Archive(BMessage* data, bool deep) const
 //---------------------------------------------------------------------
 //
 //
-	
+
 bool TCueData::IsValidFile(const entry_ref& ref) const
 {
 	// Get the file's mime type
@@ -104,14 +104,14 @@ bool TCueData::IsValidFile(const entry_ref& ref) const
 	BNodeInfo info(&node);
 	if (info.GetType(type) != B_NO_ERROR)
 		return false;
-		
+
 	// work through the type list and look for a match
 	for (TTypeIterator t = FirstType(); t != EndOfTypes(); t++) {
 		if (*t == type)
 			return true;
 	}
 
-	return false;	
+	return false;
 }
 
 //---------------------------------------------------------------------
@@ -119,7 +119,7 @@ bool TCueData::IsValidFile(const entry_ref& ref) const
 //---------------------------------------------------------------------
 //
 //
-	
+
 status_t TCueData::SetTo(const entry_ref& ref)
 {
 	fentryRef = ref;
@@ -131,19 +131,19 @@ status_t TCueData::SetTo(const entry_ref& ref)
 //---------------------------------------------------------------------
 //
 //
-	
+
 void TCueData::Unset(void)
 {
 	// initialize to the default
 	fentryRef = entry_ref();
 }
-	
+
 //---------------------------------------------------------------------
 // Info
 //---------------------------------------------------------------------
 //
 //
-	
+
 string TCueData::Info() const
 {
 	return "-";
@@ -154,7 +154,7 @@ string TCueData::Info() const
 //---------------------------------------------------------------------
 //
 //
-	
+
 bool TCueData::NodeChangedMessage(BMessage* msg)
 {
 	// TODO: do we need to respond? Update fentryRef perhaps?
@@ -177,7 +177,7 @@ string TCueData::Description() const
 //---------------------------------------------------------------------
 // OriginalArea
 //---------------------------------------------------------------------
-//	
+//
 //	The cue's natural size, if applicable. This won't be called
 // 	for cues that aren't naturally visible.
 //
@@ -191,7 +191,7 @@ BRect TCueData::OriginalArea() const
 //---------------------------------------------------------------------
 // OriginalArea
 //---------------------------------------------------------------------
-//	
+//
 //	The cue's duration in milliseconds, derived from the file.
 //	If a cue has no natural duration, this is a default value for it.
 //

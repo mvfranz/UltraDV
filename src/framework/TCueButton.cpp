@@ -39,20 +39,20 @@ TCueButton::TCueButton(BRect bounds, const char *name, BBitmap *offBitmap, BBitm
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap = onBitmap;
-	
+
 	// Store message
 	fMessage = message;
-	
+
 	// Set Cue ID
 	fID = ID;
-	
+
 	// Default state is off
 	fState = false;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -66,7 +66,7 @@ TCueButton::TCueButton(BRect bounds, const char *name, BBitmap *offBitmap, BBitm
 
 TCueButton::~TCueButton()
 {
-	if (fMessage)		
+	if (fMessage)
 		delete fMessage;
 }
 
@@ -78,9 +78,9 @@ TCueButton::~TCueButton()
 //	Perform default initialization tasks
 
 void TCueButton::Init()
-{ 
+{
 	// We don't need a background color
-	SetViewColor(B_TRANSPARENT_32_BIT);   	
+	SetViewColor(B_TRANSPARENT_32_BIT);
 }
 
 
@@ -113,7 +113,7 @@ void TCueButton::MouseDown(BPoint where)
 {
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	fMouseDown = true; 
+	fMouseDown = true;
 }
 
 
@@ -142,7 +142,7 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 	// Check to see if button is down
 	uint32 	buttons = 0;
 	BPoint	point;
-					
+
 	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
 	if (buttons && fMouseDown)
 	{
@@ -152,24 +152,24 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 		BMessage message(CUE_ICON_DRAG_MSG);
 		BPoint centerPt( Bounds().Width() / 2, Bounds().Height() / 2 );
 		message.AddInt16("CueIconID", fID);
-		
+
 		// Create a copy of the bitmap for dragging
 		BBitmap *dragBitmap = new BBitmap( fOnBitmap->Bounds(), fOnBitmap->ColorSpace() );
 		dragBitmap->SetBits( fOnBitmap->Bits(), fOnBitmap->BitsLength(), 0, fOnBitmap->ColorSpace() );
 		DragMessage(&message, dragBitmap, centerPt);
-		
+
 		// Set our flag to indicate mouse up happened
-		fMouseDown = false; 
+		fMouseDown = false;
 	}
 	// Show button depressed state
 	else
 	{
 		// Do nothing if mouse button is depressed
 		uint32 	buttons = 0;
-		GetMouse(&where, &buttons, true);		
+		GetMouse(&where, &buttons, true);
 		if (buttons)
 			return;
-		
+
 		switch (code)
 		{
 			case B_ENTERED_VIEW:
@@ -183,7 +183,7 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 					delete theMessage;
 				}
 				break;
-				
+
 			case B_EXITED_VIEW :
 				{
 					fState = false;
@@ -195,9 +195,9 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 					delete theMessage;
 				}
 				break;
-				
+
 			default:
-				break;	
+				break;
 		}
 	}
 }

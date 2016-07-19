@@ -44,17 +44,17 @@ TExpandButton::TExpandButton(TCueChannel *parent, BRect bounds, const char *name
 {
 	// Save parent view
 	fChannel = parent;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap = onBitmap;
-		
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -68,13 +68,13 @@ TExpandButton::TExpandButton(TCueChannel *parent, BRect bounds, const char *name
 TExpandButton::TExpandButton(BMessage *message) : BView(message)
 {
 	fHandler = NULL;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
 
 	// Set bitmaps
 	fOffBitmap = GetAppIcons()->fExpand;
-	fOnBitmap 	= GetAppIcons()->fContract;	
+	fOnBitmap 	= GetAppIcons()->fContract;
 }
 
 //---------------------------------------------------------------------
@@ -97,7 +97,7 @@ TExpandButton::~TExpandButton()
 void TExpandButton::Init()
 {
 	// We don't need a background color
-	SetViewColor(B_TRANSPARENT_32_BIT);        	
+	SetViewColor(B_TRANSPARENT_32_BIT);
 }
 
 
@@ -110,15 +110,15 @@ void TExpandButton::Init()
 //
 //
 
-BArchivable *TExpandButton::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TExpandButton::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TExpandButton") ) 
-		return new TExpandButton(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TExpandButton") )
+		return new TExpandButton(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -127,31 +127,31 @@ BArchivable *TExpandButton::Instantiate(BMessage *archive)
 
 status_t TExpandButton::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TExpandButton");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{	
-			
-		}				
+		{
+
+		}
 	}
-	
-	
+
+
 	Looper()->Unlock();
-	
+
 	return myErr;
 }
 
@@ -184,18 +184,18 @@ void TExpandButton::Draw(BRect updateRect)
 
 void TExpandButton::MouseDown(BPoint where)
 {
-				
+
 	// Force redraw to reflect new state
 	Invalidate();
-	
-	// Create and send message to channel, header and window		
+
+	// Create and send message to channel, header and window
 	BMessage *message = new BMessage(CHANNEL_EXPAND_MSG);
 	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
 	delete message;
-		
+
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	fMouseDown = true; 
+	fMouseDown = true;
 }
 
 
@@ -208,10 +208,10 @@ void TExpandButton::MouseDown(BPoint where)
 
 void TExpandButton::MouseUp(BPoint where)
 {
-	
+
 	// Set flag that we have been clicked. When the MouseUp method
-	// is implimented we can remove this		
-	fMouseDown = false; 
+	// is implimented we can remove this
+	fMouseDown = false;
 }
 
 #pragma mark -
@@ -227,13 +227,13 @@ void TExpandButton::MouseUp(BPoint where)
 //
 
 void TExpandButton::AttachedToWindow()
-{			
+{
 	if (fHandler == NULL)
 	{
 		// Set target
 		fHandler = (TCueSheetWindow *)Window();
 
-	}	
+	}
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }
@@ -249,5 +249,5 @@ void TExpandButton::AttachedToWindow()
 
 void TExpandButton::SetChannel(TCueChannel *channel)
 {
-	fChannel = channel;	
+	fChannel = channel;
 }

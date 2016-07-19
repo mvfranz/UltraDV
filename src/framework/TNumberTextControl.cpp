@@ -36,16 +36,16 @@
 //
 //
 
-TNumberTextControl::TNumberTextControl( BRect bounds, const char *label, const char *name,  const char *text, BMessage *message) : 
+TNumberTextControl::TNumberTextControl( BRect bounds, const char *label, const char *name,  const char *text, BMessage *message) :
 					BTextControl(bounds, name, label, text, NULL)
 {
 	// Set up modification message
 	SetModificationMessage(message);
-	
+
 	// Default initialization
 	Init();
-}	
-		
+}
+
 
 //---------------------------------------------------------------------
 //	Destructor
@@ -55,7 +55,7 @@ TNumberTextControl::TNumberTextControl( BRect bounds, const char *label, const c
 
 TNumberTextControl::~TNumberTextControl()
 {
-}	
+}
 
 
 
@@ -71,32 +71,32 @@ void TNumberTextControl::Init()
 
 	// Get text view
 	//BTextView *theView = TextView();
-	
+
 	// Swap out text view for our own
 	//fTextView = new TNumberTextView( theView->Frame(), "NumberText", theView->ResizingMode() );
 	//fTextView->SetText( theView->Text() );
 	//theView = fTextView;
-	
+
 	// Disallow all characters except numbers
 	BTextView *theView = TextView();
-	
+
 	if (theView)
 	{
 		// All characters up to "1"
 		int32 index;
-		
+
 		for (index = 0;	index < 48; index++)
 		{
 			theView->DisallowChar(index);
 		}
-		
+
 		// Skip over numbers
 		for (index = 58; index < 2000; index++)
 		{
 			theView->DisallowChar(index);
 		}
 	}
-}	
+}
 
 
 //---------------------------------------------------------------------
@@ -107,10 +107,10 @@ void TNumberTextControl::Init()
 
 void TNumberTextControl::MouseDown(BPoint where)
 {
-	BTextControl::MouseDown(where);	
+	BTextControl::MouseDown(where);
 }
 
-		
+
 //---------------------------------------------------------------------
 //	KeyDown
 //---------------------------------------------------------------------
@@ -121,7 +121,7 @@ void TNumberTextControl::KeyDown(const char *bytes, int32 numBytes)
 {
 
 	char theChar = *bytes;
-	
+
 	// Accept numbers, delete and arrows
 	if( isdigit(theChar) || IsBackspace(theChar) || IsArrows(theChar) || IsDelete(theChar) )
 	{
@@ -137,7 +137,7 @@ void TNumberTextControl::KeyDown(const char *bytes, int32 numBytes)
 		beep();
 }
 
-		
+
 
 
 #pragma mark === Input Routines ===
@@ -179,10 +179,10 @@ bool  TNumberTextControl::IsBackspace(char theChar)
 	{
 		case B_BACKSPACE:
 			return true;
-			
+
 		default:
 			return false;
-	
+
 	}
 }
 
@@ -203,10 +203,10 @@ bool  TNumberTextControl::IsArrows(char theChar)
 		case B_DOWN_ARROW:
 		case B_RIGHT_ARROW:
 			return true;
-			
+
 		default:
 			return false;
-	
+
 	}
 }
 
@@ -223,10 +223,10 @@ bool  TNumberTextControl::IsDelete(char theChar)
 	{
 		case B_DELETE:
 			return true;
-			
+
 		default:
 			return false;
-	
+
 	}
 }
 
@@ -244,9 +244,9 @@ bool  TNumberTextControl::IsTab(char theChar)
 	{
 		case B_TAB:
 			return true;
-			
+
 		default:
 			return false;
-	
+
 	}
 }

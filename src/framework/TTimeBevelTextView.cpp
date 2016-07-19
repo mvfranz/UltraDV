@@ -35,8 +35,8 @@
 //
 //
 
-TTimeBevelTextView::TTimeBevelTextView( BRect bounds, char *name, uint32 resizing) : BView(bounds, name, resizing, B_WILL_DRAW)					  
-{		
+TTimeBevelTextView::TTimeBevelTextView( BRect bounds, char *name, uint32 resizing) : BView(bounds, name, resizing, B_WILL_DRAW)
+{
 	// Perform default initialization
 	Init();
 }
@@ -49,7 +49,7 @@ TTimeBevelTextView::TTimeBevelTextView( BRect bounds, char *name, uint32 resizin
 //
 
 TTimeBevelTextView::~TTimeBevelTextView()
-{	
+{
 }
 
 
@@ -61,7 +61,7 @@ TTimeBevelTextView::~TTimeBevelTextView()
 //
 
 void TTimeBevelTextView::Init()
-{		
+{
 	// Create child TNumberTextView
 	BRect bounds = Bounds();
 	bounds.InsetBy(2, 2);
@@ -81,15 +81,15 @@ void TTimeBevelTextView::Draw(BRect inRect)
 {
 	// Save colors
 	rgb_color saveColor = HighColor();
-			
+
 	// Draw text
 	fTextView->Draw(inRect);
-	
+
 	// Draw standard Be Style bevel
 	BPoint startPt, endPt;
 	BRect bounds = Bounds();
 	bounds.InsetBy(1, 1);
-	
+
 	SetHighColor(kBeShadow);
 	startPt.Set(bounds.left, bounds.bottom);
 	endPt.Set(bounds.left, bounds.top);
@@ -125,7 +125,7 @@ void TTimeBevelTextView::Draw(BRect inRect)
 
 	// Restore color
 	SetHighColor(saveColor);
-	
+
 	//BView::Draw(inRect);
 }
 
@@ -138,7 +138,7 @@ void TTimeBevelTextView::Draw(BRect inRect)
 
 void TTimeBevelTextView::MouseDown(BPoint where)
 {
-	BView::MouseDown(where);	
+	BView::MouseDown(where);
 }
 
 
@@ -149,8 +149,8 @@ void TTimeBevelTextView::MouseDown(BPoint where)
 //
 
 void TTimeBevelTextView::MouseUp(BPoint where)
-{	
-	BView::MouseUp(where);	
+{
+	BView::MouseUp(where);
 }
 
 
@@ -162,7 +162,7 @@ void TTimeBevelTextView::MouseUp(BPoint where)
 
 void TTimeBevelTextView::MouseMoved(BPoint where, uint32 code, const BMessage *message)
 {
-	BView::MouseMoved(where, code, message);	
+	BView::MouseMoved(where, code, message);
 }
 
 
@@ -201,15 +201,15 @@ void TTimeBevelTextView::MakeFocus(bool focusState)
 //
 
 void TTimeBevelTextView::MessageReceived(BMessage *message)
-{		
-	
+{
+
 	switch(message->what)
 	{
-			
+
 		default:
-			BView::MessageReceived(message);			
+			BView::MessageReceived(message);
 			break;
 	}
-	
+
 }
 

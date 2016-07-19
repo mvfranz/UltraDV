@@ -7,7 +7,7 @@
 //	Date:	08.11.98
 //
 //	Desc:	This view shows the current media list as thumbnails showing
-//			a quick overview of their contents. They are displayed in a 
+//			a quick overview of their contents. They are displayed in a
 // 			list. It is a child view to the Media tab in the Browser window.
 //
 //	Copyright ©1998 mediapede Software
@@ -27,7 +27,7 @@
 //
 //
 
-TThumbnailView::TThumbnailView(BRect bounds) : 
+TThumbnailView::TThumbnailView(BRect bounds) :
 		BView(bounds, "IconView", B_FOLLOW_ALL | B_FRAME_EVENTS, B_WILL_DRAW)
 {
 	// Perform default initialization
@@ -77,8 +77,8 @@ void TThumbnailView::Draw(BRect updateRect)
 
 void TThumbnailView::FrameResized(float w, float h)
 {
-	AdjustScrollBars();	
-	BView::FrameResized(w, h);	
+	AdjustScrollBars();
+	BView::FrameResized(w, h);
 }
 
 //---------------------------------------------------------------------
@@ -103,12 +103,12 @@ void TThumbnailView::AdjustScrollBars()
 {
 	if (Parent() == 0)
 		return;
-		
+
 	// if we have been targetted, look for a BScrollView parent.
 	BScrollView* scroll = dynamic_cast<BScrollView*>(Parent());
 	if (scroll == 0)
 		return;
-	
+
 	// TODO: Set scroll bars based on overall size in relation to the Bounds()
 	BScrollBar* bar = scroll->ScrollBar(B_HORIZONTAL);
 	bar->SetRange(0, 100);

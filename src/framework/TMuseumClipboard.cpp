@@ -27,18 +27,18 @@
 //
 
 TMuseumClipboard::TMuseumClipboard() : BClipboard("Museum", false)
-{	
+{
 	// Clear clipboard on start
-	if ( Lock() ) 
-	{ 
+	if ( Lock() )
+	{
 		// Clear clipboard data
-		Clear(); 
-				
-		// Inform clipboard to save data				
-		Commit();		
-				
+		Clear();
+
+		// Inform clipboard to save data
+		Commit();
+
 		Unlock();
-	}		
+	}
 }
 
 
@@ -50,8 +50,8 @@ TMuseumClipboard::TMuseumClipboard() : BClipboard("Museum", false)
 //
 
 TMuseumClipboard::~TMuseumClipboard()
-{	
-		
+{
+
 }
 
 
@@ -65,15 +65,15 @@ TMuseumClipboard::~TMuseumClipboard()
 int16 TMuseumClipboard::HasData()
 {
 	int16 retVal = false;
-	
+
 	// Check data on clipboard
-	if ( Lock() ) 
-	{	 
-		BMessage *clipData = Data(); 
+	if ( Lock() )
+	{
+		BMessage *clipData = Data();
 
 		// Determine type of pointer
 		BMessage *cueMessage;
-		
+
 		if ( clipData->FindPointer( "CueList", (void **)&cueMessage) == B_OK )
 		{
 			// Now get BList of archived cues from message on clipboard
@@ -81,11 +81,11 @@ int16 TMuseumClipboard::HasData()
 			if ( cueMessage->FindPointer("CueList", (void **)&cueList) == B_OK)
 				retVal = kCueListData;
 		}
-		
-		Unlock(); 
+
+		Unlock();
 	}
-		
-	return retVal;	
+
+	return retVal;
 }
 
 
@@ -99,34 +99,34 @@ int16 TMuseumClipboard::HasData()
 
 bool TMuseumClipboard::AddItem( BMessage *theItem )
 {
-	if ( Lock() ) 
-	{ 
+	if ( Lock() )
+	{
 		// Clear clipboard data
-		Clear(); 
-		
+		Clear();
+
 		// Get pointer to clipboard data
-		BMessage *clipData = Data(); 
-		
+		BMessage *clipData = Data();
+
 		// Determine type of data being placed on clipboard
 		switch( theItem->what)
 		{
 			case CUE_LIST_MSG:
 				{
-					clipData->AddPointer("CueList", theItem); 
+					clipData->AddPointer("CueList", theItem);
 				}
-				break;	
-				
+				break;
+
 			default:
-				break;	
+				break;
 		}
-		
-		// Inform clipboard to save data				
-		Commit();		
-				
+
+		// Inform clipboard to save data
+		Commit();
+
 		Unlock();
 	}
-	
-	return true;			
+
+	return true;
 }
 
 
@@ -142,26 +142,26 @@ bool TMuseumClipboard::AddItem( BMessage *theItem )
 
 BList *TMuseumClipboard::GetCueArchiveList()
 {
-	
+
 	BList *cueList = NULL;
-	
+
 	// Get data on clipboard
-	if ( Lock() ) 
-	{	 
-		BMessage *clipData = Data(); 
+	if ( Lock() )
+	{
+		BMessage *clipData = Data();
 
 		// Determine type of pointer
 		BMessage *cueMessage;
-		
+
 		if ( clipData->FindPointer( "CueList", (void **)&cueMessage) == B_OK )
 		{
-			// Now get BList of archived cues from message on clipboard			
+			// Now get BList of archived cues from message on clipboard
 			cueMessage->FindPointer("CueList", (void **)&cueList);
 		}
-		
-		Unlock(); 
+
+		Unlock();
 	}
-		
-	return cueList;	
+
+	return cueList;
 }
 

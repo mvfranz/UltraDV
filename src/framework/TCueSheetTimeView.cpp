@@ -8,7 +8,7 @@
 //
 ///	Desc:	Displays the cue sheet start time.  If the user clicks this
 //			view, the cue sheet settings appear
-//			
+//
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -44,7 +44,7 @@ TCueSheetTimeView::TCueSheetTimeView(TCueSheetWindow *parent, BRect bounds) : BV
 {
 	// Save parent view
 	fCueSheetWindow = parent;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -60,9 +60,9 @@ TCueSheetTimeView::TCueSheetTimeView(TCueSheetWindow *parent, BRect bounds) : BV
 TCueSheetTimeView::TCueSheetTimeView(BMessage *message) : BView(message)
 {
 	fCueSheetWindow = NULL;
-	
+
 	// Perform default initialization
-	Init();		
+	Init();
 }
 
 //---------------------------------------------------------------------
@@ -88,7 +88,7 @@ void TCueSheetTimeView::Init()
 
 	// Set up memeber variables
 	fProjectSettings = false;
-        	
+
 }
 
 
@@ -101,13 +101,13 @@ void TCueSheetTimeView::Init()
 //
 //
 
-BArchivable *TCueSheetTimeView::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TCueSheetTimeView::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TCueSheetTimeView") ) 
-		return new TCueSheetTimeView(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TCueSheetTimeView") )
+		return new TCueSheetTimeView(archive);
+
+	return NULL;
 }
 
 
@@ -119,30 +119,30 @@ BArchivable *TCueSheetTimeView::Instantiate(BMessage *archive)
 
 status_t TCueSheetTimeView::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TCueSheetTimeView");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{		
-		
-		}		
+		{
+
+		}
 	}
-	
-	Looper()->Unlock();	
-	
+
+	Looper()->Unlock();
+
 	return myErr;
 }
 
@@ -159,15 +159,15 @@ void TCueSheetTimeView::Draw(BRect updateRect)
 {
 	// Set up environment
 	PushState();
-	
+
 	const BRect bounds = Bounds();
-	
+
 	BPoint startPt, endPt;
-	
+
 	// Draw TimeRect frame
 	SetHighColor(kLightGrey);
 	FillRect(bounds);
-	
+
 	//	Draw black outline
 	SetHighColor(kBlack);
 	startPt.Set(bounds.left, bounds.top);
@@ -176,8 +176,8 @@ void TCueSheetTimeView::Draw(BRect updateRect)
 	startPt.Set(bounds.right, bounds.top);
 	endPt.Set(bounds.right, bounds.bottom);
 	StrokeLine(startPt, endPt);
-	
-	
+
+
 	//	Draw shadow
 	SetHighColor(kMediumGrey);
 	startPt.Set(bounds.right-1, bounds.top);
@@ -186,8 +186,8 @@ void TCueSheetTimeView::Draw(BRect updateRect)
 	startPt.Set(bounds.right-1, bounds.bottom);
 	endPt.Set(bounds.left+1, bounds.bottom);
 	StrokeLine(startPt, endPt);
-	
-	//	Draw highlight	
+
+	//	Draw highlight
 	SetHighColor(kWhite);
 	startPt.Set(bounds.left+1, bounds.bottom - 2);
 	endPt.Set(bounds.left+1, bounds.top);
@@ -197,18 +197,18 @@ void TCueSheetTimeView::Draw(BRect updateRect)
 	StrokeLine(startPt, endPt);
 
 	// Draw cue sheet start time
-	BFont font; 
-   	GetFont(&font); 
-	SetFont(be_bold_font);   
+	BFont font;
+   	GetFont(&font);
+	SetFont(be_bold_font);
    	SetHighColor(kBlack);
-   	
+
 	BPoint 	textPt;
 	char 	timeStr[256];
 	int32 	startTime = fCueSheetWindow->GetCueSheetView()->StartTime();
 	textPt.Set(bounds.left + 9, bounds.top + 16);
-	TimeToString(startTime, fCueSheetWindow->GetCueSheetView()->GetTimeFormat(), timeStr, FALSE);		
+	TimeToString(startTime, fCueSheetWindow->GetCueSheetView()->GetTimeFormat(), timeStr, FALSE);
 	DrawString(timeStr, textPt);
-	
+
 	// Restore environment
 	PopState();
 }
@@ -235,18 +235,18 @@ void TCueSheetTimeView::MouseDown(BPoint where)
 //	ShowProjectSettingDialog
 //---------------------------------------------------------------------
 //
-//	Display the project setign dialog.  This allows the user to set the 
+//	Display the project setign dialog.  This allows the user to set the
 //	time resolution, the start, duration and end times.
 //
 
 void TCueSheetTimeView::ShowProjectSettingDialog(BPoint where)
 {
-		
+
 	// If we have created the dialog bring it to the front and show it
 	if( fProjectSettings)
 	{
 		if (fProjectWindow)
-		{	
+		{
 			fProjectWindow->Show();
 			fProjectWindow->Activate(true);
 		}
@@ -256,14 +256,14 @@ void TCueSheetTimeView::ShowProjectSettingDialog(BPoint where)
 	{
 		BMessage *theMessage = GetWindowFromResource("ProjectSettingsWindow");
 		fProjectWindow = new TProjectSettings(this, fCueSheetWindow->GetCueSheetView(), theMessage);
-							
+
 		// Move it under the mouse
 		//ConvertToScreen(&where);
 		//fProjectWindow->MoveTo(where.x, where.y);
 		CenterWindow(fProjectWindow);
-	
+
 		// Show the dialog
-		fProjectWindow->Show();		
+		fProjectWindow->Show();
 	}
 	return;
 }
@@ -281,12 +281,12 @@ void TCueSheetTimeView::ShowProjectSettingDialog(BPoint where)
 //
 
 void TCueSheetTimeView::AttachedToWindow()
-{			
+{
 	if(fCueSheetWindow == NULL)
 	{
-		fCueSheetWindow = (TCueSheetWindow *)Window();		
+		fCueSheetWindow = (TCueSheetWindow *)Window();
 	}
-	
+
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }

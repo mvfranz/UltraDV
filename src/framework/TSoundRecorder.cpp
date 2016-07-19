@@ -289,7 +289,7 @@ void TSoundRecorder::Disconnected(
 
 status_t TSoundRecorder::FormatChanged(
 	const media_source & producer,
-	const media_destination & consumer, 
+	const media_destination & consumer,
 	int32 frofchange_count,
 	const media_format & format)
 {

@@ -34,7 +34,7 @@
 
 TChannelName::TChannelName(BMessage *theMessage, TCueChannel *theChannel) : BWindow(theMessage)
 {
-	
+
 	// Save channel
 	fChannel = theChannel;
 
@@ -66,7 +66,7 @@ void TChannelName::Init()
 	fTextParent = FindView("ChannelNameView");
 	fTextView = (BTextControl *)fTextParent->FindView("ChannelNameText");
 	fTextView->SetText(fChannel->GetName());
-	fTextView->MakeFocus(true);		
+	fTextView->MakeFocus(true);
 }
 
 
@@ -74,7 +74,7 @@ void TChannelName::Init()
 //
 //	Function:	MessageReceived
 //
-//	Desc:		
+//	Desc:
 //
 //-------------------------------------------------------------------
 //
@@ -91,16 +91,16 @@ void TChannelName::MessageReceived(BMessage* message)
 			Lock();
 			Quit();
 			break;
-			
+
 		case CANCEL_MSG:
 			Lock();
 			Quit();
 			break;
-			
+
 		default:
-			BWindow::MessageReceived(message);						
+			BWindow::MessageReceived(message);
 			break;
 
 	}
-	
+
 }

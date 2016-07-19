@@ -8,14 +8,14 @@
 //
 //	Desc:
 //
-//	Effects are data modifiers that have a sense of time. They have 
-//	a start time and a duration within the cue they are contained by. 
-//	As a cue's data is rendered	an effect is allowed to work on a 
-//	cue's output. Each of the cue editing tools	in ultraDV --- 
+//	Effects are data modifiers that have a sense of time. They have
+//	a start time and a duration within the cue they are contained by.
+//	As a cue's data is rendered	an effect is allowed to work on a
+//	cue's output. Each of the cue editing tools	in ultraDV ---
 //	transitions, stage tools, opacity, etc. --- is implemented as
-//	an effect. They each have a cue as source data and a sense of 
+//	an effect. They each have a cue as source data and a sense of
 //	time within the cue.
-//	
+//
 //	The base class supports key frames, which give effects a point
 //	in time to make changes in an evolving effect. An effect also
 //	has a Settings method which gives it an opportunity to bring up
@@ -76,7 +76,7 @@ TCueEffect::TCueEffect(BMessage* msg) :
 		ASSERT(false);
 		return;
 	}
-	
+
 	for (int i = 0; i < size; i++) {
 		// Read in the time field
 		TKeyFrame kf;
@@ -119,7 +119,7 @@ BArchivable* TCueEffect::Instantiate(BMessage* data)
 	// NOTE: this is an error. We can't instantiate this class
 	// since it is an abstract base class.
 	ASSERT(false);
-	return 0; 
+	return 0;
 }
 
 status_t TCueEffect::Archive(BMessage* data, bool deep) const
@@ -128,7 +128,7 @@ status_t TCueEffect::Archive(BMessage* data, bool deep) const
 	status_t err = BArchivable::Archive(data, deep);
 	if (err != B_OK)
 		return err;
-	
+
 	// NOTE: we don't instantiate this class --- it's an ABC ---
 	// so we don't add the class name data
 
@@ -145,7 +145,7 @@ status_t TCueEffect::Archive(BMessage* data, bool deep) const
 	if (err != B_OK)
 		return err;
 
-	for (TKeyFrameIterator k = fkeyFrames.begin(); k != fkeyFrames.end(); 
+	for (TKeyFrameIterator k = fkeyFrames.begin(); k != fkeyFrames.end();
 			k++) {
 //		err = data->AddFloat(kKeyFrameTimeLabel, k->ftime); DOESN'T STL SUPPORT THIS?
 		err = data->AddFloat(kKeyFrameTimeLabel, (*k).ftime);
@@ -218,14 +218,14 @@ void TCueEffect::Duration(uint32 time)
 		SetDefaultKeyFrames();
 		return;
 	}
-		
+
 	// Set up the last entry to go to the new end of the effect
 	TKeyFrameIterator_vol last = LastKeyFrame();
 //	last->ftime = time;
 	(*last).ftime = time;
-	
+
 	// check for key frames which must be removed
-	for (TKeyFrameIterator_vol later = fkeyFrames.begin(); 
+	for (TKeyFrameIterator_vol later = fkeyFrames.begin();
 			later != last; later++) {
 		// Frames from this point on to the final one are now invalid
 //		if (later->ftime >= time) {
@@ -249,7 +249,7 @@ void TCueEffect::SetDefaultKeyFrames()
 		TKeyFrame kf;
 		fkeyFrames.push_front(kf);
 		fkeyFrames.push_back(kf);
-		
+
 		// Set up the first
 		TKeyFrameIterator_vol itr = fkeyFrames.begin();
 		(*itr).ftime = 0;
@@ -291,7 +291,7 @@ TKeyFrameIterator TCueEffect::MarkKeyFrame(uint32 time)
 		ASSERT(false);
 		return TKeyFrameIterator();
 	}
-	
+
 	// Find the key frame after or at 'time'
 	TKeyFrameIterator_vol before = fkeyFrames.begin();
 	TKeyFrameIterator_vol later = before;
@@ -312,14 +312,14 @@ TKeyFrameIterator TCueEffect::MarkKeyFrame(uint32 time)
 // ABH!
 //	kf  = fkeyFrames.insert(later);
 	kf = later; 		// dirty hack to get a compile
-	
+
 //	(*kf).ftime = time;
 //	(*kf).fstate = NewEffectState();
 printf("TCueEffect::MarkKeyFrame - Needs to be implemented!\n");
 
 	// Interpolate a reasonable value
 	Interpolate(kf);
-		
+
 	return kf;
 }
 
@@ -338,7 +338,7 @@ void TCueEffect::RemoveKeyFrame(TKeyFrameIterator kf)
 	// Can't remove the first or last key frame
 	if (kf == fkeyFrames.begin() || kf == LastKeyFrame())
 		return;
-	
+
 	TKeyFrameIterator_vol v = VolatileIterator(kf);
 	fkeyFrames.erase(v);
 }
@@ -358,7 +358,7 @@ void TCueEffect::MoveKeyFrame(TKeyFrameIterator kf, uint32 newTime)
 	// Can't move the first or last key frame
 	if (kf == fkeyFrames.begin() || kf == LastKeyFrame())
 		return;
-	
+
 	TKeyFrameIterator_vol v = VolatileIterator(kf);
 	// Set the key frame to a new time, converted from global to local
 //	v->ftime = newTime - fstartTime;
@@ -407,12 +407,12 @@ TKeyFrameIterator_vol TCueEffect::VolatileIterator(
 	// force 'begin()' to return a non-const iterator
 	TCueEffect* volatileMe = const_cast<TCueEffect*>(this);
 	TKeyFrameIterator_vol v = volatileMe->fkeyFrames.begin();
-	//for ( ; v != fkeyFrames.end(); v++) 
+	//for ( ; v != fkeyFrames.end(); v++)
 	//{
 	//	if (v == kf)
 	//		return v;
 	//}
-	
+
 	// 'kf' couldn't be found
 	ASSERT(false);
 	return v;
@@ -426,9 +426,9 @@ TKeyFrameIterator_vol TCueEffect::VolatileIterator(
 
 // ABH
 
-//bool TCueEffect::KeyFrameState(TCueEffect::TKeyFrameIterator kf, 
+//bool TCueEffect::KeyFrameState(TCueEffect::TKeyFrameIterator kf,
 
-bool TCueEffect::KeyFrameState(TKeyFrameIterator kf, 
+bool TCueEffect::KeyFrameState(TKeyFrameIterator kf,
 		const TEffectState* state) const
 {
 	TKeyFrameIterator_vol v = VolatileIterator(kf);

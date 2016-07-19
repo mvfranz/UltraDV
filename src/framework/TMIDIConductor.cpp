@@ -37,21 +37,21 @@
 //
 
 TMIDIConductor::TMIDIConductor(TMIDICue *parent)
-{	
+{
 	// Save parent cue
 	fParent = parent;
-	
+
 	// Current delta
 	fCurrentDelta = 0;
-	
+
 	// Absolute ticks into file
-	fCurrentLocation = 0;							
-	
+	fCurrentLocation = 0;
+
 	fTotalTime 	= 0;
 	fPlayTime 		= 0;
-	fLastTempo 	= 0;		
+	fLastTempo 	= 0;
 	fTempoRatio 	= kTempoDivisor;
-	
+
 	// Allocate marker list
 	fMarkerList = new BList();
 }
@@ -69,18 +69,18 @@ TMIDIConductor::~TMIDIConductor()
 	for (int32 index = 0; index < CountItems(); index++)
 	{
 		ConductorEvent *theEvent = (ConductorEvent *)ItemAt(index);
-		
+
 		if (theEvent)
-			free(theEvent);	
+			free(theEvent);
 	}
-	
+
 	// Clean up marker list
 	for (int32 index = 0; index < fMarkerList->CountItems(); index++)
 	{
 		MarkerPtr theMarker = (MarkerPtr)fMarkerList->ItemAt(index);
-		
+
 		if (theMarker)
-			free(theMarker);	
+			free(theMarker);
 	}
 
 }
@@ -95,19 +95,19 @@ TMIDIConductor::~TMIDIConductor()
 void TMIDIConductor::InsertTempo(long tempo, long time)
 {
 	ConductorEvent	*theEvent;
-	
+
 	// Allocate event
 	theEvent = (ConductorEvent *)malloc( sizeof(ConductorEvent) );
-	
+
 	fCurrentDelta += time;
 	fCurrentLocation += time;
-	
+
 	theEvent->time = fCurrentDelta;
 	theEvent->type = tempoChange;
 	theEvent->d.tempo = tempo;
-	
+
 	fCurrentDelta = 0;
-	
+
 	AddItem(theEvent);
 }
 
@@ -122,23 +122,23 @@ void TMIDIConductor::InsertTempo(long tempo, long time)
 void TMIDIConductor::InsertMeter(short num, short den, long time)
 {
 	ConductorEvent	*theEvent;
-	
+
 	// Allocate event
 	theEvent = (ConductorEvent *)malloc( sizeof(ConductorEvent) );
 
 	fCurrentDelta += time;
 	fCurrentLocation += time;
-	
+
 	theEvent->time = fCurrentDelta;
 	theEvent->type = meterChange;
 	theEvent->d.meter.num = num;
 	theEvent->d.meter.den = den;
-	
+
 	fCurrentDelta = 0;
-	
+
 	AddItem(theEvent);
-	
-} 
+
+}
 
 
 //---------------------------------------------------------------------
@@ -152,44 +152,44 @@ void TMIDIConductor::SetStartTime(long sTime, long time)
 {
 	short	format, hours, minutes, seconds, frames;
 	long	startTime;
-	
+
 	fCurrentDelta 		+= time;
 	fCurrentLocation 	+= time;
-	
+
 	format = (sTime & 0x60000000) >> 29;
-	
-	switch (format) 
+
+	switch (format)
 	{
 		case 0:
 			format = 24;
 			break;
-			
+
 		case 1:
 			format = 25;
 			break;
-			
+
 		case 2:
 			format = 29;
 			break;
-			
+
 		case 3:
 			format = 30;
 			break;
 	}
-	
+
 	sTime &= ~0x60000000;
-	
+
 	hours = (sTime >> 24) & 0xFF;
 	minutes = (sTime >> 16) & 0xFF;
 	seconds = (sTime >> 8) & 0xFF;
 	frames = sTime & 0xFF;
-	
+
 	startTime = hours * 3600;
 	startTime += minutes * 60;
 	startTime += seconds;
 	startTime *= 1000;
 	startTime += (frames * 1000 / format);
-	
+
 }
 
 
@@ -218,23 +218,23 @@ long	TMIDIConductor::StartTime(void)
 void	TMIDIConductor::SetEndTime(long eTime)
 {
 	ConductorEvent	*theEvent;
-	
+
 	// Allocate event
 	theEvent = (ConductorEvent *)malloc( sizeof(ConductorEvent) );
 
 	fCurrentDelta += eTime;
 	fCurrentLocation += eTime;
-	
+
 	theEvent->time = fCurrentDelta;
 	theEvent->type = endOfTrack;
-	
+
 	fCurrentDelta = 0;
-	
+
 	fTotalTime = eTime;
-	
+
 	AddItem(theEvent);
-	
-} 
+
+}
 
 
 
@@ -248,14 +248,14 @@ void	TMIDIConductor::SetEndTime(long eTime)
 void TMIDIConductor::Reset()
 {
 	ConductorEvent	*e;
-	
+
 	fCurrentEvent = 1;
 	e = (ConductorEvent *)ItemAt(1);
 	fCurrentDelta = e->time;
-	
+
 	fPlayTime = fTotalTime;
-	
-} 
+
+}
 
 
 //---------------------------------------------------------------------
@@ -275,56 +275,56 @@ long TMIDIConductor::GetStartDelta(long mSecLocation)
 	long			nextTempo = 0;
 	long			theIndex;
 	ConductorEvent	*e;
-	
+
 	uSecLocation = 0;
 	theIndex = 1;
 	mSecLocation *= 1000;			// Convert to uSecs
-	
-	while (!done) 
+
+	while (!done)
 	{
-		if (nextTempo) 
+		if (nextTempo)
 		{
 			uSecsPerTick = nextTempo;
 			nextTempo = 0;
-		}		
+		}
 		e = (ConductorEvent *)ItemAt(theIndex++);
-		
-		if (e->type == tempoChange) 
+
+		if (e->type == tempoChange)
 			nextTempo = e->d.tempo;
-		
+
 		uSecLocation += (e->time * uSecsPerTick);
 		pos += e->time;
-		
+
 		if (uSecLocation >= mSecLocation)
 			done = TRUE;
-		
+
 		if (e->type == endOfTrack)
 			done = TRUE;
 	}
 
-	if (nextTempo) 
+	if (nextTempo)
 	{
 		uSecsPerTick = nextTempo;
 		nextTempo = 0;
 	}
-	
+
 	// First see if we went far enough
-	while (uSecLocation < mSecLocation) 
+	while (uSecLocation < mSecLocation)
 	{
 		pos++;
 		uSecLocation += uSecsPerTick;
 	}
-	
+
 	// Next, see if we went too far
-	while (uSecLocation > mSecLocation) 
+	while (uSecLocation > mSecLocation)
 	{
 		pos--;
 		uSecLocation -= uSecsPerTick;		// uSecsPerTick is last tempo
 	}
-	
+
 	return pos;
-	
-} 
+
+}
 
 
 
@@ -339,15 +339,15 @@ long TMIDIConductor::GetStartDelta(long mSecLocation)
 void TMIDIConductor::SetPosition(long where)
 {
 	ConductorEvent	*e;
-	
+
 	fPlayTime = fTotalTime - where;			// Moved from below 1.5a31
 	fCurrentEvent = 0;
 	e = (ConductorEvent *)ItemAt(++fCurrentEvent);
 	fCurrentDelta = e->time;
-	
-	fLastTempo = 0;			
-	
-	while (where > e->time && e->type != endOfTrack) 
+
+	fLastTempo = 0;
+
+	while (where > e->time && e->type != endOfTrack)
 	{
 		if (e->type == tempoChange)
 			fLastTempo = e->d.tempo;
@@ -355,11 +355,11 @@ void TMIDIConductor::SetPosition(long where)
 		where -= e->time;
 		e = (ConductorEvent *)ItemAt(++fCurrentEvent);
 		fCurrentDelta = e->time;
-		
+
 	}
-	
+
 	fCurrentDelta -= where;
-	
+
 }
 
 
@@ -380,11 +380,11 @@ int32 TMIDIConductor::GetTotalTimeMSec()
 	int32			index = 1;
 	int32			timeCountdown = fTotalTime;
 	int32			mSecTime = 0;
-		
+
 	for (int32 index = 0; index < CountItems(); index++)
 	{
 		theEvent = (ConductorEvent *)ItemAt(index);
-		
+
 		// Check for valid event
 		if (theEvent)
 		{
@@ -392,19 +392,19 @@ int32 TMIDIConductor::GetTotalTimeMSec()
 			if (theEvent->type != endOfTrack)
 			{
 				mSecTime += (theEvent->time * currentUsecsPerTick / 1000);
-			
-				if (theEvent->type == tempoChange) 
+
+				if (theEvent->type == tempoChange)
 				{
 					currentUsecsPerTick = theEvent->d.tempo;
-				}			
+				}
 				timeCountdown -= theEvent->time;
-			}		
+			}
 		}
 	}
-			
+
 	mSecTime += (timeCountdown * currentUsecsPerTick / 1000);
-	
-	return mSecTime;	
+
+	return mSecTime;
 }
 
 
@@ -421,30 +421,30 @@ int32 TMIDIConductor::TicksToMSec(int32 location)
 	int32			uSecsPerTick = 0, uSecAccum = 0;
 	int32			index = 0;
 	ConductorEvent	*theEvent;
-	
+
 	theEvent = (ConductorEvent *)ItemAt(index);
 
-	while (pos < location) 
+	while (pos < location)
 	{
-		
+
 		pos += theEvent->time;
-		if (pos > location) 
+		if (pos > location)
 		{
-		
-			// Adjust e.time to coorespond with location.			
+
+			// Adjust e.time to coorespond with location.
 			theEvent->time -= (pos - location);
 			pos = location;
 		}
-		
+
 		uSecAccum += theEvent->time * uSecsPerTick;
 
 		if (theEvent->type == tempoChange)
 			uSecsPerTick = (int32)theEvent->d.tempo * fTempoRatio / kTempoDivisor;
-		
+
 		if (index < CountItems())
 			theEvent = (ConductorEvent *)ItemAt(index++);
 	}
-		
+
 	return (uSecAccum + 500L) / 1000;
 }
 
@@ -475,7 +475,7 @@ int16 TMIDIConductor::GetTempoRatio()
 void TMIDIConductor::SetTempoRatio(int16 ratio)
 {
 	fTempoRatio = ratio;
-	
+
 	// Since the tempo ratio changed, we need to recalc the marker times
 	CalcMarkerTimes();
 }
@@ -497,11 +497,11 @@ void TMIDIConductor::CalcMarkerTimes()
 	for(int32 index = 0; index < fMarkerList->CountItems(); index++ )
 	{
 		MarkerPtr theMarker = (MarkerPtr)fMarkerList->ItemAt(index);
-		
+
 		if (theMarker)
 		{
 			theMarker->time = TicksToMSec(theMarker->location);
-		}	
+		}
 	}
 }
 
@@ -516,20 +516,20 @@ void TMIDIConductor::CalcMarkerTimes()
 void TMIDIConductor::InsertMarker( char *str, int32 time)
 {
 	// Allocate marker
-	MarkerPtr marker;	
+	MarkerPtr marker;
 	marker = (MarkerPtr)malloc( sizeof (MarkerRec) );
 	ASSERT(marker);
-	
+
 	fCurrentDelta 		+= time;
 	fCurrentLocation 	+= time;
-	
+
 	marker->location = fCurrentLocation;
-	
+
 	// Truncate string
 	if ( strlen(str) > 32)
 		str[32] = '\0';
-		
-	strcpy( marker->text, str);	
-	
+
+	strcpy( marker->text, str);
+
 	fMarkerList->AddItem(marker);
 }

@@ -22,7 +22,7 @@
 #include <assert.h>				// For assert()
 #include "ResourceManager.h"	// for GetIcon16FromResource
 #include "TRadioBitmapButton.h"	// For the bitmap button
-#include "TElementsView.h"		// For the different member views 
+#include "TElementsView.h"		// For the different member views
 #include "TThumbnailView.h"		// ...
 #include "TIconView.h"			// ...
 #include "TSizeScrollView.h"	// For TSizeScrollView
@@ -33,7 +33,7 @@
 #define MEDIA_TAB_THUMBNAIL_VIEW_MSG	'mtTH'
 #define MEDIA_TAB_ICON_VIEW_MSG			'mtIC'
 
-		
+
 //---------------------------------------------------------------------
 //	Constructor
 //---------------------------------------------------------------------
@@ -69,16 +69,16 @@ void TMediaTabView::Init()
 {
 	// NOTE: the order of these need to be kept in sync with the EChildID
 	// enum
-	
+
 	// Create List View button
 	BBitmap* up = GetIcon16FromResource("ListViewUp");
 	BBitmap* down = GetIcon16FromResource("ListViewDown");
 	// Make sure the button is a square, the same width as the scroll bar,
 	// is high. It's top is one scroll bar height away from the bottom
 	BRect buttBounds(0, 0, kScrollHeight, kScrollHeight);
-	fbuttons[0] = new TRadioBitmapButton(buttBounds, "ListViewButton", up, down, this, 
-										  new BMessage(MEDIA_TAB_LIST_VIEW_MSG), 
-										  B_FOLLOW_LEFT + B_FOLLOW_BOTTOM); 
+	fbuttons[0] = new TRadioBitmapButton(buttBounds, "ListViewButton", up, down, this,
+										  new BMessage(MEDIA_TAB_LIST_VIEW_MSG),
+										  B_FOLLOW_LEFT + B_FOLLOW_BOTTOM);
 	// This button is on by default
 	fbuttons[0]->SetValue(1);
 
@@ -87,27 +87,27 @@ void TMediaTabView::Init()
 	down = GetIcon16FromResource("ThumbnailDown");
 	buttBounds.left = buttBounds.right;
 	buttBounds.right = buttBounds.left + kScrollHeight;
-	fbuttons[1] = new TRadioBitmapButton(buttBounds, "ThumbnailButton", up, down, 
-			this, new BMessage(MEDIA_TAB_THUMBNAIL_VIEW_MSG), B_FOLLOW_LEFT + 
-			B_FOLLOW_BOTTOM); 
+	fbuttons[1] = new TRadioBitmapButton(buttBounds, "ThumbnailButton", up, down,
+			this, new BMessage(MEDIA_TAB_THUMBNAIL_VIEW_MSG), B_FOLLOW_LEFT +
+			B_FOLLOW_BOTTOM);
 
 	// With the icon view button next
 	up = GetIcon16FromResource("IconViewUp");
 	down = GetIcon16FromResource("IconViewDown");
 	buttBounds.left = buttBounds.right;
 	buttBounds.right = buttBounds.left + kScrollHeight;
-	fbuttons[2] = new TRadioBitmapButton(buttBounds, "IconViewButton", up, down, 
-			this, new BMessage(MEDIA_TAB_ICON_VIEW_MSG), B_FOLLOW_LEFT + 
-			B_FOLLOW_BOTTOM); 
+	fbuttons[2] = new TRadioBitmapButton(buttBounds, "IconViewButton", up, down,
+			this, new BMessage(MEDIA_TAB_ICON_VIEW_MSG), B_FOLLOW_LEFT +
+			B_FOLLOW_BOTTOM);
 
 	// create the views needed to support list, thumbnail and icon view.
 	// Tell it to make room for the buttons. Hide the non-default views
 	TElementsView* e = new TElementsView(Bounds());
 	AddChild(e);
-	
-	// move the horizontal scroll bar to make room for our buttons. NOTE: add 
+
+	// move the horizontal scroll bar to make room for our buttons. NOTE: add
 	// in one. The bitmap buttons are allowed to overlap so there is just one
-	// black pixel shared between them. But the scroll bar changes color. It 
+	// black pixel shared between them. But the scroll bar changes color. It
 	// needs to not share the space.
 	e->MakeRoomForButtons(3 * kScrollHeight + 1);
 	// Default view is list view
@@ -147,13 +147,13 @@ void TMediaTabView::MessageReceived(BMessage* message)
 			buttonMsg = true;
 			break;
 	}
-	if (buttonMsg) 
+	if (buttonMsg)
 	{
-		if (newView != fCurrentView) 
+		if (newView != fCurrentView)
 		{
 			// Protect this section of code.
 			Looper()->Lock();
-			
+
 			DeactivateView(fCurrentView);
 			fCurrentView = newView;
 			ActivateView(fCurrentView);
@@ -181,10 +181,10 @@ void TMediaTabView::MessageReceived(BMessage* message)
 				ChildAt(fCurrentView)->MessageReceived(message);
 			return;
 	}
-				
+
 	// Default handler
-	BView::MessageReceived(message);						
-}	
+	BView::MessageReceived(message);
+}
 
 //---------------------------------------------------------------------
 //	Show
@@ -196,7 +196,7 @@ void TMediaTabView::Show()
 	BRect bounds = Parent()->Bounds();
 	bounds.InsetBy(3, 3);
 	ResizeTo(bounds.Width(), bounds.Height());
-			
+
 	BView::Show();
 }
 
@@ -208,14 +208,14 @@ void TMediaTabView::Show()
 BView* TMediaTabView::AddSizeScrollChild(BView* target)
 {
 	assert(target->Bounds() == Bounds());
-	
+
 	// Get a good size for the target view. Inset by one for a little boundary
 	// within the tab. Remove our target scroll bar sizes.
 	target->MoveTo(1, 1);
 	target->ResizeBy(-kScrollWidth - 2, -kScrollHeight - 2);
-	
+
 	// Create the size/scroll view
-	TSizeScrollView* view = new TSizeScrollView("", target, B_FOLLOW_ALL, 
+	TSizeScrollView* view = new TSizeScrollView("", target, B_FOLLOW_ALL,
 			0, true, true);
 
 	// make room for the buttons by scooting over the horiz scroll bar
@@ -226,7 +226,7 @@ BView* TMediaTabView::AddSizeScrollChild(BView* target)
 
 	// Add the size/scroll it as a child
 	AddChild(view);
-	
+
 	return view;
 }
 
@@ -239,9 +239,9 @@ void TMediaTabView::ActivateView(EChildID which)
 {
 	// Give the view the control buttons
 	BView* view = ChildAt(which);
-	
+
 	BPoint pt = view->Bounds().LeftBottom();
-	// Get the target button position. Slightly different for the 
+	// Get the target button position. Slightly different for the
 	// different view types.
 	if (which == kElementsView)
 		pt.y -= kScrollHeight;
@@ -250,7 +250,7 @@ void TMediaTabView::ActivateView(EChildID which)
 		pt.y -= kScrollHeight + 1;
 	}
 
-	for (int i = 0; i < 3; i++) 
+	for (int i = 0; i < 3; i++)
 	{
 		view->AddChild(fbuttons[i]);
 		fbuttons[i]->MoveTo(pt);

@@ -8,7 +8,7 @@
 //
 ///	Desc:	This view does nothing but hold the channel headers
 //			and draw checkered background
-//			
+//
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -83,13 +83,13 @@ void THeaderContainerView::Init()
 //
 //
 
-BArchivable *THeaderContainerView::Instantiate(BMessage *archive) 
-{ 
+BArchivable *THeaderContainerView::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "THeaderContainerView") ) 
-		return new THeaderContainerView(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "THeaderContainerView") )
+		return new THeaderContainerView(archive);
+
+	return NULL;
 }
 
 
@@ -101,30 +101,30 @@ BArchivable *THeaderContainerView::Instantiate(BMessage *archive)
 
 status_t THeaderContainerView::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "THeaderContainerView");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{		
-		
-		}		
+		{
+
+		}
 	}
-	
-	Looper()->Unlock();	
-	
+
+	Looper()->Unlock();
+
 	return myErr;
 }
 
@@ -142,23 +142,23 @@ void THeaderContainerView::Draw(BRect updateRect)
 {
 	// Save settings
 	rgb_color saveColor = HighColor();
-	
-	pattern squares = { 0xF0, 0xF0, 0xF0, 0xF0, 
-						0x0F, 0x0F, 0x0F, 0x0F }; 
-						
+
+	pattern squares = { 0xF0, 0xF0, 0xF0, 0xF0,
+						0x0F, 0x0F, 0x0F, 0x0F };
+
 	// Fill Area behind first header black
 	BRect headerFill = Bounds();
 	headerFill.bottom = headerFill.top + kChannelMinHeight;
 	SetHighColor(kBlack);
 	FillRect(headerFill);
-	
+
 	// Fill rest with background pattern
 	if (updateRect.top <= headerFill.bottom)
 		updateRect.top = headerFill.bottom;
-		
+
 	SetHighColor(kSteelGrey);
 	FillRect(updateRect, squares);
-	
+
 	// Resore settings
 	SetHighColor(saveColor);
 }

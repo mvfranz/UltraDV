@@ -7,10 +7,10 @@
 //	Date:	05.05.98
 //
 //	Desc:	Undo Engine
-//			
-//			We create one instance of this engine per 
+//
+//			We create one instance of this engine per
 //			document instance
-//			
+//
 //	Copyright ©1998 mediapede Software
 //
 //---------------------------------------------------------------------
@@ -29,7 +29,7 @@
 TUndoEngine::TUndoEngine()
 {
 
-}	
+}
 
 
 //---------------------------------------------------------------------
@@ -49,7 +49,7 @@ TUndoEngine::~TUndoEngine()
 //---------------------------------------------------------------------
 //
 //	Return if last operatin can be undone.  Query objects in
-//	undo list. 
+//	undo list.
 //
 
 bool TUndoEngine::CanUndo()

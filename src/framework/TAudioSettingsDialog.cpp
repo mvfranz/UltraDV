@@ -34,8 +34,8 @@
 //
 //
 
-TAudioSettingsDialog::TAudioSettingsDialog(BRect bounds) : BWindow( bounds, "Audio Settings", B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_H_RESIZABLE|B_NOT_V_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE) 
-{			
+TAudioSettingsDialog::TAudioSettingsDialog(BRect bounds) : BWindow( bounds, "Audio Settings", B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_H_RESIZABLE|B_NOT_V_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
+{
 	Init();
 }
 
@@ -47,24 +47,24 @@ TAudioSettingsDialog::TAudioSettingsDialog(BRect bounds) : BWindow( bounds, "Aud
 //
 
 void TAudioSettingsDialog::Init()
-{	
-	
+{
+
 	// Create background view
-	fBGView = new TAudioSettingsView(Bounds(), this); 
+	fBGView = new TAudioSettingsView(Bounds(), this);
 	AddChild(fBGView);
-	
+
 	//
 	// Add tabs to the window
 	//
-	
+
 	// AudioSettings
 	BRect bounds(0, 0, Bounds().Width(), 200);
-	fTabView = new TAudioSettingsTabView(fBGView, bounds, "AudioSettingsTabView"); 
+	fTabView = new TAudioSettingsTabView(fBGView, bounds, "AudioSettingsTabView");
 	ASSERT(fTabView);
-	fTabView->SetViewColor(kBeGrey); 
-		
+	fTabView->SetViewColor(kBeGrey);
+
 	fBGView->AddChild(fTabView);
-	
+
 }
 
 
@@ -78,26 +78,26 @@ void TAudioSettingsDialog::Init()
 //
 
 void TAudioSettingsDialog::MessageReceived(BMessage* message)
-{	
+{
 	switch (message->what)
 	{
-			
+
 		case CANCEL_MSG:
 			Lock();
 			Quit();
 			break;
-			
+
 		case OK_MSG:
 			// Restore Settings
 			Lock();
 			Quit();
 			break;
-			
+
 		default:
-			BWindow::MessageReceived(message);						
+			BWindow::MessageReceived(message);
 			break;
 	}
-}	
+}
 
 
 #pragma mark -
@@ -110,12 +110,12 @@ void TAudioSettingsDialog::MessageReceived(BMessage* message)
 //
 
 void TAudioSettingsDialog::WindowActivated(bool active)
-{	
+{
 	// Inform parent
 	BWindow::WindowActivated(active);
 }
 
-	
+
 //------------------------------------------------------------------
 //	QuitRequested
 //------------------------------------------------------------------
@@ -123,7 +123,7 @@ void TAudioSettingsDialog::WindowActivated(bool active)
 //
 
 bool TAudioSettingsDialog::QuitRequested()
-{		
-	Hide();	
+{
+	Hide();
 	return true;
-}	
+}

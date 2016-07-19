@@ -23,7 +23,7 @@
 //
 //
 
-TSettingsTabView::TSettingsTabView(BRect bounds) : 
+TSettingsTabView::TSettingsTabView(BRect bounds) :
 	BView(bounds, "Settings", B_FOLLOW_ALL | B_FRAME_EVENTS, B_WILL_DRAW)
 {
 	// TODO: for internationalization, pull the title from the resource

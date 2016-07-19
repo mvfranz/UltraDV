@@ -18,7 +18,7 @@ BaseCueChunk::BaseCueChunk(){
 	// should set fCueID ??
 	startTime = 0; // fix this
 	// fstartTime ??S
-	
+
 }
 
 //
@@ -26,6 +26,6 @@ BaseCueChunk::BaseCueChunk(){
 //
 
 BaseCueChunk::~BaseCueChunk(){
-	
+
 }
 

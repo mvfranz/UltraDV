@@ -36,7 +36,7 @@
 //
 
 TRecordPrefsDialog::TRecordPrefsDialog(BMessage *theMessage) : BWindow(theMessage)
-{			
+{
 	Init();
 }
 
@@ -49,7 +49,7 @@ TRecordPrefsDialog::TRecordPrefsDialog(BMessage *theMessage) : BWindow(theMessag
 
 TRecordPrefsDialog::~TRecordPrefsDialog()
 {
-	
+
 }
 
 
@@ -60,12 +60,12 @@ TRecordPrefsDialog::~TRecordPrefsDialog()
 //
 
 void TRecordPrefsDialog::Init()
-{			
+{
 	// Find background view
 	fPrefsView = (BView *)FindView("RecordPrefsView");
-	
+
 	BBox *settingsBox = (BBox *)FindView("SettingsBox");
-	
+
 	// Find radio buttons
 	fCaptureToDiskRadio = (BRadioButton *)FindView("CaptureToDiskRadio");
 	fCaptureToRAMRadio  = (BRadioButton *)FindView("CaptureToRAMRadio");
@@ -73,38 +73,38 @@ void TRecordPrefsDialog::Init()
 	fCaptureToDiskRadio->SetTarget(this);
 	fCaptureToRAMRadio->SetMessage( new BMessage(RECORD_RAM_MSG));
 	fCaptureToRAMRadio->SetTarget(this);
-	
+
 	//
 	// Set up swap menu
 	//
-	
+
 	// Get list of mounted BeOS disks
-	BVolumeRoster 	volRoster;	
+	BVolumeRoster 	volRoster;
 	BVolume		  	bootVolume;
-	
+
 	// Locate boot volume
 	volRoster.GetBootVolume(&bootVolume);
 	char bootStr[256];
 	bootVolume.GetName(bootStr);
-	
+
 	fSwapDiskMenu	= (BMenuField *)FindView("SwapDiskMenu");
-		
+
 	BMenu *theMenu = fSwapDiskMenu->Menu();
 	if (theMenu)
 	{
 		// Boot Volume
-		BMenuItem *swapItem01 = new BMenuItem( bootStr, new BMessage(SWAP_BOOT_MSG) );		
+		BMenuItem *swapItem01 = new BMenuItem( bootStr, new BMessage(SWAP_BOOT_MSG) );
 		swapItem01->SetTarget(this);
-		theMenu->AddItem(swapItem01);	
-		
+		theMenu->AddItem(swapItem01);
+
 		// Select the first item
 		swapItem01->SetMarked(true);
 	}
-				
+
 	// Find checkbox
 	fPostCompressCheckbox = (BCheckBox *)FindView("PostCompressCheckbox");
 	fPostCompressCheckbox->SetMessage( new BMessage(RECORD_POST_MSG));
-	fPostCompressCheckbox->SetTarget(this);				
+	fPostCompressCheckbox->SetTarget(this);
 }
 
 
@@ -118,7 +118,7 @@ void TRecordPrefsDialog::Init()
 //
 
 void TRecordPrefsDialog::MessageReceived(BMessage* message)
-{	
+{
 	switch (message->what)
 	{
 		case OK_MSG:
@@ -126,18 +126,18 @@ void TRecordPrefsDialog::MessageReceived(BMessage* message)
 			Lock();
 			Quit();
 			break;
-		
+
 		case SWAP_BOOT_MSG:
 			beep();
 			break;
-			
+
 		case RECORD_DISK_MSG:
 		case RECORD_RAM_MSG:
 		case RECORD_POST_MSG:
 			break;
-			
+
 		default:
-			BWindow::MessageReceived(message);						
+			BWindow::MessageReceived(message);
 			break;
 	}
-}	
+}

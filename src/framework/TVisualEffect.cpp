@@ -55,7 +55,7 @@ BArchivable* TVisualEffect::Instantiate(BMessage* data)
 	// NOTE: this is an error. We can't instantiate this class
 	// since it is an abstract base class.
 	ASSERT(false);
-	return 0; 
+	return 0;
 }
 
 status_t TVisualEffect::Archive(BMessage* data, bool deep) const
@@ -64,7 +64,7 @@ status_t TVisualEffect::Archive(BMessage* data, bool deep) const
 	status_t err = TCueEffect::Archive(data, deep);
 	if (err != B_OK)
 		return err;
-	
+
 	// NOTE: we don't instantiate this class --- it's an ABC ---
 	// so we don't add the class name data
 
@@ -117,8 +117,8 @@ int32 TVisualEffect::GetBitmapPixelSize(color_space colorSpace) const
 		case B_YUV9:
 		case B_YUV12:
 			return(-1);
-			break;	
-		
+			break;
+
 		// 32-bit
 		case B_RGB32:
 		case B_RGBA32:
@@ -126,7 +126,7 @@ int32 TVisualEffect::GetBitmapPixelSize(color_space colorSpace) const
 		case B_RGBA32_BIG:
 			return sizeof(uint32);
 			break;
-		
+
 		// 16-bit
 		case B_RGB16:
 		case B_RGB15:
@@ -136,7 +136,7 @@ int32 TVisualEffect::GetBitmapPixelSize(color_space colorSpace) const
 		case B_RGBA15_BIG:
 			return sizeof(uint16);
 			break;
-			
+
 
 		// 8-bit
 		case B_CMAP8:
@@ -148,10 +148,10 @@ int32 TVisualEffect::GetBitmapPixelSize(color_space colorSpace) const
 		case B_GRAY1:
 			return sizeof(uchar);
 			break;
-		
+
 		default:
 			return(-1);
 			break;
-		
+
 	}
 }

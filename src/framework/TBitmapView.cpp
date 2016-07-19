@@ -22,17 +22,17 @@
 //
 //	Function:	Constructor
 //
-//	Desc:		
+//	Desc:
 //
 //-------------------------------------------------------------------
 //
 //
 
-TBitmapView::TBitmapView(BRect area, char *name, BBitmap *bitmap, bool own,  uint32 resizeFlags) : BView(area, name, resizeFlags, B_WILL_DRAW) 
-{ 
-	fBitmap 	= bitmap; 
+TBitmapView::TBitmapView(BRect area, char *name, BBitmap *bitmap, bool own,  uint32 resizeFlags) : BView(area, name, resizeFlags, B_WILL_DRAW)
+{
+	fBitmap 	= bitmap;
 	fOwnership = own;
-	
+
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
 }
@@ -43,12 +43,12 @@ TBitmapView::TBitmapView(BRect area, char *name, BBitmap *bitmap, bool own,  uin
 //
 //
 
-TBitmapView::~TBitmapView() 
+TBitmapView::~TBitmapView()
 {
 	if (fBitmap)
 	{
 		if (fOwnership)
-			delete fBitmap; 
+			delete fBitmap;
 	}
 }
 
@@ -56,7 +56,7 @@ TBitmapView::~TBitmapView()
 //
 //	Function:	Draw
 //
-//	Desc:		Draws the bitmap into the view	
+//	Desc:		Draws the bitmap into the view
 //
 //-------------------------------------------------------------------
 //

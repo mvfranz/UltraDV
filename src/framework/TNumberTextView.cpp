@@ -32,13 +32,13 @@
 //
 //
 
-TNumberTextView::TNumberTextView(BRect bounds, char *name, uint32 resizing) : 
+TNumberTextView::TNumberTextView(BRect bounds, char *name, uint32 resizing) :
 			  BTextView(bounds, name, bounds, resizing, B_FRAME_EVENTS | B_PULSE_NEEDED)
-{	
+{
 	// Perform default initialization
 	//bounds.OffsetTo(0, 0);
 	//SetTextRect(bounds);
-	SetAlignment(B_ALIGN_CENTER);	
+	SetAlignment(B_ALIGN_CENTER);
 }
 
 
@@ -49,7 +49,7 @@ TNumberTextView::TNumberTextView(BRect bounds, char *name, uint32 resizing) :
 //
 
 TNumberTextView::~TNumberTextView()
-{	
+{
 }
 
 
@@ -74,7 +74,7 @@ void TNumberTextView::Draw(BRect inRect)
 
 void TNumberTextView::MouseDown(BPoint where)
 {
-	BTextView::MouseDown(where);	
+	BTextView::MouseDown(where);
 }
 
 
@@ -85,8 +85,8 @@ void TNumberTextView::MouseDown(BPoint where)
 //
 
 void TNumberTextView::MouseUp(BPoint where)
-{	
-	BTextView::MouseUp(where);	
+{
+	BTextView::MouseUp(where);
 }
 
 
@@ -98,7 +98,7 @@ void TNumberTextView::MouseUp(BPoint where)
 
 void TNumberTextView::MouseMoved(BPoint where, uint32 code, const BMessage *message)
 {
-	BTextView::MouseMoved(where, code, message);	
+	BTextView::MouseMoved(where, code, message);
 }
 
 
@@ -111,7 +111,7 @@ void TNumberTextView::MouseMoved(BPoint where, uint32 code, const BMessage *mess
 void TNumberTextView::KeyDown(const char *bytes, int32 numBytes)
 {
 	char theChar = *bytes;
-		
+
 	// Accept numbers, delete and arrows
 	if( isdigit(theChar) || IsBackspace(theChar) || IsArrows(theChar) || IsDelete(theChar) )
 	{
@@ -180,7 +180,7 @@ bool TNumberTextView::AcceptsPaste(BClipboard *clipboard)
 //
 
 void  TNumberTextView::InsertText(const char *text, int32 length, int32 offset, const text_run_array *runs)
-{	
+{
 	BTextView::InsertText(text, length, offset, runs);
 }
 
@@ -237,10 +237,10 @@ bool  TNumberTextView::IsBackspace(char theChar)
 	{
 		case B_BACKSPACE:
 			return true;
-			
+
 		default:
 			return false;
-	
+
 	}
 }
 
@@ -261,10 +261,10 @@ bool  TNumberTextView::IsArrows(char theChar)
 		case B_DOWN_ARROW:
 		case B_RIGHT_ARROW:
 			return true;
-			
+
 		default:
 			return false;
-	
+
 	}
 }
 
@@ -281,10 +281,10 @@ bool  TNumberTextView::IsDelete(char theChar)
 	{
 		case B_DELETE:
 			return true;
-			
+
 		default:
 			return false;
-	
+
 	}
 }
 
@@ -302,10 +302,10 @@ bool  TNumberTextView::IsTab(char theChar)
 	{
 		case B_TAB:
 			return true;
-			
+
 		default:
 			return false;
-	
+
 	}
 }
 

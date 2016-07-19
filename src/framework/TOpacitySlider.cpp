@@ -36,13 +36,13 @@
 //
 
 TOpacitySlider::TOpacitySlider( TOpacityDialog *dialog, TNumberTextControl *rotateText, TVisualCue *theCue, BRect frame, const char *name, const char *label, BMessage *message, int32 minValue,
-				  int32 maxValue, thumb_style thumbType, uint32 resizingMode, uint32 flags) : 
+				  int32 maxValue, thumb_style thumbType, uint32 resizingMode, uint32 flags) :
 				  TSlider(frame, name, label, message, minValue, maxValue, thumbType, resizingMode, flags)
 {
 	// Set up member variables
 	fDialog 		= dialog;
 	fTextControl 	= rotateText;
-	fCue 			= theCue;	
+	fCue 			= theCue;
 	fStage			= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
 	fStageView 	= fStage->GetStageView();
 
@@ -84,13 +84,13 @@ void TOpacitySlider::SetValue(int32 value)
 {
 	// Pass to parent
 	TSlider::SetValue(value);
-		
+
 	//	Get new value
 	float sliderVal = ((float)(value)) / 100;
-	
+
 	//	Update cue
 	fCue->SetTransparency(sliderVal);
-	
+
 	//	Update text
 	if (fTextControl != NULL)
 	{
@@ -98,7 +98,7 @@ void TOpacitySlider::SetValue(int32 value)
 		sprintf(newStr, "%d", value);
 		fTextControl->SetText(newStr);
 	}
-	
+
 	// Update cue
 	if (fCue != NULL)
 	{
@@ -106,12 +106,12 @@ void TOpacitySlider::SetValue(int32 value)
 		if ( fDialog->GetRealtimePreview() == true )
 		{
 			if (fCue->IsOnStage())
-			{				
+			{
 				fStage->Lock();
 				fStageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
 				fStageView->Draw( fCue->GetDrawArea());
 				fStage->Unlock();
-			}		
+			}
 		}
 		//	Draw bounding box
 		else

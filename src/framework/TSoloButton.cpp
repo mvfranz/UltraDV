@@ -6,7 +6,7 @@
 //
 //	Date:	02.07.98
 //
-///	Desc:	Solo button object.  The fIsMuted flag in the Cue Channel acts as 
+///	Desc:	Solo button object.  The fIsMuted flag in the Cue Channel acts as
 //			the state flag
 //
 //	Copyright ©1998 mediapede Software
@@ -43,17 +43,17 @@ TSoloButton::TSoloButton(TCueChannel *parent, BRect bounds, const char *name, BB
 {
 	// Save parent view
 	fChannel = parent;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap  = onBitmap;
-		
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -66,7 +66,7 @@ TSoloButton::TSoloButton(TCueChannel *parent, BRect bounds, const char *name, BB
 //
 
 TSoloButton::TSoloButton(BMessage *data) : BView(data)
-{	
+{
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
 
@@ -93,9 +93,9 @@ TSoloButton::~TSoloButton()
 //	Perform default initialization tasks
 
 void TSoloButton::Init()
-{     
+{
 	// We don't need a background color
-	SetViewColor(B_TRANSPARENT_32_BIT);   	
+	SetViewColor(B_TRANSPARENT_32_BIT);
 }
 
 
@@ -108,15 +108,15 @@ void TSoloButton::Init()
 //
 //
 
-BArchivable *TSoloButton::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TSoloButton::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TSoloButton") ) 
-		return new TSoloButton(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TSoloButton") )
+		return new TSoloButton(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -125,31 +125,31 @@ BArchivable *TSoloButton::Instantiate(BMessage *archive)
 
 status_t TSoloButton::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TSoloButton");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{	
-			
-		}				
+		{
+
+		}
 	}
-	
-	
+
+
 	Looper()->Unlock();
-	
+
 	return myErr;
 }
 
@@ -182,20 +182,20 @@ void TSoloButton::Draw(BRect updateRect)
 
 void TSoloButton::MouseDown(BPoint where)
 {
-		
+
 	// Force redraw to reflect new state
 	Invalidate();
-	
-	// Create and send message		
+
+	// Create and send message
 	BMessage *soloMessage = new BMessage(SOLO_BUTTON_MSG);
 	short id = fChannel->GetID();
-	soloMessage->AddInt16("ChannelID", fChannel->GetID());								
+	soloMessage->AddInt16("ChannelID", fChannel->GetID());
 	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(soloMessage, fChannel);
 	delete soloMessage;
-		
+
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	fMouseDown = true; 
+	fMouseDown = true;
 }
 
 
@@ -209,10 +209,10 @@ void TSoloButton::MouseDown(BPoint where)
 void TSoloButton::MouseUp(BPoint where)
 {
 
-	
+
 	// Set flag that we have been clicked. When the MouseUp method
-	// is implimented we can remove this		
-	fMouseDown = false; 
+	// is implimented we can remove this
+	fMouseDown = false;
 }
 
 
@@ -229,13 +229,13 @@ void TSoloButton::MouseUp(BPoint where)
 //
 
 void TSoloButton::AttachedToWindow()
-{			
+{
 	if (fHandler == NULL)
 	{
 		// Set target
 		fHandler = (TCueSheetWindow *)Window();
 
-	}	
+	}
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }
@@ -251,5 +251,5 @@ void TSoloButton::AttachedToWindow()
 
 void TSoloButton::SetChannel(TCueChannel *channel)
 {
-	fChannel = channel;	
+	fChannel = channel;
 }

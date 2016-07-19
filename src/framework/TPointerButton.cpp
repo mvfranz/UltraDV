@@ -6,7 +6,7 @@
 //
 //	Date:	02.16.98
 //
-///	Desc:	Pointer Toolbar button.  Clicking restes cursor to pointer 
+///	Desc:	Pointer Toolbar button.  Clicking restes cursor to pointer
 //			functionality
 //
 //	Copyright ©1998 mediapede Software
@@ -40,17 +40,17 @@ TPointerButton::TPointerButton(TToolbar *parent, BRect bounds, const char *name,
 {
 	// Save parent view
 	fParent = parent;
-	
+
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap 	= onBitmap;
-		
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -66,7 +66,7 @@ TPointerButton::TPointerButton(BMessage *data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	fOffBitmap = GetIcon16FromResource("PointerDown");
 	fOnBitmap  = GetIcon16FromResource("PointerUp");
 }
@@ -93,7 +93,7 @@ TPointerButton::~TPointerButton()
 //	Perform default initialization tasks
 
 void TPointerButton::Init()
-{        	
+{
 }
 
 #pragma mark -
@@ -105,15 +105,15 @@ void TPointerButton::Init()
 //
 //
 
-BArchivable *TPointerButton::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TPointerButton::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TPointerButton") ) 
-		return new TPointerButton(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TPointerButton") )
+		return new TPointerButton(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -122,32 +122,32 @@ BArchivable *TPointerButton::Instantiate(BMessage *archive)
 
 status_t TPointerButton::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TPointerButton");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{		
-	
+		{
+
 		}
 	}
-	
+
 	Looper()->Unlock();
-	
+
 	return myErr;
-}	
+}
 
 #pragma mark -
 #pragma mark === Drawing Routines
@@ -163,7 +163,7 @@ void TPointerButton::Draw(BRect updateRect)
 {
 	// Draw proper bitmap state, if fState is true, draw on bitmap
 	if (fMouseDown)
-		DrawBitmap(fOffBitmap, B_ORIGIN);		
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 	else
 		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
@@ -179,22 +179,22 @@ void TPointerButton::Draw(BRect updateRect)
 
 void TPointerButton::MouseDown(BPoint where)
 {
-				
+
 	// Force redraw to reflect new state
 	//Invalidate();
-	
-	// Create and send message to channel and header		
+
+	// Create and send message to channel and header
 	//BMessage *message = new BMessage(CHANNEL_EXPAND_MSG);
 	//(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
 	//delete message;
-		
+
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
 	if (fMouseDown)
-		fMouseDown = false; 
+		fMouseDown = false;
 	else
-		fMouseDown = true; 
-		
+		fMouseDown = true;
+
 	Invalidate();
 }
 
@@ -208,13 +208,13 @@ void TPointerButton::MouseDown(BPoint where)
 //
 
 void TPointerButton::AttachedToWindow()
-{			
+{
 	if(fParent == NULL)
 	{
 		fParent 	= (TToolbar *)Parent();
-		fHandler 	= (TToolbar *)Parent();					
+		fHandler 	= (TToolbar *)Parent();
 	}
-	
+
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }

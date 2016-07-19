@@ -8,7 +8,7 @@
 //
 //	Desc:	Browser Window
 //
-//				The browser window consists of tabbed views handling the 
+//				The browser window consists of tabbed views handling the
 //				following items:
 //
 //				-- Media Elements
@@ -40,8 +40,8 @@
 //
 //
 
-TBrowserWindow::TBrowserWindow(BRect bounds) : BWindow( bounds, "Browser", B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_H_RESIZABLE|B_NOT_V_RESIZABLE) 
-{			
+TBrowserWindow::TBrowserWindow(BRect bounds) : BWindow( bounds, "Browser", B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_H_RESIZABLE|B_NOT_V_RESIZABLE)
+{
 	Init();
 }
 
@@ -64,21 +64,21 @@ TBrowserWindow::~TBrowserWindow()
 //
 
 void TBrowserWindow::Init()
-{	
-	
+{
+
 	//
 	// Add tabs to the window
 	//
-	
-	// MediaTabView	
-	BRect bounds = Bounds(); 
-	
-	fBrowserTabView = new TBrowserTabView(bounds, "MediaTabView"); 
+
+	// MediaTabView
+	BRect bounds = Bounds();
+
+	fBrowserTabView = new TBrowserTabView(bounds, "MediaTabView");
 	ASSERT(fBrowserTabView);
-	fBrowserTabView->SetViewColor(kBeGrey); 
-	
+	fBrowserTabView->SetViewColor(kBeGrey);
+
 	AddChild(fBrowserTabView);
-	
+
 	// Show window
 	//Show();
 }
@@ -94,24 +94,24 @@ void TBrowserWindow::Init()
 //
 
 void TBrowserWindow::MessageReceived(BMessage* message)
-{	
+{
 	switch (message->what)
 	{
 		case SORTER_SELECT_MSG:
 		case SORTER_INVOKE_MSG:
 			fBrowserTabView->MessageReceived(message);
-			break;		
-			
+			break;
+
 		// Some cue is adding an entry_ref to our browser
 		case ADD_REF_MSG:
 			fBrowserTabView->MessageReceived(message);
 			break;
-			
+
 		default:
-			BWindow::MessageReceived(message);						
+			BWindow::MessageReceived(message);
 			break;
 	}
-}	
+}
 
 
 #pragma mark -
@@ -124,12 +124,12 @@ void TBrowserWindow::MessageReceived(BMessage* message)
 //
 
 void TBrowserWindow::WindowActivated(bool active)
-{	
+{
 	// Inform parent
 	BWindow::WindowActivated(active);
 }
 
-	
+
 //------------------------------------------------------------------
 //	QuitRequested
 //------------------------------------------------------------------
@@ -137,7 +137,7 @@ void TBrowserWindow::WindowActivated(bool active)
 //
 
 bool TBrowserWindow::QuitRequested()
-{		
-	Hide();	
+{
+	Hide();
 	return false;
-}	
+}

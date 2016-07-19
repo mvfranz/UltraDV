@@ -8,7 +8,7 @@
 //
 //	Desc:	Abstract class for a collection of objects arranged in some kind of
 //			data structure. The command ground for collections is that they
-//			contain zero or more items (objects).	
+//			contain zero or more items (objects).
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -27,11 +27,11 @@
 //
 
 TCollection::TCollection()
-{	
-	// Start off with no items		
-	fNumItems = 0L;						
+{
+	// Start off with no items
+	fNumItems = 0L;
 }
-	
+
 //---------------------------------------------------------------------
 //	Destructor
 //---------------------------------------------------------------------
@@ -54,7 +54,7 @@ long TCollection::GetNumItems()
 {
 	return( fNumItems);
 }
-	
+
 
 
 //---------------------------------------------------------------------
@@ -65,6 +65,6 @@ long TCollection::GetNumItems()
 //
 
 bool TCollection::IsEmpty()
-{	
-	return( fNumItems == 0L );	
+{
+	return( fNumItems == 0L );
 }

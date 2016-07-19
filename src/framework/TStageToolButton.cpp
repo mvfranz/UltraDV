@@ -41,17 +41,17 @@ TStageToolButton::TStageToolButton(TStageToolsView *parent, BRect bounds, const 
 {
 	// Save parent view
 	fParent = parent;
-	
+
 	// Save message
 	fMessage = message;
-	
+
 	// button state flag
 	fButtonState = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap 	= onBitmap;
-			
+
 	// Perform default initialization
 	Init();
 }
@@ -68,7 +68,7 @@ TStageToolButton::~TStageToolButton()
 	//	Free data
 	delete fOffBitmap;
 	delete fOnBitmap;
-	
+
 	//	Free message
 	delete fMessage;
 }
@@ -81,7 +81,7 @@ TStageToolButton::~TStageToolButton()
 //	Perform default initialization tasks
 
 void TStageToolButton::Init()
-{        	
+{
 }
 
 
@@ -95,10 +95,10 @@ void TStageToolButton::Init()
 //
 
 void TStageToolButton::Draw(BRect updateRect)
-{	
+{
 	// Draw proper bitmap state, if fState is true, draw on bitmap
 	if (fButtonState)
-		DrawBitmap(fOffBitmap, B_ORIGIN);		
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 	else
 		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
@@ -116,18 +116,18 @@ void TStageToolButton::MouseDown(BPoint where)
 {
 	if (fButtonState == false)
 		DoClick();
-		
+
 	/*
 	//	Only accept mouse down if button is not selected.  This is a tool palette button
 	//	and only one button can be depressed at a time
 	if (fButtonState == false)
-	{	
+	{
 		fParent->Window()->PostMessage(fMessage, NULL);
-		fButtonState = true; 
+		fButtonState = true;
 	}
-		
+
 	// Force redraw to reflect new state
-	Invalidate(); 
+	Invalidate();
 	*/
 }
 
@@ -141,23 +141,23 @@ void TStageToolButton::MouseDown(BPoint where)
 
 void TStageToolButton::DoClick()
 {
-	
+
 	// We will always be in the up position when we start.
 	// First, set the button state to down and force a redraw...
-	fButtonState = true;	
-	
+	fButtonState = true;
+
 	BRect 	bounds = Bounds();
-	Draw(bounds); 
-			
+	Draw(bounds);
+
 	// Trap mouse while it is down
 	uint32 	buttons;
-	BPoint 	mousePt, savePt;	
+	BPoint 	mousePt, savePt;
 	GetMouse(&mousePt, &buttons, true);
-	
+
 	while(buttons)
 	{
 		GetMouse(&mousePt, &buttons, true);
-		
+
 		if (savePt != mousePt)
 		{
 			if ( bounds.Contains(mousePt) )
@@ -165,32 +165,32 @@ void TStageToolButton::DoClick()
 				if (fButtonState == false)
 				{
 					fButtonState = true;
-					Draw(bounds);	
+					Draw(bounds);
 				}
 			}
 			// If the mouse is outside of the button bounds draw it's up state
-			else 
+			else
 			{
 				if (fButtonState == true)
 				{
 					fButtonState = false;
 					Draw(bounds);
 				}
-			} 			
-			savePt = mousePt;			
+			}
+			savePt = mousePt;
 			snooze(20 * 1000);
 		}
-		
-	} 
-	
+
+	}
+
 	if ( bounds.Contains(mousePt) )
 	{
 		//	Send message to parent and stage
 		fParent->Window()->PostMessage(fMessage, fParent);
-		
+
 		MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
 		theApp->GetCueSheet()->GetStage()->PostMessage(fMessage, theApp->GetCueSheet()->GetStage()->GetStageView());
-				
+
 		//	Draw
 		Draw(bounds);
 	}
@@ -207,7 +207,7 @@ void TStageToolButton::DoClick()
 //
 
 void TStageToolButton::Activate(bool theState)
-{	
+{
 	if (theState == true)
 	{
 		if (fButtonState == false)
@@ -223,5 +223,5 @@ void TStageToolButton::Activate(bool theState)
 			fButtonState = false;
 			Invalidate();
 		}
-	}			
+	}
 }

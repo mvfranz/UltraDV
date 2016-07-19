@@ -80,14 +80,14 @@ void UnhandledMIDIFormat(entry_ref *ref)
 int32 SaveAlert()
 {
 	int32 result;
-	
-	BAlert *theAlert = new BAlert( "Museum", "This document has been changed since the last save.  Save before quiting?", 
+
+	BAlert *theAlert = new BAlert( "Museum", "This document has been changed since the last save.  Save before quiting?",
 								   "Don't Save", "Cancel", "Save", B_WIDTH_FROM_WIDEST, B_WARNING_ALERT);
-											 
-	theAlert->SetShortcut(0, B_ESCAPE); 	 							
-	CenterWindow(theAlert);		
+
+	theAlert->SetShortcut(0, B_ESCAPE);
+	CenterWindow(theAlert);
 	result = theAlert->Go();
-	
+
 	return (result);
 }
 
@@ -103,12 +103,12 @@ int32 SaveAlert()
 int32 ErrorAlert(char *theError)
 {
 	int32 result;
-	
+
 	BAlert *theAlert = new BAlert( "Museum", theError, "OK", NULL, NULL, B_WIDTH_FROM_WIDEST, B_WARNING_ALERT);
-											 
-	theAlert->SetShortcut(0, B_ESCAPE); 	 							
-	CenterWindow(theAlert);		
+
+	theAlert->SetShortcut(0, B_ESCAPE);
+	CenterWindow(theAlert);
 	result = theAlert->Go();
-	
+
 	return (result);
 }

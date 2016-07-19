@@ -49,9 +49,9 @@
 
 TToolbar::TToolbar(BRect bounds, TCueSheetWindow *parent) : BView(bounds, "TooolbarView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP , B_WILL_DRAW)
 {
-	
+
 	fParent = parent;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -67,14 +67,14 @@ TToolbar::TToolbar(BRect bounds, TCueSheetWindow *parent) : BView(bounds, "Toool
 TToolbar::TToolbar(BMessage *data) : BView (data)
 {
 	fParent = NULL;
-	
+
 	//	Find child views
 	fPointerButton 	= (TPointerButton *)FindView("PointerButton");
 	fContractAllButton = (TContractAllButton *)FindView("ContractAllButton");
 	fExpandAllButton 	= (TExpandAllButton *)FindView("ExpandAllButton");
 	fRazorButton 		= (TRazorButton *)FindView("RazorButton");
 	fZoomButton 		= (TZoomButton *)FindView("ZoomButton");
-	
+
 	//	Set up buton targets and handlers
 
 }
@@ -106,25 +106,25 @@ void TToolbar::Init()
 	//
 	// Create the toolbar buttons
 	//
-	
+
 	BRect bounds;
-	
+
 	// Create Pointer button
 	BBitmap *pointerUp = GetIcon16FromResource("PointerUp");
 	BBitmap *pointerDn = GetIcon16FromResource("PointerDown");
 	bounds = fParent->Bounds();
-	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset, 
+	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset,
 				bounds.top + kButtonTopOffset + kToolButtonHeight );
-	fPointerButton = new TPointerButton(this, bounds, "PointerButton", pointerDn, pointerUp, this); 
+	fPointerButton = new TPointerButton(this, bounds, "PointerButton", pointerDn, pointerUp, this);
 	AddChild(fPointerButton);
 	fPointerButton->Show();
-	
+
 	// Create ContractAll button
 	BBitmap *contractUp = GetIcon16FromResource("ContractUp");
 	BBitmap *contractDn = GetIcon16FromResource("ContractDown");
 	bounds = fPointerButton->Frame();
 	bounds.Set( bounds.right + kButtonLeftOffset, bounds.top, bounds.right + kToolButtonWidth+kButtonLeftOffset, bounds.bottom );
-	fContractAllButton = new TContractAllButton(this, bounds, "ContractAllButton", contractDn, contractUp, this); 
+	fContractAllButton = new TContractAllButton(this, bounds, "ContractAllButton", contractDn, contractUp, this);
 	AddChild(fContractAllButton);
 	fContractAllButton->Show();
 
@@ -133,25 +133,25 @@ void TToolbar::Init()
 	BBitmap *expandDn = GetIcon16FromResource("ExpandDown");
 	bounds = fContractAllButton->Frame();
 	bounds.Set( bounds.right + kButtonLeftOffset, bounds.top, bounds.right + kToolButtonWidth+kButtonLeftOffset, bounds.bottom );
-	fExpandAllButton = new TExpandAllButton(this, bounds, "ExpandAllButton", expandDn, expandUp, this); 
+	fExpandAllButton = new TExpandAllButton(this, bounds, "ExpandAllButton", expandDn, expandUp, this);
 	AddChild(fExpandAllButton);
 	fExpandAllButton->Show();
-	
+
 	// Create Razor button
 	BBitmap *razorUp = GetIcon16FromResource("RazorUp");
 	BBitmap *razorDn = GetIcon16FromResource("RazorDown");
 	bounds = fExpandAllButton->Frame();
 	bounds.Set( bounds.right + kButtonLeftOffset, bounds.top, bounds.right + kToolButtonWidth+kButtonLeftOffset, bounds.bottom );
-	fRazorButton = new TRazorButton(this, bounds, "RazorButton", razorDn, razorUp, this); 
+	fRazorButton = new TRazorButton(this, bounds, "RazorButton", razorDn, razorUp, this);
 	AddChild(fRazorButton);
 	fRazorButton->Show();
-	
+
 	// Create Zoom button
 	BBitmap *zoomUp = GetIcon16FromResource("ZoomUp");
 	BBitmap *zoomDn = GetIcon16FromResource("ZoomDown");
 	bounds = fRazorButton->Frame();
 	bounds.Set( bounds.right + kButtonLeftOffset, bounds.top, bounds.right + kToolButtonWidth+kButtonLeftOffset, bounds.bottom );
-	fZoomButton = new TZoomButton(this, bounds, "ZoomButton", zoomDn, zoomUp, this); 
+	fZoomButton = new TZoomButton(this, bounds, "ZoomButton", zoomDn, zoomUp, this);
 	AddChild(fZoomButton);
 	fZoomButton->Show();
 
@@ -167,15 +167,15 @@ void TToolbar::Init()
 //
 //
 
-BArchivable *TToolbar::Instantiate(BMessage *archive) 
-{ 
+BArchivable *TToolbar::Instantiate(BMessage *archive)
+{
 
-	if ( validate_instantiation(archive, "TToolbar") ) 
-		return new TToolbar(archive); 
-		
-	return NULL; 
+	if ( validate_instantiation(archive, "TToolbar") )
+		return new TToolbar(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -184,37 +184,37 @@ BArchivable *TToolbar::Instantiate(BMessage *archive)
 
 status_t TToolbar::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
+
 	if (myErr == B_OK)
-	{					
+	{
 		// Add our class name to the archive
 		data->AddString("class", "TToolbar");
-		
-		// Add our member variables to the archive		
-				
+
+		// Add our member variables to the archive
+
 		// Add attached views
 		if (deep)
-		{		
-	
+		{
+
 		}
 	}
-	
+
 	Looper()->Unlock();
-	
+
 	return myErr;
-}				
+}
 
 
 #pragma mark -
 #pragma mark === Drawing Functions ===
-			
+
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
@@ -224,26 +224,26 @@ status_t TToolbar::Archive(BMessage *data, bool deep) const
 void TToolbar::Draw(BRect updateRect)
 {
 	BPoint startPt, endPt;
-	
+
 	const BRect bounds = Bounds();
-	
+
 	// Save old colors
 	PushState();
-		
+
 	// Fill rect
 	SetHighColor(kLightGrey);
 	FillRect(updateRect);
-	
+
 	//	Draw top and bottom lines
 	SetHighColor(kBlack);
 	startPt.Set(updateRect.left, bounds.top);
 	endPt.Set(updateRect.right, bounds.top);
-	StrokeLine(startPt, endPt);	
-	
+	StrokeLine(startPt, endPt);
+
 	startPt.Set(updateRect.left, bounds.bottom);
 	endPt.Set(updateRect.right, bounds.bottom);
-	StrokeLine(startPt, endPt);	
-	
+	StrokeLine(startPt, endPt);
+
 	// Restore environment
 	PopState();
 }
@@ -262,12 +262,12 @@ void TToolbar::Draw(BRect updateRect)
 //
 
 void TToolbar::AttachedToWindow()
-{			
+{
 	if(fParent == NULL)
 	{
-		fParent = (TCueSheetWindow *)Window();		
+		fParent = (TCueSheetWindow *)Window();
 	}
-	
+
 	//	Pass up to parent
 	BView::AttachedToWindow();
 }

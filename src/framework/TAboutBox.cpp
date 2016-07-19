@@ -51,49 +51,49 @@ TAboutBox::~TAboutBox()
 
 void TAboutBox::Init()
 {
-	
+
 	#define ABOUT_OK_MSG 'abot'
-	
+
 	//if (Lock())
 	//{
 	//	Activate();
 	//	Unlock();
 	//	return;
 	//}
-	
+
 
 	// Get application info
 	app_info info;
-	
+
 	be_app->GetAppInfo(&info);
 	BFile file(&info.ref, O_RDONLY);
 	if (file.InitCheck())
 		return;
-	
+
 	size_t 		size;
 	BBitmap 	*data;
 	{
 		BResources res(&file);
 		data = (BBitmap *)res.FindResource('bits', "Splash", &size);
-		if (!data)			
+		if (!data)
 			return;
 	}
-	
+
 	// Load bitmap
 	BBitmap *bitmap = new BBitmap(Bounds(), B_COLOR_8_BIT);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 	//BBitmap *bitmap = new BBitmap(Bounds(), B_RGB_32_BIT);
 	//bitmap->SetBits(data, size, 0, B_RGB_32_BIT);
-	
+
 	TBitmapView *bm = new TBitmapView(Bounds(), "AboutBitmap", bitmap, true);
 
 	// Add it to the window
 	AddChild(bm);
 
-	
+
 	// Create the OK button
 	const BRect okFrame( ( (Bounds().right - Bounds().left)/2)-30 , Bounds().bottom-30, ((Bounds().right-Bounds().left)/2)+30,  Bounds().bottom-10);
-	fOKButton = new BButton(okFrame, "OK","OK", new BMessage(ABOUT_OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);						 
+	fOKButton = new BButton(okFrame, "OK","OK", new BMessage(ABOUT_OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);
 	bm->AddChild(fOKButton);
 	fOKButton->MakeDefault(true);
 }
@@ -103,7 +103,7 @@ void TAboutBox::Init()
 //
 //	Function:	MessageReceived
 //
-//	Desc:		
+//	Desc:
 //
 //-------------------------------------------------------------------
 //
@@ -118,10 +118,10 @@ void TAboutBox::MessageReceived(BMessage* message)
 			Lock();
 			Quit();
 			break;
-			
+
 		default:
-			BWindow::MessageReceived(message);						
+			BWindow::MessageReceived(message);
 			break;
 	}
-	
+
 }

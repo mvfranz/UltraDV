@@ -10,7 +10,7 @@
 //
 //	TKeyFrame is owned by TCueEffect. It associates a time with a
 //	TEffectState, as defined by the add-on effects classes. This
-//	provides a generic interface to key frames, with the details 
+//	provides a generic interface to key frames, with the details
 //	of effects states handled elsewhere.
 //
 //---------------------------------------------------------------------

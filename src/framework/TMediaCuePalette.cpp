@@ -48,9 +48,9 @@ const BRect kMediaCueBounds(0, 0, ( kCueIconWidth * 2) + (kCueButtonOffset*2), (
 //------------------------------------------------------------------
 //
 //
-	        							        								
-TMediaCuePalette::TMediaCuePalette():BWindow( kMediaCueBounds, "Media", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL, 
-									  B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)									   	
+
+TMediaCuePalette::TMediaCuePalette():BWindow( kMediaCueBounds, "Media", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
+									  B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
 {
 	Init();
 }
@@ -75,23 +75,23 @@ TMediaCuePalette::~TMediaCuePalette()
 void TMediaCuePalette::Init()
 {
 	Lock();
-		
+
 	// Create MediaCueView and add it to the window
 	BRect viewRect = Bounds();
 	viewRect.bottom -= kStatusRectHeight;
 	fCueView = new TMediaCuePaletteView(viewRect);
-	
+
 	// Add view to frame
 	AddChild(fCueView);
-	
+
 	// Create status bar
 	BRect bounds = Bounds();
 	bounds.top = bounds.bottom - kStatusRectHeight;
 	fCueStatusView = new TPaletteStatusView(bounds);
 	AddChild(fCueStatusView);
-	
+
 	Unlock();
-	
+
 	// Show window
 	//Show();
 }
@@ -105,21 +105,21 @@ void TMediaCuePalette::Init()
 //
 
 void TMediaCuePalette::MessageReceived(BMessage* message)
-{	
-	
+{
+
 	switch (message->what)
 	{
 		// Update the status bar to diplay name of media cue
 		case UPDATE_STATUS_TEXT_MSG:
 			fCueStatusView->MessageReceived(message);
 			break;
-			
+
 		default:
-			BWindow::MessageReceived(message);						
+			BWindow::MessageReceived(message);
 			break;
 	}
 
-}	
+}
 
 
 //------------------------------------------------------------------
@@ -129,9 +129,9 @@ void TMediaCuePalette::MessageReceived(BMessage* message)
 //
 
 bool TMediaCuePalette::QuitRequested()
-{		
+{
 	//be_app->PostMessage(MEDIA_PALETTE_CLOSE_MSG);
-	//return true;	
-	Hide();	
+	//return true;
+	Hide();
 	return false;
-}	
+}
