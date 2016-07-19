@@ -37,7 +37,7 @@
 //
 //
 
-TProjectSettings::TProjectSettings(TCueSheetTimeView *parent, TCueSheetView *cueSheet,  BMessage *theMessage) : BWindow(theMessage)
+TProjectSettings::TProjectSettings(TCueSheetTimeView* parent, TCueSheetView* cueSheet,  BMessage* theMessage) : BWindow(theMessage)
 {
 
 	// Save parent view and cue sheet
@@ -74,15 +74,15 @@ void TProjectSettings::Init()
 	fParent->fProjectSettings = true;
 
 	// Get dialog items
-	fRealTimeButton         = (BRadioButton *)FindView("RealTime");
-	f24FPSButton            = (BRadioButton *)FindView("24FPS");
-	f25FPSButton            = (BRadioButton *)FindView("25FPS");
-	f2997FPSButton  = (BRadioButton *)FindView("2997FPS");
-	f30FPSButton            = (BRadioButton *)FindView("30FPS");
+	fRealTimeButton         = (BRadioButton*)FindView("RealTime");
+	f24FPSButton            = (BRadioButton*)FindView("24FPS");
+	f25FPSButton            = (BRadioButton*)FindView("25FPS");
+	f2997FPSButton  = (BRadioButton*)FindView("2997FPS");
+	f30FPSButton            = (BRadioButton*)FindView("30FPS");
 
-	fStartTime = (BTextControl *)FindView("StartTime");
-	fDuration       = (BTextControl *)FindView("Duration");
-	fEndTime        = (BTextControl *)FindView("EndTime");
+	fStartTime = (BTextControl*)FindView("StartTime");
+	fDuration       = (BTextControl*)FindView("Duration");
+	fEndTime        = (BTextControl*)FindView("EndTime");
 
 	// Set up time values
 	char timeStr[256];
@@ -189,11 +189,11 @@ void TProjectSettings::MessageReceived(BMessage* message)
 void TProjectSettings::GetDialogSettings()
 {
 	// Set cue sheet's TimeFormat based on user changes
-	BMessage *message = new BMessage(TIMEFORMAT_CHANGED_MSG);
+	BMessage* message = new BMessage(TIMEFORMAT_CHANGED_MSG);
 	short format = fTimeFormat;
 	message->AddInt16("TimeFormat", format);
-	TCueSheetWindow *theWindow = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-	TCueSheetView *theView = theWindow->GetCueSheetView();
+	TCueSheetWindow* theWindow = static_cast<MuseumApp*>(be_app)->GetCueSheet();
+	TCueSheetView* theView = theWindow->GetCueSheetView();
 	theWindow->PostMessage( message, theView);
 	delete message;
 

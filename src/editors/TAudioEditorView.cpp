@@ -37,7 +37,7 @@
 //
 //
 
-TAudioEditorView::TAudioEditorView(TAudioEditor *parent, BRect bounds) : BView(bounds, "AudioEditorView", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
+TAudioEditorView::TAudioEditorView(TAudioEditor* parent, BRect bounds) : BView(bounds, "AudioEditorView", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
 {
 	// Save parent
 	fParent = parent;
@@ -62,7 +62,7 @@ TAudioEditorView::~TAudioEditorView()
 	// Clean up old preview
 	if (fPreviewBitmap) {
 		fPreviewBitmap->Lock();
-		BView *oldView = fPreviewBitmap->ChildAt(0);
+		BView* oldView = fPreviewBitmap->ChildAt(0);
 		fPreviewBitmap->RemoveChild(oldView);
 		delete oldView;
 		delete fPreviewBitmap;
@@ -104,7 +104,7 @@ void TAudioEditorView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TAudioEditorView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TAudioEditorView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 
 	// Update Timeline.  Clip the location of where.x to be within the bounds
@@ -138,7 +138,7 @@ void TAudioEditorView::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TAudioEditorView::KeyDown(const char *bytes, int32 numBytes)
+void TAudioEditorView::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	BView::KeyDown(bytes, numBytes);
@@ -153,7 +153,7 @@ void TAudioEditorView::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TAudioEditorView::KeyUp(const char *bytes, int32 numBytes)
+void TAudioEditorView::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -244,7 +244,7 @@ void TAudioEditorView::MessageReceived(BMessage* message)
 //
 //	Clip a value within the 16 bit boundary
 
-void TAudioEditorView::Clip16Bit(int32 *theValue)
+void TAudioEditorView::Clip16Bit(int32* theValue)
 {
 
 	if (*theValue > 32767)
@@ -277,7 +277,7 @@ void TAudioEditorView::Draw(BRect updateRect)
 		// Clean up old preview
 		if (fPreviewBitmap) {
 			fPreviewBitmap->Lock();
-			BView *oldView = fPreviewBitmap->ChildAt(0);
+			BView* oldView = fPreviewBitmap->ChildAt(0);
 			fPreviewBitmap->RemoveChild(oldView);
 			delete oldView;
 			delete fPreviewBitmap;
@@ -287,7 +287,7 @@ void TAudioEditorView::Draw(BRect updateRect)
 		fPreviewBitmap = new BBitmap( updateRect, B_CMAP8, true);
 
 		// Create preview view
-		BView *previewView = new BView(updateRect, "PreviewView", B_FOLLOW_ALL, 0);
+		BView* previewView = new BView(updateRect, "PreviewView", B_FOLLOW_ALL, 0);
 		fPreviewBitmap->AddChild(previewView);
 
 		// Draw waveform into bitmap
@@ -387,7 +387,7 @@ void TAudioEditorView::SetAudioViewBounds()
 //	Render cached waveform view
 //
 
-void TAudioEditorView::CreateWaveFormCache(BView *previewView, const BRect bounds)
+void TAudioEditorView::CreateWaveFormCache(BView* previewView, const BRect bounds)
 {
 	BPoint startPt, endPt;
 

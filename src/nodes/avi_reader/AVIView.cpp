@@ -35,7 +35,7 @@
 //
 //
 
-AVIView::AVIView(BRect frame, const char *name, uint32 resizingMode, uint32 flags) :
+AVIView::AVIView(BRect frame, const char* name, uint32 resizingMode, uint32 flags) :
 	BView(frame, name, resizingMode, flags)
 {
 
@@ -111,7 +111,7 @@ void AVIView::MouseDown(BPoint where)
 //	Handle key down events
 //
 
-void AVIView::KeyDown(const char *bytes, int32 numBytes)
+void AVIView::KeyDown(const char* bytes, int32 numBytes)
 {
 	if (numBytes == 1) {
 		switch(bytes[0])
@@ -397,7 +397,7 @@ void AVIView::KeyDown(const char *bytes, int32 numBytes)
 //
 //
 
-void AVIView::SetBitmapView(TBitmapView *theView)
+void AVIView::SetBitmapView(TBitmapView* theView)
 {
 	m_BitmapView = theView;
 

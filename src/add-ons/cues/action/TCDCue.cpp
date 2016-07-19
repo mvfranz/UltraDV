@@ -37,7 +37,7 @@
 //
 //
 
-TCDCue::TCDCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) :
+TCDCue::TCDCue(int16 id, TCueChannel* parent, BRect bounds, BPoint point,  long startTime) :
 	TCueView(id, parent, bounds, point, startTime, "CDCue")
 {
 	// Perform default initialization
@@ -51,7 +51,7 @@ TCDCue::TCDCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long 
 //
 //	Construct from a CueChunk
 
-TCDCue::TCDCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) :
+TCDCue::TCDCue(BaseCueChunk* theChunk, TCueChannel* parent, BRect bounds) :
 	TCueView(theChunk, parent, bounds, "CDCue")
 {
 	// Perform default initialization
@@ -66,7 +66,7 @@ TCDCue::TCDCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) :
 //	Construct from a BMessage
 //
 
-TCDCue::TCDCue(BMessage *theMessage) : TCueView(theMessage)
+TCDCue::TCDCue(BMessage* theMessage) : TCueView(theMessage)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -148,7 +148,7 @@ void TCDCue::Init()
 //	Init from BaseCueChunk
 //
 
-void TCDCue::Init(BaseCueChunk *theChunk)
+void TCDCue::Init(BaseCueChunk* theChunk)
 {
 	TCueView::Init(theChunk);
 }
@@ -164,7 +164,7 @@ void TCDCue::Init(BaseCueChunk *theChunk)
 //
 //
 
-BArchivable *TCDCue::Instantiate(BMessage *archive)
+BArchivable* TCDCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TCDCue") )
 		return new TCDCue(archive);
@@ -179,7 +179,7 @@ BArchivable *TCDCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TCDCue::Archive(BMessage *data, bool deep) const
+status_t TCDCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -254,7 +254,7 @@ void TCDCue::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TCDCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TCDCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Pass up to parent
 	TCueView::MouseMoved(where, code, a_message);
@@ -279,7 +279,7 @@ void TCDCue::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TCDCue::KeyDown(const char *bytes, int32 numBytes)
+void TCDCue::KeyDown(const char* bytes, int32 numBytes)
 {
 	TCueView::KeyDown(bytes, numBytes);
 }
@@ -293,7 +293,7 @@ void TCDCue::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TCDCue::KeyUp(const char *bytes, int32 numBytes)
+void TCDCue::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -305,7 +305,7 @@ void TCDCue::KeyUp(const char *bytes, int32 numBytes)
 //
 //	Receive messages
 //
-void TCDCue::MessageReceived(BMessage *message)
+void TCDCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -340,7 +340,7 @@ void TCDCue::OpenEditor()
 
 void TCDCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = NULL;
+	BBitmap* cueIcon = NULL;
 
 	cueIcon = GetCicnFromResource("CDCue");
 

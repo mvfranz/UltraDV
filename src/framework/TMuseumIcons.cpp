@@ -211,7 +211,7 @@ void TMuseumIcons::Init()
 //
 //	Return icon by resource name
 
-BBitmap *TMuseumIcons::GetIconByName(const char *theName)
+BBitmap* TMuseumIcons::GetIconByName(const char* theName)
 {
 
 	if ( strcmp(theName, "TransitionIn") == 0 )

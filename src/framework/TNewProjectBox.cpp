@@ -32,7 +32,7 @@
 //
 //
 
-TNewProjectBox::TNewProjectBox(BMessage *data) : BBox(data)
+TNewProjectBox::TNewProjectBox(BMessage* data) : BBox(data)
 {
 
 }
@@ -43,7 +43,7 @@ TNewProjectBox::TNewProjectBox(BMessage *data) : BBox(data)
 //
 //
 
-BArchivable *TNewProjectBox::Instantiate(BMessage *data)
+BArchivable* TNewProjectBox::Instantiate(BMessage* data)
 {
 	if ( validate_instantiation(data, "TNewProjectBox") )
 		return new TNewProjectBox(data);
@@ -68,20 +68,20 @@ void TNewProjectBox::Draw(BRect bounds)
 	PushState();
 
 	// Get TNewProject window
-	TNewProject *theWindow = static_cast<TNewProject *>(Window());
+	TNewProject* theWindow = static_cast<TNewProject*>(Window());
 
 	if (theWindow) {
 		// Get selected item
 		int32 theItem = theWindow->GetSelectedItem();
 
 		// Get preset list from parent Window
-		BList *presetList = theWindow->GetPresetsList();
+		BList* presetList = theWindow->GetPresetsList();
 		if (presetList) {
 			// Draw our text items
 			SetHighColor(kBlack);
 			SetFont(be_plain_font);
 
-			TPreset *preset =  static_cast<TPreset *>(presetList->ItemAt(theItem));
+			TPreset* preset =  static_cast<TPreset*>(presetList->ItemAt(theItem));
 			if (preset) {
 				// Description Header
 				BPoint textPt(Bounds().left + 10, Bounds().top + 30 );

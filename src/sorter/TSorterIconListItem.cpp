@@ -73,7 +73,7 @@ void TSorterIconListItem::Init()
 //
 //	Perform default initialization tasks
 
-void TSorterIconListItem::Update(BView *owner, const BFont *font)
+void TSorterIconListItem::Update(BView* owner, const BFont* font)
 {
 	//      This is a cheap hack to get the height of the listItem set
 	//	properly.  We aren't actually using a font this large.
@@ -93,7 +93,7 @@ void TSorterIconListItem::Update(BView *owner, const BFont *font)
 //
 //
 
-void TSorterIconListItem::DrawItem(BView *owner, BRect itemRect, bool drawEverything)
+void TSorterIconListItem::DrawItem(BView* owner, BRect itemRect, bool drawEverything)
 {
 	owner->PushState();
 

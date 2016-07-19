@@ -52,7 +52,7 @@
 //	Determine file type
 //
 
-bool IsRIFFFile(BFile *file)
+bool IsRIFFFile(BFile* file)
 {
 	// Seek to beginning of file
 	file->Seek(0, SEEK_SET);
@@ -91,7 +91,7 @@ bool IsRIFFFile(BFile *file)
 //
 //
 
-TRIFFReader::TRIFFReader(BFile *file)
+TRIFFReader::TRIFFReader(BFile* file)
 {
 	//	Save pointer to file
 	m_File = file;
@@ -116,7 +116,7 @@ TRIFFReader::~TRIFFReader()
 	//	Free video frame lists
 	if (m_VideoFrameList) {
 		for( uint32 index = 0; index < m_VideoFrameList->CountItems(); index++) {
-			AVIVideoFrame *theFrame = (AVIVideoFrame *)m_VideoFrameList->ItemAt(index);
+			AVIVideoFrame* theFrame = (AVIVideoFrame*)m_VideoFrameList->ItemAt(index);
 
 			if (theFrame)
 				free(theFrame);
@@ -128,7 +128,7 @@ TRIFFReader::~TRIFFReader()
 	//	Free audio frame lists
 	if (m_AudioFrameList) {
 		for( uint32 index = 0; index < m_AudioFrameList->CountItems(); index++) {
-			AVIAudioFrame *theFrame = (AVIAudioFrame *)m_AudioFrameList->ItemAt(index);
+			AVIAudioFrame* theFrame = (AVIAudioFrame*)m_AudioFrameList->ItemAt(index);
 
 			if (theFrame)
 				free(theFrame);
@@ -387,7 +387,7 @@ bool TRIFFReader::ParseAVIFile()
 //	is responsible for freeing allocated memory
 //
 
-bool TRIFFReader::ReadVideoFrame(uint32 frameNum, void *buffer)
+bool TRIFFReader::ReadVideoFrame(uint32 frameNum, void* buffer)
 {
 	bool retVal = false;
 
@@ -408,7 +408,7 @@ bool TRIFFReader::ReadVideoFrame(uint32 frameNum, void *buffer)
 		return retVal;
 
 	//	Get the frame
-	AVIVideoFrame *theFrame = (AVIVideoFrame *)m_VideoFrameList->ItemAt(frameNum);
+	AVIVideoFrame* theFrame = (AVIVideoFrame*)m_VideoFrameList->ItemAt(frameNum);
 	if (theFrame == NULL)
 		return false;
 
@@ -442,7 +442,7 @@ bool TRIFFReader::ReadVideoFrame(uint32 frameNum, void *buffer)
 //	is responsible for freeing allocated memory
 //
 
-bool TRIFFReader::ReadAudioFrame(uint32 frameNum, void *buffer)
+bool TRIFFReader::ReadAudioFrame(uint32 frameNum, void* buffer)
 {
 	bool retVal = false;
 
@@ -522,7 +522,7 @@ bool TRIFFReader::ReadLISTChunk(uint32 size)
 
 		//	Skip over the list
 		m_File->Seek( size,  SEEK_CUR);
-	} else   {
+	} else {
 		// Re-add list size minus size of type
 		m_AVISize += (size - 4);
 	}
@@ -598,7 +598,7 @@ bool TRIFFReader::ReadStreamHeader(uint32 size)
 	#endif
 
 	//	Determine StreamHeader to use
-	AVIStreamHeader *streamHeader;
+	AVIStreamHeader* streamHeader;
 
 	if (m_StreamCount == 0)
 		streamHeader = &m_StreamHeaderOne;
@@ -658,15 +658,15 @@ bool TRIFFReader::ReadstrdChunk(uint32 size)
 	//	Allocate STRD buffer
 	if (m_STRDSize == 0) {
 		m_STRDSize = size;
-		m_STRDBuffer = (uchar *)malloc(size);
+		m_STRDBuffer = (uchar*)malloc(size);
 		ASSERT(m_STRDBuffer);
 	}
 	//	Reallocate...
 	else if (size > m_STRDSize) {
-		uchar *tmpBuf;
+		uchar* tmpBuf;
 
 		m_STRDSize = size;
-		tmpBuf = (uchar *)realloc(m_STRDBuffer, size);
+		tmpBuf = (uchar*)realloc(m_STRDBuffer, size);
 		ASSERT(tmpBuf);
 		m_STRDBuffer = tmpBuf;
 	}
@@ -1032,7 +1032,7 @@ bool TRIFFReader::Readidx1Chunk(uint32 size)
 	m_IndexCount = size >> 4;
 
 	// Allocate index entries
-	m_HeaderIndex = (AVIIndex *)malloc(m_IndexCount * sizeof(AVIIndex));
+	m_HeaderIndex = (AVIIndex*)malloc(m_IndexCount * sizeof(AVIIndex));
 
 	//	Verify allocation
 	if (m_HeaderIndex == 0) {
@@ -1130,7 +1130,7 @@ bool TRIFFReader::Readidx1Chunk(uint32 size)
 		if (streamNum >= 0) {
 			streamType = m_StreamType[streamNum];
 			streamOK   = m_StreamOK[streamNum];
-		} else   {
+		} else {
 			streamType = 0;
 			streamOK   = false;
 		}
@@ -1231,10 +1231,10 @@ bool TRIFFReader::Read00DCChunk(uint32 chunkID, uint32 offset, uint32 length, ui
 {
 	bool retVal = true;
 
-	AVIVideoFrame *videoFrame = NULL;
+	AVIVideoFrame* videoFrame = NULL;
 
 	//	Alocate frame
-	videoFrame = (AVIVideoFrame *) malloc(sizeof(AVIVideoFrame));
+	videoFrame = (AVIVideoFrame*) malloc(sizeof(AVIVideoFrame));
 	ASSERT(videoFrame);
 
 	//	Initialize
@@ -1260,10 +1260,10 @@ bool TRIFFReader::Read00WBChunk(uint32 chunkID, uint32 offset, uint32 length, ui
 {
 	bool retVal = true;
 
-	AVIAudioFrame *audioFrame = NULL;
+	AVIAudioFrame* audioFrame = NULL;
 
 	//	Alocate frame
-	audioFrame = (AVIAudioFrame *) malloc(sizeof(AVIAudioFrame));
+	audioFrame = (AVIAudioFrame*) malloc(sizeof(AVIAudioFrame));
 	ASSERT(audioFrame);
 
 	//	Initialize

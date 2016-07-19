@@ -29,9 +29,9 @@
 //
 //
 
-void DebugAlert(char *theString)
+void DebugAlert(char* theString)
 {
-	BAlert *theAlert = new BAlert("Debug", theString, "Thanks");
+	BAlert* theAlert = new BAlert("Debug", theString, "Thanks");
 	theAlert->Go();
 }
 

@@ -45,7 +45,7 @@ THeaderContainerView::THeaderContainerView(BRect bounds) : BView(bounds, "Header
 //	Construct from archive
 //
 
-THeaderContainerView::THeaderContainerView(BMessage *message) : BView(message)
+THeaderContainerView::THeaderContainerView(BMessage* message) : BView(message)
 {
 }
 
@@ -83,7 +83,7 @@ void THeaderContainerView::Init()
 //
 //
 
-BArchivable *THeaderContainerView::Instantiate(BMessage *archive)
+BArchivable* THeaderContainerView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "THeaderContainerView") )
@@ -99,7 +99,7 @@ BArchivable *THeaderContainerView::Instantiate(BMessage *archive)
 //
 //
 
-status_t THeaderContainerView::Archive(BMessage *data, bool deep) const
+status_t THeaderContainerView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;

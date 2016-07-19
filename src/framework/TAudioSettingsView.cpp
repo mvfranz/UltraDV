@@ -37,7 +37,7 @@
 //
 //
 
-TAudioSettingsView::TAudioSettingsView(BRect bounds, TAudioSettingsDialog *parent) : BView(bounds, "VideoSettingsView", B_FOLLOW_ALL, B_WILL_DRAW)
+TAudioSettingsView::TAudioSettingsView(BRect bounds, TAudioSettingsDialog* parent) : BView(bounds, "VideoSettingsView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	fParent = parent;
 
@@ -88,7 +88,7 @@ void TAudioSettingsView::Init()
 //
 //
 
-void TAudioSettingsView::MessageReceived(BMessage *theMessage)
+void TAudioSettingsView::MessageReceived(BMessage* theMessage)
 {
 
 	switch( theMessage->what)

@@ -29,7 +29,7 @@
 //
 //
 
-TCueEffectView::TCueEffectView(BRect bounds, TCueView *theCue, TCueEffect *theEffect)
+TCueEffectView::TCueEffectView(BRect bounds, TCueView* theCue, TCueEffect* theEffect)
 {
 	//	Save bounds
 	fBounds = bounds;
@@ -97,7 +97,7 @@ void TCueEffectView::MouseDown(BPoint where, bool doubleClick)
 	//	Double click?
 	if (doubleClick) {
 		//	Display effect dialog
-	} else   {
+	} else {
 		//	Deselect everyone
 		if (fIsSelected == false)
 			fCue->DeselectAllEffects();

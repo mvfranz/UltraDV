@@ -35,7 +35,7 @@
 //
 //
 
-AVIWindow::AVIWindow(BRect bounds, char *name) : BWindow(bounds, name, B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_H_RESIZABLE|B_NOT_V_RESIZABLE|B_NOT_ZOOMABLE|B_WILL_ACCEPT_FIRST_CLICK)
+AVIWindow::AVIWindow(BRect bounds, char* name) : BWindow(bounds, name, B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_H_RESIZABLE|B_NOT_V_RESIZABLE|B_NOT_ZOOMABLE|B_WILL_ACCEPT_FIRST_CLICK)
 {
 	//	Create AVIView
 	m_AVIView = new AVIView(bounds, "AVIView", B_FOLLOW_LEFT|B_FOLLOW_TOP, B_NAVIGABLE|B_FRAME_EVENTS|B_WILL_DRAW);
@@ -49,7 +49,7 @@ AVIWindow::AVIWindow(BRect bounds, char *name) : BWindow(bounds, name, B_TITLED_
 	}
 
 	//	Create bitmap for bitmap view
-	BBitmap *bitmap = new BBitmap(bounds, B_RGB32);
+	BBitmap* bitmap = new BBitmap(bounds, B_RGB32);
 	ASSERT(bitmap);
 
 	//	Add a bitmap view

@@ -40,7 +40,7 @@ const int16 kPictureCueEditorToolbarHeight = 23;
 //
 //
 
-TPictureCueEditor::TPictureCueEditor(BRect bounds, TPictureCue *theCue) : BWindow(bounds, "Picture Editor", B_DOCUMENT_WINDOW, 0,0)
+TPictureCueEditor::TPictureCueEditor(BRect bounds, TPictureCue* theCue) : BWindow(bounds, "Picture Editor", B_DOCUMENT_WINDOW, 0,0)
 {
 	// Save cue
 	fCue = theCue;
@@ -222,7 +222,7 @@ void TPictureCueEditor::ShowDurationDialog()
 	// If not, create it
 	else{
 		// Create the channel name dialog from a resource archive
-		BMessage *theMessage = GetWindowFromResource("PictureDurationWindow");
+		BMessage* theMessage = GetWindowFromResource("PictureDurationWindow");
 		fDialog = new TPictureDurationDialog(theMessage, fCue);
 		ASSERT(fDialog);
 

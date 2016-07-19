@@ -36,7 +36,7 @@
 //
 //
 
-TVideoCue::TVideoCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) :
+TVideoCue::TVideoCue(int16 id, TCueChannel* parent, BRect bounds, BPoint point,  long startTime) :
 	TCueView(id, parent, bounds, point, startTime, "VideoCue")
 {
 	// Perform default initialization
@@ -50,7 +50,7 @@ TVideoCue::TVideoCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point, 
 //
 //	Construct from a CueChunk
 
-TVideoCue::TVideoCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) : TCueView(theChunk, parent, bounds, "VideoCue")
+TVideoCue::TVideoCue(BaseCueChunk* theChunk, TCueChannel* parent, BRect bounds) : TCueView(theChunk, parent, bounds, "VideoCue")
 {
 	// Perform default initialization
 	Init(theChunk);
@@ -64,7 +64,7 @@ TVideoCue::TVideoCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) 
 //	Construct from a BMessage
 //
 
-TVideoCue::TVideoCue(BMessage *theMessage) : TCueView(theMessage)
+TVideoCue::TVideoCue(BMessage* theMessage) : TCueView(theMessage)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -145,7 +145,7 @@ void TVideoCue::Init()
 //	Init from BaseCueChunk
 //
 
-void TVideoCue::Init(BaseCueChunk *theChunk)
+void TVideoCue::Init(BaseCueChunk* theChunk)
 {
 	TCueView::Init(theChunk);
 }
@@ -161,7 +161,7 @@ void TVideoCue::Init(BaseCueChunk *theChunk)
 //
 //
 
-BArchivable *TVideoCue::Instantiate(BMessage *archive)
+BArchivable* TVideoCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TVideoCue") )
 		return new TVideoCue(archive);
@@ -176,7 +176,7 @@ BArchivable *TVideoCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TVideoCue::Archive(BMessage *data, bool deep) const
+status_t TVideoCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -253,7 +253,7 @@ void TVideoCue::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TVideoCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TVideoCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Pass up to parent
 	TCueView::MouseMoved(where, code, a_message);
@@ -278,7 +278,7 @@ void TVideoCue::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TVideoCue::KeyDown(const char *bytes, int32 numBytes)
+void TVideoCue::KeyDown(const char* bytes, int32 numBytes)
 {
 	TCueView::KeyDown(bytes, numBytes);
 }
@@ -292,7 +292,7 @@ void TVideoCue::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TVideoCue::KeyUp(const char *bytes, int32 numBytes)
+void TVideoCue::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -303,7 +303,7 @@ void TVideoCue::KeyUp(const char *bytes, int32 numBytes)
 //
 //	Receive messages
 //
-void TVideoCue::MessageReceived(BMessage *message)
+void TVideoCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -341,7 +341,7 @@ void TVideoCue::OpenEditor()
 
 void TVideoCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = NULL;
+	BBitmap* cueIcon = NULL;
 
 	cueIcon = GetCicnFromResource("VideoCue");
 

@@ -49,7 +49,7 @@ const BRect kRotateDialogBounds(0, 0, 315, 125);
 //
 //
 
-TRotateDialog::TRotateDialog(TVisualCue *theCue) : BWindow( kRotateDialogBounds, "Rotation", B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_CLOSABLE | B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE, 0)
+TRotateDialog::TRotateDialog(TVisualCue* theCue) : BWindow( kRotateDialogBounds, "Rotation", B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_CLOSABLE | B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE, 0)
 {
 	//	Save reference to PictureCue
 	fCue = theCue;
@@ -211,7 +211,7 @@ void TRotateDialog::MessageReceived(BMessage* message)
 		int32 sliderVal = fSlider->Value();
 
 		//	Get text value
-		const char *numStr = fRotateText->Text();
+		const char* numStr = fRotateText->Text();
 		int16 theVal = atoi(numStr);
 
 		//	Update text if needed
@@ -243,7 +243,7 @@ void TRotateDialog::MessageReceived(BMessage* message)
 	case ROTATE_TEXT_MSG:
 	{
 		//	Get text value
-		const char *numStr = fRotateText->Text();
+		const char* numStr = fRotateText->Text();
 		int16 theVal = atoi(numStr);
 
 		//	Clip number to acceptable range
@@ -304,7 +304,7 @@ void TRotateDialog::MessageReceived(BMessage* message)
 		}
 
 		//	Inform cue we are gone
-		BMessage *theMessage = new BMessage(ROTATE_CLOSE_MSG);
+		BMessage* theMessage = new BMessage(ROTATE_CLOSE_MSG);
 		fCue->MessageReceived(theMessage);
 		delete theMessage;
 
@@ -331,7 +331,7 @@ void TRotateDialog::MessageReceived(BMessage* message)
 		}
 
 		//	Inform cue we are gone
-		BMessage *theMessage = new BMessage(ROTATE_CLOSE_MSG);
+		BMessage* theMessage = new BMessage(ROTATE_CLOSE_MSG);
 		fCue->MessageReceived(theMessage);
 		delete theMessage;
 
@@ -364,8 +364,8 @@ void TRotateDialog::MessageReceived(BMessage* message)
 void TRotateDialog::UpdateCue()
 {
 	if (fCue->IsOnStage()) {
-		TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-		TStageView       *stageView = theStage->GetStageView();
+		TStageWindow* theStage  = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage();
+		TStageView* stageView = theStage->GetStageView();
 
 		theStage->Lock();
 		stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());

@@ -45,7 +45,7 @@
 //
 //
 
-TCueChannelHeader::TCueChannelHeader(BRect bounds, TCueChannel *channel) : BView(bounds, "CueChannelHeader", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW)
+TCueChannelHeader::TCueChannelHeader(BRect bounds, TCueChannel* channel) : BView(bounds, "CueChannelHeader", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW)
 {
 	fChannel = channel;
 
@@ -60,16 +60,16 @@ TCueChannelHeader::TCueChannelHeader(BRect bounds, TCueChannel *channel) : BView
 //
 //
 
-TCueChannelHeader::TCueChannelHeader(BMessage *message) : BView(message)
+TCueChannelHeader::TCueChannelHeader(BMessage* message) : BView(message)
 {
 	fChannel = NULL;
 
 	//	Find child views
-	fName                   = (TChannelNameView *)FindView("ChannelName");
-	fSoloButton     = (TSoloButton *)FindView("SoloButton");
-	fMuteButton     = (TMuteButton *)FindView("MuteButton");
-	fExpandButton   = (TExpandButton *)FindView("ExpandButton");
-	fLockButton     = (TLockButton *)FindView("LockButton");
+	fName                   = (TChannelNameView*)FindView("ChannelName");
+	fSoloButton     = (TSoloButton*)FindView("SoloButton");
+	fMuteButton     = (TMuteButton*)FindView("MuteButton");
+	fExpandButton   = (TExpandButton*)FindView("ExpandButton");
+	fLockButton     = (TLockButton*)FindView("LockButton");
 }
 
 //---------------------------------------------------------------------
@@ -120,11 +120,11 @@ void TCueChannelHeader::Init()
 	fName->Show();
 
 	// Set target
-	TCueSheetWindow *theTarget = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+	TCueSheetWindow* theTarget = static_cast<MuseumApp*>(be_app)->GetCueSheet();
 
 	// Create Mute button
-	BBitmap *muteUp = GetAppIcons()->fMuteUp;
-	BBitmap *muteDn = GetAppIcons()->fMuteDown;
+	BBitmap* muteUp = GetAppIcons()->fMuteUp;
+	BBitmap* muteDn = GetAppIcons()->fMuteDown;
 	BRect textBounds = fName->Bounds();
 	bounds.Set( kButtonLeftOffset, textBounds.bottom + kButtonTopOffset, kButtonWidth+kButtonLeftOffset, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
 	fMuteButton = new TMuteButton(fChannel, bounds, "MuteButton", muteUp, muteDn, theTarget);
@@ -133,8 +133,8 @@ void TCueChannelHeader::Init()
 
 	// Create Solo button
 	// Place it to the right of the Mute button
-	BBitmap *soloUp = GetAppIcons()->fSoloUp;
-	BBitmap *soloDn = GetAppIcons()->fSoloDown;
+	BBitmap* soloUp = GetAppIcons()->fSoloUp;
+	BBitmap* soloDn = GetAppIcons()->fSoloDown;
 	BRect buttonBounds = fMuteButton->Frame();
 	bounds.Set( buttonBounds.right + kButtonLeftOffset, textBounds.bottom + kButtonTopOffset,
 	            kButtonWidth+kButtonLeftOffset+buttonBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
@@ -144,8 +144,8 @@ void TCueChannelHeader::Init()
 
 	// Create Expand button
 	// Place it to the right of the Solo button
-	BBitmap *expand = GetAppIcons()->fExpand;
-	BBitmap *contract = GetAppIcons()->fContract;
+	BBitmap* expand = GetAppIcons()->fExpand;
+	BBitmap* contract = GetAppIcons()->fContract;
 	BRect expandBounds = fSoloButton->Frame();
 	bounds.Set( expandBounds.right + kButtonLeftOffset, textBounds.bottom + kButtonTopOffset,
 	            kButtonWidth+kButtonLeftOffset+expandBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
@@ -155,8 +155,8 @@ void TCueChannelHeader::Init()
 
 	// Create Lock button
 	// Place it to the right of the Expand button
-	BBitmap *unlock = GetAppIcons()->fUnlockDark;
-	BBitmap *lock   = GetAppIcons()->fLockDark;
+	BBitmap* unlock = GetAppIcons()->fUnlockDark;
+	BBitmap* lock   = GetAppIcons()->fLockDark;
 	BRect lockBounds = fExpandButton->Frame();
 	bounds.Set( lockBounds.right + kButtonLeftOffset, textBounds.bottom + kButtonTopOffset,
 	            kButtonWidth+kButtonLeftOffset+lockBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
@@ -176,7 +176,7 @@ void TCueChannelHeader::Init()
 //
 //
 
-BArchivable *TCueChannelHeader::Instantiate(BMessage *archive)
+BArchivable* TCueChannelHeader::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TCueChannelHeader") )
@@ -191,7 +191,7 @@ BArchivable *TCueChannelHeader::Instantiate(BMessage *archive)
 //
 //
 
-status_t TCueChannelHeader::Archive(BMessage *data, bool deep) const
+status_t TCueChannelHeader::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -294,7 +294,7 @@ void TCueChannelHeader::MouseDown(BPoint where)
 	const BRect bounds = fChannel->Bounds();
 
 	// Check for mouse down
-	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+	Window()->CurrentMessage()->FindInt32("buttons", (long*)&buttons);
 	GetMouse(&point, &buttons, true);
 
 	if (buttons) {
@@ -316,7 +316,7 @@ void TCueChannelHeader::MouseDown(BPoint where)
 //
 //	Receive messages
 //
-void TCueChannelHeader::MessageReceived(BMessage *message)
+void TCueChannelHeader::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -332,8 +332,8 @@ void TCueChannelHeader::MessageReceived(BMessage *message)
 
 			// Find out which cue was moved.  Was it one from this channel
 			// or is it being moved in from another?
-			TCueView *cueView;
-			message->FindPointer("CueView", (void **)&cueView);
+			TCueView* cueView;
+			message->FindPointer("CueView", (void**)&cueView);
 			if (&cueView) {
 				uint32 insertTime = PixelsToTime( where.x, GetCurrentTimeFormat(), GetCurrentResolution());
 
@@ -355,8 +355,8 @@ void TCueChannelHeader::MessageReceived(BMessage *message)
 			ConvertFromScreen(&where);
 
 			// Unpack message
-			TCueChannel *insertChannel;
-			message->FindPointer("ChannelView", (void **)&insertChannel);
+			TCueChannel* insertChannel;
+			message->FindPointer("ChannelView", (void**)&insertChannel);
 			if (&insertChannel) {
 				// Make sure we aren't dragging the channel back into itself
 				if (insertChannel != fChannel) {
@@ -427,7 +427,7 @@ void TCueChannelHeader::UpdateChannelName()
 	char nameStr[255];
 	char IDStr[255];
 
-	BLooper *looper = Looper();
+	BLooper* looper = Looper();
 	looper->Lock();
 
 	// Set label text
@@ -448,7 +448,7 @@ void TCueChannelHeader::UpdateChannelName()
 //
 //
 
-void TCueChannelHeader::SetChannel(TCueChannel *channel)
+void TCueChannelHeader::SetChannel(TCueChannel* channel)
 {
 	fChannel = channel;
 

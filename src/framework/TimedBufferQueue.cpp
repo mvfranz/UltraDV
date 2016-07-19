@@ -32,7 +32,7 @@ using namespace std;
 
 //#else
 //#include <map>
-typedef multimap<bigtime_t, BBuffer *> buffer_map;
+typedef multimap<bigtime_t, BBuffer*> buffer_map;
 //#endif
 
 
@@ -83,7 +83,7 @@ BTimedBufferQueue::~BTimedBufferQueue()
 
 status_t
 BTimedBufferQueue::PushBuffer(
-	BBuffer * buffer,
+	BBuffer* buffer,
 	bigtime_t time)
 {
 	if (!fqueue->lock()) return B_ERROR;
@@ -99,11 +99,11 @@ BTimedBufferQueue::PushBuffer(
 	return B_OK;
 }
 
-BBuffer *
+BBuffer*
 BTimedBufferQueue::PopFirstBuffer(
-	bigtime_t * out_time)
+	bigtime_t* out_time)
 {
-	BBuffer * buf = 0;
+	BBuffer* buf = 0;
 	if (!fqueue->lock()) return 0;
 	try {
 		buffer_map::iterator i(fqueue->fbuffers.begin());
@@ -149,12 +149,12 @@ BTimedBufferQueue::TimeOfFirstBuffer()
 	return ret;
 }
 
-BBuffer *
+BBuffer*
 BTimedBufferQueue::PeekFirstBufferAtOrAfter(
 	bigtime_t time,
-	bigtime_t * out_time)
+	bigtime_t* out_time)
 {
-	BBuffer * buf = 0;
+	BBuffer* buf = 0;
 	if (!fqueue->lock()) return 0;
 	try {
 		buffer_map::iterator i(fqueue->fbuffers.lower_bound(time));
@@ -174,7 +174,7 @@ BTimedBufferQueue::PeekFirstBufferAtOrAfter(
 
 status_t
 BTimedBufferQueue::RemoveBuffer(
-	BBuffer * buffer)
+	BBuffer* buffer)
 {
 	status_t err = B_ERROR;
 	if (!fqueue->lock()) return B_ERROR;

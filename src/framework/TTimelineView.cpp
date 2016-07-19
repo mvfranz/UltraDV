@@ -50,7 +50,7 @@
 //
 //
 
-TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow *parent) :
+TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow* parent) :
 	BView(bounds, "TimelineView", B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW),
 	BMediaNode("TimelineNode")
 {
@@ -69,7 +69,7 @@ TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow *parent) :
 //	Construct from archive
 //
 
-TTimelineView::TTimelineView(BMessage *message) : BView(message), BMediaNode("TimelineNode")
+TTimelineView::TTimelineView(BMessage* message) : BView(message), BMediaNode("TimelineNode")
 {
 	fCueSheetWindow = NULL;
 
@@ -83,9 +83,9 @@ TTimelineView::TTimelineView(BMessage *message) : BView(message), BMediaNode("Ti
 	// gzr: to do... Why does 63 == white?
 	int32 bitsLength = fIndicator->BitsLength();
 	for ( int32 index = 0; index < bitsLength; index++) {
-		unsigned char color = ((unsigned char *)fIndicator->Bits())[index];
+		unsigned char color = ((unsigned char*)fIndicator->Bits())[index];
 		if (color == 63) {
-			((unsigned char *)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
+			((unsigned char*)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
 		}
 	}
 }
@@ -126,7 +126,7 @@ TTimelineView::~TTimelineView()
 //
 //
 
-BArchivable *TTimelineView::Instantiate(BMessage *archive)
+BArchivable* TTimelineView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TTimelineView") )
@@ -142,7 +142,7 @@ BArchivable *TTimelineView::Instantiate(BMessage *archive)
 //
 //
 
-status_t TTimelineView::Archive(BMessage *data, bool deep) const
+status_t TTimelineView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -198,9 +198,9 @@ void TTimelineView::Init()
 	// gzr: to do... Why does 63 == white?
 	int32 bitsLength = fIndicator->BitsLength();
 	for ( int32 index = 0; index < bitsLength; index++) {
-		unsigned char color = ((unsigned char *)fIndicator->Bits())[index];
+		unsigned char color = ((unsigned char*)fIndicator->Bits())[index];
 		if (color == 63) {
-			((unsigned char *)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
+			((unsigned char*)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
 		}
 	}
 
@@ -239,7 +239,7 @@ void TTimelineView::MouseDown(BPoint where)
 	const BRect bounds = Bounds();
 
 	// Reset cue drag flag
-	static_cast<MuseumApp *>(be_app)->fIsCueDrag = false;
+	static_cast<MuseumApp*>(be_app)->fIsCueDrag = false;
 
 	// Clip out Header and right side of indicator zone
 	PushState();
@@ -281,7 +281,7 @@ void TTimelineView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TTimelineView::MouseMoved( BPoint where, uint32 code, const BMessage *message )
+void TTimelineView::MouseMoved( BPoint where, uint32 code, const BMessage* message )
 {
 
 	// Do nothing if we are playing
@@ -313,7 +313,7 @@ void TTimelineView::MouseMoved( BPoint where, uint32 code, const BMessage *messa
 	// Only update the tick if we aren't tracking position indicator
 	uint32 buttons = 0;
 
-	Window()->CurrentMessage()->FindInt32("buttons", (int32 *)&buttons);
+	Window()->CurrentMessage()->FindInt32("buttons", (int32*)&buttons);
 	if (!buttons)
 		UpdateTimeTick(where);
 
@@ -330,7 +330,7 @@ void TTimelineView::MouseMoved( BPoint where, uint32 code, const BMessage *messa
 //	Receive messages
 //
 
-void TTimelineView::MessageReceived(BMessage *message)
+void TTimelineView::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -363,11 +363,11 @@ void TTimelineView::MessageReceived(BMessage *message)
 		// If the mouse location is outside of the window bounds, scroll the view
 		BPoint scrollPt = ConvertToParent(mousePt);
 		if (scrollPt.x > fCueSheetWindow->Bounds().right) {
-			TCueSheetScrollBarH *theScroll = fCueSheetWindow->GetScrollH();
+			TCueSheetScrollBarH* theScroll = fCueSheetWindow->GetScrollH();
 			float theVal = theScroll->Value();
 			theScroll->SetValue( theVal + kTickSpacing);
-		} else if (scrollPt.x < (fCueSheetWindow->Bounds().left + kHeaderWidth) )   {
-			TCueSheetScrollBarH *theScroll = fCueSheetWindow->GetScrollH();
+		} else if (scrollPt.x < (fCueSheetWindow->Bounds().left + kHeaderWidth) ) {
+			TCueSheetScrollBarH* theScroll = fCueSheetWindow->GetScrollH();
 			float theVal = theScroll->Value();
 			theScroll->SetValue( theVal - kTickSpacing);
 		}
@@ -662,12 +662,12 @@ void TTimelineView::UpdateTimeTick(BPoint where)
 	//      We don't need to do this during playback.  The playback engines handles
 	//	it at that time.
 	if (!IsPlaying()) {
-		BMessage *message = new BMessage(UPDATE_TIMELINE_MSG);
+		BMessage* message = new BMessage(UPDATE_TIMELINE_MSG);
 		uint32 theTime = PixelsToTime((where.x), GetCurrentTimeFormat(), GetCurrentResolution());
 		message->AddInt32("TheTime", theTime);
 
 		// Inform Locator
-		TTimePalette *timePalette = static_cast<MuseumApp *>(be_app)->GetTimePalette();
+		TTimePalette* timePalette = static_cast<MuseumApp*>(be_app)->GetTimePalette();
 		if (timePalette) {
 			timePalette->Lock();
 			timePalette->GetTimePaletteView()->MessageReceived(message);
@@ -712,7 +712,7 @@ void TTimelineView::DrawIndicator()
 	// Draw the indicator line down all views
 	// We do this by sending a message out to all of the cue channels
 	// and they will draw the line where indicated
-	BMessage *message = new BMessage(UPDATE_INDICATOR_MSG);
+	BMessage* message = new BMessage(UPDATE_INDICATOR_MSG);
 	drawPt.Set( fIndicatorRect.left + (fIndicatorRect.Width() / 2), fIndicatorRect.top);
 	message->AddPoint("IndicatorPoint", drawPt);
 
@@ -764,7 +764,7 @@ void TTimelineView::DrawIndicator(BRect oldPosition)
 	// Draw the indicator line down all views
 	// We do this by sending a message out to all of the cue channels
 	// and they will draw the line where indicated
-	BMessage *message = new BMessage(UPDATE_INDICATOR_MSG);
+	BMessage* message = new BMessage(UPDATE_INDICATOR_MSG);
 	drawPt.Set( fIndicatorRect.left + (fIndicatorRect.Width() / 2), fIndicatorRect.top);
 	message->AddPoint("IndicatorPoint", drawPt);
 
@@ -849,14 +849,14 @@ void TTimelineView::TrackIndicator(BPoint mousePt)
 
 	//	Tell cue sheet about new time as well.  This will inform all cues and will
 	//	update their visibility on the stage
-	BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+	BMessage* message = new BMessage(TIMELINE_DRAG_MSG);
 	BPoint drawPt( fIndicatorRect.left + (fIndicatorRect.Width() / 2)+1, fIndicatorRect.top);
 	message->AddPoint("Where", drawPt);
 	message->AddInt32("TheTime", theTime);
 	fCueSheetWindow->GetCueSheetView()->MessageReceived(message);
 
 	// Inform Transport as well
-	TTransportPalette *theTransport = static_cast<MuseumApp *>(be_app)->GetTransport();
+	TTransportPalette* theTransport = static_cast<MuseumApp*>(be_app)->GetTransport();
 	if (theTransport)
 		theTransport->PostMessage(message, theTransport->GetTransportPaletteView());
 
@@ -938,7 +938,7 @@ void TTimelineView::ClipIndicatorRect()
 void TTimelineView::AttachedToWindow()
 {
 	if(fCueSheetWindow == NULL) {
-		fCueSheetWindow = (TCueSheetWindow *)Window();
+		fCueSheetWindow = (TCueSheetWindow*)Window();
 	}
 
 	//	Pass up to parent
@@ -954,7 +954,7 @@ void TTimelineView::AttachedToWindow()
 //---------------------------------------------------------------------
 //
 //
-void TTimelineView::SetParent(TCueSheetWindow *parent)
+void TTimelineView::SetParent(TCueSheetWindow* parent)
 {
 	fCueSheetWindow = parent;
 }
@@ -983,7 +983,7 @@ port_id TTimelineView::ControlPort() const
 //
 
 
-BMediaAddOn* TTimelineView::AddOn( int32 *internal_id) const
+BMediaAddOn* TTimelineView::AddOn( int32* internal_id) const
 {
 	return NULL;
 }
@@ -999,9 +999,9 @@ BMediaAddOn* TTimelineView::AddOn( int32 *internal_id) const
 //	Static service thread function
 //
 
-status_t TTimelineView::service_routine(void * data)
+status_t TTimelineView::service_routine(void* data)
 {
-	((TTimelineView *)data)->ServiceRoutine();
+	((TTimelineView*)data)->ServiceRoutine();
 
 	return 0;
 }
@@ -1051,9 +1051,9 @@ void TTimelineView::ServiceRoutine()
 //	Static run thread function
 //
 
-status_t TTimelineView::run_routine(void *data)
+status_t TTimelineView::run_routine(void* data)
 {
-	((TTimelineView *)data)->RunRoutine();
+	((TTimelineView*)data)->RunRoutine();
 	return 0;
 }
 

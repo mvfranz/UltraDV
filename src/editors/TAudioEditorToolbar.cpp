@@ -41,7 +41,7 @@
 //
 //
 
-TAudioEditorToolbar::TAudioEditorToolbar(TAudioEditor *parent, BRect bounds) : BView(bounds, "AudioToolbar", B_FOLLOW_TOP | B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW)
+TAudioEditorToolbar::TAudioEditorToolbar(TAudioEditor* parent, BRect bounds) : BView(bounds, "AudioToolbar", B_FOLLOW_TOP | B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW)
 {
 
 	fParent = parent;
@@ -135,7 +135,7 @@ void TAudioEditorToolbar::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TAudioEditorToolbar::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TAudioEditorToolbar::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -159,7 +159,7 @@ void TAudioEditorToolbar::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TAudioEditorToolbar::KeyDown(const char *bytes, int32 numBytes)
+void TAudioEditorToolbar::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	BView::KeyDown(bytes, numBytes);
@@ -174,7 +174,7 @@ void TAudioEditorToolbar::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TAudioEditorToolbar::KeyUp(const char *bytes, int32 numBytes)
+void TAudioEditorToolbar::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -226,8 +226,8 @@ void TAudioEditorToolbar::Init()
 	BRect bounds;
 
 	// Create Play button
-	BBitmap *playUp = GetIcon16FromResource("AudioPlayUp");
-	BBitmap *playDn = GetIcon16FromResource("AudioPlayDn");
+	BBitmap* playUp = GetIcon16FromResource("AudioPlayUp");
+	BBitmap* playDn = GetIcon16FromResource("AudioPlayDn");
 	bounds = Bounds();
 	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset,
 	            bounds.top + kButtonTopOffset + kToolButtonHeight );
@@ -237,8 +237,8 @@ void TAudioEditorToolbar::Init()
 
 
 	// Create Zoom In Button
-	BBitmap *zoomInUp = GetIcon16FromResource("AudioZoomInUp");
-	BBitmap *zoomInDn = GetIcon16FromResource("AudioZoomInDn");
+	BBitmap* zoomInUp = GetIcon16FromResource("AudioZoomInUp");
+	BBitmap* zoomInDn = GetIcon16FromResource("AudioZoomInDn");
 	bounds = Bounds();
 	bounds.Set( fPlayButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset,
 	            fPlayButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);
@@ -247,8 +247,8 @@ void TAudioEditorToolbar::Init()
 	fZoomInButton->Show();
 
 	// Create Zoom Out Button
-	BBitmap *zoomOutUp = GetIcon16FromResource("AudioZoomOutUp");
-	BBitmap *zoomOutDn = GetIcon16FromResource("AudioZoomOutDn");
+	BBitmap* zoomOutUp = GetIcon16FromResource("AudioZoomOutUp");
+	BBitmap* zoomOutDn = GetIcon16FromResource("AudioZoomOutDn");
 	bounds = Bounds();
 	bounds.Set( fZoomInButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset,
 	            fZoomInButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);

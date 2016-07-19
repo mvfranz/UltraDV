@@ -35,7 +35,7 @@
 //
 //
 
-TTransitionView::TTransitionView(BRect bounds, TCueView *theCue, TCueEffect *theEffect) :
+TTransitionView::TTransitionView(BRect bounds, TCueView* theCue, TCueEffect* theEffect) :
 	TCueEffectView(bounds, theCue, theEffect)
 {
 	//	Do default initialization
@@ -74,7 +74,7 @@ void TTransitionView::Init()
 	int32 lengthPix = TimeToPixels(duration,  GetCurrentTimeFormat(), GetCurrentResolution());
 
 	//	In Effect is pegged to left side
-	if ( ((TTransitionEffect *)fEffect)->TransitionIn() ) {
+	if ( ((TTransitionEffect*)fEffect)->TransitionIn() ) {
 		fBounds.left    = startPix + 4; // Add width of tray edge
 		fBounds.right   = fBounds.left + lengthPix;
 	}
@@ -109,7 +109,7 @@ void TTransitionView::Draw(BRect updateRect)
 	//	If we are an "Out" transition, draw left dragger
 
 	//	Transition In
-	if ( ((TTransitionEffect *)fEffect)->TransitionIn()) {
+	if ( ((TTransitionEffect*)fEffect)->TransitionIn()) {
 		// Right side highlights
 		fCue->SetHighColor(kSteelBlue);
 		fCue->FillRect(fRResizeZone);
@@ -139,7 +139,7 @@ void TTransitionView::Draw(BRect updateRect)
 		fCue->StrokeLine(startPt, endPt);
 
 		//	Draw icon.  It should be 16x16
-		BBitmap *icon = dynamic_cast<TTransitionEffect *>(fEffect)->Icon();
+		BBitmap* icon = dynamic_cast<TTransitionEffect*>(fEffect)->Icon();
 		if (icon) {
 			BPoint drawPt(fBounds.left+2, fBounds.top+2);
 			fCue->DrawBitmap(icon, drawPt);
@@ -176,7 +176,7 @@ void TTransitionView::Draw(BRect updateRect)
 		fCue->StrokeLine(startPt, endPt);
 
 		//	Draw icon.  It should be 16x16
-		BBitmap *icon = dynamic_cast<TTransitionEffect *>(fEffect)->Icon();
+		BBitmap* icon = dynamic_cast<TTransitionEffect*>(fEffect)->Icon();
 		if (icon) {
 			BPoint drawPt(fBounds.right-18, fBounds.top+2);
 			fCue->DrawBitmap(icon, drawPt);
@@ -348,7 +348,7 @@ void TTransitionView::MouseMoved(BPoint where)
 	//
 	//	Check and see if they are resizing
 	//	First check and see if they are in the right resize zone...
-	if( fRResizeZone.Contains(where) && ((TTransitionEffect *)fEffect)->TransitionIn() ) {
+	if( fRResizeZone.Contains(where) && ((TTransitionEffect*)fEffect)->TransitionIn() ) {
 		ResizeRightSide();
 	}
 	//	Left size?
@@ -405,7 +405,7 @@ void TTransitionView::Resized()
 	int32 lengthPix = TimeToPixels(duration,  GetCurrentTimeFormat(), GetCurrentResolution());
 
 	//	In Effects are pegged to left side
-	if ( ((TTransitionEffect *)fEffect)->TransitionIn() ) {
+	if ( ((TTransitionEffect*)fEffect)->TransitionIn() ) {
 		fBounds.left    = startPix + 4; // Add width of tray edge
 		fBounds.right   = fBounds.left + lengthPix;
 	}
@@ -483,16 +483,16 @@ void TTransitionView::ResizeRightSide()
 			fEffect->Duration( fEffect->StartTime() + newDuration);
 
 			//	Redraw stage
-			BMessage *stageMsg = new BMessage(TIMELINE_DRAG_MSG);
+			BMessage* stageMsg = new BMessage(TIMELINE_DRAG_MSG);
 			stageMsg->AddInt32("TheTime", GetCurrentTime());
-			((MuseumApp *)be_app)->GetCueSheet()->GetCueSheetView()->MessageReceived(stageMsg);
+			((MuseumApp*)be_app)->GetCueSheet()->GetCueSheetView()->MessageReceived(stageMsg);
 			delete stageMsg;
 
 			//	Notify timeline of mouse location.  Clip to effect bounds
-			BMessage *timeMsg = new BMessage(UPDATE_TIMELINE_MSG);
+			BMessage* timeMsg = new BMessage(UPDATE_TIMELINE_MSG);
 			BPoint resizePt = fCue->ConvertToParent(BPoint(fBounds.right, fBounds.top));
 			timeMsg->AddPoint("Where", resizePt);
-			static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetTimeline()->MessageReceived(timeMsg);
+			static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetTimeline()->MessageReceived(timeMsg);
 			delete timeMsg;
 
 			// Save point and frame for future compare
@@ -523,9 +523,9 @@ void TTransitionView::ResizeRightSide()
 		}
 
 		//	Redraw stage
-		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		BMessage* message = new BMessage(TIMELINE_DRAG_MSG);
 		message->AddInt32("TheTime", GetCurrentTime());
-		((MuseumApp *)be_app)->GetCueSheet()->GetCueSheetView()->MessageReceived(message);
+		((MuseumApp*)be_app)->GetCueSheet()->GetCueSheetView()->MessageReceived(message);
 
 	}
 }
@@ -591,16 +591,16 @@ void TTransitionView::ResizeLeftSide()
 			fEffect->Duration(newDuration);
 
 			//	Redraw stage
-			BMessage *stageMsg = new BMessage(TIMELINE_DRAG_MSG);
+			BMessage* stageMsg = new BMessage(TIMELINE_DRAG_MSG);
 			stageMsg->AddInt32("TheTime", GetCurrentTime());
-			static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->MessageReceived(stageMsg);
+			static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView()->MessageReceived(stageMsg);
 			delete stageMsg;
 
 			//	Notify timeline of mouse location.  Clip to effect bounds
-			BMessage *timeMsg = new BMessage(UPDATE_TIMELINE_MSG);
+			BMessage* timeMsg = new BMessage(UPDATE_TIMELINE_MSG);
 			BPoint resizePt = fCue->ConvertToParent(BPoint(fBounds.left, fBounds.top));
 			timeMsg->AddPoint("Where", resizePt);
-			static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetTimeline()->MessageReceived(timeMsg);
+			static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetTimeline()->MessageReceived(timeMsg);
 			delete timeMsg;
 
 			// Save point and frame for future compare
@@ -634,8 +634,8 @@ void TTransitionView::ResizeLeftSide()
 		}
 
 		//	Redraw stage
-		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		BMessage* message = new BMessage(TIMELINE_DRAG_MSG);
 		message->AddInt32("TheTime", GetCurrentTime());
-		((MuseumApp *)be_app)->GetCueSheet()->GetCueSheetView()->MessageReceived(message);
+		((MuseumApp*)be_app)->GetCueSheet()->GetCueSheetView()->MessageReceived(message);
 	}
 }

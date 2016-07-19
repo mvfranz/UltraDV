@@ -34,7 +34,7 @@
 //
 //
 
-TMIDIEditorView::TMIDIEditorView(TMIDIEditor *parent, BRect bounds) : BView(bounds, "MIDIEditorView", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
+TMIDIEditorView::TMIDIEditorView(TMIDIEditor* parent, BRect bounds) : BView(bounds, "MIDIEditorView", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
 {
 	fEditor = parent;
 
@@ -85,7 +85,7 @@ void TMIDIEditorView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TMIDIEditorView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TMIDIEditorView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 
 }
@@ -110,7 +110,7 @@ void TMIDIEditorView::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TMIDIEditorView::KeyDown(const char *bytes, int32 numBytes)
+void TMIDIEditorView::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	BView::KeyDown(bytes, numBytes);
@@ -125,7 +125,7 @@ void TMIDIEditorView::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TMIDIEditorView::KeyUp(const char *bytes, int32 numBytes)
+void TMIDIEditorView::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 

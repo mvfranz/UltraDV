@@ -43,7 +43,7 @@ const short kBorder = 6;
 //
 
 //ABH old - TStagePictureCue::TStagePictureCue(BRect bounds, char *name, TCueView *theCue) : TStageCue(bounds, name, theCue)
-TStagePictureCue::TStagePictureCue(BRect bounds, char *name, TCueView *theCue)
+TStagePictureCue::TStagePictureCue(BRect bounds, char* name, TCueView* theCue)
 {
 	// Do default initialization
 	Init();
@@ -57,7 +57,7 @@ TStagePictureCue::TStagePictureCue(BRect bounds, char *name, TCueView *theCue)
 //
 //
 
-TStagePictureCue::TStagePictureCue(BMessage *theMessage) : TStageCue(theMessage)
+TStagePictureCue::TStagePictureCue(BMessage* theMessage) : TStageCue(theMessage)
 {
 	// Do default initialization
 	Init();
@@ -108,7 +108,7 @@ void TStagePictureCue::Init()
 //
 //
 
-BArchivable *TStagePictureCue::Instantiate(BMessage *archive)
+BArchivable* TStagePictureCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TStagePictureCue") )
 		return new TStagePictureCue(archive);
@@ -123,7 +123,7 @@ BArchivable *TStagePictureCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TStagePictureCue::Archive(BMessage *data, bool deep) const
+status_t TStagePictureCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -207,7 +207,7 @@ void TStagePictureCue::DrawData(BRect updateRect, long theTime)
 //	Draw cues internal data into composite view
 //
 
-void TStagePictureCue::CompositeData(BRect updateRect, BView *offscreen)
+void TStagePictureCue::CompositeData(BRect updateRect, BView* offscreen)
 {
 	// Do not draw if cue or channel is muted
 //	if ( fChannelCue->GetChannel()->GetMute() )
@@ -247,7 +247,7 @@ void TStagePictureCue::CompositeData(BRect updateRect, BView *offscreen)
 void TStagePictureCue::MouseDown(BPoint where)
 {
 	// Do nothing if we are playing
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->IsPlaying() )
+	if ( static_cast<MuseumApp*>(be_app)->GetCueSheet()->IsPlaying() )
 		return;
 
 	// Do nothing if view is hidden
@@ -259,8 +259,8 @@ void TStagePictureCue::MouseDown(BPoint where)
 
 	// Determine which button has been clicked
 	uint32 buttons = 0;
-	BMessage *message = Window()->CurrentMessage();
-	message->FindInt32("buttons", (long *)&buttons);
+	BMessage* message = Window()->CurrentMessage();
+	message->FindInt32("buttons", (long*)&buttons);
 
 	switch(buttons)
 	{
@@ -315,7 +315,7 @@ void TStagePictureCue::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TStagePictureCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TStagePictureCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Do nothing if view is hidden
 	if (IsHidden())
@@ -364,7 +364,7 @@ void TStagePictureCue::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TStagePictureCue::KeyDown(const char *bytes, int32 numBytes)
+void TStagePictureCue::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	BView::KeyDown(bytes, numBytes);
@@ -379,7 +379,7 @@ void TStagePictureCue::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TStagePictureCue::KeyUp(const char *bytes, int32 numBytes)
+void TStagePictureCue::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -421,7 +421,7 @@ void TStagePictureCue::FrameResized(float new_width, float new_height)
 //
 //
 
-void TStagePictureCue::SetBitmap(BBitmap *bitmap)
+void TStagePictureCue::SetBitmap(BBitmap* bitmap)
 {
 	if (bitmap) {
 		fBitmap = bitmap;
@@ -449,7 +449,7 @@ void TStagePictureCue::SetBitmap(BBitmap *bitmap)
 //
 //
 
-void TStagePictureCue::MessageReceived(BMessage *message)
+void TStagePictureCue::MessageReceived(BMessage* message)
 {
 
 	switch (message->what)
@@ -511,7 +511,7 @@ void TStagePictureCue::UpdatePictureCueRegion(double theTime)
 	int32 cueChannelID = fChannelCue->GetChannelID();
 
 	// Get total channels
-	int32 totalChannels = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetTotalChannels();
+	int32 totalChannels = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView()->GetTotalChannels();
 
 	//      Determine cue layer.  Iterate through all higher layers and determine
 	//	the area to be invalidated.  Construct a region to do this.  Exlude all
@@ -521,7 +521,7 @@ void TStagePictureCue::UpdatePictureCueRegion(double theTime)
 	invalRegion.Include(fChannelCue->GetArea());
 
 	for(int32 index = cueChannelID+1; index <= totalChannels; index++) {
-		TStageCue *stageCue = ((TStageView *)Parent())->GetStageCueAtTimeandChannel(theTime, index);
+		TStageCue* stageCue = ((TStageView*)Parent())->GetStageCueAtTimeandChannel(theTime, index);
 
 		if (stageCue)
 			invalRegion.Exclude( stageCue->GetChannelCue()->GetArea());
@@ -531,7 +531,7 @@ void TStagePictureCue::UpdatePictureCueRegion(double theTime)
 	for(int32 index = 0; index < invalRegion.CountRects(); index++) {
 		// gzr...
 		//Parent()->Invalidate( invalRegion.RectAt(index));
-		((TStageView *)Parent())->StageDraw( invalRegion.RectAt(index), theTime);
+		((TStageView*)Parent())->StageDraw( invalRegion.RectAt(index), theTime);
 	}
 }
 
@@ -1142,9 +1142,9 @@ void TStagePictureCue::DoTransition(bool transitionIn)
 
 	// Create new one and fire it off...
 	if (transitionIn)
-		fTransition = new TTransition( this, (TStageView *)Parent(), fChannelCue->GetTransitionInID(), fChannelCue->GetTransitionInDuration());
+		fTransition = new TTransition( this, (TStageView*)Parent(), fChannelCue->GetTransitionInID(), fChannelCue->GetTransitionInDuration());
 	else
-		fTransition = new TTransition( this, (TStageView *)Parent(), fChannelCue->GetTransitionOutID(), fChannelCue->GetTransitionOutDuration());
+		fTransition = new TTransition( this, (TStageView*)Parent(), fChannelCue->GetTransitionOutID(), fChannelCue->GetTransitionOutDuration());
 
 	// Start it
 	fTransition->Start();
@@ -1165,10 +1165,10 @@ void TStagePictureCue::DoTransition(bool transitionIn)
 
 void TStagePictureCue::OpenStageCueMenu(BPoint menuPt)
 {
-	BMenuItem       *selected;
+	BMenuItem* selected;
 
 	// Create the menu and mark the current transition
-	TStageCueMenu *theMenu = new TStageCueMenu(this->fChannelCue);
+	TStageCueMenu* theMenu = new TStageCueMenu(this->fChannelCue);
 
 	if (theMenu) {
 		// Set menu location point

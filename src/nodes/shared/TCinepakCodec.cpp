@@ -30,7 +30,7 @@
 //
 //
 
-TCinepakCodec::TCinepakCodec(TRIFFReader *reader) : TVideoCodec(reader)
+TCinepakCodec::TCinepakCodec(TRIFFReader* reader) : TVideoCodec(reader)
 {
 	m_UBTable = 0;
 	m_VRTable = 0;
@@ -96,7 +96,7 @@ void TCinepakCodec::Init()
 //	Return text description of codec
 //
 
-bool TCinepakCodec::GetDescription(char *descText)
+bool TCinepakCodec::GetDescription(char* descText)
 {
 	return false;
 }
@@ -110,16 +110,16 @@ bool TCinepakCodec::GetDescription(char *descText)
 //	Decode frame passed in buffer
 //
 
-bool TCinepakCodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 dstDepth)
+bool TCinepakCodec::DecodeFrame(AVIVideoFrame* theFrame, void* dstBuffer, uint16 dstDepth)
 {
 	//	Get file and save position
-	BFile *theFile = m_Reader->GetFile();
+	BFile* theFile = m_Reader->GetFile();
 	off_t position = theFile->Position();
 	theFile->Seek(0, SEEK_SET);
 
 	//	Allocate buffer to contain frame data
 	const int32 bufSize = theFrame->Length;
-	void *srcBuffer = malloc(bufSize);
+	void* srcBuffer = malloc(bufSize);
 	ASSERT(srcBuffer);
 
 	//	Load bits from current frame
@@ -146,17 +146,17 @@ bool TCinepakCodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16
 //	Decode Cinepak "Compact Video" Algorithm 'cvid'
 //
 
-bool TCinepakCodec::DecodeCinepakFrame(uint32 width, uint32 height, void *srcBuffer,
-                                       int32 bufSize, void *dstBuffer)
+bool TCinepakCodec::DecodeCinepakFrame(uint32 width, uint32 height, void* srcBuffer,
+                                       int32 bufSize, void* dstBuffer)
 {
 	int32 cr, cg, cb;
 	int32 Y, red, green, blue;
 	uint32 j, U, V;
 	uint32 mask, flag, mcode;
-	uchar   *yPtr;
+	uchar* yPtr;
 	uint32 data, index;
 
-	CinepakColor *colorMap;
+	CinepakColor* colorMap;
 
 	//int32  numColorMaps = 0;
 
@@ -169,8 +169,8 @@ bool TCinepakCodec::DecodeCinepakFrame(uint32 width, uint32 height, void *srcBuf
 	uint32 yTop = 0;
 
 	//	Setup pointers
-	uchar *srcPtr   = (uchar *)srcBuffer;
-	uchar *dstPtr   = (uchar *)dstBuffer;
+	uchar* srcPtr   = (uchar*)srcBuffer;
+	uchar* dstPtr   = (uchar*)dstBuffer;
 
 	// Main Codec header
 	int32 length = *srcPtr++;
@@ -225,7 +225,7 @@ bool TCinepakCodec::DecodeCinepakFrame(uint32 width, uint32 height, void *srcBuf
 		}
 
 		for( index = m_NumColorMaps; index < stripNum; index++) {
-			colorMap = (CinepakColor *)malloc( 1040 * sizeof(CinepakColor) );
+			colorMap = (CinepakColor*)malloc( 1040 * sizeof(CinepakColor) );
 
 			if (colorMap == 0) {
 				#ifdef DEBUG
@@ -235,7 +235,7 @@ bool TCinepakCodec::DecodeCinepakFrame(uint32 width, uint32 height, void *srcBuf
 			}
 			m_CinepakMaps0[index] = colorMap;
 
-			colorMap = (CinepakColor *)malloc( 1040 * sizeof(CinepakColor) );
+			colorMap = (CinepakColor*)malloc( 1040 * sizeof(CinepakColor) );
 
 			if (colorMap == 0) {
 				#ifdef DEBUG
@@ -251,7 +251,7 @@ bool TCinepakCodec::DecodeCinepakFrame(uint32 width, uint32 height, void *srcBuf
 
 	//	Decode strips
 	for( strip = 0; strip < stripNum; strip++ ) {
-		CinepakColor *colorMap0, *colorMap1;
+		CinepakColor* colorMap0, * colorMap1;
 		int32 topSize, x = 0;
 
 		colorMap0 = m_CinepakMaps0[strip];
@@ -259,7 +259,7 @@ bool TCinepakCodec::DecodeCinepakFrame(uint32 width, uint32 height, void *srcBuf
 
 
 		if ( strip && (copyFlag == true)) {
-			CinepakColor *src,*dst;
+			CinepakColor* src,* dst;
 
 			src = m_CinepakMaps0[strip-1];
 			dst = m_CinepakMaps0[strip];
@@ -316,7 +316,7 @@ bool TCinepakCodec::DecodeCinepakFrame(uint32 width, uint32 height, void *srcBuf
 			case 0x2200:
 			{
 				uint32 chunkNum;
-				uchar *rangeLimit = m_JPEGSampleLimit + 256;
+				uchar* rangeLimit = m_JPEGSampleLimit + 256;
 
 				if (chunkID == 0x2000)
 					colorMap = colorMap0;
@@ -355,7 +355,7 @@ bool TCinepakCodec::DecodeCinepakFrame(uint32 width, uint32 height, void *srcBuf
 			{
 				uint32 ci = 0;
 
-				uchar *rangeLimit = m_JPEGSampleLimit + 256;
+				uchar* rangeLimit = m_JPEGSampleLimit + 256;
 
 				if (chunkID == 0x2100)
 					colorMap = colorMap0;
@@ -647,10 +647,10 @@ void TCinepakCodec::CreateYUVTables()
 	float tableUB, tableVR, tableUG, tableVG;
 
 	if (m_UBTable == 0) {
-		m_UBTable = (int32 *)malloc( 256 * sizeof(int32) );
-		m_VRTable = (int32 *)malloc( 256 * sizeof(int32) );
-		m_UGTable = (int32 *)malloc( 256 * sizeof(int32) );
-		m_VGTable = (int32 *)malloc( 256 * sizeof(int32) );
+		m_UBTable = (int32*)malloc( 256 * sizeof(int32) );
+		m_VRTable = (int32*)malloc( 256 * sizeof(int32) );
+		m_UGTable = (int32*)malloc( 256 * sizeof(int32) );
+		m_VGTable = (int32*)malloc( 256 * sizeof(int32) );
 
 		ASSERT(m_UBTable);
 		ASSERT(m_VRTable);
@@ -687,12 +687,12 @@ void TCinepakCodec::SetupJPEGSampleLimitTable()
 	int32 index;
 
 	if (m_JPEGSampleLimit == 0) {
-		m_JPEGSampleLimit = (uchar *)malloc((5 * (MAXJSAMPLE+1) + CENTERJSAMPLE));
+		m_JPEGSampleLimit = (uchar*)malloc((5 * (MAXJSAMPLE+1) + CENTERJSAMPLE));
 		ASSERT(m_JPEGSampleLimit);
 	} else
 		return;
 
-	uchar *table = m_JPEGSampleLimit;
+	uchar* table = m_JPEGSampleLimit;
 
 	//	Allow negative subscripts of simple table
 	table += (MAXJSAMPLE + 1);
@@ -713,7 +713,7 @@ void TCinepakCodec::SetupJPEGSampleLimitTable()
 
 	//	Second half of post-IDCT table
 	memset(table + (2 * (MAXJSAMPLE + 1)), 0, (2 * (MAXJSAMPLE + 1) - CENTERJSAMPLE));
-	memcpy(table + (4 * (MAXJSAMPLE + 1) - CENTERJSAMPLE), (char *)(m_JPEGSampleLimit + (MAXJSAMPLE + 1)), CENTERJSAMPLE);
+	memcpy(table + (4 * (MAXJSAMPLE + 1) - CENTERJSAMPLE), (char*)(m_JPEGSampleLimit + (MAXJSAMPLE + 1)), CENTERJSAMPLE);
 }
 
 #pragma mark -
@@ -753,12 +753,12 @@ uint32 GetQuickTimeColor24( uint32 red, uint32 green, uint32 blue)
 //
 //
 
-void TCinepakCodec::DecodeC1(uchar *dstPtr, uint32 x, uint32 y, uint32 width, int32 data, CinepakColor *colorMap)
+void TCinepakCodec::DecodeC1(uchar* dstPtr, uint32 x, uint32 y, uint32 width, int32 data, CinepakColor* colorMap)
 {
 	//printf("C1 Data: %d\n", data);
 
 	//	Setup image pointer
-	uint32 *imagePtr = (uint32 *)dstPtr;
+	uint32* imagePtr = (uint32*)dstPtr;
 	imagePtr += x;
 	imagePtr += (y * width);
 
@@ -774,7 +774,7 @@ void TCinepakCodec::DecodeC1(uchar *dstPtr, uint32 x, uint32 y, uint32 width, in
 
 	//	Increment row
 	y++;
-	imagePtr = (uint32 *)dstPtr;
+	imagePtr = (uint32*)dstPtr;
 	imagePtr += x;
 	imagePtr += (y * width);
 
@@ -786,7 +786,7 @@ void TCinepakCodec::DecodeC1(uchar *dstPtr, uint32 x, uint32 y, uint32 width, in
 
 	//	Increment row
 	y++;
-	imagePtr = (uint32 *)dstPtr;
+	imagePtr = (uint32*)dstPtr;
 	imagePtr += x;
 	imagePtr += (y * width);
 
@@ -799,7 +799,7 @@ void TCinepakCodec::DecodeC1(uchar *dstPtr, uint32 x, uint32 y, uint32 width, in
 
 	//	Increment row
 	y++;
-	imagePtr = (uint32 *)dstPtr;
+	imagePtr = (uint32*)dstPtr;
 	imagePtr += x;
 	imagePtr += (y * width);
 
@@ -816,12 +816,12 @@ void TCinepakCodec::DecodeC1(uchar *dstPtr, uint32 x, uint32 y, uint32 width, in
 //
 //
 
-void TCinepakCodec::DecodeC4(uchar *dstPtr, uint32 x, uint32 y, uint32 width, int32 d0, int32 d1, int32 d2, int32 d3, CinepakColor *colorMap)
+void TCinepakCodec::DecodeC4(uchar* dstPtr, uint32 x, uint32 y, uint32 width, int32 d0, int32 d1, int32 d2, int32 d3, CinepakColor* colorMap)
 {
 	//printf("C4 Data: %d %d %d %d\n", d0, d1, d2, d3);
 
 	//	Setup image pointer
-	uint32 *imagePtr = (uint32 *)dstPtr;
+	uint32* imagePtr = (uint32*)dstPtr;
 	imagePtr += x;
 	imagePtr += (y * width);
 
@@ -834,7 +834,7 @@ void TCinepakCodec::DecodeC4(uchar *dstPtr, uint32 x, uint32 y, uint32 width, in
 
 	//	Increment row
 	y++;
-	imagePtr = (uint32 *)dstPtr;
+	imagePtr = (uint32*)dstPtr;
 	imagePtr += x;
 	imagePtr += (y * width);
 
@@ -845,7 +845,7 @@ void TCinepakCodec::DecodeC4(uchar *dstPtr, uint32 x, uint32 y, uint32 width, in
 
 	//	Increment
 	y++;
-	imagePtr = (uint32 *)dstPtr;
+	imagePtr = (uint32*)dstPtr;
 	imagePtr += x;
 	imagePtr += (y * width);
 
@@ -858,7 +858,7 @@ void TCinepakCodec::DecodeC4(uchar *dstPtr, uint32 x, uint32 y, uint32 width, in
 
 	//	Increment row
 	y++;
-	imagePtr = (uint32 *)dstPtr;
+	imagePtr = (uint32*)dstPtr;
 	imagePtr += x;
 	imagePtr += (y * width);
 

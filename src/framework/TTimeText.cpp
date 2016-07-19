@@ -40,7 +40,7 @@
 //
 //
 
-TTimeText::TTimeText(BHandler *target, int32 messageID, BRect bounds, char *name, uint32 resizing) :
+TTimeText::TTimeText(BHandler* target, int32 messageID, BRect bounds, char* name, uint32 resizing) :
 	BView(bounds, name, resizing, B_WILL_DRAW)
 {
 
@@ -59,7 +59,7 @@ TTimeText::TTimeText(BHandler *target, int32 messageID, BRect bounds, char *name
 //
 
 
-TTimeText::TTimeText(const TTimeText *theText) :
+TTimeText::TTimeText(const TTimeText* theText) :
 	BView(theText->Bounds(), theText->Name(), theText->ResizingMode(), B_WILL_DRAW)
 {
 
@@ -78,20 +78,20 @@ TTimeText::TTimeText(const TTimeText *theText) :
 //
 
 
-TTimeText::TTimeText(BMessage *data) : BView(data)
+TTimeText::TTimeText(BMessage* data) : BView(data)
 {
 	// Get our member variables from the BMessage
 	ssize_t numBytes;
-	rgb_color       *color;
-	BFont           *font;
+	rgb_color* color;
+	BFont* font;
 
 	data->FindInt32("MessageID", &fMessageID);
 	data->FindFloat("TextSize", &fTextSize);
 
-	data->FindData("Font", B_ANY_TYPE, (const void **)&font, &numBytes);
+	data->FindData("Font", B_ANY_TYPE, (const void**)&font, &numBytes);
 	fFont = *font;
 
-	data->FindData("Color", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes);
+	data->FindData("Color", B_RGB_COLOR_TYPE, (const void**)&color, &numBytes);
 	fColor = *color;
 
 	// Set up our key stroke counter
@@ -253,7 +253,7 @@ void TTimeText::Init()
 //
 //
 
-BArchivable *TTimeText::Instantiate(BMessage *archive)
+BArchivable* TTimeText::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TTimeText") )
 		return new TTimeText(archive);
@@ -267,7 +267,7 @@ BArchivable *TTimeText::Instantiate(BMessage *archive)
 //
 //
 
-status_t TTimeText::Archive(BMessage *data, bool deep) const
+status_t TTimeText::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -421,7 +421,7 @@ void TTimeText::MouseUp(BPoint where)
 //
 //
 
-void TTimeText::MouseMoved(BPoint where, uint32 code, const BMessage *message)
+void TTimeText::MouseMoved(BPoint where, uint32 code, const BMessage* message)
 {
 }
 
@@ -432,7 +432,7 @@ void TTimeText::MouseMoved(BPoint where, uint32 code, const BMessage *message)
 //
 //
 
-void TTimeText::KeyDown(const char *bytes, int32 numBytes)
+void TTimeText::KeyDown(const char* bytes, int32 numBytes)
 {
 	char theChar = *bytes;
 
@@ -460,7 +460,7 @@ void TTimeText::KeyDown(const char *bytes, int32 numBytes)
 			DecrementCell();
 		else
 			IncrementCell();
-	} else if ( IsArrows(theChar) )   {
+	} else if ( IsArrows(theChar) ) {
 		switch(theChar)
 		{
 		// Increment value
@@ -543,7 +543,7 @@ void TTimeText::MakeFocus(bool focusState)
 //
 //
 
-void TTimeText::MessageReceived(BMessage *theMessage)
+void TTimeText::MessageReceived(BMessage* theMessage)
 {
 	switch( theMessage->what)
 	{
@@ -577,7 +577,7 @@ void TTimeText::MessageReceived(BMessage *theMessage)
 //	Set the view BFont and Font Color
 //
 
-void TTimeText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_color theColor)
+void TTimeText::SetFontAndColor(BFont* theFont, uint32 properties, rgb_color theColor)
 {
 	// Update our member variables
 	fFont   = theFont;
@@ -599,7 +599,7 @@ void TTimeText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_color the
 //	Set the text to the Insert text
 //
 
-void TTimeText::SetText(char *theText)
+void TTimeText::SetText(char* theText)
 {
 	sprintf(fText, theText);
 

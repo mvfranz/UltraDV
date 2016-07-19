@@ -33,7 +33,7 @@ static const rgb_color kBeGrey  = {216, 216, 216, 255};
 //
 //
 
-TSizeScrollView::TSizeScrollView(const char *name, BView *target,
+TSizeScrollView::TSizeScrollView(const char* name, BView* target,
                                  uint32 resizeMask, uint32 flags, bool horizontal,
                                  bool vertical, border_style border) :
 	// defaults:
@@ -83,7 +83,7 @@ void TSizeScrollView::Init()
 //
 //
 
-void TSizeScrollView::MessageReceived(BMessage *theMessage)
+void TSizeScrollView::MessageReceived(BMessage* theMessage)
 {
 	switch( theMessage->what)
 	{
@@ -285,7 +285,7 @@ void TSizeScrollView::DrawDragRect()
 //	Return location of DragRect
 //
 
-void TSizeScrollView::GetDragRect(BRect *dragRect)
+void TSizeScrollView::GetDragRect(BRect* dragRect)
 {
 	*dragRect               = Bounds();
 	// TODO: respect the size of the scroll bars for this

@@ -30,7 +30,7 @@
 //
 //
 
-TPreset::TPreset(char *theName)
+TPreset::TPreset(char* theName)
 {
 	// Set up member variables
 	strcpy(fName, theName);
@@ -45,36 +45,36 @@ TPreset::TPreset(char *theName)
 //	Construct from message or archive
 //
 
-TPreset::TPreset(BMessage *data)
+TPreset::TPreset(BMessage* data)
 {
-	char    *tmpStr;
+	char* tmpStr;
 	int16 tmpInt16;
 
-	data->FindString((const char *)"Name",(const char **) &tmpStr);
+	data->FindString((const char*)"Name",(const char**) &tmpStr);
 	strcpy(fName, tmpStr);
 
-	data->FindString("Description01", (const char **)&tmpStr);
+	data->FindString("Description01", (const char**)&tmpStr);
 	strcpy(fDescription01, tmpStr);
 
-	data->FindString((const char *)"Description02", (const char **)&tmpStr);
+	data->FindString((const char*)"Description02", (const char**)&tmpStr);
 	strcpy(fDescription02, tmpStr);
 
-	data->FindString((const char *)"Description03", (const char **)&tmpStr);
+	data->FindString((const char*)"Description03", (const char**)&tmpStr);
 	strcpy(fDescription03, tmpStr);
 
-	data->FindString((const char *)"Description04", (const char **)&tmpStr);
+	data->FindString((const char*)"Description04", (const char**)&tmpStr);
 	strcpy(fDescription04, tmpStr);
 
-	data->FindString((const char *)"Description05", (const char **)&tmpStr);
+	data->FindString((const char*)"Description05", (const char**)&tmpStr);
 	strcpy(fDescription05, tmpStr);
 
-	data->FindInt16((const char *)"TimeBase", &tmpInt16);
+	data->FindInt16((const char*)"TimeBase", &tmpInt16);
 	fTimebase = (timecode_type)tmpInt16;
 
-	data->FindInt16((const char *)"AudioCompressor", &tmpInt16);
+	data->FindInt16((const char*)"AudioCompressor", &tmpInt16);
 	fAudioCompressor = (audio_compressor_type)tmpInt16;
 
-	data->FindInt16((const char *)"VideoCompressor", &tmpInt16);
+	data->FindInt16((const char*)"VideoCompressor", &tmpInt16);
 	fVideoCompressor = (video_compressor_type)tmpInt16;
 
 	data->FindInt32("FrameWidth", &fFrameWidth);
@@ -103,7 +103,7 @@ TPreset::~TPreset()
 //
 //
 
-BArchivable *TPreset::Instantiate(BMessage *archive)
+BArchivable* TPreset::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TPreset") )
@@ -118,7 +118,7 @@ BArchivable *TPreset::Instantiate(BMessage *archive)
 //
 //
 
-status_t TPreset::Archive(BMessage *data, bool deep) const
+status_t TPreset::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -160,7 +160,7 @@ status_t TPreset::Archive(BMessage *data, bool deep) const
 //	Set preset name
 //
 
-void TPreset::SetName(char *theName)
+void TPreset::SetName(char* theName)
 {
 	strcpy(fName, theName);
 }
@@ -186,12 +186,12 @@ void TPreset::SetTimebase(timecode_type theTimebase)
 //	Basic dump to binary file
 //
 
-void TPreset::WriteToFile(char *theName)
+void TPreset::WriteToFile(char* theName)
 {
 	status_t retVal;
 
 	// Archive our data
-	BMessage *archive = new BMessage();
+	BMessage* archive = new BMessage();
 	retVal = Archive(archive, true);
 
 
@@ -283,11 +283,11 @@ void TPreset::WriteToFile(char *theName)
 			retVal = info.SetType(kCueSheetTypeString);
 
 			// Give it some nice icons
-			BBitmap *smallIcon = GetMICNFromResource(kSettingsTypeString);
+			BBitmap* smallIcon = GetMICNFromResource(kSettingsTypeString);
 			ASSERT(smallIcon);
 			info.SetIcon( smallIcon, B_MINI_ICON);
 
-			BBitmap *largeIcon = GetICONFromResource(kSettingsTypeString);
+			BBitmap* largeIcon = GetICONFromResource(kSettingsTypeString);
 			ASSERT(largeIcon);
 			info.SetIcon( largeIcon, B_LARGE_ICON);
 

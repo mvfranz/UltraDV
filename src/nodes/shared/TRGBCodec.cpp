@@ -29,7 +29,7 @@
 //
 //
 
-TRGBCodec::TRGBCodec(TRIFFReader *reader) : TVideoCodec(reader)
+TRGBCodec::TRGBCodec(TRIFFReader* reader) : TVideoCodec(reader)
 {
 	#ifdef DEBUG
 	printf("New TRGBCodec\n");
@@ -67,7 +67,7 @@ void TRGBCodec::Init()
 //	Return text description of codec
 //
 
-bool TRGBCodec::GetDescription(char *descText)
+bool TRGBCodec::GetDescription(char* descText)
 {
 	sprintf(descText, "Decode uncompressed RGB data.");
 
@@ -82,7 +82,7 @@ bool TRGBCodec::GetDescription(char *descText)
 //	Decode frame passed in buffer
 //
 
-bool TRGBCodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 dstDepth)
+bool TRGBCodec::DecodeFrame(AVIVideoFrame* theFrame, void* dstBuffer, uint16 dstDepth)
 {
 	//	Get file and save position
 	off_t position = m_Reader->GetFile()->Position();
@@ -90,7 +90,7 @@ bool TRGBCodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 dst
 
 	//	Allocate buffer to contain frame data
 	const int32 bufSize = theFrame->Length;
-	void *srcBuffer = malloc(bufSize);
+	void* srcBuffer = malloc(bufSize);
 	ASSERT(srcBuffer);
 
 	//	Load bits from current frame
@@ -117,7 +117,7 @@ bool TRGBCodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 dst
 //	Determine RGB routine to decompress data
 //
 
-bool TRGBCodec::DecodeRGBVideoFrame(uint32 chunkID, uint32 width, uint32 height, uint16 depth, void *srcBuffer, int32 bufSize, void *dstBuffer, uint16 dstDepth)
+bool TRGBCodec::DecodeRGBVideoFrame(uint32 chunkID, uint32 width, uint32 height, uint16 depth, void* srcBuffer, int32 bufSize, void* dstBuffer, uint16 dstDepth)
 {
 	bool retVal = false;
 
@@ -158,19 +158,19 @@ bool TRGBCodec::DecodeRGBVideoFrame(uint32 chunkID, uint32 width, uint32 height,
 //	Return a 4-bit BBitmap containing decompressed data
 //
 
-bool TRGBCodec::DecodeRGB4(uint32 width, uint32 height, void *buffer, int32 bufSize, void *dstBuffer, uint16 dstDepth)
+bool TRGBCodec::DecodeRGB4(uint32 width, uint32 height, void* buffer, int32 bufSize, void* dstBuffer, uint16 dstDepth)
 {
 	uint32 oddCount = ((width & 0x03) == 1) ? (1) : (0);
 
 	int32 x, y = height - 1;
 
 	//	Setup pointers
-	uchar *srcPtr = (uchar *)buffer;
-	uchar *dstPtr = (uchar *)dstBuffer;
+	uchar* srcPtr = (uchar*)buffer;
+	uchar* dstPtr = (uchar*)dstBuffer;
 
 	//	Traverse rows
 	while ( y >= 0 ) {
-		uchar *rowPtr = (uchar *)(dstPtr + y * width);
+		uchar* rowPtr = (uchar*)(dstPtr + y * width);
 		y--;
 
 		x = width;
@@ -200,11 +200,11 @@ bool TRGBCodec::DecodeRGB4(uint32 width, uint32 height, void *buffer, int32 bufS
 //	Return an 8-bit BBitmap containing decompressed data
 //
 
-bool TRGBCodec::DecodeRGB8(uint32 width, uint32 height, void *buffer, int32 bufSize, void *dstBuffer, uint16 dstDepth)
+bool TRGBCodec::DecodeRGB8(uint32 width, uint32 height, void* buffer, int32 bufSize, void* dstBuffer, uint16 dstDepth)
 {
 	//	Setup pointers
-	uchar *srcPtr = (uchar *)buffer;
-	uchar *dstPtr = (uchar *)dstBuffer;
+	uchar* srcPtr = (uchar*)buffer;
+	uchar* dstPtr = (uchar*)dstBuffer;
 
 	uint32 oddCount = 4 - (width & 0x03);
 
@@ -214,7 +214,7 @@ bool TRGBCodec::DecodeRGB8(uint32 width, uint32 height, void *buffer, int32 bufS
 	int32 x, y = height - 1;
 
 	while ( y >= 0 ) {
-		uchar *rowPtr = (uchar *)(dstPtr + y * width);
+		uchar* rowPtr = (uchar*)(dstPtr + y * width);
 		y--;
 
 		x = width;
@@ -237,7 +237,7 @@ bool TRGBCodec::DecodeRGB8(uint32 width, uint32 height, void *buffer, int32 bufS
 //	Return a 16-bit BBitmap containing decompressed data
 //
 
-bool TRGBCodec::DecodeRGB16(uint32 width, uint32 height, void *buffer, int32 bufSize, void *dstBuffer, uint16 dstDepth)
+bool TRGBCodec::DecodeRGB16(uint32 width, uint32 height, void* buffer, int32 bufSize, void* dstBuffer, uint16 dstDepth)
 {
 	//#ifdef DEBUG
 	//	printf("DecodeRGB16\n");
@@ -251,13 +251,13 @@ bool TRGBCodec::DecodeRGB16(uint32 width, uint32 height, void *buffer, int32 buf
 		int32 x, y = height - 1;
 
 		//	Setup pointers
-		uchar *srcPtr = (uchar *)buffer;
-		uchar *dstPtr = (uchar *)dstBuffer;
+		uchar* srcPtr = (uchar*)buffer;
+		uchar* dstPtr = (uchar*)dstBuffer;
 
 		//	Traverse height
 		while ( y >= 0 ) {
 			//	Get pointer to row data
-			uint32 *rowPtr = (uint32 *)(dstPtr + ((y * width) << 2) );
+			uint32* rowPtr = (uint32*)(dstPtr + ((y * width) << 2) );
 			y--;
 			x = width;
 
@@ -287,7 +287,7 @@ bool TRGBCodec::DecodeRGB16(uint32 width, uint32 height, void *buffer, int32 buf
 //	Return a 32-bit BBitmap containing decompressed data
 //
 
-bool TRGBCodec::DecodeRGB32(uint32 width, uint32 height, void *srcBuffer, int32 bufSize, void *dstBuffer, uint16 dstDepth)
+bool TRGBCodec::DecodeRGB32(uint32 width, uint32 height, void* srcBuffer, int32 bufSize, void* dstBuffer, uint16 dstDepth)
 {
 	//#ifdef DEBUG
 	//	printf("DecodeRGB32\n");
@@ -296,8 +296,8 @@ bool TRGBCodec::DecodeRGB32(uint32 width, uint32 height, void *srcBuffer, int32 
 	int32 x, y = height - 1;
 
 	//	Setup pointers
-	uchar  *srcPtr = (uchar *)srcBuffer;
-	uint32 *dstPtr = (uint32 *)dstBuffer;
+	uchar* srcPtr = (uchar*)srcBuffer;
+	uint32* dstPtr = (uint32*)dstBuffer;
 
 	//	Traverse height
 	for (uint32 rows = 0; rows < height; rows++) {

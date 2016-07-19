@@ -34,7 +34,7 @@
 //
 //
 
-TMIDITrack::TMIDITrack(TMIDICue *theCue)
+TMIDITrack::TMIDITrack(TMIDICue* theCue)
 {
 
 	// Save parent cue
@@ -78,7 +78,7 @@ TMIDITrack::~TMIDITrack()
 
 void TMIDITrack::ExtractInfo()
 {
-	Event   *theEvent;
+	Event* theEvent;
 	int32 index = 1;
 	int32 dTime, totalTime = 0;
 	//char	bankStr[256];
@@ -102,7 +102,7 @@ void TMIDITrack::ExtractInfo()
 	fDstDrumMap     = 0;
 
 	// Next, get initial track info
-	theEvent = (Event *)ItemAt(index++);
+	theEvent = (Event*)ItemAt(index++);
 	if (theEvent)
 		fChannel = theEvent->d.bytes[0] & 0x0F;
 
@@ -122,25 +122,25 @@ void TMIDITrack::ExtractInfo()
 			if (theEvent->d.bytes[1] == VOLUME) {
 				fVolume = theEvent->d.bytes[2];
 				RemoveItem(--index);
-			} else if (theEvent->d.bytes[1] == PAN && (fPan == -1))   {
+			} else if (theEvent->d.bytes[1] == PAN && (fPan == -1)) {
 				fPan = theEvent->d.bytes[2];
 				RemoveItem(--index);
-			} else if (theEvent->d.bytes[1] == BANK_CHANGE_MSB && fBank == -1)   {
+			} else if (theEvent->d.bytes[1] == BANK_CHANGE_MSB && fBank == -1) {
 				fBank = theEvent->d.bytes[2] << 7;
 				RemoveItem(--index);
-			} else if (theEvent->d.bytes[1] == BANK_CHANGE_LSB && fBank != -1)   {
+			} else if (theEvent->d.bytes[1] == BANK_CHANGE_LSB && fBank != -1) {
 				fBank |= theEvent->d.bytes[2];
 				RemoveItem(--index);
-			} else if (theEvent->d.bytes[1] == REVERB && (fReverb == -1))   {
+			} else if (theEvent->d.bytes[1] == REVERB && (fReverb == -1)) {
 				fReverb = theEvent->d.bytes[2];
 				RemoveItem(--index);
-			} else if (theEvent->d.bytes[1] == CHORUS && (fChorus == -1))   {
+			} else if (theEvent->d.bytes[1] == CHORUS && (fChorus == -1)) {
 				fChorus = theEvent->d.bytes[2];
 				RemoveItem(--index);
 			}
 		}
 
-		theEvent = (Event *)ItemAt(index++);
+		theEvent = (Event*)ItemAt(index++);
 	}
 
 	while (theEvent && theEvent->time != END_OF_TRACK) {
@@ -158,7 +158,7 @@ void TMIDITrack::ExtractInfo()
 			theEvent->time += dTime;
 		}
 
-		theEvent = (Event *)ItemAt(index++);
+		theEvent = (Event*)ItemAt(index++);
 	}
 
 	if (fPan == -1)
@@ -183,7 +183,7 @@ void TMIDITrack::ExtractInfo()
 //	Sets track name to name.
 //
 
-void TMIDITrack::SetTrackName(char *name)
+void TMIDITrack::SetTrackName(char* name)
 {
 	strcpy(fTrackName, name);
 }
@@ -196,7 +196,7 @@ void TMIDITrack::SetTrackName(char *name)
 //	Retrieve track name
 //
 
-void TMIDITrack::GetTrackName(char *name)
+void TMIDITrack::GetTrackName(char* name)
 {
 	strcpy(name, fTrackName);
 }
@@ -238,15 +238,15 @@ void TMIDITrack::InsertExtended(short type, long time, ExtDataBuffer data)
 
 void TMIDITrack::SetPosition(long where)
 {
-	Event *theEvent;
+	Event* theEvent;
 
 	fCurrentEvent = 0;
-	theEvent = (Event *)ItemAt(++fCurrentEvent);
+	theEvent = (Event*)ItemAt(++fCurrentEvent);
 	fCurrentDelta = theEvent->time;
 
 	while (where > theEvent->time && theEvent->time != END_OF_TRACK) {
 		where -= theEvent->time;
-		theEvent = (Event *)ItemAt(++fCurrentEvent);
+		theEvent = (Event*)ItemAt(++fCurrentEvent);
 		fCurrentDelta = theEvent->time;
 	}
 
@@ -267,9 +267,9 @@ void TMIDITrack::SetPosition(long where)
 
 void TMIDITrack::Reset()
 {
-	Event *theEvent;
+	Event* theEvent;
 
 	fCurrentEvent = 1;
-	theEvent = (Event *)ItemAt(1);
+	theEvent = (Event*)ItemAt(1);
 	fCurrentDelta = theEvent->time;
 }

@@ -40,7 +40,7 @@
 //
 //
 
-TCueSheetScrollBarH::TCueSheetScrollBarH( TCueSheetWindow *parent, BRect frame, BView *target, float min, float max ) :
+TCueSheetScrollBarH::TCueSheetScrollBarH( TCueSheetWindow* parent, BRect frame, BView* target, float min, float max ) :
 	BScrollBar( frame, "HCueScroll", target, min, max, B_HORIZONTAL)
 {
 	fCueSheetWindow = parent;
@@ -57,7 +57,7 @@ TCueSheetScrollBarH::TCueSheetScrollBarH( TCueSheetWindow *parent, BRect frame, 
 //	Contruct from an archive
 //
 
-TCueSheetScrollBarH::TCueSheetScrollBarH(BMessage *data ) : BScrollBar(data)
+TCueSheetScrollBarH::TCueSheetScrollBarH(BMessage* data ) : BScrollBar(data)
 {
 	fCueSheetWindow = NULL;
 
@@ -87,7 +87,7 @@ TCueSheetScrollBarH::~TCueSheetScrollBarH()
 //
 //
 
-BArchivable *TCueSheetScrollBarH::Instantiate(BMessage *archive)
+BArchivable* TCueSheetScrollBarH::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TCueSheetScrollBarH") )
@@ -103,7 +103,7 @@ BArchivable *TCueSheetScrollBarH::Instantiate(BMessage *archive)
 //
 //
 
-status_t TCueSheetScrollBarH::Archive(BMessage *data, bool deep) const
+status_t TCueSheetScrollBarH::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -163,20 +163,20 @@ void TCueSheetScrollBarH::ValueChanged(float newValue)
 			fCueSheetWindow->GetTimeline()->ScrollBy(newValue - fLastValue, 0);
 
 			//	Handle cue channels
-			BList *channelList = fCueSheetWindow->GetCueSheetView()->GetChannelList();
+			BList* channelList = fCueSheetWindow->GetCueSheetView()->GetChannelList();
 			for (int32 channelNum = 0; channelNum < channelList->CountItems(); channelNum++) {
-				TCueChannel *theChannel = (TCueChannel *)channelList->ItemAt(channelNum);
+				TCueChannel* theChannel = (TCueChannel*)channelList->ItemAt(channelNum);
 				if (theChannel)
 					theChannel->ScrollBy(newValue - fLastValue, 0);
 			}
-		} else   {
+		} else {
 			fCueSheetWindow->GetExportZone()->ScrollBy(-(fLastValue - newValue), 0);
 			fCueSheetWindow->GetTimeline()->ScrollBy(-(fLastValue - newValue), 0);
 
 			//	Handle cue channels
-			BList *channelList = fCueSheetWindow->GetCueSheetView()->GetChannelList();
+			BList* channelList = fCueSheetWindow->GetCueSheetView()->GetChannelList();
 			for (int32 channelNum = 0; channelNum < channelList->CountItems(); channelNum++) {
-				TCueChannel *theChannel = (TCueChannel *)channelList->ItemAt(channelNum);
+				TCueChannel* theChannel = (TCueChannel*)channelList->ItemAt(channelNum);
 				if (theChannel)
 					theChannel->ScrollBy(-(fLastValue - newValue), 0);
 			}
@@ -208,7 +208,7 @@ void TCueSheetScrollBarH::ValueChanged(float newValue)
 void TCueSheetScrollBarH::AttachedToWindow()
 {
 	if(fCueSheetWindow == NULL) {
-		fCueSheetWindow = (TCueSheetWindow *)Window();
+		fCueSheetWindow = (TCueSheetWindow*)Window();
 	}
 
 	//	Pass up to parent
@@ -223,7 +223,7 @@ void TCueSheetScrollBarH::AttachedToWindow()
 //---------------------------------------------------------------------
 //
 //
-void TCueSheetScrollBarH::SetParent(TCueSheetWindow *parent)
+void TCueSheetScrollBarH::SetParent(TCueSheetWindow* parent)
 {
 	fCueSheetWindow = parent;
 }

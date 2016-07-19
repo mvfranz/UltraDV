@@ -39,7 +39,7 @@
 //
 //
 
-TPauseCue::TPauseCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) :
+TPauseCue::TPauseCue(int16 id, TCueChannel* parent, BRect bounds, BPoint point,  long startTime) :
 	TCueView(id, parent, bounds, point, startTime, "PauseCue")
 {
 	// Perform default initialization
@@ -55,7 +55,7 @@ TPauseCue::TPauseCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point, 
 //
 //	Construct from a CueChunk
 
-TPauseCue::TPauseCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) :
+TPauseCue::TPauseCue(BaseCueChunk* theChunk, TCueChannel* parent, BRect bounds) :
 	TCueView(theChunk, parent, bounds, "PauseCue")
 {
 	// Perform default initialization
@@ -70,7 +70,7 @@ TPauseCue::TPauseCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) 
 //	Construct from a BMessage
 //
 
-TPauseCue::TPauseCue(BMessage *data) : TCueView(data)
+TPauseCue::TPauseCue(BMessage* data) : TCueView(data)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -164,7 +164,7 @@ void TPauseCue::Init()
 //	Init from BaseCueChunk
 //
 
-void TPauseCue::Init(BaseCueChunk *theChunk)
+void TPauseCue::Init(BaseCueChunk* theChunk)
 {
 	TCueView::Init(theChunk);
 }
@@ -180,7 +180,7 @@ void TPauseCue::Init(BaseCueChunk *theChunk)
 //
 //
 
-BArchivable *TPauseCue::Instantiate(BMessage *archive)
+BArchivable* TPauseCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TPauseCue") )
 		return new TPauseCue(archive);
@@ -195,7 +195,7 @@ BArchivable *TPauseCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TPauseCue::Archive(BMessage *data, bool deep) const
+status_t TPauseCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -279,7 +279,7 @@ void TPauseCue::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TPauseCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TPauseCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Pass up to parent
 	TCueView::MouseMoved(where, code, a_message);
@@ -304,7 +304,7 @@ void TPauseCue::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TPauseCue::KeyDown(const char *bytes, int32 numBytes)
+void TPauseCue::KeyDown(const char* bytes, int32 numBytes)
 {
 	TCueView::KeyDown(bytes, numBytes);
 }
@@ -318,7 +318,7 @@ void TPauseCue::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TPauseCue::KeyUp(const char *bytes, int32 numBytes)
+void TPauseCue::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -329,12 +329,12 @@ void TPauseCue::KeyUp(const char *bytes, int32 numBytes)
 //
 //	Receive messages
 //
-void TPauseCue::MessageReceived(BMessage *message)
+void TPauseCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
 	case PAUSE_DONE_MSG:
-		TPlaybackEngine *theEngine;
+		TPlaybackEngine* theEngine;
 		message->FindPointer("PlaybackEngine", (void**)&theEngine);
 		theEngine->Resume();
 		break;
@@ -369,16 +369,16 @@ void TPauseCue::OpenEditor()
 			fEditor->Activate(true);
 		}
 
-	} else   {
+	} else {
 		BRect bounds(50, 50, 350, 350);
 		fEditorOpen = true;
 
-		BMessage *theMessage = GetWindowFromResource("PauseSettingsWindow");
+		BMessage* theMessage = GetWindowFromResource("PauseSettingsWindow");
 		ASSERT(theMessage);
 		fEditor = new TPauseSetup(this, theMessage);
 
 		if (fEditor) {
-			CenterWindow((BWindow *)fEditor);
+			CenterWindow((BWindow*)fEditor);
 			fEditor->Show();
 		} else
 			fEditorOpen = false;
@@ -400,7 +400,7 @@ void TPauseCue::OpenEditor()
 //	Prepare cue for playback
 //
 
-void TPauseCue::Preroll(TPlaybackEvent *playbackEvent, double currentTime)
+void TPauseCue::Preroll(TPlaybackEvent* playbackEvent, double currentTime)
 {
 
 	// Do we have an event at this time?  Check for the following:
@@ -413,11 +413,11 @@ void TPauseCue::Preroll(TPlaybackEvent *playbackEvent, double currentTime)
 	//	If the startTime == currentTime, check for pause duration
 	if (cueStartTime == currentTime) {
 		// Set up cue event
-		TCueEvent *cueEvent = new TCueEvent;
+		TCueEvent* cueEvent = new TCueEvent;
 		cueEvent->fTime = currentTime;
 		cueEvent->fCue = this;
 
-		BMessage *pauseMsg = new BMessage(PAUSE_EVENT);
+		BMessage* pauseMsg = new BMessage(PAUSE_EVENT);
 
 		pauseMsg->AddInt16("PauseType", fPauseType);
 		pauseMsg->AddInt32("PauseDuration", fPauseDuration);
@@ -462,7 +462,7 @@ void TPauseCue::Pause()
 //	as Pause() is reactive.  DoPause() is proactive
 //
 
-void TPauseCue::DoPause(TPlaybackEngine *theEngine)
+void TPauseCue::DoPause(TPlaybackEngine* theEngine)
 {
 	if (fPauseTimer) {
 		delete fPauseTimer;
@@ -537,7 +537,7 @@ void TPauseCue::Stop()
 
 void TPauseCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = NULL;
+	BBitmap* cueIcon = NULL;
 
 	cueIcon = GetCicnFromResource("PauseCue");
 

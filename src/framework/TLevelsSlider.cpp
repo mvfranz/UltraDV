@@ -136,7 +136,7 @@ void TLevelsSlider::Init()
 //
 //
 
-void TLevelsSlider::MessageReceived(BMessage *theMessage)
+void TLevelsSlider::MessageReceived(BMessage* theMessage)
 {
 
 	switch( theMessage->what)
@@ -312,7 +312,7 @@ void TLevelsSlider::MouseDown(BPoint where)
 {
 	// Check for which button is pressed
 	uint32 buttons = 0;
-	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+	Window()->CurrentMessage()->FindInt32("buttons", (long*)&buttons);
 
 	// Determine which button has been clicked
 	switch(buttons)
@@ -355,7 +355,7 @@ void TLevelsSlider::MouseDown(BPoint where)
 
 		// Is button down?  They are dragging or resizing the cue...
 		// Check to see if button is down
-		Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+		Window()->CurrentMessage()->FindInt32("buttons", (long*)&buttons);
 		if (buttons) {
 			//StartMouseWatcher(this);
 			TrackSliders();
@@ -399,7 +399,7 @@ void TLevelsSlider::MouseDown(BPoint where)
 
 			// Is button down?  They are dragging or resizing the cue...
 			// Check to see if button is down
-			Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+			Window()->CurrentMessage()->FindInt32("buttons", (long*)&buttons);
 			if (buttons) {
 				TrackLeftSlider();
 			}
@@ -435,7 +435,7 @@ void TLevelsSlider::MouseDown(BPoint where)
 
 			// Is button down?  They are dragging or resizing the cue...
 			// Check to see if button is down
-			Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+			Window()->CurrentMessage()->FindInt32("buttons", (long*)&buttons);
 			if (buttons) {
 				TrackRightSlider();
 			}
@@ -538,7 +538,7 @@ void TLevelsSlider::LoadSliders()
 		return;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res(&file);
 
@@ -547,7 +547,7 @@ void TLevelsSlider::LoadSliders()
 	bounds.Set(0, 0, 8, 23);
 	fLeftSlider = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(fLeftSlider);
-	data = (BBitmap *)res.FindResource('bits', "SliderButtonLeft", &size);
+	data = (BBitmap*)res.FindResource('bits', "SliderButtonLeft", &size);
 	if (!data)
 		return;
 	fLeftSlider->SetBits(data, size, 0, B_COLOR_8_BIT);
@@ -555,7 +555,7 @@ void TLevelsSlider::LoadSliders()
 	// Load right slider
 	fRightSlider = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(fRightSlider);
-	data = (BBitmap *)res.FindResource('bits', "SliderButtonRight", &size);
+	data = (BBitmap*)res.FindResource('bits', "SliderButtonRight", &size);
 	if (!data)
 		return;
 	fRightSlider->SetBits(data, size, 0, B_COLOR_8_BIT);

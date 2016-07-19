@@ -225,9 +225,9 @@ void TAudioLevelsView::UpdateData(int32 code)
 //
 //
 
-int32 TAudioLevelsView::update(void *data)
+int32 TAudioLevelsView::update(void* data)
 {
-	TAudioLevelsView *amv = (TAudioLevelsView *)data;
+	TAudioLevelsView* amv = (TAudioLevelsView*)data;
 	amv->Update();
 	return 0;
 }
@@ -352,23 +352,23 @@ void TAudioLevelsView::Update()
 //
 //
 
-bool TAudioLevelsView::streaffunc(void *data, char *buf, size_t size, void *header)
+bool TAudioLevelsView::streaffunc(void* data, char* buf, size_t size, void* header)
 {
 
-	TAudioLevelsView        *amv = (TAudioLevelsView *)data;
+	TAudioLevelsView* amv = (TAudioLevelsView*)data;
 	int32 count = size / 2;
 
 	amv->fBufferLock->Lock();
 
 	int32 frame_cnt = 0;
 	for (int32 i = 0; i < 512; i++) {
-		amv->fLeftBuffer[i] = ((int16 *)buf)[frame_cnt] / 32768.0;
+		amv->fLeftBuffer[i] = ((int16*)buf)[frame_cnt] / 32768.0;
 		frame_cnt += 2;
 	}
 
 	frame_cnt = 1;
 	for (int32 i = 0; i < 512; i++) {
-		amv->fRightBuffer[i] = ((int16 *)buf)[frame_cnt] / 32768.0;
+		amv->fRightBuffer[i] = ((int16*)buf)[frame_cnt] / 32768.0;
 		frame_cnt += 2;
 	}
 

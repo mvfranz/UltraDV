@@ -40,7 +40,7 @@
 //
 //
 
-TTextCue::TTextCue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime) :
+TTextCue::TTextCue(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime) :
 	TVisualCue(id, parent, bounds, startTime, "TextCue")
 {
 	// Perform default initialization
@@ -54,7 +54,7 @@ TTextCue::TTextCue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime
 //	Construct from a BMessage
 //
 
-TTextCue::TTextCue(BMessage *theMessage) : TVisualCue(theMessage)
+TTextCue::TTextCue(BMessage* theMessage) : TVisualCue(theMessage)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -109,7 +109,7 @@ void TTextCue::Init()
 
 	//      Set up area rectangles.  We create an initital rect the size of the stage
 	//	and then inset by ten pixels
-	BRect textBounds = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->Bounds();
+	BRect textBounds = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage()->Bounds();
 	textBounds.InsetBy(10, 10);
 	fBitmap = new BBitmap(textBounds, B_RGB_32_BIT);
 
@@ -129,7 +129,7 @@ void TTextCue::Init()
 	if (fChannel->IsExpanded()) {
 		fIsExpanded = false;
 		Expand();
-	} else   {
+	} else {
 		fIsExpanded = true;
 		Contract();
 	}
@@ -146,7 +146,7 @@ void TTextCue::Init()
 //
 //
 
-BArchivable *TTextCue::Instantiate(BMessage *archive)
+BArchivable* TTextCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TTextCue") )
 		return new TTextCue(archive);
@@ -161,7 +161,7 @@ BArchivable *TTextCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TTextCue::Archive(BMessage *data, bool deep) const
+status_t TTextCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -233,7 +233,7 @@ void TTextCue::MouseDown(BPoint where)
 //
 //	Receive messages
 //
-void TTextCue::MessageReceived(BMessage *message)
+void TTextCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -271,7 +271,7 @@ void TTextCue::OpenEditor()
 
 void TTextCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = GetAppIcons()->fTextUpIcon;
+	BBitmap* cueIcon = GetAppIcons()->fTextUpIcon;
 
 	if (cueIcon) {
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));

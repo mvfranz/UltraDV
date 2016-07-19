@@ -37,7 +37,7 @@
 //
 //
 
-TVideoSettingsView::TVideoSettingsView(BRect bounds, TVideoSettingsDialog *parent) : BView(bounds, "VideoSettingsView", B_FOLLOW_ALL, B_WILL_DRAW)
+TVideoSettingsView::TVideoSettingsView(BRect bounds, TVideoSettingsDialog* parent) : BView(bounds, "VideoSettingsView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	fParent = parent;
 
@@ -132,12 +132,12 @@ void TVideoSettingsView::Init()
 //
 //
 
-void TVideoSettingsView::MessageReceived(BMessage *theMessage)
+void TVideoSettingsView::MessageReceived(BMessage* theMessage)
 {
 
 	// get pointer to control
-	BControl *cntlPtr;
-	theMessage->FindPointer("source", (void **)&cntlPtr);
+	BControl* cntlPtr;
+	theMessage->FindPointer("source", (void**)&cntlPtr);
 
 
 	switch( theMessage->what)

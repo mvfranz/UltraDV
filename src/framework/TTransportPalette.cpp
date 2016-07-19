@@ -115,15 +115,15 @@ void TTransportPalette::Init()
 		return;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res(&file);
-	data = (BBitmap *)res.FindResource('bits', "Transport", &size);
+	data = (BBitmap*)res.FindResource('bits', "Transport", &size);
 	if (!data)
 		return;
 
 	BRect bitmapRect = Bounds();
-	BBitmap *bitmap = new BBitmap(bitmapRect, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bitmapRect, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 
@@ -211,7 +211,7 @@ port_id TTransportPalette::ControlPort() const
 //	No an addon.  Return NULL
 //
 
-BMediaAddOn     *TTransportPalette::AddOn(int32 * internal_id) const
+BMediaAddOn* TTransportPalette::AddOn(int32* internal_id) const
 {
 	return NULL;
 }
@@ -227,9 +227,9 @@ BMediaAddOn     *TTransportPalette::AddOn(int32 * internal_id) const
 //	Static service thread function
 //
 
-status_t TTransportPalette::service_routine(void * data)
+status_t TTransportPalette::service_routine(void* data)
 {
-	((TTransportPalette *)data)->ServiceRoutine();
+	((TTransportPalette*)data)->ServiceRoutine();
 
 	return 0;
 }
@@ -276,9 +276,9 @@ void TTransportPalette::ServiceRoutine()
 //	Static run thread function
 //
 
-status_t TTransportPalette::run_routine(void *data)
+status_t TTransportPalette::run_routine(void* data)
 {
-	((TTransportPalette *)data)->RunRoutine();
+	((TTransportPalette*)data)->RunRoutine();
 	return 0;
 }
 

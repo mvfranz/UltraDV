@@ -37,7 +37,7 @@
 //
 //
 
-TStageToolButton::TStageToolButton(TStageToolsView *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BMessage *message) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TStageToolButton::TStageToolButton(TStageToolsView* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BMessage* message) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fParent = parent;
@@ -181,7 +181,7 @@ void TStageToolButton::DoClick()
 		//	Send message to parent and stage
 		fParent->Window()->PostMessage(fMessage, fParent);
 
-		MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
+		MuseumApp* theApp = static_cast<MuseumApp*>(be_app);
 		theApp->GetCueSheet()->GetStage()->PostMessage(fMessage, theApp->GetCueSheet()->GetStage()->GetStageView());
 
 		//	Draw
@@ -206,7 +206,7 @@ void TStageToolButton::Activate(bool theState)
 			fButtonState = true;
 			Invalidate();
 		}
-	} else   {
+	} else {
 		if (fButtonState == true) {
 			fButtonState = false;
 			Invalidate();

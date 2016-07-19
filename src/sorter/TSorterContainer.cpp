@@ -41,7 +41,7 @@
 //
 //
 
-TSorterContainer::TSorterContainer(BRect bounds, char *title, SorterType theType, int16 theID) : BView(bounds, "SorterContainer", B_FOLLOW_LEFT|B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW)
+TSorterContainer::TSorterContainer(BRect bounds, char* title, SorterType theType, int16 theID) : BView(bounds, "SorterContainer", B_FOLLOW_LEFT|B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW)
 {
 	fTitle = title;
 	fType   = theType;
@@ -88,10 +88,10 @@ void TSorterContainer::Init()
 	AddChild(fSorterList);
 
 	// Set up messages
-	BMessage *selectMsg = new BMessage(SORTER_SELECT_MSG);
+	BMessage* selectMsg = new BMessage(SORTER_SELECT_MSG);
 	fSorterList->SetSelectionMessage(selectMsg);
 
-	BMessage *invokeMsg = new BMessage(SORTER_INVOKE_MSG);
+	BMessage* invokeMsg = new BMessage(SORTER_INVOKE_MSG);
 	fSorterList->SetInvocationMessage(invokeMsg);
 
 	// We start life inactive
@@ -126,7 +126,7 @@ void TSorterContainer::Draw(BRect updateRect)
 //	Handle messages
 //
 
-void TSorterContainer::MessageReceived(BMessage *theMessage)
+void TSorterContainer::MessageReceived(BMessage* theMessage)
 {
 	switch(theMessage->what)
 	{
@@ -198,7 +198,7 @@ void TSorterContainer::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TSorterContainer::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TSorterContainer::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -215,7 +215,7 @@ void TSorterContainer::MouseMoved( BPoint where, uint32 code, const BMessage *a_
 
 void TSorterContainer::DeleteItem( int32 theItem )
 {
-	static_cast<TElementsSorter *>(Parent())->DeleteItem(theItem);
+	static_cast<TElementsSorter*>(Parent())->DeleteItem(theItem);
 }
 
 
@@ -248,7 +248,7 @@ void TSorterContainer::MakeActive(bool theState)
 //	A scrollbar has asked us to scroll vertically
 //
 
-void TSorterContainer::HandleScrollVMessage(BMessage *theMessage)
+void TSorterContainer::HandleScrollVMessage(BMessage* theMessage)
 {
 	bool negative;
 
@@ -285,7 +285,7 @@ void TSorterContainer::Sort()
 //	Reorder list based on id's of syncSource list
 //
 
-void TSorterContainer::Synchronize(TSorterContainer *syncSource)
+void TSorterContainer::Synchronize(TSorterContainer* syncSource)
 {
 	fSorterList->Synchronize(syncSource->GetSorterList() );
 }

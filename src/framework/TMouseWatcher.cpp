@@ -49,7 +49,7 @@ thread_id StartMouseWatcher(BView* TargetView)
 
 int32 MouseWatcher(void* data)
 {
-	BMessenger      *TheMessenger = (BMessenger*)data;
+	BMessenger* TheMessenger = (BMessenger*)data;
 	BPoint PreviousPos;
 	uint32 PreviousButtons;
 	bool FirstCheck = true;
@@ -64,8 +64,8 @@ int32 MouseWatcher(void* data)
 			return 0;                       // window is dead so exit
 		}
 
-		BLooper *TheLooper;
-		BView   *TheView = (BView*)TheMessenger->Target(&TheLooper);
+		BLooper* TheLooper;
+		BView* TheView = (BView*)TheMessenger->Target(&TheLooper);
 		BPoint Where;
 		uint32 Buttons;
 		TheView->GetMouse(&Where,&Buttons,false);

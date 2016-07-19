@@ -365,7 +365,7 @@ void AVIApp::MessageReceived(BMessage* message)
 //
 //
 
-status_t AVIApp::HandleMessage(int32 message, const void *data, size_t size)
+status_t AVIApp::HandleMessage(int32 message, const void* data, size_t size)
 {
 	switch(message)
 	{
@@ -393,7 +393,7 @@ status_t AVIApp::HandleMessage(int32 message, const void *data, size_t size)
 //	Called by either File Open or a File Drag message
 //
 
-void AVIApp::RefsReceived(BMessage *message)
+void AVIApp::RefsReceived(BMessage* message)
 {
 	status_t retVal;
 
@@ -487,7 +487,7 @@ void AVIApp::ShowFileOpenPanel()
 //		CenterWindow(m_FileOpenPanel->Window());
 
 		// ABH hack
-		((AVIApp *)be_app)->ShowFileOpenPanel();
+		((AVIApp*)be_app)->ShowFileOpenPanel();
 	}
 
 //	m_FileOpenPanel->Show();	// ABH show twice??
@@ -516,7 +516,7 @@ port_id AVIApp::ControlPort() const
 //
 //
 
-BMediaAddOn     *AVIApp::AddOn( int32 * internal_id) const
+BMediaAddOn* AVIApp::AddOn( int32* internal_id) const
 {
 	return NULL;
 }
@@ -531,7 +531,7 @@ BMediaAddOn     *AVIApp::AddOn( int32 * internal_id) const
 //
 //
 
-status_t AVIApp::AcceptFormat(const media_destination &dest, media_format *format)
+status_t AVIApp::AcceptFormat(const media_destination &dest, media_format* format)
 {
 	//	Check for wildcards
 	if (format->type == 0) {
@@ -559,7 +559,7 @@ status_t AVIApp::AcceptFormat(const media_destination &dest, media_format *forma
 //
 //
 
-status_t AVIApp::GetNextInput( int32 *cookie, media_input *outInput)
+status_t AVIApp::GetNextInput( int32* cookie, media_input* outInput)
 {
 	if (*cookie) {
 		return B_ERROR;
@@ -600,7 +600,7 @@ void AVIApp::DisposeInputCookie(int32 cookie)
 //	We have received a buffer.  Handle it...
 //
 
-void AVIApp::BufferReceived(BBuffer *buffer)
+void AVIApp::BufferReceived(BBuffer* buffer)
 {
 	// ABH virtual methhod cannot be called! BBufferConsumer::BufferReceived(buffer);
 
@@ -630,7 +630,7 @@ void AVIApp::ProducerDataStatus( const media_destination &for_whom, int32 status
 //
 //
 
-status_t AVIApp::GetLatencyFor( const media_destination &for_whom, bigtime_t *outLatency, media_node_id *outTimesource)
+status_t AVIApp::GetLatencyFor( const media_destination &for_whom, bigtime_t* outLatency, media_node_id* outTimesource)
 {
 	//	Who do we calculate for?
 	//for_whom
@@ -649,7 +649,7 @@ status_t AVIApp::GetLatencyFor( const media_destination &for_whom, bigtime_t *ou
 //
 
 status_t AVIApp::Connected( const media_source &producer, const media_destination &whichInput,
-                            const media_format &format, media_input *outInput)
+                            const media_format &format, media_input* outInput)
 {
 	// ABH virtual method cannot be called!
 	// BBufferConsumer::Connected(producer, whichInput, format, outInput);
@@ -832,9 +832,9 @@ void AVIApp::TimeWarp(bigtime_t at_real_time, bigtime_t to_performance_time)
 //	Static service thread function
 //
 
-status_t AVIApp::service_routine(void * data)
+status_t AVIApp::service_routine(void* data)
 {
-	((AVIApp *)data)->ServiceRoutine();
+	((AVIApp*)data)->ServiceRoutine();
 	return 0;
 }
 
@@ -880,9 +880,9 @@ void AVIApp::ServiceRoutine()
 //	Static run thread function
 //
 
-status_t AVIApp::run_routine(void *data)
+status_t AVIApp::run_routine(void* data)
 {
-	((AVIApp *)data)->RunRoutine();
+	((AVIApp*)data)->RunRoutine();
 
 	return 0;
 }
@@ -955,7 +955,7 @@ void AVIApp::RunRoutine()
 
 
 			if (m_Running) {
-				BBuffer *buffer = m_BufferQueue->PopFirstBuffer(0);
+				BBuffer* buffer = m_BufferQueue->PopFirstBuffer(0);
 
 				//printf( "Popped buffer #%d, Start time: %d, system time: %d\n",
 				//		buffer->ID(), (uint32) buffer->Header()->start_time, TimeSource()->Now());
@@ -967,7 +967,7 @@ void AVIApp::RunRoutine()
 						printf("dropped late frame: %.4f @ %.4f\n", (double)buffer->Header()->start_time/1000000., (double)TimeSource()->PerformanceTimeFor(realTimeNow)/1000000.);
 						buffer->Recycle();
 						continue;
-					} else   {
+					} else {
 						if ( buffer->Header()->start_time < perfTimeNow) {
 							//printf("Played frame: %.4f @ %.4f\n", (double)buffer->Header()->start_time/1000000., (double)(perfTimeNow)/1000000.);
 

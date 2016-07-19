@@ -47,7 +47,7 @@
 //
 //
 
-TSorterList::TSorterList(BRect bounds, TSorterContainer *parent, SorterType theType) : BListView(bounds, "SorterList", B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP_BOTTOM)
+TSorterList::TSorterList(BRect bounds, TSorterContainer* parent, SorterType theType) : BListView(bounds, "SorterList", B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP_BOTTOM)
 {
 	fParent         = parent;
 	fType           = theType;
@@ -97,7 +97,7 @@ void TSorterList::Init()
 //	Handle messages
 //
 
-void TSorterList::MessageReceived(BMessage *theMessage)
+void TSorterList::MessageReceived(BMessage* theMessage)
 {
 	switch(theMessage->what)
 	{
@@ -141,12 +141,12 @@ void TSorterList::MouseDown(BPoint where)
 {
 	// Check to see which button is down
 	uint32 buttons = 0;
-	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+	Window()->CurrentMessage()->FindInt32("buttons", (long*)&buttons);
 
 	// Is this a double click?  If so, open editor
 	uint32 type;
 	int32 count = 0;
-	BMessage        *message = Window()->CurrentMessage();
+	BMessage* message = Window()->CurrentMessage();
 
 	// Determine which button has been clicked
 	switch(buttons)
@@ -157,7 +157,7 @@ void TSorterList::MouseDown(BPoint where)
 			if (clickCount == 2) {
 				// Open editor for item type
 				OpenEditor();
-			} else   {
+			} else {
 				// If shift key is down the user is group selecting/deselecting
 				if (IsShiftKeyDown()) {
 				}
@@ -200,7 +200,7 @@ void TSorterList::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TSorterList::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TSorterList::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	BListView::MouseMoved(where, code, a_message);
 }
@@ -217,7 +217,7 @@ void TSorterList::MouseMoved( BPoint where, uint32 code, const BMessage *a_messa
 //      it will handle removal of the item from the list.
 //
 
-void TSorterList::KeyDown(const char *bytes, int32 numBytes)
+void TSorterList::KeyDown(const char* bytes, int32 numBytes)
 {
 	if (numBytes == 1) {
 		switch(bytes[0])
@@ -257,22 +257,22 @@ bool TSorterList::InitiateDrag(BPoint point, int32 index, bool wasSelected)
 	// Select the item
 	//Select(index);
 
-	TSorterListItem *theItem = static_cast<TSorterListItem *>(ItemAt(index));
+	TSorterListItem* theItem = static_cast<TSorterListItem*>(ItemAt(index));
 	if (theItem) {
 		if (theItem->GetType() != kIconSorter) {
 			//      Get bitmap based on item type.  Get this from the IconSorter, which is the
 			//	first sorter in our SorterList
-			BList  *sorterList =  static_cast<TElementsSorter *>(fParent->Parent())->GetSorterList();
+			BList* sorterList =  static_cast<TElementsSorter*>(fParent->Parent())->GetSorterList();
 			if (sorterList) {
-				TSorterContainer *theContainer =  static_cast<TSorterContainer *>(sorterList->ItemAt(0));
+				TSorterContainer* theContainer =  static_cast<TSorterContainer*>(sorterList->ItemAt(0));
 				if (theContainer) {
-					TSorterList *iconList = theContainer->GetSorterList();
+					TSorterList* iconList = theContainer->GetSorterList();
 					if (iconList) {
-						TSorterIconListItem *iconItem = static_cast<TSorterIconListItem *>(iconList->ItemAt(index));
+						TSorterIconListItem* iconItem = static_cast<TSorterIconListItem*>(iconList->ItemAt(index));
 						if (iconItem) {
 							// Create a copy of the large icon for dragging
-							BBitmap *iconBitmap = iconItem->GetLargeIcon();
-							BBitmap *dragBitmap = new BBitmap( iconBitmap->Bounds(), iconBitmap->ColorSpace() );
+							BBitmap* iconBitmap = iconItem->GetLargeIcon();
+							BBitmap* dragBitmap = new BBitmap( iconBitmap->Bounds(), iconBitmap->ColorSpace() );
 							dragBitmap->SetBits( iconBitmap->Bits(), iconBitmap->BitsLength(), 0, iconBitmap->ColorSpace() );
 
 							// Center mouse over icon
@@ -292,11 +292,11 @@ bool TSorterList::InitiateDrag(BPoint point, int32 index, bool wasSelected)
 		}
 		// This is the icon sorter.  It is easier for us to get the drag bitmap icon
 		else{
-			TSorterIconListItem *iconItem = static_cast<TSorterIconListItem *>(ItemAt(index));
+			TSorterIconListItem* iconItem = static_cast<TSorterIconListItem*>(ItemAt(index));
 			if (iconItem) {
 				// Create a copy of the large icon for dragging
-				BBitmap *iconBitmap = iconItem->GetLargeIcon();
-				BBitmap *dragBitmap = new BBitmap( iconBitmap->Bounds(), iconBitmap->ColorSpace() );
+				BBitmap* iconBitmap = iconItem->GetLargeIcon();
+				BBitmap* dragBitmap = new BBitmap( iconBitmap->Bounds(), iconBitmap->ColorSpace() );
 				dragBitmap->SetBits( iconBitmap->Bits(), iconBitmap->BitsLength(), 0, iconBitmap->ColorSpace() );
 
 				// Center mouse over icon
@@ -341,7 +341,7 @@ void TSorterList::MakeActive(bool theState)
 //	Set up out defualt list item dimensions
 //
 
-void TSorterList::SetListItemDimensions(TSorterListItem *listItem, BRect theRect)
+void TSorterList::SetListItemDimensions(TSorterListItem* listItem, BRect theRect)
 {
 	// Set width and height
 	listItem->SetHeight(theRect.Height());
@@ -362,7 +362,7 @@ void TSorterList::SetListItemDimensions(TSorterListItem *listItem, BRect theRect
 //	Set up our default icon list item dimensions
 //
 
-void TSorterList::SetListItemIconDimensions(TSorterIconListItem *listItem, BRect theRect)
+void TSorterList::SetListItemIconDimensions(TSorterIconListItem* listItem, BRect theRect)
 {
 	// Set width and height
 	listItem->SetHeight(theRect.Height());
@@ -389,7 +389,7 @@ int32 TSorterList::GetOccurences(entry_ref &fileRef)
 	int32 numItems = 0;
 
 	for( int32 index = 0; index < CountItems(); index++) {
-		TSorterListItem *theItem = static_cast<TSorterListItem *>(ItemAt(index) );
+		TSorterListItem* theItem = static_cast<TSorterListItem*>(ItemAt(index) );
 		if (theItem) {
 			if (fileRef == *theItem->GetEntryRef() )
 				numItems++;
@@ -410,16 +410,16 @@ int32 TSorterList::GetOccurences(entry_ref &fileRef)
 //		TSorterIconListItem into a TSorterListItem.
 //
 
-void TSorterList::Synchronize( TSorterList *syncSource)
+void TSorterList::Synchronize( TSorterList* syncSource)
 {
 
 	// Step through each item in the syncSource
 	for (int32 syncIndex = 0; syncIndex < syncSource->CountItems(); syncIndex++) {
-		TSorterListItem *syncItem = (TSorterListItem *)syncSource->ItemAt(syncIndex);
+		TSorterListItem* syncItem = (TSorterListItem*)syncSource->ItemAt(syncIndex);
 		if (syncItem) {
 			// Find a match in the list
 			for (int32 matchIndex = 0; matchIndex < CountItems(); matchIndex++) {
-				TSorterListItem *matchItem = (TSorterListItem *)ItemAt(matchIndex);
+				TSorterListItem* matchItem = (TSorterListItem*)ItemAt(matchIndex);
 				if (matchItem) {
 					entry_ref matchRef, syncRef;
 
@@ -450,7 +450,7 @@ void TSorterList::Synchronize( TSorterList *syncSource)
 //	Handle files dragged into window
 //
 
-void TSorterList::HandleRefsMessage(BMessage *theMessage)
+void TSorterList::HandleRefsMessage(BMessage* theMessage)
 {
 	entry_ref theRef;
 	if ( theMessage->FindRef("FileRef", &theRef ) == B_OK) {
@@ -519,7 +519,7 @@ void TSorterList::HandleRefsMessage(BMessage *theMessage)
 //	Handle files dragged into window
 //
 
-void TSorterList::AddNameToDataList(BEntry *theEntry)
+void TSorterList::AddNameToDataList(BEntry* theEntry)
 {
 	// Get an entry_ref for ListItem constructor
 	entry_ref fileRef;
@@ -546,7 +546,7 @@ void TSorterList::AddNameToDataList(BEntry *theEntry)
 	// Create our TSorterListItem
 	float width = StringWidth(theName);
 	textRect.right = textRect.left + width;
-	TSorterListItem *listItem = new TSorterListItem(0, true, textRect, theName, kNameSorter, fileRef);
+	TSorterListItem* listItem = new TSorterListItem(0, true, textRect, theName, kNameSorter, fileRef);
 	AddItem(listItem);
 
 	// Set up default size
@@ -564,7 +564,7 @@ void TSorterList::AddNameToDataList(BEntry *theEntry)
 //	Handle files dragged into window
 //
 
-void TSorterList::AddPathToDataList(BEntry *theEntry)
+void TSorterList::AddPathToDataList(BEntry* theEntry)
 {
 	// Get an entry_ref for ListItem constructor
 	entry_ref fileRef;
@@ -579,7 +579,7 @@ void TSorterList::AddPathToDataList(BEntry *theEntry)
 	theEntry->GetPath(&thePath);
 	float width = StringWidth(thePath.Path());
 	textRect.right = textRect.left + width;
-	TSorterListItem *listItem = new TSorterListItem(0, true, textRect, thePath.Path(), kPathSorter, fileRef);
+	TSorterListItem* listItem = new TSorterListItem(0, true, textRect, thePath.Path(), kPathSorter, fileRef);
 	AddItem(listItem);
 
 	// Set up default size
@@ -597,7 +597,7 @@ void TSorterList::AddPathToDataList(BEntry *theEntry)
 //	Get file size and it to the list
 //
 
-void TSorterList::AddSizeToDataList(BEntry *theEntry)
+void TSorterList::AddSizeToDataList(BEntry* theEntry)
 {
 	// Get an entry_ref for ListItem constructor
 	entry_ref fileRef;
@@ -616,7 +616,7 @@ void TSorterList::AddSizeToDataList(BEntry *theEntry)
 	sprintf(sizeStr, "%dK", kBytes);
 	float width = StringWidth(sizeStr);
 	textRect.right = textRect.left + width;
-	TSorterListItem *listItem = new TSorterListItem(0, true, textRect, sizeStr, kSizeSorter, fileRef);
+	TSorterListItem* listItem = new TSorterListItem(0, true, textRect, sizeStr, kSizeSorter, fileRef);
 	AddItem(listItem);
 
 	// Set up default size
@@ -634,7 +634,7 @@ void TSorterList::AddSizeToDataList(BEntry *theEntry)
 //	Get file modification date and it to the list
 //
 
-void TSorterList::AddDateToDataList(BEntry *theEntry)
+void TSorterList::AddDateToDataList(BEntry* theEntry)
 {
 	// Get an entry_ref for ListItem constructor
 	entry_ref fileRef;
@@ -646,7 +646,7 @@ void TSorterList::AddDateToDataList(BEntry *theEntry)
 
 	// Create our TSorterListItem
 	time_t theTime;
-	struct  tm *localTime;
+	struct  tm* localTime;
 	char timeStr[255];
 
 	theEntry->GetModificationTime(&theTime);
@@ -657,7 +657,7 @@ void TSorterList::AddDateToDataList(BEntry *theEntry)
 
 	float width = StringWidth(timeStr);
 	textRect.right = textRect.left + width;
-	TSorterListItem *listItem = new TSorterListItem(0, true, textRect, timeStr, kDateSorter, fileRef);
+	TSorterListItem* listItem = new TSorterListItem(0, true, textRect, timeStr, kDateSorter, fileRef);
 	AddItem(listItem);
 
 	// Set up default size
@@ -675,14 +675,14 @@ void TSorterList::AddDateToDataList(BEntry *theEntry)
 //	Get file type and add it to the list
 //
 
-void TSorterList::AddTypeToDataList(BEntry *theEntry, BNodeInfo *nodeInfo)
+void TSorterList::AddTypeToDataList(BEntry* theEntry, BNodeInfo* nodeInfo)
 {
 
 	// Get an entry_ref for ListItem constructor
 	entry_ref fileRef;
 	theEntry->GetRef(&fileRef);
 
-	TSorterListItem *listItem;
+	TSorterListItem* listItem;
 	float width;
 
 	// Setup rect
@@ -734,7 +734,7 @@ void TSorterList::AddTypeToDataList(BEntry *theEntry, BNodeInfo *nodeInfo)
 //	Get file duration and add it to the list
 //
 
-void TSorterList::AddDurationToDataList(BEntry *theEntry)
+void TSorterList::AddDurationToDataList(BEntry* theEntry)
 {
 	// Get an entry_ref for ListItem constructor
 	entry_ref fileRef;
@@ -750,7 +750,7 @@ void TSorterList::AddDurationToDataList(BEntry *theEntry)
 
 	float width = StringWidth(mimeStr);
 	textRect.right = textRect.left + width;
-	TSorterListItem *listItem = new TSorterListItem(0, true, textRect, mimeStr, kDurationSorter, fileRef);
+	TSorterListItem* listItem = new TSorterListItem(0, true, textRect, mimeStr, kDurationSorter, fileRef);
 	AddItem(listItem);
 
 	// Set up default size
@@ -768,7 +768,7 @@ void TSorterList::AddDurationToDataList(BEntry *theEntry)
 //	Get audio info and add it to the list
 //
 
-void TSorterList::AddAudioInfoToDataList(BEntry *theEntry)
+void TSorterList::AddAudioInfoToDataList(BEntry* theEntry)
 {
 	// Get an entry_ref for ListItem constructor
 	entry_ref fileRef;
@@ -784,7 +784,7 @@ void TSorterList::AddAudioInfoToDataList(BEntry *theEntry)
 
 	float width = StringWidth(mimeStr);
 	textRect.right = textRect.left + width;
-	TSorterListItem *listItem = new TSorterListItem(0, true, textRect, mimeStr, kAudioInfoSorter, fileRef);
+	TSorterListItem* listItem = new TSorterListItem(0, true, textRect, mimeStr, kAudioInfoSorter, fileRef);
 	AddItem(listItem);
 
 	// Set up default size
@@ -802,7 +802,7 @@ void TSorterList::AddAudioInfoToDataList(BEntry *theEntry)
 //	Get video info and add it to the list
 //
 
-void TSorterList::AddVideoInfoToDataList(BEntry *theEntry)
+void TSorterList::AddVideoInfoToDataList(BEntry* theEntry)
 {
 	// Get an entry_ref for ListItem constructor
 	entry_ref fileRef;
@@ -818,7 +818,7 @@ void TSorterList::AddVideoInfoToDataList(BEntry *theEntry)
 
 	float width = StringWidth(mimeStr);
 	textRect.right = textRect.left + width;
-	TSorterListItem *listItem = new TSorterListItem(0, true, textRect, mimeStr, kVideoInfoSorter, fileRef);
+	TSorterListItem* listItem = new TSorterListItem(0, true, textRect, mimeStr, kVideoInfoSorter, fileRef);
 	AddItem(listItem);
 
 	// Set up default size
@@ -836,7 +836,7 @@ void TSorterList::AddVideoInfoToDataList(BEntry *theEntry)
 //	Get icons and add tem to the list
 //
 
-void TSorterList::AddIconsToDataList(BEntry *theEntry, BNodeInfo &nodeInfo)
+void TSorterList::AddIconsToDataList(BEntry* theEntry, BNodeInfo &nodeInfo)
 {
 	TSorterIcons sorterIcons;
 
@@ -846,17 +846,17 @@ void TSorterList::AddIconsToDataList(BEntry *theEntry, BNodeInfo &nodeInfo)
 
 	// Load icons based upon file type
 	if (IsAudio(nodeInfo)) {
-		sorterIcons.fMiniIcon   = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon16;
-		sorterIcons.fLargeIcon  = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon32;
-	} else if (IsImage(nodeInfo))   {
-		sorterIcons.fMiniIcon   = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fPictureIcon16;
-		sorterIcons.fLargeIcon  = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fPictureIcon32;
-	} else if (IsText(nodeInfo))   {
-		sorterIcons.fMiniIcon   = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fTextIcon16;
-		sorterIcons.fLargeIcon  = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fTextIcon32;
-	} else if (IsVideo(nodeInfo))   {
-		sorterIcons.fMiniIcon   = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fMovieIcon16;
-		sorterIcons.fLargeIcon  = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fMovieIcon32;
+		sorterIcons.fMiniIcon   = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fAudioIcon16;
+		sorterIcons.fLargeIcon  = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fAudioIcon32;
+	} else if (IsImage(nodeInfo)) {
+		sorterIcons.fMiniIcon   = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fPictureIcon16;
+		sorterIcons.fLargeIcon  = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fPictureIcon32;
+	} else if (IsText(nodeInfo)) {
+		sorterIcons.fMiniIcon   = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fTextIcon16;
+		sorterIcons.fLargeIcon  = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fTextIcon32;
+	} else if (IsVideo(nodeInfo)) {
+		sorterIcons.fMiniIcon   = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fMovieIcon16;
+		sorterIcons.fLargeIcon  = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fMovieIcon32;
 	}
 
 	// Setup rect
@@ -864,7 +864,7 @@ void TSorterList::AddIconsToDataList(BEntry *theEntry, BNodeInfo &nodeInfo)
 	textRect.bottom = textRect.top + kSorterFontSize + 6;
 
 	// Create our TSorterIconListItem
-	TSorterIconListItem *listItem = new TSorterIconListItem(0, true, textRect, sorterIcons, fileRef);
+	TSorterIconListItem* listItem = new TSorterIconListItem(0, true, textRect, sorterIcons, fileRef);
 	AddItem(listItem);
 
 	// Set up default size
@@ -937,20 +937,20 @@ void TSorterList::Sort()
 //	Sort the list according to its name
 //
 
-int SortByName( const void *itemOne, const void *itemTwo)
+int SortByName( const void* itemOne, const void* itemTwo)
 {
-	TSorterListItem **firstItem  = (TSorterListItem **)(itemOne);
-	TSorterListItem **secondItem = (TSorterListItem **)(itemTwo);
+	TSorterListItem** firstItem  = (TSorterListItem**)(itemOne);
+	TSorterListItem** secondItem = (TSorterListItem**)(itemTwo);
 
-	char *strOne = (*firstItem)->GetDataString();
-	char *strTwo = (*secondItem)->GetDataString();
+	char* strOne = (*firstItem)->GetDataString();
+	char* strTwo = (*secondItem)->GetDataString();
 
 	// Create proxy strings for lower case conversion
 	int16 strLenOne = strlen((*firstItem)->GetDataString());
 	int16 strLenTwo = strlen((*secondItem)->GetDataString());
 
-	char *lowerStrOne = new char[strLenOne];
-	char *lowerStrTwo = new char[strLenTwo];
+	char* lowerStrOne = new char[strLenOne];
+	char* lowerStrTwo = new char[strLenTwo];
 
 	// Convert strings
 	for (int16 index = 0; index < strLenOne; index++)
@@ -980,13 +980,13 @@ int SortByName( const void *itemOne, const void *itemTwo)
 //	Sort the list according to its date
 //
 
-int SortByDate( const void *itemOne, const void *itemTwo)
+int SortByDate( const void* itemOne, const void* itemTwo)
 {
-	TSorterListItem **firstItem  = (TSorterListItem **)(itemOne);
-	TSorterListItem **secondItem = (TSorterListItem **)(itemTwo);
+	TSorterListItem** firstItem  = (TSorterListItem**)(itemOne);
+	TSorterListItem** secondItem = (TSorterListItem**)(itemTwo);
 
-	char *sizeStrOne = (*firstItem)->GetDataString();
-	char *sizeStrTwo = (*secondItem)->GetDataString();
+	char* sizeStrOne = (*firstItem)->GetDataString();
+	char* sizeStrTwo = (*secondItem)->GetDataString();
 
 	int sizeOne = atoi(sizeStrOne);
 	int sizeTwo = atoi(sizeStrTwo);
@@ -1007,10 +1007,10 @@ int SortByDate( const void *itemOne, const void *itemTwo)
 //	Sort the list according to its path
 //
 
-int SortByPath( const void *itemOne, const void *itemTwo)
+int SortByPath( const void* itemOne, const void* itemTwo)
 {
-	TSorterListItem **firstItem  = (TSorterListItem **)(itemOne);
-	TSorterListItem **secondItem = (TSorterListItem **)(itemTwo);
+	TSorterListItem** firstItem  = (TSorterListItem**)(itemOne);
+	TSorterListItem** secondItem = (TSorterListItem**)(itemTwo);
 
 	int retVal = strcmp( (*firstItem)->GetDataString(), (*secondItem)->GetDataString() );
 
@@ -1031,10 +1031,10 @@ int SortByPath( const void *itemOne, const void *itemTwo)
 //	Sort the list according to its type
 //
 
-int SortByType( const void *itemOne, const void *itemTwo)
+int SortByType( const void* itemOne, const void* itemTwo)
 {
-	TSorterListItem **firstItem  = (TSorterListItem **)(itemOne);
-	TSorterListItem **secondItem = (TSorterListItem **)(itemTwo);
+	TSorterListItem** firstItem  = (TSorterListItem**)(itemOne);
+	TSorterListItem** secondItem = (TSorterListItem**)(itemTwo);
 
 	int retVal = strcmp( (*firstItem)->GetDataString(), (*secondItem)->GetDataString() );
 
@@ -1054,10 +1054,10 @@ int SortByType( const void *itemOne, const void *itemTwo)
 //	Sort the list according to its time duration
 //
 
-int SortByDuration( const void *itemOne, const void *itemTwo)
+int SortByDuration( const void* itemOne, const void* itemTwo)
 {
-	TSorterListItem **firstItem  = (TSorterListItem **)(itemOne);
-	TSorterListItem **secondItem = (TSorterListItem **)(itemTwo);
+	TSorterListItem** firstItem  = (TSorterListItem**)(itemOne);
+	TSorterListItem** secondItem = (TSorterListItem**)(itemTwo);
 
 	int retVal = strcmp( (*firstItem)->GetDataString(), (*secondItem)->GetDataString() );
 
@@ -1078,13 +1078,13 @@ int SortByDuration( const void *itemOne, const void *itemTwo)
 //	Sort the list according to its file size
 //
 
-int SortBySize( const void *itemOne, const void *itemTwo)
+int SortBySize( const void* itemOne, const void* itemTwo)
 {
-	TSorterListItem **firstItem  = (TSorterListItem **)(itemOne);
-	TSorterListItem **secondItem = (TSorterListItem **)(itemTwo);
+	TSorterListItem** firstItem  = (TSorterListItem**)(itemOne);
+	TSorterListItem** secondItem = (TSorterListItem**)(itemTwo);
 
-	char *sizeStrOne = (*firstItem)->GetDataString();
-	char *sizeStrTwo = (*secondItem)->GetDataString();
+	char* sizeStrOne = (*firstItem)->GetDataString();
+	char* sizeStrTwo = (*secondItem)->GetDataString();
 
 	int sizeOne = atoi(sizeStrOne);
 	int sizeTwo = atoi(sizeStrTwo);
@@ -1105,10 +1105,10 @@ int SortBySize( const void *itemOne, const void *itemTwo)
 //	Sort the list according to its audio length
 //
 
-int SoryByAudioInfo( const void *itemOne, const void *itemTwo)
+int SoryByAudioInfo( const void* itemOne, const void* itemTwo)
 {
-	TSorterListItem **firstItem  = (TSorterListItem **)(itemOne);
-	TSorterListItem **secondItem = (TSorterListItem **)(itemTwo);
+	TSorterListItem** firstItem  = (TSorterListItem**)(itemOne);
+	TSorterListItem** secondItem = (TSorterListItem**)(itemTwo);
 
 	int retVal = strcmp( (*firstItem)->GetDataString(), (*secondItem)->GetDataString() );
 
@@ -1128,10 +1128,10 @@ int SoryByAudioInfo( const void *itemOne, const void *itemTwo)
 //	Sort the list according to its video frame size
 //
 
-int SortByVideoInfo( const void *itemOne, const void *itemTwo)
+int SortByVideoInfo( const void* itemOne, const void* itemTwo)
 {
-	TSorterListItem **firstItem  = (TSorterListItem **)(itemOne);
-	TSorterListItem **secondItem = (TSorterListItem **)(itemTwo);
+	TSorterListItem** firstItem  = (TSorterListItem**)(itemOne);
+	TSorterListItem** secondItem = (TSorterListItem**)(itemTwo);
 
 	int retVal = strcmp( (*firstItem)->GetDataString(), (*secondItem)->GetDataString() );
 
@@ -1157,7 +1157,7 @@ int SortByVideoInfo( const void *itemOne, const void *itemTwo)
 void TSorterList::OpenEditor()
 {
 	// Get data type
-	TSorterListItem *theItem = static_cast<TSorterListItem *>(ItemAt( CurrentSelection()) );
+	TSorterListItem* theItem = static_cast<TSorterListItem*>(ItemAt( CurrentSelection()) );
 	if (theItem) {
 		switch(theItem->GetDataType())
 		{

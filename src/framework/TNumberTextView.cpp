@@ -32,7 +32,7 @@
 //
 //
 
-TNumberTextView::TNumberTextView(BRect bounds, char *name, uint32 resizing) :
+TNumberTextView::TNumberTextView(BRect bounds, char* name, uint32 resizing) :
 	BTextView(bounds, name, bounds, resizing, B_FRAME_EVENTS | B_PULSE_NEEDED)
 {
 	// Perform default initialization
@@ -96,7 +96,7 @@ void TNumberTextView::MouseUp(BPoint where)
 //
 //
 
-void TNumberTextView::MouseMoved(BPoint where, uint32 code, const BMessage *message)
+void TNumberTextView::MouseMoved(BPoint where, uint32 code, const BMessage* message)
 {
 	BTextView::MouseMoved(where, code, message);
 }
@@ -108,7 +108,7 @@ void TNumberTextView::MouseMoved(BPoint where, uint32 code, const BMessage *mess
 //
 //
 
-void TNumberTextView::KeyDown(const char *bytes, int32 numBytes)
+void TNumberTextView::KeyDown(const char* bytes, int32 numBytes)
 {
 	char theChar = *bytes;
 
@@ -141,7 +141,7 @@ void TNumberTextView::MakeFocus(bool focusState)
 //
 //
 
-void TNumberTextView::MessageReceived(BMessage *message)
+void TNumberTextView::MessageReceived(BMessage* message)
 {
 	BTextView::MessageReceived(message);
 }
@@ -155,7 +155,7 @@ void TNumberTextView::MessageReceived(BMessage *message)
 //
 //
 
-bool TNumberTextView::AcceptsDrop(const BMessage *message)
+bool TNumberTextView::AcceptsDrop(const BMessage* message)
 {
 	return false;
 }
@@ -166,7 +166,7 @@ bool TNumberTextView::AcceptsDrop(const BMessage *message)
 //
 //
 
-bool TNumberTextView::AcceptsPaste(BClipboard *clipboard)
+bool TNumberTextView::AcceptsPaste(BClipboard* clipboard)
 {
 	return false;
 }
@@ -178,7 +178,7 @@ bool TNumberTextView::AcceptsPaste(BClipboard *clipboard)
 //	We only allow the user to enter numbers
 //
 
-void TNumberTextView::InsertText(const char *text, int32 length, int32 offset, const text_run_array *runs)
+void TNumberTextView::InsertText(const char* text, int32 length, int32 offset, const text_run_array* runs)
 {
 	BTextView::InsertText(text, length, offset, runs);
 }

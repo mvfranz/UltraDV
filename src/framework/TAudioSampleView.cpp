@@ -42,7 +42,7 @@
 //
 //
 
-TAudioSampleView::TAudioSampleView(TAudioSettingsTabView *parent, BMessage *archive) : BView(archive)
+TAudioSampleView::TAudioSampleView(TAudioSettingsTabView* parent, BMessage* archive) : BView(archive)
 {
 	fParent = parent;
 
@@ -63,13 +63,13 @@ void TAudioSampleView::Init()
 	SetViewColor(kBeGrey);
 
 	// Locate view items
-	fRateMenuField  = (BMenuField *)FindView("RateMenuField");
-	fDepthMenuField         = (BMenuField *)FindView("DepthMenuField");
-	fTypeMenuField  = (BMenuField *)FindView("TypeMenuField");
-	fVolumeBox                      = (BBox *)FindView("VolumeBox");
+	fRateMenuField  = (BMenuField*)FindView("RateMenuField");
+	fDepthMenuField         = (BMenuField*)FindView("DepthMenuField");
+	fTypeMenuField  = (BMenuField*)FindView("TypeMenuField");
+	fVolumeBox                      = (BBox*)FindView("VolumeBox");
 
 	// Set up Input Slider
-	BView *inputView = (BView *)FindView("InputView");
+	BView* inputView = (BView*)FindView("InputView");
 	fInputSlider = new TLevelsSlider(inputView->Frame(), kAudioInputSlider);
 	fVolumeBox->AddChild(fInputSlider);
 	fVolumeBox->RemoveChild(inputView);
@@ -77,7 +77,7 @@ void TAudioSampleView::Init()
 	fInputSlider->Show();
 
 	// Set up Output Slider
-	BView *outputView = (BView *)FindView("OutputView");
+	BView* outputView = (BView*)FindView("OutputView");
 	fOutputSlider = new TLevelsSlider(outputView->Frame(), kAudioOutputSlider);
 	fVolumeBox->AddChild(fOutputSlider);
 	fVolumeBox->RemoveChild(outputView);
@@ -85,28 +85,28 @@ void TAudioSampleView::Init()
 	fOutputSlider->Show();
 
 	// Set up level indicator
-	BView   *levelsView     = (BMenuField *)FindView("LevelsView");
+	BView* levelsView     = (BMenuField*)FindView("LevelsView");
 	fAudioLevelsView = new TAudioLevelsView(levelsView->Frame());
 	fVolumeBox->RemoveChild(levelsView);
 	delete levelsView;
 	fVolumeBox->AddChild(fAudioLevelsView);
 
 	// Setup menus
-	BMenu *theMenu;
+	BMenu* theMenu;
 
 	// Setup Rate menu
 	theMenu = fRateMenuField->Menu();
 	if (theMenu) {
 		// 11.025 kHz
-		BMenuItem *kHz11Item = new BMenuItem("11.025 kHz", new BMessage(SAMP_11_MSG)  );
+		BMenuItem* kHz11Item = new BMenuItem("11.025 kHz", new BMessage(SAMP_11_MSG)  );
 		theMenu->AddItem(kHz11Item);
 
 		// 22.050 kHz
-		BMenuItem *kHz22Item = new BMenuItem("22.050 kHz", new BMessage(SAMP_22_MSG)  );
+		BMenuItem* kHz22Item = new BMenuItem("22.050 kHz", new BMessage(SAMP_22_MSG)  );
 		theMenu->AddItem(kHz22Item);
 
 		// 44.100 kHz
-		BMenuItem *kHz44Item = new BMenuItem("44.100 kHz", new BMessage(SAMP_44_MSG)  );
+		BMenuItem* kHz44Item = new BMenuItem("44.100 kHz", new BMessage(SAMP_44_MSG)  );
 		theMenu->AddItem(kHz44Item);
 
 		// Select the first item
@@ -118,11 +118,11 @@ void TAudioSampleView::Init()
 	theMenu = fDepthMenuField->Menu();
 	if (theMenu) {
 		// 8-bit
-		BMenuItem *bit8Item = new BMenuItem("8-bit", new BMessage(SAMP_BIT_EIGHT_MSG)  );
+		BMenuItem* bit8Item = new BMenuItem("8-bit", new BMessage(SAMP_BIT_EIGHT_MSG)  );
 		theMenu->AddItem(bit8Item);
 
 		// 16-bit
-		BMenuItem *bit16Item = new BMenuItem("16-bit", new BMessage(SAMP_BIT_SIXTEEN_MSG)  );
+		BMenuItem* bit16Item = new BMenuItem("16-bit", new BMessage(SAMP_BIT_SIXTEEN_MSG)  );
 		theMenu->AddItem(bit16Item);
 
 		// Select the first item
@@ -134,11 +134,11 @@ void TAudioSampleView::Init()
 	theMenu = fTypeMenuField->Menu();
 	if (theMenu) {
 		// Mono
-		BMenuItem *monoItem = new BMenuItem("Mono", new BMessage(SAMP_MONO_MSG)  );
+		BMenuItem* monoItem = new BMenuItem("Mono", new BMessage(SAMP_MONO_MSG)  );
 		theMenu->AddItem(monoItem);
 
 		// Stero
-		BMenuItem *stereoItem = new BMenuItem("Stereo", new BMessage(SAMP_STEREO_MSG)  );
+		BMenuItem* stereoItem = new BMenuItem("Stereo", new BMessage(SAMP_STEREO_MSG)  );
 		theMenu->AddItem(stereoItem);
 
 		// Select the first item
@@ -156,7 +156,7 @@ void TAudioSampleView::Init()
 //
 //
 
-void TAudioSampleView::MessageReceived(BMessage *theMessage)
+void TAudioSampleView::MessageReceived(BMessage* theMessage)
 {
 
 	switch( theMessage->what)
@@ -217,15 +217,15 @@ void TAudioSampleView::AttachedToWindow()
 	//
 
 	// Device Menu
-	BMenu *rateMenu = fRateMenuField->Menu();
+	BMenu* rateMenu = fRateMenuField->Menu();
 	if (rateMenu) {
-		BMenuItem *elevenItem = rateMenu->FindItem(SAMP_11_MSG);
+		BMenuItem* elevenItem = rateMenu->FindItem(SAMP_11_MSG);
 		elevenItem->SetTarget(this);
 
-		BMenuItem *twentyItem = rateMenu->FindItem(SAMP_22_MSG);
+		BMenuItem* twentyItem = rateMenu->FindItem(SAMP_22_MSG);
 		twentyItem->SetTarget(this);
 
-		BMenuItem *fortyItem = rateMenu->FindItem(SAMP_44_MSG);
+		BMenuItem* fortyItem = rateMenu->FindItem(SAMP_44_MSG);
 		fortyItem->SetTarget(this);
 
 		// Select the current rate item

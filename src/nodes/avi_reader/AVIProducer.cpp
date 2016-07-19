@@ -264,7 +264,7 @@ bool AVIProducer::InitVideoCodec()
 	m_VideoCodec = NULL;
 
 	//	Get video header to determine compression type
-	AVIVIDSHeader *vidsHeader = m_Reader->GetVIDSHeader();
+	AVIVIDSHeader* vidsHeader = m_Reader->GetVIDSHeader();
 
 	//	Determine compression and create codec
 	switch(vidsHeader->Compression)
@@ -336,7 +336,7 @@ bool AVIProducer::InitAudioCodec()
 	m_AudioCodec = NULL;
 
 	//	Get video header to determine compression type
-	AVIAUDSHeader *audsHeader = m_Reader->GetAUDSHeader();
+	AVIAUDSHeader* audsHeader = m_Reader->GetAUDSHeader();
 
 	//	Determine compression and create codec
 	switch(audsHeader->Format)
@@ -527,7 +527,7 @@ port_id AVIProducer::ControlPort() const
 //	Return AddOn that instantiated us
 //
 
-BMediaAddOn *AVIProducer::AddOn(int32 *internal_id) const
+BMediaAddOn* AVIProducer::AddOn(int32* internal_id) const
 {
 	return NULL;
 }
@@ -555,7 +555,7 @@ void AVIProducer::Preroll()
 //	Return info about the file format that we support
 //
 
-status_t AVIProducer::GetNextFileFormat( int32 *cookie, media_file_format *outFormat)
+status_t AVIProducer::GetNextFileFormat( int32* cookie, media_file_format* outFormat)
 {
 	//	We only handle one format
 	if (*cookie > 1)
@@ -584,7 +584,7 @@ status_t AVIProducer::GetNextFileFormat( int32 *cookie, media_file_format *outFo
 //
 //
 
-status_t AVIProducer::FormatSuggestionRequested( media_type type, int32 quality, media_format *format)
+status_t AVIProducer::FormatSuggestionRequested( media_type type, int32 quality, media_format* format)
 {
 	//	Handle wildcard
 	if (type == B_MEDIA_NO_TYPE) {
@@ -612,7 +612,7 @@ status_t AVIProducer::FormatSuggestionRequested( media_type type, int32 quality,
 //	Determine if we can handle requested format
 //
 
-status_t AVIProducer::FormatProposal( const media_source &output, media_format *format)
+status_t AVIProducer::FormatProposal( const media_source &output, media_format* format)
 {
 	//	Check for wildcards
 	if (format->type == 0) {
@@ -668,7 +668,7 @@ status_t AVIProducer::FormatProposal( const media_source &output, media_format *
 //
 
 status_t AVIProducer::FormatChangeRequested( const media_source &source, const media_destination &destination,
-                                             media_format *io_format, int32 *out_change_count)
+                                             media_format* io_format, int32* out_change_count)
 {
 	return B_ERROR;
 }
@@ -683,13 +683,13 @@ status_t AVIProducer::FormatChangeRequested( const media_source &source, const m
 //
 //
 
-status_t AVIProducer::GetNextOutput(int32 *cookie, media_output *out_output)
+status_t AVIProducer::GetNextOutput(int32* cookie, media_output* out_output)
 {
 	if (*cookie == 0) {
 		*out_output = m_Output;
 		*cookie         = 1;
 		return B_OK;
-	} else   {
+	} else {
 		return B_BAD_INDEX;
 	}
 }
@@ -716,7 +716,7 @@ status_t AVIProducer::DisposeOutputCookie(int32 cookie)
 //	Return duration of media in microseconds
 //
 
-status_t AVIProducer::GetDuration(bigtime_t *outDuration)
+status_t AVIProducer::GetDuration(bigtime_t* outDuration)
 {
 	return 0;
 }
@@ -731,7 +731,7 @@ status_t AVIProducer::GetDuration(bigtime_t *outDuration)
 //
 //
 
-status_t AVIProducer::HandleMessage(int32 message, const void *data, size_t size)
+status_t AVIProducer::HandleMessage(int32 message, const void* data, size_t size)
 {
 	switch(message)
 	{
@@ -774,7 +774,7 @@ void AVIProducer::LateNoticeReceived( const media_source & what, bigtime_t how_m
 //	Return m_EntryRef and file's mime type
 //
 
-status_t AVIProducer::GetRef(entry_ref *outRef, char *outMimeType)
+status_t AVIProducer::GetRef(entry_ref* outRef, char* outMimeType)
 {
 	//	Set ref
 	outRef = &m_EntryRef;
@@ -793,7 +793,7 @@ status_t AVIProducer::GetRef(entry_ref *outRef, char *outMimeType)
 //	Set m_EntryRef
 //
 
-status_t AVIProducer::SetRef(const entry_ref &fileRef, bool create, bigtime_t *outTime)
+status_t AVIProducer::SetRef(const entry_ref &fileRef, bool create, bigtime_t* outTime)
 {
 	status_t retVal = B_OK;
 
@@ -840,19 +840,19 @@ status_t AVIProducer::SetRef(const entry_ref &fileRef, bool create, bigtime_t *o
 		int32 streams = m_Reader->GetStreamCount();
 
 		if (streams == 1) {
-			AVIStreamHeader *header = m_Reader->GetStreamHeaderOne();
+			AVIStreamHeader* header = m_Reader->GetStreamHeaderOne();
 			rate = header->DataRate;
-		} else   {
-			AVIStreamHeader *header;
+		} else {
+			AVIStreamHeader* header;
 			header = m_Reader->GetStreamHeaderOne();
 			if (header->DataType == kRiff_vids_Chunk) {
 				rate = header->DataRate;
-			} else   {
+			} else {
 				header = m_Reader->GetStreamHeaderTwo();
 				rate = header->DataRate;
 			}
 		}
-	} else   {
+	} else {
 		printf("No video data!\n");
 		be_app->PostMessage(B_QUIT_REQUESTED);
 		return false;
@@ -871,12 +871,12 @@ status_t AVIProducer::SetRef(const entry_ref &fileRef, bool create, bigtime_t *o
 //	of file handled.
 //
 
-status_t AVIProducer::SniffRef( const entry_ref &file, char *outMimeType, float *outQuality)
+status_t AVIProducer::SniffRef( const entry_ref &file, char* outMimeType, float* outQuality)
 {
 	status_t retVal = B_MEDIA_NO_HANDLER;
 
 	// Create a file from entry_ref
-	BFile *theFile = new BFile(&file, B_READ_ONLY);
+	BFile* theFile = new BFile(&file, B_READ_ONLY);
 
 	if (theFile->InitCheck() == B_NO_ERROR) {
 		if ( IsRIFFFile(theFile)) {
@@ -910,7 +910,7 @@ status_t AVIProducer::SniffRef( const entry_ref &file, char *outMimeType, float 
 //
 
 status_t AVIProducer::PrepareToConnect( const media_source &what, const media_destination &where,
-                                        media_format *format, media_source *out_source, char *out_name)
+                                        media_format* format, media_source* out_source, char* out_name)
 {
 	status_t err;
 
@@ -957,7 +957,7 @@ status_t AVIProducer::PrepareToConnect( const media_source &what, const media_de
 
 void AVIProducer::Connect( status_t error,  const media_source &source,
                            const media_destination &destination, const media_format &format,
-                           char *out_name)
+                           char* out_name)
 {
 	// ABH cannot call protected/virtual method!
 	// BBufferProducer::Connect(error, source, destination, format, out_name);
@@ -1044,7 +1044,7 @@ void AVIProducer::EnableOutput(const media_source &source, bool enabled, int32* 
 //
 //
 
-status_t AVIProducer::SetBufferGroup( const media_source &for_source, BBufferGroup *group)
+status_t AVIProducer::SetBufferGroup( const media_source &for_source, BBufferGroup* group)
 {
 	/*
 	   if ( for_source.port != m_Port || for_source.id || m_Connection == media_destination::null)
@@ -1069,7 +1069,7 @@ status_t AVIProducer::SetBufferGroup( const media_source &for_source, BBufferGro
 //
 
 status_t AVIProducer::VideoClippingChanged( const media_source &for_source, int16 num_shorts,
-                                            int16 *clip_data, const media_video_display_info &display,
+                                            int16* clip_data, const media_video_display_info &display,
                                             int32* out_from_change_count)
 {
 	return B_ERROR;
@@ -1085,7 +1085,7 @@ status_t AVIProducer::VideoClippingChanged( const media_source &for_source, int1
 //
 //
 
-void AVIProducer::SetTimeSource(BTimeSource *time_source)
+void AVIProducer::SetTimeSource(BTimeSource* time_source)
 {
 	BMediaNode::SetTimeSource(time_source);
 }
@@ -1108,14 +1108,14 @@ float AVIProducer::VisualDataRate()
 		int32 streams = m_Reader->GetStreamCount();
 
 		if (streams == 1) {
-			AVIStreamHeader *header = m_Reader->GetStreamHeaderOne();
+			AVIStreamHeader* header = m_Reader->GetStreamHeaderOne();
 			rate = header->DataRate;
-		} else   {
-			AVIStreamHeader *header;
+		} else {
+			AVIStreamHeader* header;
 			header = m_Reader->GetStreamHeaderOne();
 			if (header->DataType == kRiff_vids_Chunk) {
 				rate = header->DataRate;
-			} else   {
+			} else {
 				header = m_Reader->GetStreamHeaderTwo();
 				rate = header->DataRate;
 			}
@@ -1136,9 +1136,9 @@ float AVIProducer::VisualDataRate()
 //	Static service thread function
 //
 
-status_t AVIProducer::service_routine(void * data)
+status_t AVIProducer::service_routine(void* data)
 {
-	((AVIProducer *)data)->ServiceRoutine();
+	((AVIProducer*)data)->ServiceRoutine();
 
 	return 0;
 }
@@ -1185,9 +1185,9 @@ void AVIProducer::ServiceRoutine()
 //	Static run thread function
 //
 
-status_t AVIProducer::run_routine(void *data)
+status_t AVIProducer::run_routine(void* data)
 {
-	((AVIProducer *)data)->RunRoutine();
+	((AVIProducer*)data)->RunRoutine();
 
 	return 0;
 }
@@ -1286,7 +1286,7 @@ void AVIProducer::RunRoutine()
 //						m_CurrentVideoFrame = 0;
 
 					//	Get the frame
-					AVIVideoFrame *theFrame = (AVIVideoFrame *)m_Reader->GetVideoFrameList()->ItemAt(m_CurrentVideoFrame);
+					AVIVideoFrame* theFrame = (AVIVideoFrame*)m_Reader->GetVideoFrameList()->ItemAt(m_CurrentVideoFrame);
 					if (!theFrame) {
 						printf("AVIProducer::INVALID FRAME!\n");
 						return;
@@ -1304,7 +1304,7 @@ void AVIProducer::RunRoutine()
 					}
 
 					//	Set up buffer header
-					media_header *bufHeader = m_CurrentBuffer->Header();
+					media_header* bufHeader = m_CurrentBuffer->Header();
 					bufHeader->type                 = B_MEDIA_MULTISTREAM;
 					bufHeader->size_used    = m_FrameSize;
 					bufHeader->time_source  = TimeSource()->ID();
@@ -1330,7 +1330,7 @@ void AVIProducer::RunRoutine()
 						printf("AVIProducer::RunRoutine() - failed in SendBuffer 0x%x\n", status);
 						m_CurrentBuffer->Recycle();
 					}
-				} else   {
+				} else {
 					//	If we didn't acquire the buffer, skip the frame
 					printf("AVIProducer::BUFFER ACQUIRE ERROR!\n");
 					m_CurrentVideoFrame++;

@@ -37,7 +37,7 @@
 //
 //
 
-TTransitionMenuLooper::TTransitionMenuLooper( TVisualCue *theCue) : BLooper("TransitionMenuLoop", B_NORMAL_PRIORITY)
+TTransitionMenuLooper::TTransitionMenuLooper( TVisualCue* theCue) : BLooper("TransitionMenuLoop", B_NORMAL_PRIORITY)
 {
 	fCueView = theCue;
 }
@@ -66,10 +66,10 @@ TTransitionMenuLooper::~TTransitionMenuLooper()
 //	Main message loop
 //
 
-void TTransitionMenuLooper::MessageReceived( BMessage *message)
+void TTransitionMenuLooper::MessageReceived( BMessage* message)
 {
 	// Create message to notify transtion button to change icon
-	BMessage *buttonMessage = new BMessage(CHANGE_ICON_MSG);
+	BMessage* buttonMessage = new BMessage(CHANGE_ICON_MSG);
 	bool transitionIn = message->FindBool("TransitionIn");
 
 	switch (message->what)
@@ -79,7 +79,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kTransitionNone);
 			fCueView->SetTransitionInDuration(0);
 			buttonMessage->AddString("TransitionName", "TransitionIn");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kTransitionNone);
 			fCueView->SetTransitionOutDuration (0);
 			buttonMessage->AddString("TransitionName", "TransitionOut");
@@ -95,7 +95,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kWipeRight);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeRight");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kWipeRight + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeRight");
@@ -107,7 +107,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kWipeLeft);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeLeft");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kWipeLeft + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeLeft");
@@ -119,7 +119,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kWipeDown);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeDown");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kWipeDown + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeDown");
@@ -131,7 +131,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kWipeTop);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeUp");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kWipeTop + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeUp");
@@ -147,7 +147,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kWipeTopLeftBottomRight);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeTopLeftBottomRight");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kWipeTopLeftBottomRight + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeTopLeftBottomRight");
@@ -159,7 +159,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kWipeTopRightBottomLeft);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeTopRightBottomLeft");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kWipeTopRightBottomLeft + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeTopRightBottomLeft");
@@ -171,7 +171,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kWipeBottomLeftTopRight);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeBottomLeftTopRight");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kWipeBottomLeftTopRight + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeBottomLeftTopRight");
@@ -183,7 +183,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kWipeBottomRightTopLeft);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeBottomRightTopLeft");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kWipeBottomRightTopLeft + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "WipeBottomRightTopLeft");
@@ -200,7 +200,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kRevealRight);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealRight");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kRevealRight + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealRight");
@@ -212,7 +212,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kRevealLeft);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealLeft");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kRevealLeft + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealLeft");
@@ -224,7 +224,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kRevealDown);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealDown");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kRevealDown + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealDown");
@@ -236,7 +236,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kRevealUp);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealUp");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kRevealUp + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealUp");
@@ -248,7 +248,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kRevealTopLeftBottomRight);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealTopLeftBottomRight");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kRevealTopLeftBottomRight + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealTopLeftBottomRight");
@@ -260,7 +260,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kRevealTopRightBottomLeft);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealTopRightBottomLeft");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kRevealTopRightBottomLeft + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealTopRightBottomLeft");
@@ -272,7 +272,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kRevealBottomLeftTopRight);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealBottomLeftTopRight");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kRevealBottomLeftTopRight + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealBottomLeftTopRight");
@@ -284,7 +284,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kRevealBottomRightTopLeft);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealBottomRightTopLeft");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kRevealBottomRightTopLeft + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "RevealBottomRightTopLeft");
@@ -300,7 +300,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kCurtainsIn);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "CurtainsIn");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kCurtainsIn + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "CurtainsIn");
@@ -312,7 +312,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kCurtainsOut);
 			fCueView->SetTransitionInDuration(1000);
 			buttonMessage->AddString("TransitionName", "CurtainsOut");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kCurtainsOut + (kTotalTransitions-1));
 			fCueView->SetTransitionOutDuration(1000);
 			buttonMessage->AddString("TransitionName", "CurtainsOut");
@@ -327,7 +327,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 		return;                 // ABH TTransitionRate not implemented
 #ifdef ABH
 		// Create the transition rate dialog from a resource archive
-		BMessage *theMessage = GetWindowFromResource("TransitionRateWindow");
+		BMessage* theMessage = GetWindowFromResource("TransitionRateWindow");
 // ABH				TTransitionRate *theDialog = new TTransitionRate(theMessage, transitionIn, fCueView);
 		ASSERT(theDialog);
 
@@ -350,7 +350,7 @@ void TTransitionMenuLooper::MessageReceived( BMessage *message)
 			fCueView->SetTransitionInID(kTransitionNone);
 			fCueView->SetTransitionInDuration(0);
 			buttonMessage->AddString("TransitionName", "TransitionIn");
-		} else   {
+		} else {
 			fCueView->SetTransitionOutID(kTransitionNone);
 			fCueView->SetTransitionOutDuration(0);
 			buttonMessage->AddString("TransitionName", "TransitionIn");

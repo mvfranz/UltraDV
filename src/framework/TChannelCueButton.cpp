@@ -36,7 +36,7 @@
 //
 //
 
-TChannelCueButton::TChannelCueButton(TCueView *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler, uint32 flags) : BView(bounds, name, flags, B_WILL_DRAW)
+TChannelCueButton::TChannelCueButton(TCueView* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler, uint32 flags) : BView(bounds, name, flags, B_WILL_DRAW)
 {
 	// Save parent view
 	fCue = parent;
@@ -62,7 +62,7 @@ TChannelCueButton::TChannelCueButton(TCueView *parent, BRect bounds, const char 
 //
 //
 
-TChannelCueButton::TChannelCueButton(const TChannelCueButton *theButton) : BView(theButton->Bounds(), theButton->Name(), B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TChannelCueButton::TChannelCueButton(const TChannelCueButton* theButton) : BView(theButton->Bounds(), theButton->Name(), B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Create copy
 	fCue            = theButton->fCue;
@@ -82,14 +82,14 @@ TChannelCueButton::TChannelCueButton(const TChannelCueButton *theButton) : BView
 //
 //
 
-TChannelCueButton::TChannelCueButton(BMessage *data) : BView(data)
+TChannelCueButton::TChannelCueButton(BMessage* data) : BView(data)
 {
 
 	// Find our member variables in the BMessage
 	data->FindBool("MouseDown", &fMouseDown);
 
-	data->FindPointer("OffBitmap", (void **)&fOffBitmap);
-	data->FindPointer("OffBitmap", (void **)&fOnBitmap);
+	data->FindPointer("OffBitmap", (void**)&fOffBitmap);
+	data->FindPointer("OffBitmap", (void**)&fOnBitmap);
 
 	/*
 	   // Save parent view
@@ -139,7 +139,7 @@ void TChannelCueButton::Init()
 //
 //
 
-BArchivable *TChannelCueButton::Instantiate(BMessage *archive)
+BArchivable* TChannelCueButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TChannelCueButton") )
@@ -154,7 +154,7 @@ BArchivable *TChannelCueButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TChannelCueButton::Archive(BMessage *data, bool deep) const
+status_t TChannelCueButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -249,7 +249,7 @@ void TChannelCueButton::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TChannelCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TChannelCueButton::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Pass up to parent
 	ConvertToParent(&where);

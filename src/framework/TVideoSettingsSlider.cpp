@@ -29,7 +29,7 @@
 //	Default constructor
 //
 
-TVideoSettingsSlider::TVideoSettingsSlider( BRect frame, const char *name, const char *label, BMessage *message, int32 minValue,
+TVideoSettingsSlider::TVideoSettingsSlider( BRect frame, const char* name, const char* label, BMessage* message, int32 minValue,
                                             int32 maxValue, thumb_style thumbType, uint32 resizingMode, uint32 flags) :
 	TMuseumSlider(frame, name, label, message, minValue, maxValue, thumbType, resizingMode, flags)
 {
@@ -47,7 +47,7 @@ TVideoSettingsSlider::TVideoSettingsSlider( BRect frame, const char *name, const
 //	Construct from message
 //
 
-TVideoSettingsSlider::TVideoSettingsSlider(BMessage *data) : TMuseumSlider(data)
+TVideoSettingsSlider::TVideoSettingsSlider(BMessage* data) : TMuseumSlider(data)
 {
 }
 

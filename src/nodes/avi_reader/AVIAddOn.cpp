@@ -69,7 +69,7 @@ AVIAddOn::~AVIAddOn()
 //	Return status of initilization
 //
 
-status_t AVIAddOn::InitCheck( const char ** out_failure_text)
+status_t AVIAddOn::InitCheck( const char** out_failure_text)
 {
 	return B_OK;
 }
@@ -95,14 +95,14 @@ int32 AVIAddOn::CountFlavors()
 //	Return info about requested flavor
 //
 
-status_t AVIAddOn::GetFlavorAt( int32 flavorNum, flavor_info **outInfo)
+status_t AVIAddOn::GetFlavorAt( int32 flavorNum, flavor_info** outInfo)
 {
 	//	Check for flavor violation
 	if ( flavorNum > kNumFlavors)
 		return B_ERROR;
 
 	//	Create flavor_info struct
-	flavor_info *info = new flavor_info;
+	flavor_info* info = new flavor_info;
 
 	//	Fill struct for requested flavor
 	sprintf(info->name, "%s", "AVIAddOn");
@@ -132,14 +132,14 @@ status_t AVIAddOn::GetFlavorAt( int32 flavorNum, flavor_info **outInfo)
 //	Instantiate requested node
 //
 
-BMediaNode *AVIAddOn::InstantiateNodeFor( const flavor_info *info, BMessage *config, status_t *outError)
+BMediaNode* AVIAddOn::InstantiateNodeFor( const flavor_info* info, BMessage* config, status_t* outError)
 {
 	//	Check for special configuration info
 	//	config
 
 	//	Setup return values
 	status_t retVal  = B_ERROR;
-	BMediaNode *theNode = NULL;
+	BMediaNode* theNode = NULL;
 
 	//	What type of node to they want?
 
@@ -156,7 +156,7 @@ BMediaNode *AVIAddOn::InstantiateNodeFor( const flavor_info *info, BMessage *con
 //	Save node configuaration stored in BMessage.  Used for archiving
 //
 
-status_t AVIAddOn::GetConfigurationFor( BMediaNode *your_node, BMessage * into_message)
+status_t AVIAddOn::GetConfigurationFor( BMediaNode* your_node, BMessage* into_message)
 {
 	return B_ERROR;
 }
@@ -185,7 +185,7 @@ bool AVIAddOn::WantsAutoStart()
 //	AutoStart request.   Fix error retruned...
 //
 
-status_t AVIAddOn::AutoStart( int in_count, BMediaNode **out_node, int32 *out_internal_id, bool *out_has_more)
+status_t AVIAddOn::AutoStart( int in_count, BMediaNode** out_node, int32* out_internal_id, bool* out_has_more)
 {
 	return B_ERROR;
 }
@@ -202,7 +202,7 @@ status_t AVIAddOn::AutoStart( int in_count, BMediaNode **out_node, int32 *out_in
 //	Do we have a node that can handle this file ref type?
 //
 
-status_t AVIAddOn::SniffRef( const entry_ref &file, BMimeType *io_mime_type, float *out_quality, int32 *out_internal_id)
+status_t AVIAddOn::SniffRef( const entry_ref &file, BMimeType* io_mime_type, float* out_quality, int32* out_internal_id)
 {
 
 
@@ -217,7 +217,7 @@ status_t AVIAddOn::SniffRef( const entry_ref &file, BMimeType *io_mime_type, flo
 //	Do we have a node that can handle this mime type?
 //
 
-status_t AVIAddOn::SniffType( const BMimeType &type, float *out_quality, int32 *out_internal_id)
+status_t AVIAddOn::SniffType( const BMimeType &type, float* out_quality, int32* out_internal_id)
 {
 
 

@@ -115,7 +115,7 @@ void TElementsView::Init()
 //
 //
 
-void TElementsView::MessageReceived(BMessage *theMessage)
+void TElementsView::MessageReceived(BMessage* theMessage)
 {
 
 	switch( theMessage->what)
@@ -346,7 +346,7 @@ void TElementsView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TElementsView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TElementsView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -397,7 +397,7 @@ void TElementsView::FrameResized(float w,float h)
 //	Return location of DragRect
 //
 
-void TElementsView::GetDragRect(BRect *dragRect)
+void TElementsView::GetDragRect(BRect* dragRect)
 {
 	*dragRect               = Bounds();
 	dragRect->left  = dragRect->right - kDragRectWidth;

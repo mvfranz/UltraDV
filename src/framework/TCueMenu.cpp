@@ -42,15 +42,15 @@
 //
 //
 
-TCueMenu::TCueMenu(TCueView *target) : BPopUpMenu("CueMenu")
+TCueMenu::TCueMenu(TCueView* target) : BPopUpMenu("CueMenu")
 {
-	BMessage *menuMessage;
+	BMessage* menuMessage;
 
 	// Create "Lock/Unlock"
 	//
 
 	menuMessage = new BMessage(CUE_LOCK_MSG);
-	BMenuItem       *lockItem;
+	BMenuItem* lockItem;
 	if (target->IsLocked())
 		lockItem = new BMenuItem("Unlock", menuMessage);
 	else
@@ -61,12 +61,12 @@ TCueMenu::TCueMenu(TCueView *target) : BPopUpMenu("CueMenu")
 	//
 
 	menuMessage = new BMessage(CUE_HIDE_MSG);
-	BMenuItem       *hideItem = new BMenuItem("Hide", menuMessage);
+	BMenuItem* hideItem = new BMenuItem("Hide", menuMessage);
 	AddItem(hideItem);
 
 	//	Cue Duration/End
 	menuMessage = new BMessage(CUE_DURATION_MSG);
-	BMenuItem *durationItem;
+	BMenuItem* durationItem;
 	if ( target->IsShowingDuration())
 		durationItem = new BMenuItem("Show End", menuMessage);
 	else
@@ -90,18 +90,18 @@ TCueMenu::TCueMenu(TCueView *target) : BPopUpMenu("CueMenu")
 
 	//if (target->IsVisible())
 	{
-		BMenu *settingsSubMenu = new BMenu("Settings");
-		BMenuItem *settingsSubMenuItem = new BMenuItem(settingsSubMenu);
+		BMenu* settingsSubMenu = new BMenu("Settings");
+		BMenuItem* settingsSubMenuItem = new BMenuItem(settingsSubMenu);
 		AddItem(settingsSubMenuItem);
 
 		//	Cue Controls
 		menuMessage = new BMessage(CUE_CONTROLS_MSG);
-		BMenuItem *controlsItem = new BMenuItem("Controls", menuMessage);
+		BMenuItem* controlsItem = new BMenuItem("Controls", menuMessage);
 		settingsSubMenu->AddItem(controlsItem);
 
 		//	Cue Contents
 		menuMessage = new BMessage(CUE_CONTENTS_MSG);
-		BMenuItem *contentsItem = new BMenuItem("Contents", menuMessage);
+		BMenuItem* contentsItem = new BMenuItem("Contents", menuMessage);
 		settingsSubMenu->AddItem(contentsItem);
 
 		//	Determine which item to check
@@ -129,32 +129,32 @@ TCueMenu::TCueMenu(TCueView *target) : BPopUpMenu("CueMenu")
 		//	Create Quality submenu
 		//
 
-		BMenu *qualitySubMenu = new BMenu("Quality");
-		BMenuItem *qualitySubMenuItem = new BMenuItem(qualitySubMenu);
+		BMenu* qualitySubMenu = new BMenu("Quality");
+		BMenuItem* qualitySubMenuItem = new BMenuItem(qualitySubMenu);
 		AddItem(qualitySubMenuItem);
 
 		// Create "Wireframe"
 		menuMessage = new BMessage(STAGE_CUE_WIREFRAME_MSG);
-		BMenuItem       *wireItem = new BMenuItem("Wireframe", menuMessage);
+		BMenuItem* wireItem = new BMenuItem("Wireframe", menuMessage);
 		qualitySubMenu->AddItem(wireItem);
 
 		// Create "Preview"
 		menuMessage = new BMessage(STAGE_CUE_PREVIEW_MSG);
-		BMenuItem       *previewItem = new BMenuItem("Preview", menuMessage);
+		BMenuItem* previewItem = new BMenuItem("Preview", menuMessage);
 		qualitySubMenu->AddItem(previewItem);
 
 		// Create "Better"
 		menuMessage = new BMessage(STAGE_CUE_BETTER_MSG);
-		BMenuItem       *betterItem = new BMenuItem("Better", menuMessage);
+		BMenuItem* betterItem = new BMenuItem("Better", menuMessage);
 		qualitySubMenu->AddItem(betterItem);
 
 		// Create "Best"
 		menuMessage = new BMessage(STAGE_CUE_BEST_MSG);
-		BMenuItem       *bestItem = new BMenuItem("Best", menuMessage);
+		BMenuItem* bestItem = new BMenuItem("Best", menuMessage);
 		qualitySubMenu->AddItem(bestItem);
 
 		//	Check current display quality setting
-		switch( static_cast<TVisualCue *>(target)->GetDisplayQuality() )
+		switch( static_cast<TVisualCue*>(target)->GetDisplayQuality() )
 		{
 		case kWireframeQuality:
 			wireItem->SetMarked(true);
@@ -187,48 +187,48 @@ TCueMenu::TCueMenu(TCueView *target) : BPopUpMenu("CueMenu")
 		//	Create Transform submenu
 		//
 
-		BMenu *transformSubMenu = new BMenu("Transform");
-		BMenuItem *transformSubMenuItem = new BMenuItem(transformSubMenu);
+		BMenu* transformSubMenu = new BMenu("Transform");
+		BMenuItem* transformSubMenuItem = new BMenuItem(transformSubMenu);
 		AddItem(transformSubMenuItem);
 
 		// Create "Rotate..."
 		menuMessage = new BMessage(STAGE_CUE_ROTATE_MSG);
-		BMenuItem       *rotateItem = new BMenuItem("Rotation...", menuMessage);
+		BMenuItem* rotateItem = new BMenuItem("Rotation...", menuMessage);
 		transformSubMenu->AddItem(rotateItem);
 
 		// Create "Crop..."
 		menuMessage = new BMessage(STAGE_CUE_CROP_MSG);
-		BMenuItem       *cropItem = new BMenuItem("Crop...", menuMessage);
+		BMenuItem* cropItem = new BMenuItem("Crop...", menuMessage);
 		transformSubMenu->AddItem(cropItem);
 
 		// Create "Scale..."
 		menuMessage = new BMessage(STAGE_CUE_SCALE_MSG);
-		BMenuItem       *scaleItem = new BMenuItem("Scale...", menuMessage);
+		BMenuItem* scaleItem = new BMenuItem("Scale...", menuMessage);
 		transformSubMenu->AddItem(scaleItem);
 
 		// Create "Shear..."
 		menuMessage = new BMessage(STAGE_CUE_SHEAR_MSG);
-		BMenuItem       *shearItem = new BMenuItem("Shear...", menuMessage);
+		BMenuItem* shearItem = new BMenuItem("Shear...", menuMessage);
 		transformSubMenu->AddItem(shearItem);
 
 		// Create "Skew..."
 		menuMessage = new BMessage(STAGE_CUE_SKEW_MSG);
-		BMenuItem       *skewItem = new BMenuItem("Skew...", menuMessage);
+		BMenuItem* skewItem = new BMenuItem("Skew...", menuMessage);
 		transformSubMenu->AddItem(skewItem);
 
 		// Create "Perspective..."
 		menuMessage = new BMessage(STAGE_CUE_PERSP_MSG);
-		BMenuItem       *perspItem = new BMenuItem("Perspective...", menuMessage);
+		BMenuItem* perspItem = new BMenuItem("Perspective...", menuMessage);
 		transformSubMenu->AddItem(perspItem);
 
 		// Create "Mirror..."
 		menuMessage = new BMessage(STAGE_CUE_MIRROR_MSG);
-		BMenuItem       *mirrorItem = new BMenuItem("Mirror...", menuMessage);
+		BMenuItem* mirrorItem = new BMenuItem("Mirror...", menuMessage);
 		transformSubMenu->AddItem(mirrorItem);
 
 		// Create "Opacity..."
 		menuMessage = new BMessage(STAGE_CUE_OPACITY_MSG);
-		BMenuItem       *opacityItem = new BMenuItem("Opacity...", menuMessage);
+		BMenuItem* opacityItem = new BMenuItem("Opacity...", menuMessage);
 		transformSubMenu->AddItem(opacityItem);
 	}
 

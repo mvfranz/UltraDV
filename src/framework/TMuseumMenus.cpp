@@ -117,7 +117,7 @@ bool TMuseumMenus::AddFileMenu()
 	retVal = GetString("FileMenuStrings", kFileMenuItem, menuStr);
 
 	//	Create menu
-	fFileMenu = new BMenu((char *)menuStr);
+	fFileMenu = new BMenu((char*)menuStr);
 	fMenuBar->AddItem(fFileMenu);
 
 	// New...
@@ -233,14 +233,14 @@ bool TMuseumMenus::AddEditMenu()
 	// Copy
 	retVal = GetString("EditMenuStrings", kEditCopyItem, menuStr);
 	retVal = GetString("EditMenuStrings", kEditCopyAccel, &accelStr);
-	BMenuItem *copyItem = new BMenuItem(menuStr, new BMessage(EDIT_COPY_MSG), accelStr);
+	BMenuItem* copyItem = new BMenuItem(menuStr, new BMessage(EDIT_COPY_MSG), accelStr);
 	copyItem->SetTarget(be_app);
 	fEditMenu->AddItem(copyItem);
 
 	// Paste
 	retVal = GetString("EditMenuStrings", kEditPasteItem, menuStr);
 	retVal = GetString("EditMenuStrings", kEditPasteAccel, &accelStr);
-	BMenuItem *pasteItem = new BMenuItem(menuStr, new BMessage(EDIT_PASTE_MSG), accelStr);
+	BMenuItem* pasteItem = new BMenuItem(menuStr, new BMessage(EDIT_PASTE_MSG), accelStr);
 	pasteItem->SetTarget(be_app);
 	fEditMenu->AddItem(pasteItem);
 
@@ -700,10 +700,10 @@ bool TMuseumMenus::AddWindowsMenu()
 	fWindowsMenu->AddSeparatorItem();
 
 	// Now check and see if we need to add open documents to the menu
-	BList *cueSheetList = static_cast<MuseumApp *>(be_app)->GetCueSheetList();
+	BList* cueSheetList = static_cast<MuseumApp*>(be_app)->GetCueSheetList();
 	if (cueSheetList) {
 		for (int32 index = 0; index < cueSheetList->CountItems(); index++) {
-			TCueSheetWindow *theWindow = (TCueSheetWindow *)cueSheetList->ItemAt(index);
+			TCueSheetWindow* theWindow = (TCueSheetWindow*)cueSheetList->ItemAt(index);
 			if (theWindow)
 				AddToWindowsMenu( theWindow->Title(), theWindow->GetID());
 		}
@@ -720,10 +720,10 @@ bool TMuseumMenus::AddWindowsMenu()
 //	Add a newly opened Cue Sheet to the end of the menu
 //
 
-bool TMuseumMenus::AddToWindowsMenu(const char *documentName, int32 documentID)
+bool TMuseumMenus::AddToWindowsMenu(const char* documentName, int32 documentID)
 {
 	// Create message and add document ID to it
-	BMessage *theMessage = new BMessage(WINDOWS_DOCUMENT_MSG);
+	BMessage* theMessage = new BMessage(WINDOWS_DOCUMENT_MSG);
 	theMessage->AddInt32("CueSheetID", documentID);
 
 	// Show Memory Palette
@@ -746,7 +746,7 @@ bool TMuseumMenus::RemoveDocumentsInWindowsMenu()
 {
 	// Remove all documents
 	while( fWindowsMenu->CountItems() > 7) {
-		BMenuItem *theItem = fWindowsMenu->RemoveItem( fWindowsMenu->CountItems()-1 );
+		BMenuItem* theItem = fWindowsMenu->RemoveItem( fWindowsMenu->CountItems()-1 );
 		if (theItem)
 			delete theItem;
 	}
@@ -769,13 +769,13 @@ bool TMuseumMenus::RemoveDocumentsInWindowsMenu()
 void TMuseumMenus::LocateMenus()
 {
 	if (fMenuBar) {
-		fFileMenu               = (BMenu *)fMenuBar->FindView("File");
-		fEditMenu               = (BMenu *)fMenuBar->FindView("Edit");
-		fCueSheetMenu   = (BMenu *)fMenuBar->FindView("Cue Sheet");
-		fCueMenu                = (BMenu *)fMenuBar->FindView("Cue");
-		fCaptureMenu    = (BMenu *)fMenuBar->FindView("Capture");
-		fStageMenu      = (BMenu *)fMenuBar->FindView("Stage");
-		fWindowsMenu    = (BMenu *)fMenuBar->FindView("Windows");
+		fFileMenu               = (BMenu*)fMenuBar->FindView("File");
+		fEditMenu               = (BMenu*)fMenuBar->FindView("Edit");
+		fCueSheetMenu   = (BMenu*)fMenuBar->FindView("Cue Sheet");
+		fCueMenu                = (BMenu*)fMenuBar->FindView("Cue");
+		fCaptureMenu    = (BMenu*)fMenuBar->FindView("Capture");
+		fStageMenu      = (BMenu*)fMenuBar->FindView("Stage");
+		fWindowsMenu    = (BMenu*)fMenuBar->FindView("Windows");
 	}
 }
 
@@ -789,7 +789,7 @@ void TMuseumMenus::LocateMenus()
 //
 //
 
-void TMuseumMenus::SetMenuBar(BMenuBar *menuBar)
+void TMuseumMenus::SetMenuBar(BMenuBar* menuBar)
 {
 	fMenuBar = menuBar;
 }

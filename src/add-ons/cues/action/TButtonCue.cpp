@@ -38,7 +38,7 @@
 //
 //
 
-TButtonCue::TButtonCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) :
+TButtonCue::TButtonCue(int16 id, TCueChannel* parent, BRect bounds, BPoint point,  long startTime) :
 	TCueView(id, parent, bounds, point, startTime, "ButtonCue")
 {
 	// Perform default initialization
@@ -52,7 +52,7 @@ TButtonCue::TButtonCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point
 //
 //	Construct from a CueChunk
 
-TButtonCue::TButtonCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) : TCueView(theChunk, parent, bounds, "ButtonCue")
+TButtonCue::TButtonCue(BaseCueChunk* theChunk, TCueChannel* parent, BRect bounds) : TCueView(theChunk, parent, bounds, "ButtonCue")
 {
 	// Perform default initialization
 	Init(theChunk);
@@ -66,7 +66,7 @@ TButtonCue::TButtonCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds
 //	Construct from a BMessage
 //
 
-TButtonCue::TButtonCue(BMessage *theMessage) : TCueView(theMessage)
+TButtonCue::TButtonCue(BMessage* theMessage) : TCueView(theMessage)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -147,7 +147,7 @@ void TButtonCue::Init()
 //	Init from BaseCueChunk
 //
 
-void TButtonCue::Init(BaseCueChunk *theChunk)
+void TButtonCue::Init(BaseCueChunk* theChunk)
 {
 	TCueView::Init(theChunk);
 }
@@ -164,7 +164,7 @@ void TButtonCue::Init(BaseCueChunk *theChunk)
 //
 //
 
-BArchivable *TButtonCue::Instantiate(BMessage *archive)
+BArchivable* TButtonCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TButtonCue") )
 		return new TButtonCue(archive);
@@ -179,7 +179,7 @@ BArchivable *TButtonCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TButtonCue::Archive(BMessage *data, bool deep) const
+status_t TButtonCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -255,7 +255,7 @@ void TButtonCue::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TButtonCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TButtonCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Pass up to parent
 	TCueView::MouseMoved(where, code, a_message);
@@ -280,7 +280,7 @@ void TButtonCue::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TButtonCue::KeyDown(const char *bytes, int32 numBytes)
+void TButtonCue::KeyDown(const char* bytes, int32 numBytes)
 {
 	TCueView::KeyDown(bytes, numBytes);
 }
@@ -294,7 +294,7 @@ void TButtonCue::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TButtonCue::KeyUp(const char *bytes, int32 numBytes)
+void TButtonCue::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -305,7 +305,7 @@ void TButtonCue::KeyUp(const char *bytes, int32 numBytes)
 //
 //	Receive messages
 //
-void TButtonCue::MessageReceived(BMessage *message)
+void TButtonCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -340,7 +340,7 @@ void TButtonCue::OpenEditor()
 
 void TButtonCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = NULL;
+	BBitmap* cueIcon = NULL;
 
 	cueIcon = GetCicnFromResource("ButtonCue");
 

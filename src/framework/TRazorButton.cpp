@@ -36,7 +36,7 @@
 //
 //
 
-TRazorButton::TRazorButton(TToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TRazorButton::TRazorButton(TToolbar* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fParent = parent;
@@ -61,7 +61,7 @@ TRazorButton::TRazorButton(TToolbar *parent, BRect bounds, const char *name, BBi
 //
 //
 
-TRazorButton::TRazorButton(BMessage *data) : BView(data)
+TRazorButton::TRazorButton(BMessage* data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
@@ -104,7 +104,7 @@ void TRazorButton::Init()
 //
 //
 
-BArchivable *TRazorButton::Instantiate(BMessage *archive)
+BArchivable* TRazorButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TRazorButton") )
@@ -119,7 +119,7 @@ BArchivable *TRazorButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TRazorButton::Archive(BMessage *data, bool deep) const
+status_t TRazorButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -206,8 +206,8 @@ void TRazorButton::MouseDown(BPoint where)
 void TRazorButton::AttachedToWindow()
 {
 	if(fParent == NULL) {
-		fParent         = (TToolbar *)Parent();
-		fHandler        = (TToolbar *)Parent();
+		fParent         = (TToolbar*)Parent();
+		fHandler        = (TToolbar*)Parent();
 	}
 
 	//	Pass up to parent

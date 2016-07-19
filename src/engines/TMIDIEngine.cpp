@@ -29,7 +29,7 @@
 //
 //
 
-TMIDIEngine::TMIDIEngine(BMidiStore *midiStore)
+TMIDIEngine::TMIDIEngine(BMidiStore* midiStore)
 {
 	// Create engine's MIDI port and save BMIDIStore
 	fMIDIPort = new BMidiPort();

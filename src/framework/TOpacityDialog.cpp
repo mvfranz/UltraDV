@@ -49,7 +49,7 @@ const BRect kOpacityDialogBounds(0, 0, 315, 125);
 //
 //
 
-TOpacityDialog::TOpacityDialog(TVisualCue *theCue) : BWindow( kOpacityDialogBounds, "Opacity", B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_CLOSABLE | B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE, 0)
+TOpacityDialog::TOpacityDialog(TVisualCue* theCue) : BWindow( kOpacityDialogBounds, "Opacity", B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_CLOSABLE | B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE, 0)
 {
 	//	Save reference to PictureCue
 	fCue = theCue;
@@ -207,7 +207,7 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 		float sliderVal = (float)(fSlider->Value()) / 100;
 
 		//	Get text value
-		const char *numStr = fOpacityText->Text();
+		const char* numStr = fOpacityText->Text();
 		int16 theVal = atoi(numStr);
 
 		//	Update text if needed
@@ -222,8 +222,8 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 
 			// Inform stage to redraw
 			if (fCue->IsOnStage()) {
-				TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-				TStageView       *stageView = theStage->GetStageView();
+				TStageWindow* theStage  = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage();
+				TStageView* stageView = theStage->GetStageView();
 
 				theStage->Lock();
 				stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
@@ -245,7 +245,7 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 	case OPACITY_TEXT_MSG:
 	{
 		//	Get text value
-		const char *numStr = fOpacityText->Text();
+		const char* numStr = fOpacityText->Text();
 		int16 theVal = atoi(numStr);
 
 		//	Clip number to acceptable range
@@ -290,8 +290,8 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 
 			// Inform stage to redraw
 			if (fCue->IsOnStage()) {
-				TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-				TStageView       *stageView = theStage->GetStageView();
+				TStageWindow* theStage  = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage();
+				TStageView* stageView = theStage->GetStageView();
 
 				theStage->Lock();
 				stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
@@ -301,7 +301,7 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 		}
 
 		//	Inform cue we are gone
-		BMessage *theMessage = new BMessage(OPACITY_CLOSE_MSG);
+		BMessage* theMessage = new BMessage(OPACITY_CLOSE_MSG);
 		fCue->MessageReceived(theMessage);
 		delete theMessage;
 
@@ -323,8 +323,8 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 
 			// Inform stage to redraw
 			if (fCue->IsOnStage()) {
-				TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-				TStageView       *stageView = theStage->GetStageView();
+				TStageWindow* theStage  = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage();
+				TStageView* stageView = theStage->GetStageView();
 
 				theStage->Lock();
 				stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
@@ -334,7 +334,7 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 		}
 
 		//	Inform cue we are gone
-		BMessage *theMessage = new BMessage(OPACITY_CLOSE_MSG);
+		BMessage* theMessage = new BMessage(OPACITY_CLOSE_MSG);
 		fCue->MessageReceived(theMessage);
 		delete theMessage;
 
@@ -367,8 +367,8 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 void TOpacityDialog::UpdateCue()
 {
 	if (fCue->IsOnStage()) {
-		TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-		TStageView       *stageView = theStage->GetStageView();
+		TStageWindow* theStage  = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage();
+		TStageView* stageView = theStage->GetStageView();
 
 		theStage->Lock();
 		stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());

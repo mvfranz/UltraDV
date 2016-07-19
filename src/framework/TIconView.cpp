@@ -87,7 +87,7 @@ void TIconView::FrameResized(float w, float h)
 //
 //
 
-void TIconView::TargetedByScrollView(BScrollView *view)
+void TIconView::TargetedByScrollView(BScrollView* view)
 {
 	AdjustScrollBars();
 }

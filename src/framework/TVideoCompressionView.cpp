@@ -39,7 +39,7 @@
 //
 //
 
-TVideoCompressionView::TVideoCompressionView(TVideoSettingsTabView *parent, BMessage *archive) : BView(archive)
+TVideoCompressionView::TVideoCompressionView(TVideoSettingsTabView* parent, BMessage* archive) : BView(archive)
 {
 	fParent = parent;
 
@@ -72,21 +72,21 @@ void TVideoCompressionView::Init()
 	SetViewColor(kBeGrey);
 
 	// Find view items
-	fCompressorMenuField    = (BMenuField *)FindView("CompressorMenuField");
-	fDepthMenuField                 = (BMenuField *)FindView("DepthMenuField");
+	fCompressorMenuField    = (BMenuField*)FindView("CompressorMenuField");
+	fDepthMenuField                 = (BMenuField*)FindView("DepthMenuField");
 
-	fQualityString  = (BStringView *)FindView("QualityString");
+	fQualityString  = (BStringView*)FindView("QualityString");
 
-	fFPSTextControl         = (BTextControl *)FindView("FPSTextControl");
+	fFPSTextControl         = (BTextControl*)FindView("FPSTextControl");
 
-	fKeyframeCheckBox               = (BCheckBox *)FindView("KeyframeCheckBox");
-	fKeyframeTextControl    = (BTextControl *)FindView("KeyframeTextControl");
+	fKeyframeCheckBox               = (BCheckBox*)FindView("KeyframeCheckBox");
+	fKeyframeTextControl    = (BTextControl*)FindView("KeyframeTextControl");
 
-	fLimitDataRateCheckBox          = (BCheckBox *)FindView("LimitDataRateCheckBox");
-	fLimitDataRateTextControl       = (BTextControl *)FindView("LimitDataRateTextControl");
+	fLimitDataRateCheckBox          = (BCheckBox*)FindView("LimitDataRateCheckBox");
+	fLimitDataRateTextControl       = (BTextControl*)FindView("LimitDataRateTextControl");
 
 	//	Set up  preview view bounds.  Use attached view in BBox to set up size
-	BView *previewView      = (BView *)FindView("PreviewView");
+	BView* previewView      = (BView*)FindView("PreviewView");
 	fPreviewRect = previewView->Frame();
 	RemoveChild(previewView);
 	delete previewView;
@@ -95,98 +95,98 @@ void TVideoCompressionView::Init()
 	// Set up menus
 	//
 
-	BMenu *theMenu;
+	BMenu* theMenu;
 
 	// Setup compressors menu
 	theMenu = fCompressorMenuField->Menu();
 	if (theMenu) {
 		// None
-		BMenuItem *noneItem = new BMenuItem("None", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* noneItem = new BMenuItem("None", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(noneItem);
 
 		// Animation
-		BMenuItem *animItem = new BMenuItem("Animation", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* animItem = new BMenuItem("Animation", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(animItem);
 
 		// BMP
-		BMenuItem *bmpItem = new BMenuItem("BMP", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* bmpItem = new BMenuItem("BMP", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(bmpItem);
 
 		// Cinepak
-		BMenuItem *cinepakItem = new BMenuItem("Cinepak", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* cinepakItem = new BMenuItem("Cinepak", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(cinepakItem);
 
 		// DV-NTSC
-		BMenuItem *dvntscItem = new BMenuItem("DV-NTSC", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* dvntscItem = new BMenuItem("DV-NTSC", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(dvntscItem);
 
 		// DV-PAL
-		BMenuItem *dvpalItem = new BMenuItem("DV-PAL", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* dvpalItem = new BMenuItem("DV-PAL", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(dvpalItem);
 
 		// Graphics
-		BMenuItem *graphicsItem = new BMenuItem("Graphics", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* graphicsItem = new BMenuItem("Graphics", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(graphicsItem);
 
 		// H.263
-		BMenuItem *h263Item = new BMenuItem("H.263", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* h263Item = new BMenuItem("H.263", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(h263Item);
 
 		// Intel Indeo® Video
-		BMenuItem *intelItem = new BMenuItem("Intel Indeo® Video", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* intelItem = new BMenuItem("Intel Indeo® Video", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(intelItem);
 
 		// Intel Raw
-		BMenuItem *intelRawItem = new BMenuItem("Intel Raw", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* intelRawItem = new BMenuItem("Intel Raw", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(intelRawItem);
 
 		// Motion JPEG A
-		BMenuItem *motionJPEGAItem = new BMenuItem("Motion JPEG A", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* motionJPEGAItem = new BMenuItem("Motion JPEG A", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(motionJPEGAItem);
 
 		// Motion JPEG B
-		BMenuItem *motionJPEGBItem = new BMenuItem("Motion JPEG B", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* motionJPEGBItem = new BMenuItem("Motion JPEG B", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(motionJPEGBItem);
 
 		// MPEG
-		BMenuItem *mpegItem = new BMenuItem("MPEG", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* mpegItem = new BMenuItem("MPEG", new BMessage(VID_RAW_MSG)  );
 		//mpegItem->SetTarget(be_app);
 		theMenu->AddItem(mpegItem);
 
 		// Photo JPEG
-		BMenuItem *photoJPEGItem = new BMenuItem("Photo JPEG", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* photoJPEGItem = new BMenuItem("Photo JPEG", new BMessage(VID_RAW_MSG)  );
 		//mpegItem->SetTarget(be_app);
 		theMenu->AddItem(photoJPEGItem);
 
 		// Planar RGB
-		BMenuItem *planarRGBItem = new BMenuItem("Planar RGB", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* planarRGBItem = new BMenuItem("Planar RGB", new BMessage(VID_RAW_MSG)  );
 		//mpegItem->SetTarget(be_app);
 		theMenu->AddItem(planarRGBItem);
 
 		// Raw
-		BMenuItem *rawItem = new BMenuItem("Raw", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* rawItem = new BMenuItem("Raw", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
 		theMenu->AddItem(rawItem);
 
 		// Sorenson Video
-		BMenuItem *sorensonItem = new BMenuItem("Sorenson Video", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* sorensonItem = new BMenuItem("Sorenson Video", new BMessage(VID_RAW_MSG)  );
 		//mpegItem->SetTarget(be_app);
 		theMenu->AddItem(sorensonItem);
 
 		// Video
-		BMenuItem *videoItem = new BMenuItem("Video", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* videoItem = new BMenuItem("Video", new BMessage(VID_RAW_MSG)  );
 		//mpegItem->SetTarget(be_app);
 		theMenu->AddItem(videoItem);
 
@@ -198,17 +198,17 @@ void TVideoCompressionView::Init()
 	theMenu = fDepthMenuField->Menu();
 	if (theMenu) {
 		// 8-bit
-		BMenuItem *eightBitItem = new BMenuItem("8-bit", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* eightBitItem = new BMenuItem("8-bit", new BMessage(VID_RAW_MSG)  );
 		//eightBitItem->SetTarget(be_app);
 		theMenu->AddItem(eightBitItem);
 
 		// 16-bit
-		BMenuItem *sixteenBitItem = new BMenuItem("16-bit", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* sixteenBitItem = new BMenuItem("16-bit", new BMessage(VID_RAW_MSG)  );
 		//sixteenBitItem->SetTarget(be_app);
 		theMenu->AddItem(sixteenBitItem);
 
 		// 32-bit
-		BMenuItem *threetwoItem = new BMenuItem("32-bit", new BMessage(VID_RAW_MSG)  );
+		BMenuItem* threetwoItem = new BMenuItem("32-bit", new BMessage(VID_RAW_MSG)  );
 		//threetwoItem->SetTarget(be_app);
 		theMenu->AddItem(threetwoItem);
 
@@ -249,8 +249,8 @@ void TVideoCompressionView::AttachedToWindow()
 	printf("TVideoCompressionView::AttachedToWindow()\n");
 
 	//	Get pointer to previewView and attach to BBox
-	BBox *previewBox = (BBox *)FindView("PreviewBox");
-	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
+	BBox* previewBox = (BBox*)FindView("PreviewBox");
+	TVideoPreviewView* previewView = fParent->GetParent()->GetParent()->PreviewView();
 	if (previewView) {
 		previewBox->AddChild(previewView);
 		previewView->MoveTo(fPreviewRect.left, fPreviewRect.top);
@@ -273,8 +273,8 @@ void TVideoCompressionView::DetachedFromWindow()
 	printf("TVideoCompressionView::DetachedFromWindow()\n");
 
 	//	Get pointer to previewView and detach from BBox
-	BBox *previewBox = (BBox *)FindView("PreviewBox");
-	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
+	BBox* previewBox = (BBox*)FindView("PreviewBox");
+	TVideoPreviewView* previewView = fParent->GetParent()->GetParent()->PreviewView();
 	if (previewView) {
 		previewView->Hide();
 		previewBox->RemoveChild(previewView);

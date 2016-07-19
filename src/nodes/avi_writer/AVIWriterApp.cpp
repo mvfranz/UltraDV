@@ -31,7 +31,7 @@
 static void list_nodes()
 {
 	int nnodes = 50;
-	live_node_info * lni = new live_node_info[nnodes];
+	live_node_info* lni = new live_node_info[nnodes];
 	while (1) {
 		int32 cnt = nnodes;
 		status_t err = BMediaRoster::Roster()->GetLiveNodes(
@@ -62,7 +62,7 @@ static void list_nodes()
 	}
 }
 
-static void error(const char * message, status_t err)
+static void error(const char* message, status_t err)
 {
 	char msg[256];
 	sprintf(msg, "%s\n%s [%x]", message, strerror(err), err);
@@ -113,15 +113,15 @@ AVIWriterApp::AVIWriterApp() : BApplication("application/x-vnd.AVIWriterApp")
 	}
 
 	// create control panel
-	BParameterWeb   *web  = NULL;
-	BView                   *view = NULL;
+	BParameterWeb* web  = NULL;
+	BView* view = NULL;
 	err = m_Roster->GetParameterWebFor(producerNode, &web);
 	if (err >= B_OK && web != NULL) {
 		view = BMediaTheme::ViewFor(web);
 		//	Create control window
 		m_Window = new ControlWindow(view, producerNode);
 		BMediaRoster::Roster()->StartWatching(BMessenger(NULL, m_Window));
-	} else   {
+	} else {
 		//	Create an empty window
 		m_Window = new ControlWindow(BRect(64,64,364,164));
 	}
@@ -160,7 +160,7 @@ AVIWriterApp::AVIWriterApp() : BApplication("application/x-vnd.AVIWriterApp")
 		return;
 	}
 
-	BTimeSource *source = BMediaRoster::Roster()->MakeTimeSourceFor(timesourceNode);
+	BTimeSource* source = BMediaRoster::Roster()->MakeTimeSourceFor(timesourceNode);
 
 	//	Start them
 	bigtime_t start_delay = 0;
@@ -224,7 +224,7 @@ static BRect offset_rect(BRect r, float x, float y)
 }
 
 
-ControlWindow::ControlWindow(BView * controls, media_node node) :
+ControlWindow::ControlWindow(BView* controls, media_node node) :
 	BWindow(offset_rect(controls->Bounds(), 64, 64), "TV Controls",
 	        B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS)
 {
@@ -239,10 +239,10 @@ ControlWindow::ControlWindow(const BRect & frame) :
 }
 
 void
-ControlWindow::MessageReceived(BMessage * message)
+ControlWindow::MessageReceived(BMessage* message)
 {
-	BParameterWeb * web = NULL;
-	BView * panel = NULL;
+	BParameterWeb* web = NULL;
+	BView* panel = NULL;
 	status_t err;
 	int32 cnt;
 

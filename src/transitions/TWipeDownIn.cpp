@@ -20,7 +20,7 @@
 
 
 //	Local Constants
-const char *TWipeDownIn::kTransitionName = "WipeDownIn";
+const char* TWipeDownIn::kTransitionName = "WipeDownIn";
 
 //---------------------------------------------------------------------
 //	Constructor/destructor
@@ -86,7 +86,7 @@ string TWipeDownIn::Name() const
 //      zero if nothing need be done.
 //
 
-BBitmap *TWipeDownIn::TransformBitmap(uint32 time, const BBitmap *source,
+BBitmap* TWipeDownIn::TransformBitmap(uint32 time, const BBitmap* source,
                                       const TCuePosition &registration, DisplayQuality quality)
 {
 	//	Only create offscreen at first pass
@@ -136,7 +136,7 @@ BBitmap *TWipeDownIn::TransformBitmap(uint32 time, const BBitmap *source,
 	}
 
 	//	Clone offscreen
-	BBitmap *newBitmap = CloneBitmap(*fOffscreenBitmap);
+	BBitmap* newBitmap = CloneBitmap(*fOffscreenBitmap);
 	ASSERT(newBitmap);
 
 	return newBitmap;

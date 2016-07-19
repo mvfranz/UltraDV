@@ -36,7 +36,7 @@
 //
 //
 
-TNumberTextControl::TNumberTextControl( BRect bounds, const char *label, const char *name,  const char *text, BMessage *message) :
+TNumberTextControl::TNumberTextControl( BRect bounds, const char* label, const char* name,  const char* text, BMessage* message) :
 	BTextControl(bounds, name, label, text, NULL)
 {
 	// Set up modification message
@@ -78,7 +78,7 @@ void TNumberTextControl::Init()
 	//theView = fTextView;
 
 	// Disallow all characters except numbers
-	BTextView *theView = TextView();
+	BTextView* theView = TextView();
 
 	if (theView) {
 		// All characters up to "1"
@@ -114,7 +114,7 @@ void TNumberTextControl::MouseDown(BPoint where)
 //
 //
 
-void TNumberTextControl::KeyDown(const char *bytes, int32 numBytes)
+void TNumberTextControl::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	char theChar = *bytes;
@@ -144,7 +144,7 @@ void TNumberTextControl::KeyDown(const char *bytes, int32 numBytes)
 //
 //
 
-bool TNumberTextControl::AcceptsDrop(const BMessage *message)
+bool TNumberTextControl::AcceptsDrop(const BMessage* message)
 {
 	return false;
 }
@@ -155,7 +155,7 @@ bool TNumberTextControl::AcceptsDrop(const BMessage *message)
 //
 //
 
-bool TNumberTextControl::AcceptsPaste(BClipboard *clipboard)
+bool TNumberTextControl::AcceptsPaste(BClipboard* clipboard)
 {
 	return false;
 }

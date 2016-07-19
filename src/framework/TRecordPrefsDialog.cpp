@@ -35,7 +35,7 @@
 //
 //
 
-TRecordPrefsDialog::TRecordPrefsDialog(BMessage *theMessage) : BWindow(theMessage)
+TRecordPrefsDialog::TRecordPrefsDialog(BMessage* theMessage) : BWindow(theMessage)
 {
 	Init();
 }
@@ -62,13 +62,13 @@ TRecordPrefsDialog::~TRecordPrefsDialog()
 void TRecordPrefsDialog::Init()
 {
 	// Find background view
-	fPrefsView = (BView *)FindView("RecordPrefsView");
+	fPrefsView = (BView*)FindView("RecordPrefsView");
 
-	BBox *settingsBox = (BBox *)FindView("SettingsBox");
+	BBox* settingsBox = (BBox*)FindView("SettingsBox");
 
 	// Find radio buttons
-	fCaptureToDiskRadio = (BRadioButton *)FindView("CaptureToDiskRadio");
-	fCaptureToRAMRadio  = (BRadioButton *)FindView("CaptureToRAMRadio");
+	fCaptureToDiskRadio = (BRadioButton*)FindView("CaptureToDiskRadio");
+	fCaptureToRAMRadio  = (BRadioButton*)FindView("CaptureToRAMRadio");
 	fCaptureToDiskRadio->SetMessage( new BMessage(RECORD_DISK_MSG));
 	fCaptureToDiskRadio->SetTarget(this);
 	fCaptureToRAMRadio->SetMessage( new BMessage(RECORD_RAM_MSG));
@@ -87,12 +87,12 @@ void TRecordPrefsDialog::Init()
 	char bootStr[256];
 	bootVolume.GetName(bootStr);
 
-	fSwapDiskMenu   = (BMenuField *)FindView("SwapDiskMenu");
+	fSwapDiskMenu   = (BMenuField*)FindView("SwapDiskMenu");
 
-	BMenu *theMenu = fSwapDiskMenu->Menu();
+	BMenu* theMenu = fSwapDiskMenu->Menu();
 	if (theMenu) {
 		// Boot Volume
-		BMenuItem *swapItem01 = new BMenuItem( bootStr, new BMessage(SWAP_BOOT_MSG) );
+		BMenuItem* swapItem01 = new BMenuItem( bootStr, new BMessage(SWAP_BOOT_MSG) );
 		swapItem01->SetTarget(this);
 		theMenu->AddItem(swapItem01);
 
@@ -101,7 +101,7 @@ void TRecordPrefsDialog::Init()
 	}
 
 	// Find checkbox
-	fPostCompressCheckbox = (BCheckBox *)FindView("PostCompressCheckbox");
+	fPostCompressCheckbox = (BCheckBox*)FindView("PostCompressCheckbox");
 	fPostCompressCheckbox->SetMessage( new BMessage(RECORD_POST_MSG));
 	fPostCompressCheckbox->SetTarget(this);
 }

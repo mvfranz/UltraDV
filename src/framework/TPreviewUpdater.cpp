@@ -27,13 +27,13 @@
 //
 //
 
-TPreviewUpdater::TPreviewUpdater(BHandler *theTarget, BMessage *theMessage, uint32 theInterval)
+TPreviewUpdater::TPreviewUpdater(BHandler* theTarget, BMessage* theMessage, uint32 theInterval)
 {
 	fTarget         = theTarget;
 	fMessage        = theMessage;
 	fInterval       = theInterval;
 
-	BLooper *theLooper = theTarget->Looper();
+	BLooper* theLooper = theTarget->Looper();
 
 	status_t myErr;
 	fMessenger = new BMessenger(fTarget, NULL, &myErr);
@@ -56,7 +56,7 @@ TPreviewUpdater::TPreviewUpdater(BHandler *theTarget, BMessage *theMessage, uint
 	}
 
 	// Spawn timer thread
-	fTimerThread = spawn_thread( start_timer, "GenericTimer", B_NORMAL_PRIORITY, (void *)this);
+	fTimerThread = spawn_thread( start_timer, "GenericTimer", B_NORMAL_PRIORITY, (void*)this);
 
 	if( fTimerThread != B_NO_MORE_THREADS && fTimerThread != B_NO_MEMORY) {
 		resume_thread(fTimerThread);
@@ -98,8 +98,8 @@ int32 TPreviewUpdater::Timer()
 
 		// Is window still alive?  If not, exit.
 		if ( fMessenger->LockTarget() ) {
-			BLooper *myLooper;
-			BHandler *myHandler = fMessenger->Target(&myLooper);
+			BLooper* myLooper;
+			BHandler* myHandler = fMessenger->Target(&myLooper);
 			myLooper->Unlock();
 
 			fMessenger->SendMessage(fMessage);
@@ -107,7 +107,7 @@ int32 TPreviewUpdater::Timer()
 			//fTarget->MessageReceived(fMessage);
 			//fTarget->Looper()->Unlock();
 			//static_cast<TVideoPreviewView *>(fTarget)->UpdateVideo();
-		} else   {
+		} else {
 			return 0;
 		}
 	}
@@ -123,9 +123,9 @@ int32 TPreviewUpdater::Timer()
 //	Static thread function
 //
 
-int32 TPreviewUpdater::start_timer(void *arg)
+int32 TPreviewUpdater::start_timer(void* arg)
 {
-	TPreviewUpdater *obj = (TPreviewUpdater *)arg;
+	TPreviewUpdater* obj = (TPreviewUpdater*)arg;
 	return(obj->Timer() );
 }
 

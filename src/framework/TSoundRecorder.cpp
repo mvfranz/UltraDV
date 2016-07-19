@@ -17,10 +17,10 @@
 #define MESSAGE FPRINTF
 
 TSoundRecorder::TSoundRecorder(
-	const char * name,
-	void (*RecordFunc)(void * cookie, bigtime_t timestamp, const void * data, size_t size, const media_raw_audio_format &format),
-	void (*NotifyFunc)(void * cookie, int32 cause, ...),
-	void * cookie) :
+	const char* name,
+	void (*RecordFunc)(void* cookie, bigtime_t timestamp, const void* data, size_t size, const media_raw_audio_format &format),
+	void (*NotifyFunc)(void* cookie, int32 cause, ...),
+	void* cookie) :
 	BMediaNode(name ? name : "Video Sound Recording"),
 	BBufferConsumer(B_MEDIA_RAW_AUDIO)
 {
@@ -60,7 +60,7 @@ port_id TSoundRecorder::ControlPort() const
 
 
 BMediaAddOn* TSoundRecorder::AddOn(
-	int32 * internal_id) const
+	int32* internal_id) const
 {
 	if (internal_id) *internal_id = 0;
 	return NULL;
@@ -72,7 +72,7 @@ void TSoundRecorder::Start(
 {
 	if (_mNotifyHook) {
 		(*_mNotifyHook)(_mCookie, B_WILL_START, performance_time);
-	} else   {
+	} else {
 		Notify(B_WILL_START, performance_time);
 	}
 }
@@ -84,7 +84,7 @@ void TSoundRecorder::Stop(
 {
 	if (_mNotifyHook) {
 		(*_mNotifyHook)(_mCookie, B_WILL_STOP, performance_time, immediate);
-	} else   {
+	} else {
 		Notify(B_WILL_STOP, performance_time, immediate);
 	}
 }
@@ -96,7 +96,7 @@ void TSoundRecorder::Seek(
 {
 	if (_mNotifyHook) {
 		(*_mNotifyHook)(_mCookie, B_WILL_SEEK, performance_time, media_time);
-	} else   {
+	} else {
 		Notify(B_WILL_SEEK, performance_time, media_time);
 	}
 }
@@ -115,7 +115,7 @@ void TSoundRecorder::TimeWarp(
 {
 	if (_mNotifyHook) {
 		(*_mNotifyHook)(_mCookie, B_WILL_TIMEWARP, at_real_time, to_performance_time);
-	} else   {
+	} else {
 		Notify(B_WILL_TIMEWARP, at_real_time, to_performance_time);
 	}
 }
@@ -127,7 +127,7 @@ void TSoundRecorder::Preroll()
 
 
 void TSoundRecorder::SetTimeSource(
-	BTimeSource * time_source)
+	BTimeSource* time_source)
 {
 	&time_source;
 }
@@ -135,7 +135,7 @@ void TSoundRecorder::SetTimeSource(
 
 status_t TSoundRecorder::HandleMessage(
 	int32 message,
-	const void * data,
+	const void* data,
 	size_t size)
 {
 	if ((BMediaNode::HandleMessage(message, data, size) < 0) &&
@@ -150,7 +150,7 @@ status_t TSoundRecorder::HandleMessage(
 
 status_t TSoundRecorder::AcceptFormat(
 	const media_destination & dest,
-	media_format * format)
+	media_format* format)
 {
 	if (dest != _mInput.destination) {
 		return B_MEDIA_BAD_DESTINATION;
@@ -158,7 +158,7 @@ status_t TSoundRecorder::AcceptFormat(
 	if (format->type <= 0) {
 		format->type = B_MEDIA_RAW_AUDIO;
 		format->u.raw_audio = media_raw_audio_format::wildcard;
-	} else if (format->type != B_MEDIA_RAW_AUDIO)   {
+	} else if (format->type != B_MEDIA_RAW_AUDIO) {
 		format->type = B_MEDIA_RAW_AUDIO;
 		format->u.raw_audio = media_raw_audio_format::wildcard;
 		return B_MEDIA_BAD_FORMAT;
@@ -168,8 +168,8 @@ status_t TSoundRecorder::AcceptFormat(
 
 
 status_t TSoundRecorder::GetNextInput(
-	int32 * cookie,
-	media_input * out_input)
+	int32* cookie,
+	media_input* out_input)
 {
 	NODE(stderr, "SoundRecordNode: GetNextInput()\n");
 	if (!*cookie) {
@@ -196,7 +196,7 @@ void TSoundRecorder::DisposeInputCookie(
 
 
 void TSoundRecorder::BufferReceived(
-	BBuffer * buffer)
+	BBuffer* buffer)
 {
 	NODE(stderr, "SoundRecordNode::BufferReceived()\n");
 	if (_mRecordHook) {
@@ -214,7 +214,7 @@ void TSoundRecorder::ProducerDataStatus(
 	if (for_whom == _mInput.destination) {
 		if (_mNotifyHook) {
 			(*_mNotifyHook)(_mCookie, B_PRODUCER_DATA_STATUS, status, at_media_time);
-		} else   {
+		} else {
 			Notify(B_PRODUCER_DATA_STATUS, status, at_media_time);
 		}
 	}
@@ -223,8 +223,8 @@ void TSoundRecorder::ProducerDataStatus(
 
 status_t TSoundRecorder::GetLatencyFor(
 	const media_destination & for_whom,
-	bigtime_t * out_latency,
-	media_node_id * out_timesource)
+	bigtime_t* out_latency,
+	media_node_id* out_timesource)
 {
 	if (for_whom != _mInput.destination) {
 		return B_MEDIA_BAD_DESTINATION;
@@ -239,7 +239,7 @@ status_t TSoundRecorder::Connected(
 	const media_source & producer,  /* here's a good place to request buffer group usage */
 	const media_destination & where,
 	const media_format & with_format,
-	media_input * out_input)
+	media_input* out_input)
 {
 	NODE(stderr, "SoundRecordNode::Connected()\n");
 	if (_mInput.source != media_source::null) {
@@ -252,7 +252,7 @@ status_t TSoundRecorder::Connected(
 	_mInput.format = with_format;
 	if (_mNotifyHook) {
 		(*_mNotifyHook)(_mCookie, B_CONNECTED, _mInput.name);
-	} else   {
+	} else {
 		Notify(B_CONNECTED, _mInput.name);
 	}
 	*out_input = _mInput;
@@ -272,7 +272,7 @@ void TSoundRecorder::Disconnected(
 	}
 	if (_mNotifyHook) {
 		(*_mNotifyHook)(_mCookie, B_DISCONNECTED);
-	} else   {
+	} else {
 		Notify(B_DISCONNECTED);
 	}
 	_mInput.source = media_source::null;
@@ -292,7 +292,7 @@ status_t TSoundRecorder::FormatChanged(
 		_mInput.format = format;
 		if (_mNotifyHook) {
 			(*_mNotifyHook)(_mCookie, B_FORMAT_CHANGED, &_mInput.format.u.raw_audio);
-		} else   {
+		} else {
 			Notify(B_FORMAT_CHANGED, &_mInput.format.u.raw_audio);
 		}
 	}
@@ -302,24 +302,24 @@ status_t TSoundRecorder::FormatChanged(
 
 status_t
 TSoundRecorder::ThreadEntry(
-	void * data)
+	void* data)
 {
-	((TSoundRecorder *)data)->ServiceThread();
+	((TSoundRecorder*)data)->ServiceThread();
 	return 0;
 }
 
 struct set_hooks_q {
 	port_id reply;
-	void * cookie;
-	void (*record)(void *, bigtime_t, const void *, size_t, const media_raw_audio_format &);
-	void (*notify)(void *, int32, ...);
+	void* cookie;
+	void (* record)(void*, bigtime_t, const void*, size_t, const media_raw_audio_format &);
+	void (* notify)(void*, int32, ...);
 };
 
 status_t
 TSoundRecorder::SetHooks(
-	void (*RecordFunc)(void * cookie, bigtime_t timestamp, const void * data, size_t size, const media_raw_audio_format & format),
-	void (*NotifyFunc)(void * cookie, int32 code, ...),
-	void * cookie)
+	void (* RecordFunc)(void* cookie, bigtime_t timestamp, const void* data, size_t size, const media_raw_audio_format & format),
+	void (* NotifyFunc)(void* cookie, int32 code, ...),
+	void* cookie)
 {
 	set_hooks_q cmd;
 	cmd.record = RecordFunc;
@@ -342,7 +342,7 @@ TSoundRecorder::SetHooks(
 void
 TSoundRecorder::ServiceThread()
 {
-	char * msg = new char[B_MEDIA_MESSAGE_SIZE];
+	char* msg = new char[B_MEDIA_MESSAGE_SIZE];
 	int bad = 0;
 	while (true) {
 		int32 code = 0;
@@ -356,37 +356,37 @@ TSoundRecorder::ServiceThread()
 			if (code == 0x60000000L) {
 				if (_mNotifyHook) {
 					(*_mNotifyHook)(_mCookie, B_NODE_DIES, 0);
-				} else   {
+				} else {
 					Notify(B_NODE_DIES, 0);
 				}
 				break;
-			} else if (code == 0x60000001L)   {
+			} else if (code == 0x60000001L) {
 				if (_mNotifyHook) {
 					(*_mNotifyHook)(_mCookie, B_HOOKS_CHANGED);
-				} else   {
+				} else {
 					Notify(B_HOOKS_CHANGED);
 				}
-				set_hooks_q * ptr = (set_hooks_q *)msg;
+				set_hooks_q* ptr = (set_hooks_q*)msg;
 				_mRecordHook = ptr->record;
 				_mNotifyHook = ptr->notify;
 				_mCookie = ptr->cookie;
 				write_port(ptr->reply, 0, NULL, 0);
-			} else   {
+			} else {
 				HandleMessage(code, msg, err);
 			}
-		} else if (err == B_TIMED_OUT)   {
+		} else if (err == B_TIMED_OUT) {
 			if (_mNotifyHook) {
 				(*_mNotifyHook)(_mCookie, B_OP_TIMED_OUT, timeout);
-			} else   {
+			} else {
 				Notify(B_OP_TIMED_OUT, timeout);
 			}
-		} else   {
+		} else {
 			FPRINTF(stderr, "SoundRecordNode: error %x\n", err);
 			bad++;
 			if (bad > 3) {
 				if (_mNotifyHook) {
 					(*_mNotifyHook)(_mCookie, B_NODE_DIES, bad, err, code, msg);
-				} else   {
+				} else {
 					Notify(B_NODE_DIES, bad, err, code, msg);
 				}
 				break;
@@ -412,7 +412,7 @@ TSoundRecorder::Latency()
 void
 TSoundRecorder::Record(
 	bigtime_t time,
-	const void * data,
+	const void* data,
 	size_t size,
 	const media_raw_audio_format & format)
 {

@@ -43,7 +43,7 @@
 //
 //
 
-TVideoImageView::TVideoImageView(TVideoSettingsTabView *parent, BMessage *archive) : BView(archive)
+TVideoImageView::TVideoImageView(TVideoSettingsTabView* parent, BMessage* archive) : BView(archive)
 {
 	fParent = parent;
 
@@ -64,14 +64,14 @@ void TVideoImageView::Init()
 	SetViewColor(kBeGrey);
 
 	// Locate view items
-	fHueString              = (BStringView *)FindView("HueString");
-	fSaturationString       = (BStringView *)FindView("SaturationString");
-	fBrightnessString       = (BStringView *)FindView("BrightnessString");
-	fContrastString         = (BStringView *)FindView("ContrastString");
-	fDefaultsButton         = (BButton *)FindView("DefaultsButton");
+	fHueString              = (BStringView*)FindView("HueString");
+	fSaturationString       = (BStringView*)FindView("SaturationString");
+	fBrightnessString       = (BStringView*)FindView("BrightnessString");
+	fContrastString         = (BStringView*)FindView("ContrastString");
+	fDefaultsButton         = (BButton*)FindView("DefaultsButton");
 
 	//	Set up  preview view bounds.  Use attached view in BBox to set up size
-	BView *previewView      = (BView *)FindView("PreviewView");
+	BView* previewView      = (BView*)FindView("PreviewView");
 	fPreviewRect = previewView->Frame();
 	RemoveChild(previewView);
 	delete previewView;
@@ -148,8 +148,8 @@ void TVideoImageView::AttachedToWindow()
 	printf("TVideoCompressionView::AttachedToWindow()\n");
 
 	//	Get pointer to previewView and attach to BBox
-	BBox *previewBox = (BBox *)FindView("PreviewBox");
-	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
+	BBox* previewBox = (BBox*)FindView("PreviewBox");
+	TVideoPreviewView* previewView = fParent->GetParent()->GetParent()->PreviewView();
 	if (previewView) {
 		previewBox->AddChild(previewView);
 		previewView->MoveTo(fPreviewRect.left, fPreviewRect.top);
@@ -172,8 +172,8 @@ void TVideoImageView::DetachedFromWindow()
 	printf("TVideoCompressionView::DetachedFromWindow()\n");
 
 	//	Get pointer to previewView and detach from BBox
-	BBox *previewBox = (BBox *)FindView("PreviewBox");
-	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
+	BBox* previewBox = (BBox*)FindView("PreviewBox");
+	TVideoPreviewView* previewView = fParent->GetParent()->GetParent()->PreviewView();
 	if (previewView) {
 		previewView->Hide();
 		previewBox->RemoveChild(previewView);

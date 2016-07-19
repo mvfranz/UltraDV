@@ -58,12 +58,12 @@ TCueEffect::TCueEffect(BMessage* msg) :
 	BArchivable(msg)
 {
 	status_t err;
-	err = msg->FindInt32(kStartLabel, (int32 *)&fstartTime);
+	err = msg->FindInt32(kStartLabel, (int32*)&fstartTime);
 	if (err != B_OK) {
 		ASSERT(false);
 		return;
 	}
-	err = msg->FindInt32(kDurationLabel, (int32 *)&fduration);
+	err = msg->FindInt32(kDurationLabel, (int32*)&fduration);
 	if (err != B_OK) {
 		ASSERT(false);
 		return;
@@ -71,7 +71,7 @@ TCueEffect::TCueEffect(BMessage* msg) :
 
 	// Read in the keyframe list
 	uint32 size;
-	err = msg->FindInt32(kKeyFrameCountLabel, (int32 *)&size);
+	err = msg->FindInt32(kKeyFrameCountLabel, (int32*)&size);
 	if (err != B_OK) {
 		ASSERT(false);
 		return;

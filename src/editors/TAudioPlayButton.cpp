@@ -33,7 +33,7 @@
 //
 //
 
-TAudioPlayButton::TAudioPlayButton(TAudioEditorToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TAudioPlayButton::TAudioPlayButton(TAudioEditorToolbar* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fParent = parent;
@@ -112,14 +112,14 @@ void TAudioPlayButton::MouseDown(BPoint where)
 	// is implimented we can remove this
 	if (fButtonState) {
 		// Tell sound to stop
-		BMessage *message = new BMessage(AUDIO_STOP_BUTTON_MSG);
+		BMessage* message = new BMessage(AUDIO_STOP_BUTTON_MSG);
 		//fParent->Window()->PostMessage(message, fHandler);
 		fParent->Window()->PostMessage(message, NULL);
 		delete message;
 		fButtonState = false;
-	} else   {
+	} else {
 		// Tell sound to play
-		BMessage *message = new BMessage(AUDIO_PLAY_BUTTON_MSG);
+		BMessage* message = new BMessage(AUDIO_PLAY_BUTTON_MSG);
 		//fParent->Window()->PostMessage(message, fHandler);
 		fParent->Window()->PostMessage(message, NULL);
 		delete message;

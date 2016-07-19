@@ -35,7 +35,7 @@
 //
 //
 
-TMIDIEditor::TMIDIEditor(BRect bounds, TMIDICue *theCue) : BWindow(bounds, "MIDI Mixer", B_DOCUMENT_WINDOW, 0,0)
+TMIDIEditor::TMIDIEditor(BRect bounds, TMIDICue* theCue) : BWindow(bounds, "MIDI Mixer", B_DOCUMENT_WINDOW, 0,0)
 {
 	// Save cue
 	fMIDICue = theCue;

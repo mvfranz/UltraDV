@@ -34,7 +34,7 @@
 //
 
 
-TVideoEditorMenus::TVideoEditorMenus(BMenuBar* mbar, TVideoEditor *parent)
+TVideoEditorMenus::TVideoEditorMenus(BMenuBar* mbar, TVideoEditor* parent)
 {
 
 	// Save the BMenuBar into our member variable

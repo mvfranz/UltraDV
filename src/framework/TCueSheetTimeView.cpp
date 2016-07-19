@@ -40,7 +40,7 @@
 //
 //
 
-TCueSheetTimeView::TCueSheetTimeView(TCueSheetWindow *parent, BRect bounds) : BView(bounds, "TimeZoneView", B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TCueSheetTimeView::TCueSheetTimeView(TCueSheetWindow* parent, BRect bounds) : BView(bounds, "TimeZoneView", B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fCueSheetWindow = parent;
@@ -57,7 +57,7 @@ TCueSheetTimeView::TCueSheetTimeView(TCueSheetWindow *parent, BRect bounds) : BV
 //	Construct from archive
 //
 
-TCueSheetTimeView::TCueSheetTimeView(BMessage *message) : BView(message)
+TCueSheetTimeView::TCueSheetTimeView(BMessage* message) : BView(message)
 {
 	fCueSheetWindow = NULL;
 
@@ -101,7 +101,7 @@ void TCueSheetTimeView::Init()
 //
 //
 
-BArchivable *TCueSheetTimeView::Instantiate(BMessage *archive)
+BArchivable* TCueSheetTimeView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TCueSheetTimeView") )
@@ -117,7 +117,7 @@ BArchivable *TCueSheetTimeView::Instantiate(BMessage *archive)
 //
 //
 
-status_t TCueSheetTimeView::Archive(BMessage *data, bool deep) const
+status_t TCueSheetTimeView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -249,7 +249,7 @@ void TCueSheetTimeView::ShowProjectSettingDialog(BPoint where)
 	}
 	// Create the Project Settings dialog from a resource archive
 	else{
-		BMessage *theMessage = GetWindowFromResource("ProjectSettingsWindow");
+		BMessage* theMessage = GetWindowFromResource("ProjectSettingsWindow");
 		fProjectWindow = new TProjectSettings(this, fCueSheetWindow->GetCueSheetView(), theMessage);
 
 		// Move it under the mouse
@@ -278,7 +278,7 @@ void TCueSheetTimeView::ShowProjectSettingDialog(BPoint where)
 void TCueSheetTimeView::AttachedToWindow()
 {
 	if(fCueSheetWindow == NULL) {
-		fCueSheetWindow = (TCueSheetWindow *)Window();
+		fCueSheetWindow = (TCueSheetWindow*)Window();
 	}
 
 	//	Pass up to parent
@@ -295,7 +295,7 @@ void TCueSheetTimeView::AttachedToWindow()
 //
 //
 
-void TCueSheetTimeView::SetParent(TCueSheetWindow *parent)
+void TCueSheetTimeView::SetParent(TCueSheetWindow* parent)
 {
 	fCueSheetWindow = parent;
 }

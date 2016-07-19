@@ -36,7 +36,7 @@
 //
 //
 
-TSorterListItem::TSorterListItem(uint32 level, bool expanded, BRect bounds, const char *theString, SorterType theType, entry_ref& fileRef) :
+TSorterListItem::TSorterListItem(uint32 level, bool expanded, BRect bounds, const char* theString, SorterType theType, entry_ref& fileRef) :
 	BListItem(level, expanded)
 {
 	fCue            = NULL;
@@ -44,7 +44,7 @@ TSorterListItem::TSorterListItem(uint32 level, bool expanded, BRect bounds, cons
 	fEntryRef       = fileRef;
 
 	// Make a copy of the data string
-	fDataString = (char *) malloc(strlen(theString)+1);
+	fDataString = (char*) malloc(strlen(theString)+1);
 	strcpy(fDataString, theString);
 
 	// Perform default initialization
@@ -87,7 +87,7 @@ void TSorterListItem::Init()
 				fDataType = kTextType;
 			else if (IsVideo(nodeInfo))
 				fDataType = kVideoType;
-		} else   {
+		} else {
 			fDataType = kUnknownType;
 		}
 
@@ -102,7 +102,7 @@ void TSorterListItem::Init()
 //
 //	Perform default initialization tasks
 
-void TSorterListItem::Update(BView *owner, const BFont *font)
+void TSorterListItem::Update(BView* owner, const BFont* font)
 {
 	//      This is a cheap hack to get the height of the listItem set
 	//	properly.  We aren't actually using a font this large.
@@ -122,7 +122,7 @@ void TSorterListItem::Update(BView *owner, const BFont *font)
 //
 //
 
-void TSorterListItem::DrawItem(BView *owner, BRect itemRect, bool drawEverything)
+void TSorterListItem::DrawItem(BView* owner, BRect itemRect, bool drawEverything)
 {
 	owner->PushState();
 

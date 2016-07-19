@@ -34,7 +34,7 @@
 //
 //
 
-TVideoEditorView::TVideoEditorView(TVideoEditor *editor, BMessage *message) : BView(message)
+TVideoEditorView::TVideoEditorView(TVideoEditor* editor, BMessage* message) : BView(message)
 {
 	fEditor = editor;
 
@@ -94,7 +94,7 @@ void TVideoEditorView::Draw(BRect updateRect)
 
 		//	Refresh with last rendered frame
 		//	Look into centering the bitmap
-		BBitmap *vidBitmap = fEditor->GetDisplayBitmap();
+		BBitmap* vidBitmap = fEditor->GetDisplayBitmap();
 		if (vidBitmap) {
 			fDrawPoint.x = (Bounds().Width() / 2) - (vidBitmap->Bounds().Width() / 2);
 			fDrawPoint.y = (Bounds().Height() / 2) - (vidBitmap->Bounds().Height() / 2);
@@ -114,7 +114,7 @@ void TVideoEditorView::Draw(BRect updateRect)
 //	Draw frame centered on screen
 //
 
-void TVideoEditorView::DisplayFrame(BBitmap *frame)
+void TVideoEditorView::DisplayFrame(BBitmap* frame)
 {
 	LockLooper();
 	DrawBitmap(frame, fDrawPoint);

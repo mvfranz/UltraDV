@@ -38,7 +38,7 @@
 //
 //
 
-TTimeTextView::TTimeTextView( BHandler *target, int32 messageID, BRect bounds, char *name, uint32 resizing) :
+TTimeTextView::TTimeTextView( BHandler* target, int32 messageID, BRect bounds, char* name, uint32 resizing) :
 	BTextView(bounds, name, bounds, resizing, B_FRAME_EVENTS | B_PULSE_NEEDED)
 
 {
@@ -173,15 +173,15 @@ void TTimeTextView::MouseDown(BPoint where)
 		Select(0,2);
 		ScrollToSelection();
 		fCurrentCell = 1;
-	} else if ( fMinutesRect.Contains(where) )   {
+	} else if ( fMinutesRect.Contains(where) ) {
 		Select(3,5);
 		ScrollToSelection();
 		fCurrentCell = 2;
-	} else if ( fSecondsRect.Contains(where) )   {
+	} else if ( fSecondsRect.Contains(where) ) {
 		Select(6,8);
 		ScrollToSelection();
 		fCurrentCell = 3;
-	} else if ( fFramesRect.Contains(where) )   {
+	} else if ( fFramesRect.Contains(where) ) {
 		Select(9,11);
 		ScrollToSelection();
 		fCurrentCell = 4;
@@ -215,7 +215,7 @@ void TTimeTextView::MouseUp(BPoint where)
 //
 //
 
-void TTimeTextView::MouseMoved(BPoint where, uint32 code, const BMessage *message)
+void TTimeTextView::MouseMoved(BPoint where, uint32 code, const BMessage* message)
 {
 	//BTextView::MouseMoved(where, code, message);
 }
@@ -227,7 +227,7 @@ void TTimeTextView::MouseMoved(BPoint where, uint32 code, const BMessage *messag
 //
 //
 
-void TTimeTextView::KeyDown(const char *bytes, int32 numBytes)
+void TTimeTextView::KeyDown(const char* bytes, int32 numBytes)
 {
 	char theChar = *bytes;
 
@@ -320,7 +320,7 @@ void TTimeTextView::KeyDown(const char *bytes, int32 numBytes)
 
 			if (fCurrentCell <= 0)
 				fCurrentCell = 4;
-		} else   {
+		} else {
 			// Select the next cell
 			fCurrentCell++;
 
@@ -373,7 +373,7 @@ void TTimeTextView::MakeFocus(bool focusState)
 	// Inform target
 	if ( focusState == false) {
 		if (fTarget) {
-			BLooper *looper = fTarget->Looper();
+			BLooper* looper = fTarget->Looper();
 
 			if ( looper->Lock() ) {
 				CheckLastEdit();
@@ -382,7 +382,7 @@ void TTimeTextView::MakeFocus(bool focusState)
 					ConvertToTime(index);
 
 				if (fMessageID) {
-					BMessage *message = new BMessage(fMessageID);
+					BMessage* message = new BMessage(fMessageID);
 					message->AddInt32("TheTime", fTime);
 					fTarget->MessageReceived( message);
 					looper->Unlock();
@@ -404,7 +404,7 @@ void TTimeTextView::MakeFocus(bool focusState)
 //
 //
 
-void TTimeTextView::MessageReceived(BMessage *message)
+void TTimeTextView::MessageReceived(BMessage* message)
 {
 	//BLooper *looper = Looper();
 	//looper->Lock();
@@ -438,7 +438,7 @@ void TTimeTextView::MessageReceived(BMessage *message)
 //
 //
 
-bool TTimeTextView::AcceptsDrop(const BMessage *message)
+bool TTimeTextView::AcceptsDrop(const BMessage* message)
 {
 	return false;
 }
@@ -449,7 +449,7 @@ bool TTimeTextView::AcceptsDrop(const BMessage *message)
 //
 //
 
-bool TTimeTextView::AcceptsPaste(BClipboard *clipboard)
+bool TTimeTextView::AcceptsPaste(BClipboard* clipboard)
 {
 	return false;
 }
@@ -460,7 +460,7 @@ bool TTimeTextView::AcceptsPaste(BClipboard *clipboard)
 //
 //
 
-void TTimeTextView::InsertText(const char *text, int32 length, int32 offset, const text_run_array *runs)
+void TTimeTextView::InsertText(const char* text, int32 length, int32 offset, const text_run_array* runs)
 {
 	BTextView::InsertText(text, length, offset, runs);
 }

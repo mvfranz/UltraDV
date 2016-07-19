@@ -45,7 +45,7 @@
                 Initialize the conductor.
 ********************************************************************************/
 
-void CProducerConductor::IProducerConductor(CMIDICue *aSupervisor)
+void CProducerConductor::IProducerConductor(CMIDICue* aSupervisor)
 {
 	CConductor::IConductor(aSupervisor);
 
@@ -77,7 +77,7 @@ void CProducerConductor::Dispose(void)
                 Add the marker to the marker array.
 ********************************************************************************/
 
-void CProducerConductor::InsertMarker(char *str, long time)
+void CProducerConductor::InsertMarker(char* str, long time)
 {
 	MarkerRec data;
 
@@ -199,7 +199,7 @@ void CProducerConductor::SetTempoRatio(short aRatio)
 
 long CProducerConductor::CheckPlay(long dTime)
 {
-	CondEvent       *e;
+	CondEvent* e;
 
 
 	// First check for tracks total time

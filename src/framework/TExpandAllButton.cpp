@@ -37,7 +37,7 @@
 //
 //
 
-TExpandAllButton::TExpandAllButton(TToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TExpandAllButton::TExpandAllButton(TToolbar* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fParent = parent;
@@ -62,7 +62,7 @@ TExpandAllButton::TExpandAllButton(TToolbar *parent, BRect bounds, const char *n
 //
 //
 
-TExpandAllButton::TExpandAllButton(BMessage *data) : BView(data)
+TExpandAllButton::TExpandAllButton(BMessage* data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
@@ -105,7 +105,7 @@ void TExpandAllButton::Init()
 //
 //
 
-BArchivable *TExpandAllButton::Instantiate(BMessage *archive)
+BArchivable* TExpandAllButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TExpandAllButton") )
@@ -120,7 +120,7 @@ BArchivable *TExpandAllButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TExpandAllButton::Archive(BMessage *data, bool deep) const
+status_t TExpandAllButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -196,8 +196,8 @@ void TExpandAllButton::MouseDown(BPoint where)
 void TExpandAllButton::AttachedToWindow()
 {
 	if(fParent == NULL) {
-		fParent         = (TToolbar *)Parent();
-		fHandler        = (TToolbar *)Parent();
+		fParent         = (TToolbar*)Parent();
+		fHandler        = (TToolbar*)Parent();
 	}
 
 	//	Pass up to parent
@@ -223,8 +223,8 @@ void TExpandAllButton::DoClick()
 	Draw(Bounds());
 
 	// Create and send message to channel and header
-	BMessage *message = new BMessage(EXPAND_ALL_BUTTON_MSG);
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
+	BMessage* message = new BMessage(EXPAND_ALL_BUTTON_MSG);
+	(static_cast<MuseumApp*>(be_app)->GetCueSheet())->PostMessage(message, (BHandler*)static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
 	delete message;
 
 	// Wait a short while before restoring to up position

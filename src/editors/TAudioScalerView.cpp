@@ -39,7 +39,7 @@ const short kScalerTickHeight = 5;
 //
 //
 
-TAudioScalerView::TAudioScalerView(BRect bounds, TAudioEditorView *parent) : BView(bounds, "AudioScalerView", B_FOLLOW_LEFT|B_FOLLOW_BOTTOM, B_WILL_DRAW)
+TAudioScalerView::TAudioScalerView(BRect bounds, TAudioEditorView* parent) : BView(bounds, "AudioScalerView", B_FOLLOW_LEFT|B_FOLLOW_BOTTOM, B_WILL_DRAW)
 {
 	// Set CueSheet parent
 	fEditor = parent;
@@ -90,7 +90,7 @@ void TAudioScalerView::Init()
 	}
 
 	// Load thumb bitmap
-	BBitmap *bitmap = GetIcon8FromResource("TimeThumb");
+	BBitmap* bitmap = GetIcon8FromResource("TimeThumb");
 
 	// Create Indicator View
 	BRect bounds( Bounds().left, Bounds().bottom - (kTimeIndicatorHeight-1), Bounds().left+(kTimeIndicatorWidth-1), Bounds().bottom);
@@ -258,7 +258,7 @@ void TAudioScalerView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TAudioScalerView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TAudioScalerView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -282,7 +282,7 @@ void TAudioScalerView::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TAudioScalerView::KeyDown(const char *bytes, int32 numBytes)
+void TAudioScalerView::KeyDown(const char* bytes, int32 numBytes)
 {
 }
 
@@ -295,7 +295,7 @@ void TAudioScalerView::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TAudioScalerView::KeyUp(const char *bytes, int32 numBytes)
+void TAudioScalerView::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 

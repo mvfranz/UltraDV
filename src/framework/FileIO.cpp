@@ -31,7 +31,7 @@
 bool OpenCueSheet()
 {
 	// Display standard file open panel
-	((MuseumApp *)be_app)->ShowFileOpenPanel(); // ABH added ::
+	((MuseumApp*)be_app)->ShowFileOpenPanel();  // ABH added ::
 
 	return true;
 }

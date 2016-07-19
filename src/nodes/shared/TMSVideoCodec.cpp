@@ -29,7 +29,7 @@
 //
 //
 
-TMSVideoCodec::TMSVideoCodec(TRIFFReader *reader) : TVideoCodec(reader)
+TMSVideoCodec::TMSVideoCodec(TRIFFReader* reader) : TVideoCodec(reader)
 {
 
 }
@@ -65,7 +65,7 @@ void TMSVideoCodec::Init()
 //	Return text description of codec
 //
 
-bool TMSVideoCodec::GetDescription(char *descText)
+bool TMSVideoCodec::GetDescription(char* descText)
 {
 	return false;
 }
@@ -78,16 +78,16 @@ bool TMSVideoCodec::GetDescription(char *descText)
 //	Decode frame passed in buffer
 //
 
-bool TMSVideoCodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 dstDepth)
+bool TMSVideoCodec::DecodeFrame(AVIVideoFrame* theFrame, void* dstBuffer, uint16 dstDepth)
 {
 	//	Get file and save position
-	BFile *theFile = m_Reader->GetFile();
+	BFile* theFile = m_Reader->GetFile();
 	off_t position = theFile->Position();
 	theFile->Seek(0, SEEK_SET);
 
 	//	Allocate buffer to contain frame data
 	const int32 bufSize = theFrame->Length;
-	void *srcBuffer = malloc(bufSize);
+	void* srcBuffer = malloc(bufSize);
 	ASSERT(srcBuffer);
 
 	//	Load bits from current frame
@@ -111,7 +111,7 @@ bool TMSVideoCodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16
 //	Decode Microsoft Video 01 'CRAM'
 //
 
-bool TMSVideoCodec::DecodeMSVideo(uint32 chunkID, uint32 width, uint32 height, uint16 depth, void *srcBuffer, int32 bufSize, void *dstBuffer)
+bool TMSVideoCodec::DecodeMSVideo(uint32 chunkID, uint32 width, uint32 height, uint16 depth, void* srcBuffer, int32 bufSize, void* dstBuffer)
 {
 	bool retVal = false;
 
@@ -155,7 +155,7 @@ bool TMSVideoCodec::DecodeMSVideo(uint32 chunkID, uint32 width, uint32 height, u
 //	Decode Microsoft Video 01 8-bit 'CRAM' and return BBitmap
 //
 
-bool TMSVideoCodec::DecodeMSVideo8(uint32 width, uint32 height, void *buffer, int32 bufSize, void *dstBuffer)
+bool TMSVideoCodec::DecodeMSVideo8(uint32 width, uint32 height, void* buffer, int32 bufSize, void* dstBuffer)
 {
 	uint32 changed = 0;
 	int32 maxX    = 0;
@@ -170,8 +170,8 @@ bool TMSVideoCodec::DecodeMSVideo8(uint32 width, uint32 height, void *buffer, in
 	bool exitFlag        = false;
 
 	//	Setup pointers
-	uchar *bufPtr   = (uchar *)buffer;
-	uchar *bits     = (uchar *)dstBuffer;
+	uchar* bufPtr   = (uchar*)buffer;
+	uchar* bits     = (uchar*)dstBuffer;
 
 	while(!exitFlag) {
 		uint32 code0 = *bits++;
@@ -189,12 +189,12 @@ bool TMSVideoCodec::DecodeMSVideo8(uint32 width, uint32 height, void *buffer, in
 				while(skip--)
 					MSBlockInclude(x, y, width);
 				//	Single block encoded
-			} else   {
+			} else {
 				//	8 color quadrant encoding
 				if (code1 >= 0x90) {
 					uchar cA0, cA1, cB0, cB1;
 
-					uchar *i_ptr = (uchar *)(bits + y * width + x);
+					uchar* i_ptr = (uchar*)(bits + y * width + x);
 					cB0 = (uchar)*bufPtr++;
 					cA0 = (uchar)*bufPtr++;
 					cB1 = (uchar)*bufPtr++;
@@ -212,7 +212,7 @@ bool TMSVideoCodec::DecodeMSVideo8(uint32 width, uint32 height, void *buffer, in
 				//	2 color encoding
 				else if (code1 < 0x80) {
 					uchar clr_A,clr_B;
-					uchar *i_ptr = (uchar *)(bits + y * width + x);
+					uchar* i_ptr = (uchar*)(bits + y * width + x);
 
 					clr_B = (uchar)*bufPtr++;
 					clr_A = (uchar)*bufPtr++;
@@ -224,7 +224,7 @@ bool TMSVideoCodec::DecodeMSVideo8(uint32 width, uint32 height, void *buffer, in
 				//	1 color encoding
 				else{
 					uchar clr        = (uchar)code0;
-					uchar *i_ptr = (uchar *)(bits + y * width + x);
+					uchar* i_ptr = (uchar*)(bits + y * width + x);
 					MSVideoC1(i_ptr,clr,row_dec);
 				}
 
@@ -247,7 +247,7 @@ bool TMSVideoCodec::DecodeMSVideo8(uint32 width, uint32 height, void *buffer, in
 //	Decode Microsoft Video 01 16-bit 'CRAM' and return BBitmap
 //
 
-bool TMSVideoCodec::DecodeMSVideo16(uint32 width, uint32 height, void *buffer, int32 bufSize, void *dstBuffer)
+bool TMSVideoCodec::DecodeMSVideo16(uint32 width, uint32 height, void* buffer, int32 bufSize, void* dstBuffer)
 {
 	int32 bufferSize = bufSize;
 
@@ -271,8 +271,8 @@ bool TMSVideoCodec::DecodeMSVideo16(uint32 width, uint32 height, void *buffer, i
 	uint32 blockCount = ((width * height) >> 4) + 1;
 
 	//	Setup pointers
-	uchar *srcPtr   = (uchar *)buffer;
-	uchar *dstPtr   = (uchar *)dstBuffer;
+	uchar* srcPtr   = (uchar*)buffer;
+	uchar* dstPtr   = (uchar*)dstBuffer;
 
 	while(exitFlag == false) {
 		code0 =  *srcPtr++;
@@ -299,7 +299,7 @@ bool TMSVideoCodec::DecodeMSVideo16(uint32 width, uint32 height, void *buffer, i
 		}
 		//	Don't skip
 		else{
-			uint32 *rowPtr = (uint32 *)(dstPtr + ((y * width + x) << 2) );
+			uint32* rowPtr = (uint32*)(dstPtr + ((y * width + x) << 2) );
 
 			//	2 or 8 color encoding
 			if (code1 < 0x80) {

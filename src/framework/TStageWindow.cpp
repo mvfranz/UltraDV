@@ -36,7 +36,7 @@
 //
 
 // Lazlo is out video editor.  It's stage window is the size of the project video output size
-TStageWindow::TStageWindow(BRect bounds, TCueSheetWindow *cueSheet) : BWindow( bounds, "Stage", B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
+TStageWindow::TStageWindow(BRect bounds, TCueSheetWindow* cueSheet) : BWindow( bounds, "Stage", B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
 	                                                                       B_NOT_ZOOMABLE | B_NOT_RESIZABLE | B_NOT_CLOSABLE | B_WILL_ACCEPT_FIRST_CLICK)
 {
 	//	Save parent cue sheet
@@ -54,7 +54,7 @@ TStageWindow::TStageWindow(BRect bounds, TCueSheetWindow *cueSheet) : BWindow( b
 //	Construct from archive
 //
 
-TStageWindow::TStageWindow(BMessage *data) : BWindow(data)
+TStageWindow::TStageWindow(BMessage* data) : BWindow(data)
 {
 
 	//
@@ -116,7 +116,7 @@ void TStageWindow::Init()
 //
 //
 
-BArchivable *TStageWindow::Instantiate(BMessage *archive)
+BArchivable* TStageWindow::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TStageWindow") )
@@ -131,7 +131,7 @@ BArchivable *TStageWindow::Instantiate(BMessage *archive)
 //
 //
 
-status_t TStageWindow::Archive(BMessage *data, bool deep) const
+status_t TStageWindow::Archive(BMessage* data, bool deep) const
 {
 	status_t myErr;
 

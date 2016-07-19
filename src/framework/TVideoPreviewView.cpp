@@ -54,7 +54,7 @@ media_raw_video_format vid_preview_format = { 29.97,1,0,479,B_VIDEO_TOP_LEFT_RIG
 //
 //
 
-TVideoPreviewView::TVideoPreviewView(BRect bounds, TVideoSettingsDialog *parent) :
+TVideoPreviewView::TVideoPreviewView(BRect bounds, TVideoSettingsDialog* parent) :
 	BView(bounds, "VideoPreviewView", B_FOLLOW_ALL, B_WILL_DRAW),
 	BMediaNode("VideoPreviewConsumer"),
 	BBufferConsumer(B_MEDIA_RAW_VIDEO)
@@ -155,8 +155,8 @@ void TVideoPreviewView::Init()
 
 //---------------------------------------------------------------
 
-BMediaAddOn *
-TVideoPreviewView::AddOn(long *) const
+BMediaAddOn*
+TVideoPreviewView::AddOn(long*) const
 {
 	return NULL;
 }
@@ -260,7 +260,7 @@ TVideoPreviewView::TimeWarp(bigtime_t at_real_time,
 //---------------------------------------------------------------
 
 void
-TVideoPreviewView::BufferReceived(BBuffer * buffer)
+TVideoPreviewView::BufferReceived(BBuffer* buffer)
 {
 	//FUNCTION("TVideoPreviewView::BufferReceived()\n");
 
@@ -297,7 +297,7 @@ TVideoPreviewView::Connected(
 	const media_source & producer,
 	const media_destination & where,
 	const media_format & with_format,
-	media_input * out_input)
+	media_input* out_input)
 {
 	FUNCTION("TVideoPreviewView::Connected()\n");
 
@@ -372,7 +372,7 @@ void TVideoPreviewView::Disconnected( const media_source &producer, const media_
 status_t
 TVideoPreviewView::AcceptFormat(
 	const media_destination & /*dest*/,
-	media_format * format)
+	media_format* format)
 {
 	FUNCTION("TVideoPreviewView::AcceptFormat()\n");
 	if (format->type != B_MEDIA_NO_TYPE) {
@@ -399,8 +399,8 @@ TVideoPreviewView::AcceptFormat(
 
 status_t
 TVideoPreviewView::GetNextInput(
-	int32 * cookie,
-	media_input * out_input)
+	int32* cookie,
+	media_input* out_input)
 {
 	FUNCTION("TVideoPreviewView::GetNextInput()\n");
 	if (*cookie == 0) {
@@ -428,8 +428,8 @@ TVideoPreviewView::DisposeInputCookie(int32 /*cookie*/)
 status_t
 TVideoPreviewView::GetLatencyFor(
 	const media_destination & /* input */,
-	bigtime_t * out_latency,
-	media_node_id * out_timesource)
+	bigtime_t* out_latency,
+	media_node_id* out_timesource)
 {
 	FUNCTION("TVideoPreviewView::GetLatencyFor()\n");
 	*out_latency = mMyLatency;
@@ -481,10 +481,10 @@ TVideoPreviewView::FormatChanged(
 //---------------------------------------------------------------
 
 status_t
-TVideoPreviewView::sRun(void * data)
+TVideoPreviewView::sRun(void* data)
 {
 	FUNCTION("TVideoPreviewView::sRun()\n");
-	((TVideoPreviewView *)data)->ServiceThread();
+	((TVideoPreviewView*)data)->ServiceThread();
 	return 0;
 }
 
@@ -532,10 +532,10 @@ TVideoPreviewView::ServiceThread()
 //---------------------------------------------------------------
 
 status_t
-TVideoPreviewView::vRun(void * data)
+TVideoPreviewView::vRun(void* data)
 {
 	FUNCTION("TVideoPreviewView::vRun()\n");
-	((TVideoPreviewView *)data)->DisplayThread();
+	((TVideoPreviewView*)data)->DisplayThread();
 	return 0;
 }
 
@@ -618,7 +618,7 @@ TVideoPreviewView::DisplayThread()
 					continue;
 				}
 
-				BBuffer *buffer = mBufferQueue->PopFirstBuffer(0);
+				BBuffer* buffer = mBufferQueue->PopFirstBuffer(0);
 
 				LOOP("Popped buffer %08x, Start time: %.4f, system time: %.4f diff: %.4f\n",
 				     buffer,
@@ -647,14 +647,14 @@ TVideoPreviewView::DisplayThread()
 					if (t1/M1 > .030)
 						printf("Draw time = %.4f\n",t1/M1);
 					continue;
-				} else   {
+				} else {
 					// If we're too early, push frame back on stack
 					if (perfTimeNow < buffer->Header()->start_time) {
 						LOOP("push buffer back on stack!\n");
 						mBufferQueue->PushBuffer(buffer, buffer->Header()->start_time);
 						release_sem(mBufferAvailable);
 						continue;
-					} else   {
+					} else {
 						// if we've already passed a half frame time past the buffer start time
 						// and RunMode = INCREASE_LATENCY, increase latency and display the frame
 						if ( (perfTimeNow > buffer->Header()->start_time) &&
@@ -673,7 +673,7 @@ TVideoPreviewView::DisplayThread()
 							}
 
 							continue;
-						} else   {
+						} else {
 							// we're more than a half frame time past the buffer start time
 							// drop the frame
 							ERROR("VidConsumer::DisplayThread - dropped late frame: %.4f @ %.4f\n", (double)buffer->Header()->start_time/M1, (double)perfTimeNow/M1);

@@ -40,7 +40,7 @@
 //
 //
 
-TExpandButton::TExpandButton(TCueChannel *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TExpandButton::TExpandButton(TCueChannel* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fChannel = parent;
@@ -65,7 +65,7 @@ TExpandButton::TExpandButton(TCueChannel *parent, BRect bounds, const char *name
 //
 //
 
-TExpandButton::TExpandButton(BMessage *message) : BView(message)
+TExpandButton::TExpandButton(BMessage* message) : BView(message)
 {
 	fHandler = NULL;
 
@@ -110,7 +110,7 @@ void TExpandButton::Init()
 //
 //
 
-BArchivable *TExpandButton::Instantiate(BMessage *archive)
+BArchivable* TExpandButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TExpandButton") )
@@ -125,7 +125,7 @@ BArchivable *TExpandButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TExpandButton::Archive(BMessage *data, bool deep) const
+status_t TExpandButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -187,8 +187,8 @@ void TExpandButton::MouseDown(BPoint where)
 	Invalidate();
 
 	// Create and send message to channel, header and window
-	BMessage *message = new BMessage(CHANNEL_EXPAND_MSG);
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
+	BMessage* message = new BMessage(CHANNEL_EXPAND_MSG);
+	(static_cast<MuseumApp*>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
 	delete message;
 
 	// Set flag that we have been clicked. When the MouseUp method
@@ -228,7 +228,7 @@ void TExpandButton::AttachedToWindow()
 {
 	if (fHandler == NULL) {
 		// Set target
-		fHandler = (TCueSheetWindow *)Window();
+		fHandler = (TCueSheetWindow*)Window();
 
 	}
 	//	Pass up to parent
@@ -244,7 +244,7 @@ void TExpandButton::AttachedToWindow()
 //
 //
 
-void TExpandButton::SetChannel(TCueChannel *channel)
+void TExpandButton::SetChannel(TCueChannel* channel)
 {
 	fChannel = channel;
 }

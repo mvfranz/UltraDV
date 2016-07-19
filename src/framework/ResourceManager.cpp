@@ -34,7 +34,7 @@
 //	Find and return cicn bitmap by string
 //
 
-BBitmap *GetCicnFromResource(const char *theResource)
+BBitmap* GetCicnFromResource(const char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -45,14 +45,14 @@ BBitmap *GetCicnFromResource(const char *theResource)
 		return NULL;
 
 	size_t size;
-	cicn            *icon;
+	cicn* icon;
 
 	BResources res;
 	status_t err;
 	if ( (err = res.SetTo(&file)) != B_NO_ERROR )
 		return NULL;
 
-	icon = (cicn *)res.FindResource('cicn', theResource, &size);
+	icon = (cicn*)res.FindResource('cicn', theResource, &size);
 	if (!icon)
 		return NULL;
 
@@ -68,7 +68,7 @@ BBitmap *GetCicnFromResource(const char *theResource)
 	BRect bounds(0, 0, icon->width-1, icon->height-1);
 
 	// Load bitmap
-	BBitmap *bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(&icon->data, size - sizeof(int16)*2, 0, B_COLOR_8_BIT);
 
@@ -82,7 +82,7 @@ BBitmap *GetCicnFromResource(const char *theResource)
 //	Find and return 8x8 icon bitmap by string
 //
 
-BBitmap *GetIcon8FromResource(const char *theResource)
+BBitmap* GetIcon8FromResource(const char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -93,17 +93,17 @@ BBitmap *GetIcon8FromResource(const char *theResource)
 		return NULL;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res(&file);
-	data = (BBitmap *)res.FindResource('bits', theResource, &size);
+	data = (BBitmap*)res.FindResource('bits', theResource, &size);
 	if (!data)
 		return NULL;
 
 	// Load icon
 	BRect bounds;
 	bounds.Set(0, 0, 7, 7);
-	BBitmap *bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 
@@ -117,7 +117,7 @@ BBitmap *GetIcon8FromResource(const char *theResource)
 //	Find and return 16x16 icon bitmap by string
 //
 
-BBitmap *GetIcon16FromResource(const char *theResource)
+BBitmap* GetIcon16FromResource(const char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -128,17 +128,17 @@ BBitmap *GetIcon16FromResource(const char *theResource)
 		return NULL;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res(&file);
-	data = (BBitmap *)res.FindResource('bits', theResource, &size);
+	data = (BBitmap*)res.FindResource('bits', theResource, &size);
 	if (!data)
 		return NULL;
 
 	// Load icon
 	BRect bounds;
 	bounds.Set(0, 0, 15, 15);
-	BBitmap *bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 
@@ -152,7 +152,7 @@ BBitmap *GetIcon16FromResource(const char *theResource)
 //	Find and return 32x32 icon by string
 //
 
-BBitmap *GetIcon32FromResource(const char *theResource)
+BBitmap* GetIcon32FromResource(const char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -163,17 +163,17 @@ BBitmap *GetIcon32FromResource(const char *theResource)
 		return NULL;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res(&file);
-	data = (BBitmap *)res.FindResource('bits', theResource, &size);
+	data = (BBitmap*)res.FindResource('bits', theResource, &size);
 	if (!data)
 		return NULL;
 
 	// Load icon
 	BRect bounds;
 	bounds.Set(0,0,31,31);
-	BBitmap *bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 
@@ -187,7 +187,7 @@ BBitmap *GetIcon32FromResource(const char *theResource)
 //	Find and return 16x16 Be Small Icon 'MICN' by string
 //
 
-BBitmap *GetMICNFromResource(const char *theResource)
+BBitmap* GetMICNFromResource(const char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -198,17 +198,17 @@ BBitmap *GetMICNFromResource(const char *theResource)
 		return NULL;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res(&file);
-	data = (BBitmap *)res.FindResource('MICN', theResource, &size);
+	data = (BBitmap*)res.FindResource('MICN', theResource, &size);
 	if (!data)
 		return NULL;
 
 	// Load icon
 	BRect bounds;
 	bounds.Set(0,0,15,15);
-	BBitmap *bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 
@@ -223,7 +223,7 @@ BBitmap *GetMICNFromResource(const char *theResource)
 //	Find and return 32x32 Be Icon 'ICON' by string
 //
 
-BBitmap *GetICONFromResource(const char *theResource)
+BBitmap* GetICONFromResource(const char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -234,17 +234,17 @@ BBitmap *GetICONFromResource(const char *theResource)
 		return NULL;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res(&file);
-	data = (BBitmap *)res.FindResource('ICON', theResource, &size);
+	data = (BBitmap*)res.FindResource('ICON', theResource, &size);
 	if (!data)
 		return NULL;
 
 	// Load icon
 	BRect bounds;
 	bounds.Set(0,0,31,31);
-	BBitmap *bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 
@@ -260,7 +260,7 @@ BBitmap *GetICONFromResource(const char *theResource)
 //	return the archived BMessage
 
 
-BMessage *GetWindowFromResource(const char *theResource)
+BMessage* GetWindowFromResource(const char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -271,20 +271,20 @@ BMessage *GetWindowFromResource(const char *theResource)
 		return NULL;
 
 	size_t size;
-	BMessage        *message = new BMessage();
-	void            *windowData = NULL;
+	BMessage* message = new BMessage();
+	void* windowData = NULL;
 
 	BResources res(&file);
 
 	if( res.HasResource('ARCV', theResource ) ) {
-		windowData = (BMessage *)res.FindResource('ARCV', theResource, &size);
+		windowData = (BMessage*)res.FindResource('ARCV', theResource, &size);
 		if (!windowData)
 			return NULL;
 
-		message->Unflatten((const char *)windowData);
+		message->Unflatten((const char*)windowData);
 
 		return (message);
-	} else   {
+	} else {
 		// We have an error condition
 		return (NULL);
 	}
@@ -300,7 +300,7 @@ BMessage *GetWindowFromResource(const char *theResource)
 //	return the archived BMessage
 
 
-BMessage *GetMenuFromResource(const char *theResource)
+BMessage* GetMenuFromResource(const char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -311,20 +311,20 @@ BMessage *GetMenuFromResource(const char *theResource)
 		return NULL;
 
 	size_t size;
-	BMessage        *message = new BMessage();
-	void            *windowData = NULL;
+	BMessage* message = new BMessage();
+	void* windowData = NULL;
 
 	BResources res(&file);
 
 	if( res.HasResource('ARCV', theResource ) ) {
-		windowData = (BMessage *)res.FindResource('ARCV', theResource, &size);
+		windowData = (BMessage*)res.FindResource('ARCV', theResource, &size);
 		if (!windowData)
 			return NULL;
 
-		message->Unflatten((const char *)windowData);
+		message->Unflatten((const char*)windowData);
 
 		return (message);
-	} else   {
+	} else {
 		// We have an error condition
 		return (NULL);
 	}
@@ -338,7 +338,7 @@ BMessage *GetMenuFromResource(const char *theResource)
 //	Load named cursor from resource
 //
 
-bool GetCursorFromResource(const char *theResource, Cursor *theCursor)
+bool GetCursorFromResource(const char* theResource, Cursor* theCursor)
 {
 	// Get application info
 	app_info info;
@@ -349,10 +349,10 @@ bool GetCursorFromResource(const char *theResource, Cursor *theCursor)
 		return false;
 
 	size_t size;
-	Cursor *data;
+	Cursor* data;
 
 	BResources res(&file);
-	data = (Cursor *)res.FindResource('crsr', theResource, &size);
+	data = (Cursor*)res.FindResource('crsr', theResource, &size);
 	if (!data)
 		return false;
 
@@ -369,9 +369,9 @@ bool GetCursorFromResource(const char *theResource, Cursor *theCursor)
 //	Return pointer to preloaded app icons
 //
 
-TMuseumIcons *GetAppIcons()
+TMuseumIcons* GetAppIcons()
 {
-	return static_cast<MuseumApp *>(be_app)->fMuseumIcons;
+	return static_cast<MuseumApp*>(be_app)->fMuseumIcons;
 }
 
 
@@ -384,7 +384,7 @@ TMuseumIcons *GetAppIcons()
 
 const char kSeperator = 0x0A;
 
-bool GetString(const char *theResource, int32 id, char *theStr)
+bool GetString(const char* theResource, int32 id, char* theStr)
 {
 	// Get application info
 	app_info info;
@@ -395,7 +395,7 @@ bool GetString(const char *theResource, int32 id, char *theStr)
 		return false;
 
 	size_t size;
-	void    *data;
+	void* data;
 
 	BResources res(&file);
 	data = res.FindResource('str#', theResource, &size);
@@ -405,8 +405,8 @@ bool GetString(const char *theResource, int32 id, char *theStr)
 	//
 	//	Locate string within data to return
 
-	char *dataPtr   = (char *)data;
-	char *destPtr   = theStr;
+	char* dataPtr   = (char*)data;
+	char* destPtr   = theStr;
 
 	int32 index     = 0;
 

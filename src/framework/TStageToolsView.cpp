@@ -35,7 +35,7 @@
 //
 //
 
-TStageToolsView::TStageToolsView(TStageTools *parent, BRect bounds) : BView(bounds, "MediaCueView", B_FOLLOW_ALL, B_WILL_DRAW)
+TStageToolsView::TStageToolsView(TStageTools* parent, BRect bounds) : BView(bounds, "MediaCueView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	fParent = parent;
 
@@ -63,8 +63,8 @@ TStageToolsView::~TStageToolsView()
 
 void TStageToolsView::Init()
 {
-	BBitmap         *offBitmap;
-	BBitmap         *onBitmap;
+	BBitmap* offBitmap;
+	BBitmap* onBitmap;
 
 	// Set view background color
 	SetViewColor(kBlueGrey);
@@ -410,7 +410,7 @@ void TStageToolsView::DeactivateAllTools(uint32 theTool)
 void TStageToolsView::UpdateStatusText(uint32 theTool)
 {
 	//	Create message to send to status bar
-	BMessage *theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
+	BMessage* theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 
 	switch(theTool)
 	{
@@ -466,7 +466,7 @@ void TStageToolsView::UpdateStatusText(uint32 theTool)
 //	Find and return stage tool bitmap by string
 //
 
-BBitmap *GetStageToolIcon(const char *theResource)
+BBitmap* GetStageToolIcon(const char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -477,20 +477,20 @@ BBitmap *GetStageToolIcon(const char *theResource)
 		return NULL;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res;
 	status_t err;
 	if ( (err = res.SetTo(&file)) != B_NO_ERROR )
 		return NULL;
 
-	data = (BBitmap *)res.FindResource('bits', theResource, &size);
+	data = (BBitmap*)res.FindResource('bits', theResource, &size);
 	if (!data)
 		return NULL;
 
 	// Load icon
 	BRect bounds(0, 0, kStageToolWidth-1, kStageToolHeight-1);
-	BBitmap *bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 

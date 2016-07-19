@@ -49,8 +49,8 @@ TRefFilter::~TRefFilter(void)
 //
 //
 
-bool TRefFilter::Filter(const entry_ref *theRef, BNode *theNode,
-                        struct stat_beos *theStat, const char *mimetype)
+bool TRefFilter::Filter(const entry_ref* theRef, BNode* theNode,
+                        struct stat_beos* theStat, const char* mimetype)
 {
 	BNodeInfo nodeInfo(theNode);
 

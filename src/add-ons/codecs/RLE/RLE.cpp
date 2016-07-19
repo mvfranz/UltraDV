@@ -42,7 +42,7 @@ const typedef uint32*   Type32BitPixelPtr;
 main()
 {
 
-	BApplication *theApp = new PackerApp("application/x-vnd.mediapede-packer");
+	BApplication* theApp = new PackerApp("application/x-vnd.mediapede-packer");
 	theApp->Run();
 	delete(theApp);
 
@@ -56,7 +56,7 @@ main()
 //
 //
 
-PackerApp::PackerApp(const char *signature) : BApplication(signature)
+PackerApp::PackerApp(const char* signature) : BApplication(signature)
 {
 
 }
@@ -153,7 +153,7 @@ void PackerApp::ReadyToRun()
 //
 //
 
-void PackerApp::EncodeBits( BBitmapStream *bitmapStream, RLEDepth theDepth)
+void PackerApp::EncodeBits( BBitmapStream* bitmapStream, RLEDepth theDepth)
 {
 	// Get information about the bitmap
 	status_t myErr;
@@ -175,10 +175,10 @@ void PackerApp::EncodeBits( BBitmapStream *bitmapStream, RLEDepth theDepth)
 	imageBuffer.Write(&bmHeader, headerSize);
 
 	// Convert scanline data
-	BMallocIO       *outBuffer, *lastBuffer;
+	BMallocIO* outBuffer, * lastBuffer;
 	lastBuffer = outBuffer = NULL;
 
-	void *scanBuf = (void *)malloc(bmHeader.rowBytes);
+	void* scanBuf = (void*)malloc(bmHeader.rowBytes);
 	int32 height = bmHeader.bounds.IntegerHeight();
 	for (int32 index = 0; index <= height; index++) {
 		// Read the next scanline
@@ -287,12 +287,12 @@ void PackerApp::EncodeBits( BBitmapStream *bitmapStream, RLEDepth theDepth)
 //
 //
 
-void PackerApp::DecodeBits(BFile *theFile, RLEDepth theDepth)
+void PackerApp::DecodeBits(BFile* theFile, RLEDepth theDepth)
 {
 
 	BMallocIO fileBuffer, scanLine;
-	BMallocIO       *outBuffer, *lastBuffer;
-	char            *imageBuffer;
+	BMallocIO* outBuffer, * lastBuffer;
+	char* imageBuffer;
 
 	// Set up kRunPixelBlock based on image depth
 	int32 kRunPixelBlock;
@@ -331,7 +331,7 @@ void PackerApp::DecodeBits(BFile *theFile, RLEDepth theDepth)
 	off_t fileSize;
 	theFile->GetSize(&fileSize);
 	int32 theFileSize = fileSize;
-	imageBuffer = (char *)malloc(theFileSize);
+	imageBuffer = (char*)malloc(theFileSize);
 	theFile->ReadAt(0, imageBuffer, theFileSize);
 
 	// Get header information
@@ -446,18 +446,18 @@ void PackerApp::DecodeBits(BFile *theFile, RLEDepth theDepth)
 	off_t loadSize;
 	saveFile.GetSize(&loadSize);
 
-	void *imageBuf = malloc(loadSize);
+	void* imageBuf = malloc(loadSize);
 	saveFile.Seek(0, SEEK_SET);
 	ssize_t bytesRead = saveFile.ReadAt(headerSize, imageBuf, loadSize-headerSize);
 
 	BBitmap theBitmap(bmHeader.bounds, bmHeader.colors);
 
-	uchar *bits = (uchar *)theBitmap.Bits();
+	uchar* bits = (uchar*)theBitmap.Bits();
 	memcpy(bits, imageBuf, loadSize-headerSize);
 
 	// Create display window
-	BWindow *theWindow = new BWindow(bmHeader.bounds, "Spoot", B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_WILL_DRAW);
-	BView *theView = new BView(theWindow->Bounds(), "View", B_FOLLOW_ALL, 0);
+	BWindow* theWindow = new BWindow(bmHeader.bounds, "Spoot", B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_WILL_DRAW);
+	BView* theView = new BView(theWindow->Bounds(), "View", B_FOLLOW_ALL, 0);
 	theWindow->AddChild(theView);
 	theView->SetViewColor(B_TRANSPARENT_32_BIT);
 	theWindow->Show();
@@ -492,10 +492,10 @@ void PackerApp::DecodeBits(BFile *theFile, RLEDepth theDepth)
 //
 //
 
-BMallocIO *PackerApp::RLEEncodeScanline8(void *scanBuf, uint32 size)
+BMallocIO* PackerApp::RLEEncodeScanline8(void* scanBuf, uint32 size)
 {
 	// Allocate buffer for scanline
-	BMallocIO *outBuffer = new BMallocIO();
+	BMallocIO* outBuffer = new BMallocIO();
 
 	// Setup iterator value.  This is the number of pixels in the scanline.
 	const uint32 numPixels = size / kPixel8Size;
@@ -522,7 +522,7 @@ BMallocIO *PackerApp::RLEEncodeScanline8(void *scanBuf, uint32 size)
 		}
 
 		// Read runValueB from buffer
-		runValueB = ((uint32 *)scanBuf)[index+1];
+		runValueB = ((uint32*)scanBuf)[index+1];
 
 		// Compare A and B
 		if (runValueA == runValueB) {
@@ -531,7 +531,7 @@ BMallocIO *PackerApp::RLEEncodeScanline8(void *scanBuf, uint32 size)
 				outBuffer->Write(&runCount, kRunCountSize);
 				outBuffer->Write(&runValueA, kPixel8Size);
 				runCount = 1;
-			} else   {
+			} else {
 				// Increment run count
 				runCount++;
 			}
@@ -562,10 +562,10 @@ BMallocIO *PackerApp::RLEEncodeScanline8(void *scanBuf, uint32 size)
 //
 //
 
-BMallocIO *PackerApp::RLEDecodeScanline8(BMallocIO &scanLine)
+BMallocIO* PackerApp::RLEDecodeScanline8(BMallocIO &scanLine)
 {
 	// Allocate buffer for decompressed scanline
-	BMallocIO *outBuffer = new BMallocIO();
+	BMallocIO* outBuffer = new BMallocIO();
 
 	uint8 runCount;
 	uint8 pixel;
@@ -613,7 +613,7 @@ BMallocIO *PackerApp::RLEDecodeScanline8(BMallocIO &scanLine)
 //		--	RunCount|Alpha|Blue|Green|Red 1:5:5:5
 //
 
-BMallocIO *PackerApp::PackerApp::RLEEncodeScanline15(void *scanBuf, uint32 size)
+BMallocIO* PackerApp::PackerApp::RLEEncodeScanline15(void* scanBuf, uint32 size)
 {
 	return NULL;
 }
@@ -631,7 +631,7 @@ BMallocIO *PackerApp::PackerApp::RLEEncodeScanline15(void *scanBuf, uint32 size)
 //		-- |Alpha|Red|Green|Blue 1:5:5:5
 //
 
-BMallocIO *PackerApp::RLEDecodeScanline15(BMallocIO &scanLine)
+BMallocIO* PackerApp::RLEDecodeScanline15(BMallocIO &scanLine)
 {
 	return NULL;
 }
@@ -652,7 +652,7 @@ BMallocIO *PackerApp::RLEDecodeScanline15(BMallocIO &scanLine)
 //		--	RunCount|Blue|Green|Red	5:6:5
 //
 
-BMallocIO *PackerApp::RLEEncodeScanline16(void *scanBuf, uint32 size)
+BMallocIO* PackerApp::RLEEncodeScanline16(void* scanBuf, uint32 size)
 {
 	return NULL;
 }
@@ -670,7 +670,7 @@ BMallocIO *PackerApp::RLEEncodeScanline16(void *scanBuf, uint32 size)
 //		-- |Red|Green|Blue 5:6:5
 //
 
-BMallocIO *PackerApp::RLEDecodeScanline16(BMallocIO &scanLine)
+BMallocIO* PackerApp::RLEDecodeScanline16(BMallocIO &scanLine)
 {
 	return NULL;
 }
@@ -692,10 +692,10 @@ BMallocIO *PackerApp::RLEDecodeScanline16(BMallocIO &scanLine)
 //		--	RunCount|Blue|Green|Red 8:8:8:8
 //
 
-BMallocIO *PackerApp::RLEEncodeScanline24(void *scanBuf, uint32 size)
+BMallocIO* PackerApp::RLEEncodeScanline24(void* scanBuf, uint32 size)
 {
 	// Allocate buffer for scanline
-	BMallocIO *outBuffer = new BMallocIO();
+	BMallocIO* outBuffer = new BMallocIO();
 
 	// Setup iterator value.  This is the number of pixels in the scanline.
 	const uint32 numPixels = size / kPixel32Size;
@@ -731,7 +731,7 @@ BMallocIO *PackerApp::RLEEncodeScanline24(void *scanBuf, uint32 size)
 				outBuffer->Write(&runCount, kRunCountSize);
 				outBuffer->Write(&runValueA, kPixel24Size);
 				runCount = 1;
-			} else   {
+			} else {
 				// Increment run count
 				runCount++;
 			}
@@ -765,10 +765,10 @@ BMallocIO *PackerApp::RLEEncodeScanline24(void *scanBuf, uint32 size)
 //		-- |Blue|Green|Red|Alpha 8:8:8:8
 //
 
-BMallocIO *PackerApp::RLEDecodeScanline24(BMallocIO &scanLine)
+BMallocIO* PackerApp::RLEDecodeScanline24(BMallocIO &scanLine)
 {
 	// Allocate buffer for decompressed scanline
-	BMallocIO *outBuffer = new BMallocIO();
+	BMallocIO* outBuffer = new BMallocIO();
 
 	uint8 runCount;
 	uint32 pixel;
@@ -818,10 +818,10 @@ BMallocIO *PackerApp::RLEDecodeScanline24(BMallocIO &scanLine)
 //		--	RunCount|Blue|Green|Red|Alpha 8:8:8:8:8
 //
 
-BMallocIO *PackerApp::RLEEncodeScanline32(void *scanBuf, uint32 size)
+BMallocIO* PackerApp::RLEEncodeScanline32(void* scanBuf, uint32 size)
 {
 	// Allocate buffer for scanline
-	BMallocIO *outBuffer = new BMallocIO();
+	BMallocIO* outBuffer = new BMallocIO();
 
 	// Setup iterator value.  This is the number of pixels in the scanline.
 	const uint32 numPixels = size / kPixel32Size;
@@ -857,7 +857,7 @@ BMallocIO *PackerApp::RLEEncodeScanline32(void *scanBuf, uint32 size)
 				outBuffer->Write(&runCount, kRunCountSize);
 				outBuffer->Write(&runValueA, kPixel32Size);
 				runCount = 1;
-			} else   {
+			} else {
 				// Increment run count
 				runCount++;
 			}
@@ -891,10 +891,10 @@ BMallocIO *PackerApp::RLEEncodeScanline32(void *scanBuf, uint32 size)
 //		-- |Blue|Green|Red|Alpha 8:8:8:8
 //
 
-BMallocIO *PackerApp::RLEDecodeScanline32(BMallocIO &scanLine)
+BMallocIO* PackerApp::RLEDecodeScanline32(BMallocIO &scanLine)
 {
 	// Allocate buffer for decompressed scanline
-	BMallocIO *outBuffer = new BMallocIO();
+	BMallocIO* outBuffer = new BMallocIO();
 
 	uint8 runCount;
 	uint32 pixel;
@@ -937,7 +937,7 @@ BMallocIO *PackerApp::RLEDecodeScanline32(BMallocIO &scanLine)
 //	Save translator bitmap to disk
 //
 
-void PackerApp::StoreTranslatorBitmap(BBitmap *bitmap, char *filename, uint32 type)
+void PackerApp::StoreTranslatorBitmap(BBitmap* bitmap, char* filename, uint32 type)
 {
 	BBitmapStream stream(bitmap); // init with contents of bitmap
 	BFile file(filename, B_CREATE_FILE | B_WRITE_ONLY);
@@ -956,7 +956,7 @@ void PackerApp::StoreTranslatorBitmap(BBitmap *bitmap, char *filename, uint32 ty
 //	Compare scanlines.  If the same, return true.
 //
 
-bool PackerApp::CompareScanlineBuffers( BMallocIO *lastBuffer, BMallocIO *outBuffer)
+bool PackerApp::CompareScanlineBuffers( BMallocIO* lastBuffer, BMallocIO* outBuffer)
 {
 	// Reject NULL pointers
 	if ( (lastBuffer == NULL) || outBuffer == NULL )

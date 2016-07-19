@@ -68,8 +68,8 @@ TActionCuePaletteView::~TActionCuePaletteView()
 
 void TActionCuePaletteView::Init()
 {
-	BBitmap         *offBitmap;
-	BBitmap         *onBitmap;
+	BBitmap* offBitmap;
+	BBitmap* onBitmap;
 
 	// Set view background color
 	SetViewColor(kSteelGrey);
@@ -309,7 +309,7 @@ void TActionCuePaletteView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TActionCuePaletteView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TActionCuePaletteView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -333,7 +333,7 @@ void TActionCuePaletteView::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TActionCuePaletteView::KeyDown(const char *bytes, int32 numBytes)
+void TActionCuePaletteView::KeyDown(const char* bytes, int32 numBytes)
 {
 }
 
@@ -346,7 +346,7 @@ void TActionCuePaletteView::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TActionCuePaletteView::KeyUp(const char *bytes, int32 numBytes)
+void TActionCuePaletteView::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 

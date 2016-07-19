@@ -39,7 +39,7 @@ const short kScalerTickHeight = 5;
 //
 //
 
-TTimeScalerView::TTimeScalerView(BRect bounds, TCueSheetView *parent) : BView(bounds, "TimeScalerView", B_FOLLOW_LEFT|B_FOLLOW_BOTTOM, B_WILL_DRAW)
+TTimeScalerView::TTimeScalerView(BRect bounds, TCueSheetView* parent) : BView(bounds, "TimeScalerView", B_FOLLOW_LEFT|B_FOLLOW_BOTTOM, B_WILL_DRAW)
 {
 	// Set CueSheet parent
 	//fCueSheet = parent;
@@ -55,7 +55,7 @@ TTimeScalerView::TTimeScalerView(BRect bounds, TCueSheetView *parent) : BView(bo
 //
 //
 
-TTimeScalerView::TTimeScalerView(BMessage *data) : BView(data)
+TTimeScalerView::TTimeScalerView(BMessage* data) : BView(data)
 {
 	// Perform default initialization
 	Init();
@@ -106,7 +106,7 @@ void TTimeScalerView::Init()
 	}
 
 	// Load thumb bitmap
-	BBitmap *bitmap = GetIcon8FromResource("TimeThumb");
+	BBitmap* bitmap = GetIcon8FromResource("TimeThumb");
 
 	// Create Indicator View
 	BRect bounds( Bounds().left, Bounds().bottom - (kTimeIndicatorHeight-1), Bounds().left+(kTimeIndicatorWidth-1), Bounds().bottom);
@@ -128,7 +128,7 @@ void TTimeScalerView::Init()
 //
 //
 
-BArchivable *TTimeScalerView::Instantiate(BMessage *archive)
+BArchivable* TTimeScalerView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TTimeScalerView") )
@@ -144,7 +144,7 @@ BArchivable *TTimeScalerView::Instantiate(BMessage *archive)
 //
 //
 
-status_t TTimeScalerView::Archive(BMessage *data, bool deep) const
+status_t TTimeScalerView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -226,7 +226,7 @@ void TTimeScalerView::Draw(BRect updateRect)
 	// Draw text
 	// gzr: to do... Figure out how to center the text in the fTextRect
 	char timeStr[256];
-	GetTimeScaleString(GetCurrentResolution(), (char *)&timeStr);
+	GetTimeScaleString(GetCurrentResolution(), (char*)&timeStr);
 	SetFont(be_plain_font);
 	SetHighColor(kBlack);
 	endPt.x += 2;
@@ -266,7 +266,7 @@ void TTimeScalerView::MouseDown(BPoint where)
 
 	// Move tick indicator view to the click rect closest to the mouse down location
 	fIndicator->MoveTo(fClickArray[rectIndex].left, Bounds().bottom - (kTimeIndicatorHeight-1));
-	TCueSheetView *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView();
+	TCueSheetView* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView();
 	cueSheet->SetResolution(rectIndex);
 	Invalidate(fTextRect);
 
@@ -306,7 +306,7 @@ void TTimeScalerView::MouseDown(BPoint where)
 	}
 
 	// Inform everyone that the resolution has changed.  We need to tell the timeline and all the cues
-	BMessage *message = new BMessage(RESOLUTION_CHANGE_MSG);
+	BMessage* message = new BMessage(RESOLUTION_CHANGE_MSG);
 	cueSheet->GetParent()->PostMessage(message, NULL);
 	delete message;
 
@@ -358,7 +358,7 @@ void TTimeScalerView::DrawTickIndicator()
 	// Save current color
 	PushState();
 
-	TCueSheetView *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView();
+	TCueSheetView* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView();
 
 	BPoint tickOffset;
 	tickOffset.Set(Bounds().left+5, Bounds().bottom);

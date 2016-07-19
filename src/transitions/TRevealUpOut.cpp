@@ -20,7 +20,7 @@
 
 
 //	Local Constants
-const char *TRevealUpOut::kTransitionName = "RevealUpOut";
+const char* TRevealUpOut::kTransitionName = "RevealUpOut";
 
 //---------------------------------------------------------------------
 //	Constructor/destructor
@@ -86,7 +86,7 @@ string TRevealUpOut::Name() const
 //      zero if nothing need be done.
 //
 
-BBitmap *TRevealUpOut::TransformBitmap(uint32 time, const BBitmap *source,
+BBitmap* TRevealUpOut::TransformBitmap(uint32 time, const BBitmap* source,
                                        const TCuePosition &registration, DisplayQuality quality)
 {
 	//	Only create offscreen at first pass
@@ -137,7 +137,7 @@ BBitmap *TRevealUpOut::TransformBitmap(uint32 time, const BBitmap *source,
 	}
 
 	//	Clone offscreen
-	BBitmap *newBitmap = CloneBitmap(*fOffscreenBitmap);
+	BBitmap* newBitmap = CloneBitmap(*fOffscreenBitmap);
 	ASSERT(newBitmap);
 
 	return newBitmap;

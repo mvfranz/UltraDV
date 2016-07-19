@@ -87,7 +87,7 @@ void TThumbnailView::FrameResized(float w, float h)
 //
 //
 
-void TThumbnailView::TargetedByScrollView(BScrollView *view)
+void TThumbnailView::TargetedByScrollView(BScrollView* view)
 {
 	AdjustScrollBars();
 }

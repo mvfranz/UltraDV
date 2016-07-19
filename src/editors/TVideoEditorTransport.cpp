@@ -35,7 +35,7 @@ const int kSliderHeight = 13;
 //
 //
 
-TVideoEditorTransport::TVideoEditorTransport(TVideoEditor *editor, BMessage *message) : BView(message)
+TVideoEditorTransport::TVideoEditorTransport(TVideoEditor* editor, BMessage* message) : BView(message)
 {
 	fEditor = editor;
 

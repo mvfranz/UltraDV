@@ -45,7 +45,7 @@ const short kBorder = 6;
 //
 //
 
-TStageMovieCue::TStageMovieCue(BRect bounds, char *name, TCueView *theCue) : TStageCue(bounds, name, theCue)
+TStageMovieCue::TStageMovieCue(BRect bounds, char* name, TCueView* theCue) : TStageCue(bounds, name, theCue)
 {
 	// Do default initialization
 	Init();
@@ -59,7 +59,7 @@ TStageMovieCue::TStageMovieCue(BRect bounds, char *name, TCueView *theCue) : TSt
 //
 //
 
-TStageMovieCue::TStageMovieCue(BMessage *theMessage) : TStageCue(theMessage)
+TStageMovieCue::TStageMovieCue(BMessage* theMessage) : TStageCue(theMessage)
 {
 	// Do default initialization
 	Init();
@@ -110,7 +110,7 @@ void TStageMovieCue::Init()
 //
 //
 
-BArchivable *TStageMovieCue::Instantiate(BMessage *archive)
+BArchivable* TStageMovieCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TStageMovieCue") )
 		return new TStageMovieCue(archive);
@@ -125,7 +125,7 @@ BArchivable *TStageMovieCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TStageMovieCue::Archive(BMessage *data, bool deep) const
+status_t TStageMovieCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -209,7 +209,7 @@ void TStageMovieCue::DrawData(BRect updateRect, long theTime)
 //	Draw cues internal data into composite view
 //
 
-void TStageMovieCue::CompositeData(BRect updateRect, BView *offscreen)
+void TStageMovieCue::CompositeData(BRect updateRect, BView* offscreen)
 {
 	// Do not draw if cue or channel is muted
 //	if ( fChannelCue->GetChannel()->GetMute() )
@@ -253,10 +253,10 @@ void TStageMovieCue::MouseDown(BPoint where)
 
 	const int32 frameSize = 320*240*2;
 
-	BBitmap *displayBitmap = new BBitmap(BRect(0, 0, 319, 239), B_RGB15, false, false);
+	BBitmap* displayBitmap = new BBitmap(BRect(0, 0, 319, 239), B_RGB15, false, false);
 
 	// Test:  play movie
-	BFile *theFile = fChannelCue->GetFile();
+	BFile* theFile = fChannelCue->GetFile();
 
 	// Load headers
 	theFile->Seek(0, SEEK_SET);
@@ -345,7 +345,7 @@ void TStageMovieCue::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TStageMovieCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TStageMovieCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Do nothing if view is hidden
 	if (IsHidden())
@@ -394,7 +394,7 @@ void TStageMovieCue::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TStageMovieCue::KeyDown(const char *bytes, int32 numBytes)
+void TStageMovieCue::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	BView::KeyDown(bytes, numBytes);
@@ -409,7 +409,7 @@ void TStageMovieCue::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TStageMovieCue::KeyUp(const char *bytes, int32 numBytes)
+void TStageMovieCue::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -451,7 +451,7 @@ void TStageMovieCue::FrameResized(float new_width, float new_height)
 //
 //
 
-void TStageMovieCue::SetBitmap(BBitmap *bitmap)
+void TStageMovieCue::SetBitmap(BBitmap* bitmap)
 {
 	if (bitmap) {
 		fBitmap = bitmap;
@@ -479,7 +479,7 @@ void TStageMovieCue::SetBitmap(BBitmap *bitmap)
 //
 //
 
-void TStageMovieCue::MessageReceived(BMessage *message)
+void TStageMovieCue::MessageReceived(BMessage* message)
 {
 	double theTime;
 
@@ -551,7 +551,7 @@ void TStageMovieCue::UpdatePictureCueRegion(double theTime)
 	int32 cueChannelID = fChannelCue->GetChannelID();
 
 	// Get total channels
-	int32 totalChannels = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetTotalChannels();
+	int32 totalChannels = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView()->GetTotalChannels();
 
 	//      Determine cue layer.  Iterate through all higher layers and determine
 	//	the area to be invalidated.  Construct a region to do this.  Exlude all
@@ -561,7 +561,7 @@ void TStageMovieCue::UpdatePictureCueRegion(double theTime)
 	invalRegion.Include(fChannelCue->GetArea());
 
 	for(int32 index = cueChannelID+1; index <= totalChannels; index++) {
-		TStageCue *stageCue = ((TStageView *)Parent())->GetStageCueAtTimeandChannel(theTime, index);
+		TStageCue* stageCue = ((TStageView*)Parent())->GetStageCueAtTimeandChannel(theTime, index);
 
 		if (stageCue)
 			invalRegion.Exclude( stageCue->GetChannelCue()->GetArea());
@@ -1181,9 +1181,9 @@ void TStageMovieCue::DoTransition(bool transitionIn)
 
 	// Create new one and fire it off...
 	if (transitionIn)
-		fTransition = new TTransition( this, (TStageView *)Parent(), fChannelCue->GetTransitionInID(), fChannelCue->GetTransitionInDuration());
+		fTransition = new TTransition( this, (TStageView*)Parent(), fChannelCue->GetTransitionInID(), fChannelCue->GetTransitionInDuration());
 	else
-		fTransition = new TTransition( this, (TStageView *)Parent(), fChannelCue->GetTransitionOutID(), fChannelCue->GetTransitionOutDuration());
+		fTransition = new TTransition( this, (TStageView*)Parent(), fChannelCue->GetTransitionOutID(), fChannelCue->GetTransitionOutDuration());
 
 	// Start it
 	fTransition->Start();
@@ -1204,10 +1204,10 @@ void TStageMovieCue::DoTransition(bool transitionIn)
 
 void TStageMovieCue::OpenStageCueMenu(BPoint menuPt)
 {
-	BMenuItem       *selected;
+	BMenuItem* selected;
 
 	// Create the menu and mark the current transition
-	TStageCueMenu *theMenu = new TStageCueMenu(this->fChannelCue);
+	TStageCueMenu* theMenu = new TStageCueMenu(this->fChannelCue);
 
 	if (theMenu) {
 		// Set menu location point

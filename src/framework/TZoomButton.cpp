@@ -36,7 +36,7 @@
 //
 //
 
-TZoomButton::TZoomButton(TToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TZoomButton::TZoomButton(TToolbar* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fParent = parent;
@@ -62,7 +62,7 @@ TZoomButton::TZoomButton(TToolbar *parent, BRect bounds, const char *name, BBitm
 //
 //
 
-TZoomButton::TZoomButton(BMessage *data) : BView(data)
+TZoomButton::TZoomButton(BMessage* data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
@@ -106,7 +106,7 @@ void TZoomButton::Init()
 //
 //
 
-BArchivable *TZoomButton::Instantiate(BMessage *archive)
+BArchivable* TZoomButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TZoomButton") )
@@ -121,7 +121,7 @@ BArchivable *TZoomButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TZoomButton::Archive(BMessage *data, bool deep) const
+status_t TZoomButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -208,8 +208,8 @@ void TZoomButton::MouseDown(BPoint where)
 void TZoomButton::AttachedToWindow()
 {
 	if(fParent == NULL) {
-		fParent         = (TToolbar *)Parent();
-		fHandler        = (TToolbar *)Parent();
+		fParent         = (TToolbar*)Parent();
+		fHandler        = (TToolbar*)Parent();
 	}
 
 	//	Pass up to parent

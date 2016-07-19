@@ -39,7 +39,7 @@
 //
 //
 
-TCueTimeText::TCueTimeText(BHandler *target, int32 messageID, BRect bounds, const char *name, uint32 resizing, TextDrawModes drawMode) :
+TCueTimeText::TCueTimeText(BHandler* target, int32 messageID, BRect bounds, const char* name, uint32 resizing, TextDrawModes drawMode) :
 	BView(bounds, name, resizing, B_WILL_DRAW)
 {
 
@@ -59,7 +59,7 @@ TCueTimeText::TCueTimeText(BHandler *target, int32 messageID, BRect bounds, cons
 //
 
 
-TCueTimeText::TCueTimeText(const TCueTimeText *theText) :
+TCueTimeText::TCueTimeText(const TCueTimeText* theText) :
 	BView(theText->Bounds(), theText->Name(), theText->ResizingMode(), B_WILL_DRAW)
 {
 	fTarget                 = theText->fTarget;
@@ -77,22 +77,22 @@ TCueTimeText::TCueTimeText(const TCueTimeText *theText) :
 //
 
 
-TCueTimeText::TCueTimeText(BMessage *data) : BView(data)
+TCueTimeText::TCueTimeText(BMessage* data) : BView(data)
 {
 	fTarget = NULL;
 
 	// Get our member variables from the BMessage
 	ssize_t numBytes;
-	rgb_color       *color;
-	BFont           *font;
+	rgb_color* color;
+	BFont* font;
 
 	data->FindInt32("MessageID", &fMessageID);
 	data->FindFloat("TextSize", &fTextSize);
 
-	data->FindData("Font", B_ANY_TYPE, (const void **)&font, &numBytes);
+	data->FindData("Font", B_ANY_TYPE, (const void**)&font, &numBytes);
 	fFont = *font;
 
-	data->FindData("Color", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes);
+	data->FindData("Color", B_RGB_COLOR_TYPE, (const void**)&color, &numBytes);
 	fColor = *color;
 
 	data->FindInt16("DrawMode", &fDrawMode);
@@ -281,7 +281,7 @@ void TCueTimeText::Init()
 //
 //
 
-BArchivable *TCueTimeText::Instantiate(BMessage *archive)
+BArchivable* TCueTimeText::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TCueTimeText") )
 		return new TCueTimeText(archive);
@@ -295,7 +295,7 @@ BArchivable *TCueTimeText::Instantiate(BMessage *archive)
 //
 //
 
-status_t TCueTimeText::Archive(BMessage *data, bool deep) const
+status_t TCueTimeText::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -337,7 +337,7 @@ status_t TCueTimeText::Archive(BMessage *data, bool deep) const
 void TCueTimeText::AttachedToWindow()
 {
 	if (fTarget == NULL) {
-		fTarget = (TCueView *)Parent();
+		fTarget = (TCueView*)Parent();
 	}
 
 	//	Pass up to parent
@@ -522,7 +522,7 @@ void TCueTimeText::MouseDown(BPoint where)
 {
 	// Do nothing if locked...
 	if (fTarget) {
-		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
+		if ( ((TCueView*)fTarget)->IsLocked() || ((TCueView*)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
 
@@ -547,19 +547,19 @@ void TCueTimeText::MouseDown(BPoint where)
 			InvertRect(fHoursRect);
 			fCurrentCell = 1;
 		}
-	} else if ( fMinutesRect.Contains(where) )   {
+	} else if ( fMinutesRect.Contains(where) ) {
 		if (fCurrentCell != 2) {
 			InvertCurrentCell();
 			InvertRect(fMinutesRect);
 			fCurrentCell = 2;
 		}
-	} else if ( fSecondsRect.Contains(where) )   {
+	} else if ( fSecondsRect.Contains(where) ) {
 		if (fCurrentCell != 3) {
 			InvertCurrentCell();
 			InvertRect(fSecondsRect);
 			fCurrentCell = 3;
 		}
-	} else if ( fFramesRect.Contains(where) )   {
+	} else if ( fFramesRect.Contains(where) ) {
 		if (fCurrentCell != 4) {
 			InvertCurrentCell();
 			InvertRect(fFramesRect);
@@ -587,7 +587,7 @@ void TCueTimeText::MouseUp(BPoint where)
 {
 	// Do nothing if locked...
 	if (fTarget) {
-		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
+		if ( ((TCueView*)fTarget)->IsLocked() || ((TCueView*)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
 
@@ -601,7 +601,7 @@ void TCueTimeText::MouseUp(BPoint where)
 //
 //
 
-void TCueTimeText::MouseMoved(BPoint where, uint32 code, const BMessage *message)
+void TCueTimeText::MouseMoved(BPoint where, uint32 code, const BMessage* message)
 {
 	// Do nothing if locked...
 	//if (fTarget)
@@ -621,13 +621,13 @@ void TCueTimeText::MouseMoved(BPoint where, uint32 code, const BMessage *message
 //
 //
 
-void TCueTimeText::KeyDown(const char *bytes, int32 numBytes)
+void TCueTimeText::KeyDown(const char* bytes, int32 numBytes)
 {
 	char theChar = *bytes;
 
 	// Do nothing if locked...
 	if (fTarget) {
-		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
+		if ( ((TCueView*)fTarget)->IsLocked() || ((TCueView*)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
 
@@ -655,7 +655,7 @@ void TCueTimeText::KeyDown(const char *bytes, int32 numBytes)
 			DecrementCell();
 		else
 			IncrementCell();
-	} else if ( IsArrows(theChar) )   {
+	} else if ( IsArrows(theChar) ) {
 		switch(theChar)
 		{
 		// Increment value
@@ -694,14 +694,14 @@ void TCueTimeText::MakeFocus(bool focusState)
 {
 	// Do nothing if locked...
 	if (fTarget) {
-		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
+		if ( ((TCueView*)fTarget)->IsLocked() || ((TCueView*)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
 
 	// If we are out of focus, deselect cells
 	if (focusState == false) {
 		if (fTarget) {
-			BLooper *looper = fTarget->Looper();
+			BLooper* looper = fTarget->Looper();
 
 			if ( looper->Lock() ) {
 				// Check integrity of last edited value
@@ -710,7 +710,7 @@ void TCueTimeText::MakeFocus(bool focusState)
 				for (int16 index = kHoursCell; index < kTotalCells; index++)
 					ConvertToTime(index);
 
-				BMessage *message = new BMessage(fMessageID);
+				BMessage* message = new BMessage(fMessageID);
 				message->AddInt32("TheTime", fTime);
 				fTarget->MessageReceived( message);
 				looper->Unlock();
@@ -745,11 +745,11 @@ void TCueTimeText::MakeFocus(bool focusState)
 //
 //
 
-void TCueTimeText::MessageReceived(BMessage *message)
+void TCueTimeText::MessageReceived(BMessage* message)
 {
 	// Do nothing if locked...
 	if (fTarget) {
-		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
+		if ( ((TCueView*)fTarget)->IsLocked() || ((TCueView*)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
 
@@ -767,7 +767,7 @@ void TCueTimeText::MessageReceived(BMessage *message)
 //	Set the vie BFont and Font Color
 //
 
-void TCueTimeText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_color theColor)
+void TCueTimeText::SetFontAndColor(BFont* theFont, uint32 properties, rgb_color theColor)
 {
 	// Update our member variables
 	fFont   = theFont;
@@ -784,7 +784,7 @@ void TCueTimeText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_color 
 //	Set the text to the Insert text
 //
 
-void TCueTimeText::SetText(char *theText)
+void TCueTimeText::SetText(char* theText)
 {
 
 	sprintf(fText, theText);

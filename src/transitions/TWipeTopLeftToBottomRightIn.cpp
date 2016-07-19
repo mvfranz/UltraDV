@@ -20,7 +20,7 @@
 
 
 //	Local Constants
-const char *TWipeTopLeftToBottomRightIn::kTransitionName = "WipeTopLeftToBottomRightIn";
+const char* TWipeTopLeftToBottomRightIn::kTransitionName = "WipeTopLeftToBottomRightIn";
 
 //---------------------------------------------------------------------
 //	Constructor/destructor
@@ -86,7 +86,7 @@ string TWipeTopLeftToBottomRightIn::Name() const
 //      zero if nothing need be done.
 //
 
-BBitmap *TWipeTopLeftToBottomRightIn::TransformBitmap(uint32 time, const BBitmap *source,
+BBitmap* TWipeTopLeftToBottomRightIn::TransformBitmap(uint32 time, const BBitmap* source,
                                                       const TCuePosition &registration, DisplayQuality quality)
 {
 	//	Only create offscreen at first pass
@@ -138,7 +138,7 @@ BBitmap *TWipeTopLeftToBottomRightIn::TransformBitmap(uint32 time, const BBitmap
 	}
 
 	//	Clone offscreen
-	BBitmap *newBitmap = CloneBitmap(*fOffscreenBitmap);
+	BBitmap* newBitmap = CloneBitmap(*fOffscreenBitmap);
 	ASSERT(newBitmap);
 
 	return newBitmap;

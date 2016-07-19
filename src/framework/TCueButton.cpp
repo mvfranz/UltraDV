@@ -35,7 +35,7 @@
 //
 //
 
-TCueButton::TCueButton(BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BMessage *message, short ID) : BView(bounds, name, B_FOLLOW_ALL, B_WILL_DRAW)
+TCueButton::TCueButton(BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BMessage* message, short ID) : BView(bounds, name, B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
@@ -136,14 +136,14 @@ void TCueButton::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message )
+void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage* message )
 {
 
 	// Check to see if button is down
 	uint32 buttons = 0;
 	BPoint point;
 
-	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+	Window()->CurrentMessage()->FindInt32("buttons", (long*)&buttons);
 	if (buttons && fMouseDown) {
 		//      If the mouse button is down, they want to drag a cue off the palette
 		//	and most likely onto the cue sheet.
@@ -153,7 +153,7 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 		message.AddInt16("CueIconID", fID);
 
 		// Create a copy of the bitmap for dragging
-		BBitmap *dragBitmap = new BBitmap( fOnBitmap->Bounds(), fOnBitmap->ColorSpace() );
+		BBitmap* dragBitmap = new BBitmap( fOnBitmap->Bounds(), fOnBitmap->ColorSpace() );
 		dragBitmap->SetBits( fOnBitmap->Bits(), fOnBitmap->BitsLength(), 0, fOnBitmap->ColorSpace() );
 		DragMessage(&message, dragBitmap, centerPt);
 
@@ -174,7 +174,7 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 		{
 			fState = true;
 			Invalidate();
-			BMessage *theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
+			BMessage* theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 			theMessage->AddString("CueName", Name());
 			if (Window())
 				Window()->PostMessage(theMessage);
@@ -186,7 +186,7 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 		{
 			fState = false;
 			Invalidate();
-			BMessage *theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
+			BMessage* theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 			theMessage->AddString("CueName", "");
 			if (Window())
 				Window()->PostMessage(theMessage);
@@ -220,7 +220,7 @@ void TCueButton::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TCueButton::KeyDown(const char *bytes, int32 numBytes)
+void TCueButton::KeyDown(const char* bytes, int32 numBytes)
 {
 }
 
@@ -233,7 +233,7 @@ void TCueButton::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TCueButton::KeyUp(const char *bytes, int32 numBytes)
+void TCueButton::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 

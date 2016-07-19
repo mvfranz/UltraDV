@@ -44,7 +44,7 @@
 //
 //
 
-TTransportPaletteView::TTransportPaletteView(BRect bounds, BBitmap *bitmap) : TBitmapView(bounds, "TransportPaletteView", bitmap, true,  B_FOLLOW_ALL)
+TTransportPaletteView::TTransportPaletteView(BRect bounds, BBitmap* bitmap) : TBitmapView(bounds, "TransportPaletteView", bitmap, true,  B_FOLLOW_ALL)
 {
 	// Perform default initialization
 	Init();
@@ -70,8 +70,8 @@ TTransportPaletteView::~TTransportPaletteView()
 
 void TTransportPaletteView::Init()
 {
-	BBitmap         *offBitmap;
-	BBitmap         *onBitmap;
+	BBitmap* offBitmap;
+	BBitmap* onBitmap;
 
 	// Set view background color
 	SetViewColor(kBlack);
@@ -254,7 +254,7 @@ void TTransportPaletteView::Draw(BRect updateRect)
 //
 //
 
-void TTransportPaletteView::MessageReceived(BMessage *message)
+void TTransportPaletteView::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
@@ -273,16 +273,16 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 	case START_BUTTON_MSG:
 	{
 		//	Stop playback
-		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-		TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
+		TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
 		engine->Stop(0, true);
 
 		//	Reset current time
 		cueSheet->GetCueSheetView()->SetCurrentTime(StartTime());
 
 		//	Inform timeline which updates everyone
-		TTimelineView *timeLine = cueSheet->GetTimeline();
-		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		TTimelineView* timeLine = cueSheet->GetTimeline();
+		BMessage* message = new BMessage(TIMELINE_DRAG_MSG);
 		message->AddInt32("TheTime", GetCurrentTime());
 		timeLine->MessageReceived(message);
 		cueSheet->GetCueSheetView()->MessageReceived(message);
@@ -293,8 +293,8 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 	case REWIND_BUTTON_MSG:
 	{
 		//	Stop playback
-		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-		TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
+		TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
 		engine->Stop(0, true);
 
 		//	Set current time
@@ -305,8 +305,8 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 			cueSheet->GetCueSheetView()->SetCurrentTime(time);
 
 		//	Inform timeline which updates everyone
-		TTimelineView *timeLine = cueSheet->GetTimeline();
-		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		TTimelineView* timeLine = cueSheet->GetTimeline();
+		BMessage* message = new BMessage(TIMELINE_DRAG_MSG);
 		message->AddInt32("TheTime", GetCurrentTime());
 		timeLine->MessageReceived(message);
 		cueSheet->GetCueSheetView()->MessageReceived(message);
@@ -316,9 +316,9 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 	//	Start PlaybackEngine time source
 	case PLAY_BUTTON_MSG:
 	{
-		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
 		if (cueSheet) {
-			TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+			TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
 			if (engine)
 				engine->Start(0);
 		}
@@ -328,9 +328,9 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 	case PAUSE_BUTTON_MSG:
 	case STOP_BUTTON_MSG:
 	{
-		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
 		if (cueSheet) {
-			TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+			TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
 			if (engine)
 				engine->Stop(0, true);
 		}
@@ -340,8 +340,8 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 	case FF_BUTTON_MSG:
 	{
 		//	Stop playback
-		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-		TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
+		TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
 		engine->Stop(0, true);
 
 		//	Set current time
@@ -352,8 +352,8 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 			cueSheet->GetCueSheetView()->SetCurrentTime(time);
 
 		//	Inform timeline which updates everyone
-		TTimelineView *timeLine = cueSheet->GetTimeline();
-		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		TTimelineView* timeLine = cueSheet->GetTimeline();
+		BMessage* message = new BMessage(TIMELINE_DRAG_MSG);
 		message->AddInt32("TheTime", GetCurrentTime());
 		timeLine->MessageReceived(message);
 		cueSheet->GetCueSheetView()->MessageReceived(message);
@@ -363,16 +363,16 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 	case END_BUTTON_MSG:
 	{
 		//	Stop playback
-		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-		TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
+		TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
 		engine->Stop(0, true);
 
 		//	Reset current time
 		cueSheet->GetCueSheetView()->SetCurrentTime( StartTime() + Duration());
 
 		//	Inform timeline which updates everyone
-		TTimelineView *timeLine = cueSheet->GetTimeline();
-		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		TTimelineView* timeLine = cueSheet->GetTimeline();
+		BMessage* message = new BMessage(TIMELINE_DRAG_MSG);
 		message->AddInt32("TheTime", GetCurrentTime());
 		timeLine->MessageReceived(message);
 		cueSheet->GetCueSheetView()->MessageReceived(message);
@@ -397,7 +397,7 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 //	Find and return 28x20 icon by string
 //
 
-BBitmap *GetTransportButton(char *theResource)
+BBitmap* GetTransportButton(char* theResource)
 {
 	// Get application info
 	app_info info;
@@ -408,17 +408,17 @@ BBitmap *GetTransportButton(char *theResource)
 		return NULL;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res(&file);
-	data = (BBitmap *)res.FindResource('bits', theResource, &size);
+	data = (BBitmap*)res.FindResource('bits', theResource, &size);
 	if (!data)
 		return NULL;
 
 	// Load icon
 	BRect bounds;
 	bounds.Set(0, 0, 36, 29);
-	BBitmap *bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bounds, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 

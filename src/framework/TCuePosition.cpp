@@ -99,7 +99,7 @@ bool TCuePosition::Contains(BPoint pt, bool transformed) const
 
 		vertex0 = &xCorners[numVerts - 1];
 		vertex1 = &xCorners[0];
-	} else   {
+	} else {
 		vertex0 = &fcorners[numVerts - 1];
 		vertex1 = &fcorners[0];
 	}

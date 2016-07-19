@@ -37,7 +37,7 @@
 //
 //
 
-TAnimationCue::TAnimationCue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime) :
+TAnimationCue::TAnimationCue(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime) :
 	TVisualCue(id, parent, bounds, startTime, "AnimationCue")
 {
 	// Perform default initialization
@@ -52,7 +52,7 @@ TAnimationCue::TAnimationCue(int16 id, TCueChannel *parent, BRect bounds, uint32
 //	Construct from a BMessage
 //
 
-TAnimationCue::TAnimationCue(BMessage *theMessage) : TVisualCue(theMessage)
+TAnimationCue::TAnimationCue(BMessage* theMessage) : TVisualCue(theMessage)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -128,7 +128,7 @@ void TAnimationCue::Init()
 	if (fChannel->IsExpanded()) {
 		fIsExpanded = false;
 		Expand();
-	} else   {
+	} else {
 		fIsExpanded = true;
 		Contract();
 	}
@@ -145,7 +145,7 @@ void TAnimationCue::Init()
 //
 //
 
-BArchivable *TAnimationCue::Instantiate(BMessage *archive)
+BArchivable* TAnimationCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TAnimationCue") )
 		return new TAnimationCue(archive);
@@ -160,7 +160,7 @@ BArchivable *TAnimationCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TAnimationCue::Archive(BMessage *data, bool deep) const
+status_t TAnimationCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -237,7 +237,7 @@ void TAnimationCue::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TAnimationCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TAnimationCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Pass up to parent
 	TVisualCue::MouseMoved(where, code, a_message);
@@ -262,7 +262,7 @@ void TAnimationCue::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TAnimationCue::KeyDown(const char *bytes, int32 numBytes)
+void TAnimationCue::KeyDown(const char* bytes, int32 numBytes)
 {
 	TVisualCue::KeyDown(bytes, numBytes);
 }
@@ -276,7 +276,7 @@ void TAnimationCue::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TAnimationCue::KeyUp(const char *bytes, int32 numBytes)
+void TAnimationCue::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -287,7 +287,7 @@ void TAnimationCue::KeyUp(const char *bytes, int32 numBytes)
 //
 //	Receive messages
 //
-void TAnimationCue::MessageReceived(BMessage *message)
+void TAnimationCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -321,7 +321,7 @@ void TAnimationCue::OpenEditor()
 
 void TAnimationCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = GetAppIcons()->fAnimationUpIcon;
+	BBitmap* cueIcon = GetAppIcons()->fAnimationUpIcon;
 
 	if (cueIcon) {
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));

@@ -39,7 +39,7 @@
 //
 //
 
-TMuteButton::TMuteButton(TCueChannel *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TMuteButton::TMuteButton(TCueChannel* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fChannel = parent;
@@ -65,7 +65,7 @@ TMuteButton::TMuteButton(TCueChannel *parent, BRect bounds, const char *name, BB
 //
 //
 
-TMuteButton::TMuteButton(BMessage *data) : BView(data)
+TMuteButton::TMuteButton(BMessage* data) : BView(data)
 {
 	fHandler = NULL;
 
@@ -110,7 +110,7 @@ void TMuteButton::Init()
 //
 //
 
-BArchivable *TMuteButton::Instantiate(BMessage *archive)
+BArchivable* TMuteButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TMuteButton") )
@@ -125,7 +125,7 @@ BArchivable *TMuteButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TMuteButton::Archive(BMessage *data, bool deep) const
+status_t TMuteButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -186,10 +186,10 @@ void TMuteButton::MouseDown(BPoint where)
 	Invalidate();
 
 	// Create and send message
-	BMessage *muteMessage = new BMessage(MUTE_BUTTON_MSG);
+	BMessage* muteMessage = new BMessage(MUTE_BUTTON_MSG);
 	short id = fChannel->GetID();
 	muteMessage->AddInt16("ChannelID", fChannel->GetID());
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(muteMessage, fChannel);
+	(static_cast<MuseumApp*>(be_app)->GetCueSheet())->PostMessage(muteMessage, fChannel);
 	// Clean up
 	delete muteMessage;
 
@@ -231,7 +231,7 @@ void TMuteButton::AttachedToWindow()
 {
 	if (fHandler == NULL) {
 		// Set target
-		fHandler = (TCueSheetWindow *)Window();
+		fHandler = (TCueSheetWindow*)Window();
 
 	}
 	//	Pass up to parent
@@ -247,7 +247,7 @@ void TMuteButton::AttachedToWindow()
 //
 //
 
-void TMuteButton::SetChannel(TCueChannel *channel)
+void TMuteButton::SetChannel(TCueChannel* channel)
 {
 	fChannel = channel;
 }

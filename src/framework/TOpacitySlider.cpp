@@ -35,7 +35,7 @@
 //	Default constructor
 //
 
-TOpacitySlider::TOpacitySlider( TOpacityDialog *dialog, TNumberTextControl *rotateText, TVisualCue *theCue, BRect frame, const char *name, const char *label, BMessage *message, int32 minValue,
+TOpacitySlider::TOpacitySlider( TOpacityDialog* dialog, TNumberTextControl* rotateText, TVisualCue* theCue, BRect frame, const char* name, const char* label, BMessage* message, int32 minValue,
                                 int32 maxValue, thumb_style thumbType, uint32 resizingMode, uint32 flags) :
 	TSlider(frame, name, label, message, minValue, maxValue, thumbType, resizingMode, flags)
 {
@@ -43,7 +43,7 @@ TOpacitySlider::TOpacitySlider( TOpacityDialog *dialog, TNumberTextControl *rota
 	fDialog                 = dialog;
 	fTextControl    = rotateText;
 	fCue                    = theCue;
-	fStage                  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
+	fStage                  = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage();
 	fStageView      = fStage->GetStageView();
 
 }
@@ -57,7 +57,7 @@ TOpacitySlider::TOpacitySlider( TOpacityDialog *dialog, TNumberTextControl *rota
 //	Construct from message
 //
 
-TOpacitySlider::TOpacitySlider(BMessage *data) : TSlider(data)
+TOpacitySlider::TOpacitySlider(BMessage* data) : TSlider(data)
 {
 }
 
@@ -124,7 +124,7 @@ void TOpacitySlider::SetValue(int32 value)
 //	Set TNumberTextControl member variable
 //
 
-void TOpacitySlider::SetTextControl(TNumberTextControl *textControl)
+void TOpacitySlider::SetTextControl(TNumberTextControl* textControl)
 {
 	fTextControl = textControl;
 }

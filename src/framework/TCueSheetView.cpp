@@ -58,7 +58,7 @@
 //	Default Constructor
 //
 
-TCueSheetView::TCueSheetView(BRect bounds, TCueSheetWindow *parent) :
+TCueSheetView::TCueSheetView(BRect bounds, TCueSheetWindow* parent) :
 	BView(bounds, "CueSheetView", B_FOLLOW_ALL, B_WILL_DRAW|B_DRAW_ON_CHILDREN)
 {
 	fParent = parent;
@@ -76,7 +76,7 @@ TCueSheetView::TCueSheetView(BRect bounds, TCueSheetWindow *parent) :
 //	Construct from message
 //
 
-TCueSheetView::TCueSheetView(BMessage *data) : BView(data)
+TCueSheetView::TCueSheetView(BMessage* data) : BView(data)
 {
 	//
 	// Rehydrate the cue from message data
@@ -85,13 +85,13 @@ TCueSheetView::TCueSheetView(BMessage *data) : BView(data)
 	fParent = NULL;
 
 	ssize_t numBytes;
-	rgb_color                        *color;
-	timecode_type           *timeCode;
+	rgb_color* color;
+	timecode_type* timeCode;
 
-	data->FindData("StageColor", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes );
+	data->FindData("StageColor", B_RGB_COLOR_TYPE, (const void**)&color, &numBytes );
 	fStageColor = *color;
 
-	data->FindData("TimeFormat", B_ANY_TYPE, (const void **)&timeCode, &numBytes );
+	data->FindData("TimeFormat", B_ANY_TYPE, (const void**)&timeCode, &numBytes );
 	fTimeFormat = *timeCode;
 
 	// Extract our member variables from the archive
@@ -184,7 +184,7 @@ void TCueSheetView::Init()
 
 	for( short i = 0; i < startChannels; i++) {
 		bounds.Set( bounds.left, ((kChannelMinHeight*i)), bounds.left + channelLength, ((kChannelMinHeight*i)) + kChannelMinHeight);
-		TCueChannel *newChannel = new TCueChannel(bounds, this, i+1);
+		TCueChannel* newChannel = new TCueChannel(bounds, this, i+1);
 		AddChild(newChannel);
 		newChannel->Show();
 
@@ -202,7 +202,7 @@ void TCueSheetView::Init()
 //
 //
 
-BArchivable *TCueSheetView::Instantiate(BMessage *archive)
+BArchivable* TCueSheetView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TCueSheetView") )
@@ -220,7 +220,7 @@ BArchivable *TCueSheetView::Instantiate(BMessage *archive)
 //
 //
 
-status_t TCueSheetView::Archive(BMessage *data, bool deep) const
+status_t TCueSheetView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -385,7 +385,7 @@ void TCueSheetView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TCueSheetView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TCueSheetView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	switch(code)
 	{
@@ -429,7 +429,7 @@ void TCueSheetView::MessageReceived(BMessage* message)
 		BPoint drawPt;
 		message->FindPoint("IndicatorPoint", &drawPt);
 		for (int32 index = 0; index < fChannelList->CountItems(); index++) {
-			TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+			TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 			theChannel->DrawIndicatorTick(drawPt);
 		}
 	}
@@ -441,7 +441,7 @@ void TCueSheetView::MessageReceived(BMessage* message)
 	{
 		if (fLiveUpdate) {
 			// Get StageView
-			TStageView *stageView = fParent->GetStage()->GetStageView();
+			TStageView* stageView = fParent->GetStage()->GetStageView();
 
 			if (stageView) {
 				//	Extract time from message
@@ -449,9 +449,9 @@ void TCueSheetView::MessageReceived(BMessage* message)
 
 				//	Create list of cues at this time
 				for (int32 index = 0; index < fChannelList->CountItems(); index++) {
-					TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+					TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 					if (theChannel) {
-						TCueView *theCue = theChannel->GetCueAtTime(theTime);
+						TCueView* theCue = theChannel->GetCueAtTime(theTime);
 						if (theCue) {
 							if (!theCue->IsMuted())
 								theCue->HandlePlayback(theTime);
@@ -512,7 +512,7 @@ void TCueSheetView::MessageReceived(BMessage* message)
 			if ( ItemsSelected() ) {
 				// Start with channels
 				for (int32 index = 0; index < fChannelList->CountItems(); index++) {
-					TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+					TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 
 					// We have a channel
 					if (theChannel) {
@@ -553,7 +553,7 @@ void TCueSheetView::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TCueSheetView::KeyDown(const char *bytes, int32 numBytes)
+void TCueSheetView::KeyDown(const char* bytes, int32 numBytes)
 {
 	if (numBytes == 1) {
 		switch(bytes[0])
@@ -593,7 +593,7 @@ void TCueSheetView::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TCueSheetView::KeyUp(const char *bytes, int32 numBytes)
+void TCueSheetView::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -637,7 +637,7 @@ void TCueSheetView::FrameResized(float new_width, float new_height)
 
 void TCueSheetView::FreeChannelList()
 {
-	void *anItem;
+	void* anItem;
 
 	for ( long i = fChannelList->CountItems(); anItem = fChannelList->ItemAt(i); i++ ) {
 		delete anItem;
@@ -662,7 +662,7 @@ void TCueSheetView::FreeChannelList()
 bool TCueSheetView::HasCues()
 {
 	for(int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 
 		if(theChannel) {
 			if ( theChannel->HasCues() )
@@ -689,7 +689,7 @@ bool TCueSheetView::ItemsSelected()
 
 	// Start with channels
 	for (int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 
 		// We have a channel
 		if (theChannel) {
@@ -712,10 +712,10 @@ bool TCueSheetView::ItemsSelected()
 void TCueSheetView::SelectAllCues()
 {
 
-	TCueChannel *theChannel;
+	TCueChannel* theChannel;
 
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 
 		if(theChannel) {
 			theChannel->SelectAllCues();
@@ -733,10 +733,10 @@ void TCueSheetView::SelectAllCues()
 
 void TCueSheetView::DeselectAllCues()
 {
-	TCueChannel *theChannel;
+	TCueChannel* theChannel;
 
 	for( long i = 0; i < fChannelList->CountItems(); i++) {
-		theChannel = (TCueChannel *)fChannelList->ItemAt(i);
+		theChannel = (TCueChannel*)fChannelList->ItemAt(i);
 
 		if(theChannel) {
 			theChannel->DeselectAllCues();
@@ -752,12 +752,12 @@ void TCueSheetView::DeselectAllCues()
 //	cue passed in
 //
 
-void TCueSheetView::DeselectAllCues(TCueView *theCue)
+void TCueSheetView::DeselectAllCues(TCueView* theCue)
 {
-	TCueChannel *theChannel;
+	TCueChannel* theChannel;
 
 	for( long i = 0; i < fChannelList->CountItems(); i++) {
-		theChannel = (TCueChannel *)fChannelList->ItemAt(i);
+		theChannel = (TCueChannel*)fChannelList->ItemAt(i);
 
 		if(theChannel) {
 			theChannel->DeselectAllCues(theCue);
@@ -779,10 +779,10 @@ bool TCueSheetView::HasMultipleCueChannelsSelected()
 {
 	int32 counter = 0;
 
-	TCueChannel *theChannel;
+	TCueChannel* theChannel;
 
 	for( long i = 0; i < fChannelList->CountItems(); i++) {
-		theChannel = (TCueChannel *)fChannelList->ItemAt(i);
+		theChannel = (TCueChannel*)fChannelList->ItemAt(i);
 
 		if(theChannel) {
 			if ( theChannel->HasSelectedCues() ) {
@@ -817,7 +817,7 @@ void TCueSheetView::AlignCueStartTimes()
 		BList channelList;
 
 		for( int32 index = 0; index < GetTotalChannels(); index++) {
-			TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+			TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 			if (theChannel) {
 				if (theChannel->HasSelectedCues()) {
 					channelList.AddItem(theChannel);
@@ -833,10 +833,10 @@ void TCueSheetView::AlignCueStartTimes()
 
 		for( int32 index = 0; index < channelList.CountItems(); index++) {
 			// Look at all channels in cue sheet
-			TCueChannel *theChannel = (TCueChannel *)channelList.ItemAt(index);
+			TCueChannel* theChannel = (TCueChannel*)channelList.ItemAt(index);
 			if (theChannel) {
 				// Get channels selected cue list
-				BList *cueList = theChannel->GetSelectedCues();
+				BList* cueList = theChannel->GetSelectedCues();
 				if (cueList) {
 					// Add the first selected cue in the channel to our selected cue list
 					selectedCues.AddItem( cueList->ItemAt(0) );
@@ -849,7 +849,7 @@ void TCueSheetView::AlignCueStartTimes()
 		//	Look through our list of selected cues and find the earliest start time.
 		int32 startTime, tmpTime;
 		for( int32 index = 0; index < selectedCues.CountItems(); index++) {
-			TCueView *theCue = (TCueView *)selectedCues.ItemAt(index);
+			TCueView* theCue = (TCueView*)selectedCues.ItemAt(index);
 			if (theCue) {
 				// Set startTime on first element in array
 				if (index == 0)
@@ -865,10 +865,10 @@ void TCueSheetView::AlignCueStartTimes()
 
 		// Now set all cues in list to start at the startTime
 		for( int32 index = 0; index < selectedCues.CountItems(); index++) {
-			TCueView *theCue = (TCueView *)selectedCues.ItemAt(index);
+			TCueView* theCue = (TCueView*)selectedCues.ItemAt(index);
 
 			if (theCue) {
-				TCueChannel *cueChannel = theCue->GetChannel();
+				TCueChannel* cueChannel = theCue->GetChannel();
 
 				// Check for collisions with other cues
 				if (cueChannel->CanInsertCue(theCue, startTime, false)) {
@@ -899,7 +899,7 @@ void TCueSheetView::AlignCueEndTimes()
 		BList channelList;
 
 		for( int32 index = 0; index < GetTotalChannels(); index++) {
-			TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+			TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 			if (theChannel) {
 				if (theChannel->HasSelectedCues()) {
 					channelList.AddItem(theChannel);
@@ -915,10 +915,10 @@ void TCueSheetView::AlignCueEndTimes()
 
 		for( int32 index = 0; index < channelList.CountItems(); index++) {
 			// Look at all channels in cue sheet
-			TCueChannel *theChannel = (TCueChannel *)channelList.ItemAt(index);
+			TCueChannel* theChannel = (TCueChannel*)channelList.ItemAt(index);
 			if (theChannel) {
 				// Get channels selected cue list
-				BList *cueList = theChannel->GetSelectedCues();
+				BList* cueList = theChannel->GetSelectedCues();
 				if (cueList) {
 					// Add the last selected cue in the channel to our selected cue list
 					int32 lastItem = cueList->CountItems();
@@ -934,7 +934,7 @@ void TCueSheetView::AlignCueEndTimes()
 		//	Look through our list of selected cues and find the latest end time.
 		int32 endTime, tmpTime;
 		for( int32 index = 0; index < selectedCues.CountItems(); index++) {
-			TCueView *theCue = (TCueView *)selectedCues.ItemAt(index);
+			TCueView* theCue = (TCueView*)selectedCues.ItemAt(index);
 			if (theCue) {
 				// Set startTime on first element in array
 				if (index == 0)
@@ -950,10 +950,10 @@ void TCueSheetView::AlignCueEndTimes()
 
 		// Now set all cues in list to end at the endTime
 		for( int32 index = 0; index < selectedCues.CountItems(); index++) {
-			TCueView *theCue = (TCueView *)selectedCues.ItemAt(index);
+			TCueView* theCue = (TCueView*)selectedCues.ItemAt(index);
 
 			if (theCue) {
-				TCueChannel *cueChannel = theCue->GetChannel();
+				TCueChannel* cueChannel = theCue->GetChannel();
 
 				int32 startTime = endTime - theCue->Duration();
 
@@ -986,7 +986,7 @@ void TCueSheetView::AlignCueEndTimes()
 void TCueSheetView::DeleteSelectedCues()
 {
 	for (int32 index = 0; index < GetTotalChannels(); index++) {
-		TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 
 		if (theChannel)
 			theChannel->DeleteSelectedCues();
@@ -1001,10 +1001,10 @@ void TCueSheetView::DeleteSelectedCues()
 //	Nudge selected cue in direction of arrow
 //
 
-void TCueSheetView::NudgeSelectedCues(const char *bytes)
+void TCueSheetView::NudgeSelectedCues(const char* bytes)
 {
 	for (int32 index = 0; index < GetTotalChannels(); index++) {
-		TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 
 		if (theChannel) {
 			switch (bytes[0])
@@ -1032,11 +1032,11 @@ void TCueSheetView::NudgeSelectedCues(const char *bytes)
 //	Show message to all channels
 //
 
-void TCueSheetView::SendMessageToAllChannels(BMessage *theMessage)
+void TCueSheetView::SendMessageToAllChannels(BMessage* theMessage)
 {
 	// Go through of list, infroming all channels
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->MessageReceived(theMessage);
 	}
@@ -1062,7 +1062,7 @@ bool TCueSheetView::AddChannel()
 	BRect bounds = Bounds();
 
 	// Get a pointer to last channel in fChannelList
-	TCueChannel *afterChannel = (TCueChannel *)fChannelList->ItemAt( fChannelList->CountItems() - 1 );
+	TCueChannel* afterChannel = (TCueChannel*)fChannelList->ItemAt( fChannelList->CountItems() - 1 );
 
 	// Get length of channel
 	int32 startPixels       = TimeToPixels( fStartTime, fTimeFormat, fResolution);
@@ -1070,7 +1070,7 @@ bool TCueSheetView::AddChannel()
 	int32 sizePixels        = durationPixels - startPixels;
 
 	bounds.Set( bounds.left, bounds.top, bounds.left+sizePixels, bounds.top + kChannelMinHeight);
-	TCueChannel *newChannel = new TCueChannel(bounds, this, fChannelList->CountItems()+1);
+	TCueChannel* newChannel = new TCueChannel(bounds, this, fChannelList->CountItems()+1);
 	AddChild(newChannel);
 	newChannel->Show();
 
@@ -1099,7 +1099,7 @@ bool TCueSheetView::AddChannel()
 //		change for the user.
 //
 
-void TCueSheetView::InsertChannel(BMessage *message)
+void TCueSheetView::InsertChannel(BMessage* message)
 {
 	//Window()->BeginViewTransaction();
 
@@ -1116,7 +1116,7 @@ void TCueSheetView::InsertChannel(BMessage *message)
 	message->FindInt32("AfterChannel", &afterIndex);
 
 	// Get a pointer to it
-	TCueChannel *afterChannel = (TCueChannel *)fChannelList->ItemAt(afterIndex-1);
+	TCueChannel* afterChannel = (TCueChannel*)fChannelList->ItemAt(afterIndex-1);
 
 	// Get length of channel
 	int32 startPixels        = TimeToPixels( fStartTime, fTimeFormat, fResolution);
@@ -1126,7 +1126,7 @@ void TCueSheetView::InsertChannel(BMessage *message)
 	// Create new channels
 	for (int32 index = 0; index < numChannels; index++) {
 		bounds.Set( bounds.left, bounds.top, bounds.left+sizePixels, bounds.top + kChannelMinHeight);
-		TCueChannel *newChannel = new TCueChannel(bounds, this, index+1+afterIndex);
+		TCueChannel* newChannel = new TCueChannel(bounds, this, index+1+afterIndex);
 		AddChild(newChannel);
 		newChannel->Show();
 
@@ -1143,7 +1143,7 @@ void TCueSheetView::InsertChannel(BMessage *message)
 	// Update channels IDS and header text
 	UpdateChannelIDS();
 	for (int32 index = 0; index < GetTotalChannels(); index++) {
-		TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		if (theChannel)
 			theChannel->GetChannelHeader()->UpdateChannelName();
 	}
@@ -1151,8 +1151,8 @@ void TCueSheetView::InsertChannel(BMessage *message)
 	//Window()->EndViewTransaction();
 
 	// Update stage
-	TStageWindow    *theStage  = fParent->GetStage();
-	TStageView              *stageView = theStage->GetStageView();
+	TStageWindow* theStage  = fParent->GetStage();
+	TStageView* stageView = theStage->GetStageView();
 	if (theStage->Lock()) {
 		stageView->StageDraw( stageView->Bounds(), GetCurrentTime() );
 		stageView->Draw(stageView->Bounds());
@@ -1169,7 +1169,7 @@ void TCueSheetView::InsertChannel(BMessage *message)
 //	other channel views as neccessary.
 //
 
-void TCueSheetView::DeleteChannel(BMessage *message)
+void TCueSheetView::DeleteChannel(BMessage* message)
 {
 	//Window()->BeginViewTransaction();
 
@@ -1201,11 +1201,11 @@ void TCueSheetView::DeleteChannel(BMessage *message)
 	//for (int32 index = afterIndex; index <= numChannels; index++)
 	for (int32 index = 0; index < numChannels; index++) {
 		// Remove item from channel list
-		TCueChannel *deletedChannel = (TCueChannel *)fChannelList->RemoveItem(afterIndex);
+		TCueChannel* deletedChannel = (TCueChannel*)fChannelList->RemoveItem(afterIndex);
 
 		// Detach it's view and delete
 		if (deletedChannel) {
-			TCueChannelHeader *theHeader =  deletedChannel->GetChannelHeader();
+			TCueChannelHeader* theHeader =  deletedChannel->GetChannelHeader();
 			if (theHeader)
 				theHeader->Hide();
 			deletedChannel->Hide();
@@ -1217,7 +1217,7 @@ void TCueSheetView::DeleteChannel(BMessage *message)
 	}
 
 	// Clean up appearence
-	TCueChannel *afterChannel = (TCueChannel *)fChannelList->ItemAt( afterIndex-1 );
+	TCueChannel* afterChannel = (TCueChannel*)fChannelList->ItemAt( afterIndex-1 );
 	if (afterChannel)
 		AdjustChannelPositions(afterChannel);
 
@@ -1227,7 +1227,7 @@ void TCueSheetView::DeleteChannel(BMessage *message)
 	// Update channels IDs and header text
 	UpdateChannelIDS();
 	for (int32 index = 0; index < GetTotalChannels(); index++) {
-		TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		if (theChannel)
 			theChannel->GetChannelHeader()->UpdateChannelName();
 	}
@@ -1250,7 +1250,7 @@ void TCueSheetView::DeleteChannel(BMessage *message)
 //		change for the user.
 //
 
-void TCueSheetView::DragInsertChannel(TCueChannel *insertChannel, TCueChannel *afterChannel)
+void TCueSheetView::DragInsertChannel(TCueChannel* insertChannel, TCueChannel* afterChannel)
 {
 	//Window()->BeginViewTransaction();
 
@@ -1262,14 +1262,14 @@ void TCueSheetView::DragInsertChannel(TCueChannel *insertChannel, TCueChannel *a
 
 		// Remove insert item from list and reinsert it at afterIndex.  The afterIndex item
 		// has now slipped down one ID in the list
-		TCueChannel *insertedChannel = (TCueChannel *)fChannelList->RemoveItem(insertIndex);
+		TCueChannel* insertedChannel = (TCueChannel*)fChannelList->RemoveItem(insertIndex);
 
 		if ( fChannelList->AddItem(insertChannel, afterIndex) ) {
 			BRect insertFrame;
 			BRect insertHeaderFrame;
 			BRect afterFrame;
 			BRect afterHeaderFrame;
-			TCueChannel *nextChannel, *prevChannel;
+			TCueChannel* nextChannel, * prevChannel;
 
 			// We are successful in reordering the list.  Now change the visual positioning
 			// of the cues. All cues after the inserted cue need to shift their position down
@@ -1324,8 +1324,8 @@ void TCueSheetView::DragInsertChannel(TCueChannel *insertChannel, TCueChannel *a
 				// Bubble channels down
 				for( int32 index = afterIndex; index < insertIndex; index++) {
 					// Get channels
-					prevChannel = (TCueChannel *)fChannelList->ItemAt(index);
-					nextChannel = (TCueChannel *)fChannelList->ItemAt(index+1);
+					prevChannel = (TCueChannel*)fChannelList->ItemAt(index);
+					nextChannel = (TCueChannel*)fChannelList->ItemAt(index+1);
 
 					insertFrame             = prevChannel->Frame();
 					insertHeaderFrame       = prevChannel->GetChannelHeader()->Frame();
@@ -1343,8 +1343,8 @@ void TCueSheetView::DragInsertChannel(TCueChannel *insertChannel, TCueChannel *a
 				// Now push all channels up...
 				for( int32 index = insertIndex; index <= afterIndex; index++) {
 					// Get channels
-					prevChannel = (TCueChannel *)fChannelList->ItemAt(index-1);
-					nextChannel = (TCueChannel *)fChannelList->ItemAt(index);
+					prevChannel = (TCueChannel*)fChannelList->ItemAt(index-1);
+					nextChannel = (TCueChannel*)fChannelList->ItemAt(index);
 
 					// If this value is null, we are moving the top channel
 					if (!prevChannel) {
@@ -1352,7 +1352,7 @@ void TCueSheetView::DragInsertChannel(TCueChannel *insertChannel, TCueChannel *a
 						//insertHeaderFrame.Set( 0, kMenuHeight+kTimelineHeight, kHeaderWidth, kMenuHeight+kTimelineHeight);
 						insertFrame.Set( Bounds().left, Bounds().top, Bounds().right,  Bounds().top);
 						insertHeaderFrame.Set( 0, Bounds().top+1, kHeaderWidth, Bounds().top+1);
-					} else   {
+					} else {
 						insertFrame             = prevChannel->Frame();
 						insertHeaderFrame       = prevChannel->GetChannelHeader()->Frame();
 					}
@@ -1367,8 +1367,8 @@ void TCueSheetView::DragInsertChannel(TCueChannel *insertChannel, TCueChannel *a
 		}
 
 		// Update stage
-		TStageWindow    *theStage  = fParent->GetStage();
-		TStageView              *stageView = theStage->GetStageView();
+		TStageWindow* theStage  = fParent->GetStage();
+		TStageView* stageView = theStage->GetStageView();
 		theStage->Lock();
 		stageView->StageDraw( stageView->Bounds(), GetCurrentTime() );
 		stageView->Invalidate();
@@ -1390,7 +1390,7 @@ void TCueSheetView::DragInsertChannel(TCueChannel *insertChannel, TCueChannel *a
 void TCueSheetView::UpdateChannelIDS()
 {
 	for(short index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->SetID(index + 1);
 	}
@@ -1405,21 +1405,21 @@ void TCueSheetView::UpdateChannelIDS()
 //	height down.
 //
 
-void TCueSheetView::AdjustChannelPositions(TCueChannel *theChannel)
+void TCueSheetView::AdjustChannelPositions(TCueChannel* theChannel)
 {
 	// Make sure the channel is in the list
 	if (fChannelList->HasItem(theChannel)) {
 		// Go through rest of list, adjusting channels...
 		for( int32 index = fChannelList->IndexOf(theChannel); index < fChannelList->CountItems(); index++) {
-			TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
-			TCueChannel *prevChannel = (TCueChannel *)fChannelList->ItemAt(index-1);
+			TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
+			TCueChannel* prevChannel = (TCueChannel*)fChannelList->ItemAt(index-1);
 			ASSERT(cueChannel);
 
 			// Now move it down below the previous channel.  If prevChannel is NULL, we are
 			//	adjusting the top channel and don't need to adjust it.
 			if (prevChannel) {
-				TCueChannelHeader *theHeader = cueChannel->GetChannelHeader();
-				TCueChannelHeader *prevHeader = prevChannel->GetChannelHeader();
+				TCueChannelHeader* theHeader = cueChannel->GetChannelHeader();
+				TCueChannelHeader* prevHeader = prevChannel->GetChannelHeader();
 				cueChannel->MoveTo( cueChannel->Frame().left, prevChannel->Frame().bottom);
 				theHeader->MoveTo( theHeader->Frame().left, prevHeader->Frame().bottom);
 			}
@@ -1441,13 +1441,13 @@ void TCueSheetView::ContractAllChannels()
 
 	// Go through of list, contracting channels...
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->Contract();
 	}
 
 	// Adjust channel positions
-	TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(0);
+	TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(0);
 	ASSERT(cueChannel);
 	AdjustChannelPositions(cueChannel);
 
@@ -1471,13 +1471,13 @@ void TCueSheetView::ExpandAllChannels()
 
 	// Go through of list, contracting channels...
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->Expand();
 	}
 
 	// Adjust channel positions
-	TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(0);
+	TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(0);
 	ASSERT(cueChannel);
 	AdjustChannelPositions(cueChannel);
 
@@ -1499,7 +1499,7 @@ void TCueSheetView::UnlockAllChannels()
 {
 	// Go through of list, contracting channels...
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->UnlockChannel();
 	}
@@ -1516,7 +1516,7 @@ void TCueSheetView::LockAllChannels()
 {
 	// Go through of list, contracting channels...
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->LockChannel();
 	}
@@ -1538,7 +1538,7 @@ void TCueSheetView::SoloAllChannels()
 {
 	// Go through of list, soloing channels...
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->Solo();
 	}
@@ -1559,7 +1559,7 @@ void TCueSheetView::UnsoloAllChannels()
 {
 	// Go through of list, unsoloing channels...
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->Unsolo();
 	}
@@ -1575,11 +1575,11 @@ void TCueSheetView::UnsoloAllChannels()
 //	Exclude the channel asking the question
 //
 
-bool TCueSheetView::AreOtherChannelsSoloed( TCueChannel *theChannel)
+bool TCueSheetView::AreOtherChannelsSoloed( TCueChannel* theChannel)
 {
 	// Go through of list, looking for soloed channels
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 
 		if (cueChannel != theChannel) {
@@ -1602,7 +1602,7 @@ void TCueSheetView::MuteAllChannels()
 {
 	// Go through of list, muting channels...
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->Mute();
 	}
@@ -1622,7 +1622,7 @@ void TCueSheetView::MuteAllUnsoloedChannels()
 {
 	// Go through of list, muting channels...
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		if ( !cueChannel->GetSolo() )
 			cueChannel->Mute();
@@ -1644,7 +1644,7 @@ void TCueSheetView::UnmuteAllChannels()
 {
 	// Go through of list, unmuting channels...
 	for( int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *cueChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* cueChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		ASSERT(cueChannel);
 		cueChannel->Unmute();
 	}
@@ -1668,7 +1668,7 @@ void TCueSheetView::UnmuteAllChannels()
 //		3. Inform all channels of the change
 //
 
-void TCueSheetView::ResolutionChanged(BMessage *message)
+void TCueSheetView::ResolutionChanged(BMessage* message)
 {
 	// Unpack message and set new fTimeFormat
 	//timecode_type format;
@@ -1686,7 +1686,7 @@ void TCueSheetView::ResolutionChanged(BMessage *message)
 
 	// All channels need to be informed and resized as well...
 	for (int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 		theChannel->ResolutionChanged(resizePixels);
 	}
 }
@@ -1720,7 +1720,7 @@ void TCueSheetView::UpdateTimeline()
 //	Update the fTimeFormat.
 //
 
-void TCueSheetView::UpdateTimeFormat(BMessage *message)
+void TCueSheetView::UpdateTimeFormat(BMessage* message)
 {
 	// Unpack message and set new fTimeFormat
 	fTimeFormat = (timecode_type)message->FindInt16("TimeFormat");
@@ -1775,26 +1775,26 @@ void TCueSheetView::Cut()
 void TCueSheetView::Copy()
 {
 	// Create a list to hold archived cues
-	BList *archivedList = new BList();
+	BList* archivedList = new BList();
 
 	//      Check and see what is selected.  Start with all selected cues.  Iterate thorugh
 	//	all channels and ask for their selected cues
 	for (int32 index = 0; index < fChannelList->CountItems(); index++) {
-		TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt(index);
+		TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt(index);
 
 		// We have a channel
 		if (theChannel) {
 			// There are selected cues in the channel
 			if (theChannel->HasSelectedCues()) {
 				// Get a list of selected cues in channel
-				BList *cueList = theChannel->GetSelectedCues();
+				BList* cueList = theChannel->GetSelectedCues();
 
 				// Call the Copy method of each selected cue.  This will return
 				// an archived version of the Cue
 				for (int32 cueIndex = 0; cueIndex < cueList->CountItems(); cueIndex++) {
-					TCueView *theCue = (TCueView *)cueList->ItemAt(cueIndex);
+					TCueView* theCue = (TCueView*)cueList->ItemAt(cueIndex);
 					if (theCue) {
-						BMessage *cueMessage = theCue->Copy();
+						BMessage* cueMessage = theCue->Copy();
 
 						// Add the archive to out list if it is valid
 						if( cueMessage)
@@ -1808,10 +1808,10 @@ void TCueSheetView::Copy()
 	//	Now check and see if we have any items added to our list
 	if (archivedList->CountItems() > 0) {
 		// Add the list of archived items to the clipboard
-		TMuseumClipboard *theClipboard = static_cast<MuseumApp *>(be_app)->fClipboard;
+		TMuseumClipboard* theClipboard = static_cast<MuseumApp*>(be_app)->fClipboard;
 
 		// Create message, add out cue list to it and add it to the clipboard
-		BMessage *clipMessage = new BMessage(CUE_LIST_MSG);
+		BMessage* clipMessage = new BMessage(CUE_LIST_MSG);
 		clipMessage->AddPointer("CueList", archivedList);
 		theClipboard->AddItem(clipMessage);
 	}
@@ -1828,7 +1828,7 @@ void TCueSheetView::Copy()
 void TCueSheetView::Paste()
 {
 	// Make sure clipboard has data relevant to us
-	TMuseumClipboard *theClipboard = static_cast<MuseumApp *>(be_app)->fClipboard;
+	TMuseumClipboard* theClipboard = static_cast<MuseumApp*>(be_app)->fClipboard;
 
 	// If we have data, get it and determine its type
 	int32 clipData = theClipboard->HasData();
@@ -1837,7 +1837,7 @@ void TCueSheetView::Paste()
 		{
 		case kCueListData:
 		{
-			BList *cueArchiveList = theClipboard->GetCueArchiveList();
+			BList* cueArchiveList = theClipboard->GetCueArchiveList();
 
 			if (cueArchiveList)
 				PasteCues(cueArchiveList);
@@ -1858,24 +1858,24 @@ void TCueSheetView::Paste()
 //	Paste cues in cue list into cue sheet
 //
 
-void TCueSheetView::PasteCues(BList *cueArchiveList)
+void TCueSheetView::PasteCues(BList* cueArchiveList)
 {
 	// Create list to store unarchived cues
-	BList *cueList = new BList();
+	BList* cueList = new BList();
 
 	// Lock clipboard so list isn't deleted
-	TMuseumClipboard *theClipboard = static_cast<MuseumApp *>(be_app)->fClipboard;
+	TMuseumClipboard* theClipboard = static_cast<MuseumApp*>(be_app)->fClipboard;
 	if ( theClipboard->Lock() ) {
 		// Go through list and extract archived cues
 		for( int32 index = 0; index < cueArchiveList->CountItems(); index++) {
 			// get the archived cue
-			BMessage *cueMessage = (BMessage *)cueArchiveList->ItemAt(index);
+			BMessage* cueMessage = (BMessage*)cueArchiveList->ItemAt(index);
 
 			if (cueMessage) {
-				BArchivable *unarchived = instantiate_object(cueMessage);
+				BArchivable* unarchived = instantiate_object(cueMessage);
 				if ( unarchived ) {
 					// Add cue to our list of unarchived cues
-					TCueView *view = cast_as(unarchived, TCueView);
+					TCueView* view = cast_as(unarchived, TCueView);
 					if (view)
 						cueList->AddItem(view);
 				}
@@ -1894,8 +1894,8 @@ void TCueSheetView::PasteCues(BList *cueArchiveList)
 
 		//      Display Paste Cue dialog using this time as the suggested paste time.
 		//	Use the track of the first copied track as the suggested paste track.
-		BMessage *theMessage = GetWindowFromResource("PasteCuesWindow");
-		BWindow *pasteWindow = new TPasteCues(this, cueList, theMessage);
+		BMessage* theMessage = GetWindowFromResource("PasteCuesWindow");
+		BWindow* pasteWindow = new TPasteCues(this, cueList, theMessage);
 
 		// Center and show dialog
 		CenterWindow(pasteWindow);
@@ -1912,14 +1912,14 @@ void TCueSheetView::PasteCues(BList *cueArchiveList)
 //	Handle reciept of CUE_PASTE_MSG
 //
 
-void TCueSheetView::HandleCuePaste(BMessage *theMessage)
+void TCueSheetView::HandleCuePaste(BMessage* theMessage)
 {
-	BList   *cueList;
+	BList* cueList;
 	int32 pasteChannel;
 	uint32 pasteTime, offsetTime, deltaStart;
 
 	//      Extract info from message
-	theMessage->FindPointer("CueList", (void **)&cueList);
+	theMessage->FindPointer("CueList", (void**)&cueList);
 	pasteTime = theMessage->FindInt32("PasteTime");
 	theMessage->FindInt32("PasteChannel", &pasteChannel);
 
@@ -1930,7 +1930,7 @@ void TCueSheetView::HandleCuePaste(BMessage *theMessage)
 
 	//      Get Cue
 	for (int32 index = 0; index < cueList->CountItems(); index++) {
-		TCueView *insertCue = (TCueView *)cueList->ItemAt(index);
+		TCueView* insertCue = (TCueView*)cueList->ItemAt(index);
 		if (insertCue) {
 			// Set up time and position for cue in channel
 			if (index == 0)
@@ -1963,7 +1963,7 @@ void TCueSheetView::HandleCuePaste(BMessage *theMessage)
 			}
 
 			//      Get channel
-			TCueChannel *theChannel = (TCueChannel *)fChannelList->ItemAt( (pasteChannel-1) );
+			TCueChannel* theChannel = (TCueChannel*)fChannelList->ItemAt( (pasteChannel-1) );
 
 			if (theChannel) {
 				//      Try to insert the cue in the selected channel...
@@ -1979,7 +1979,7 @@ void TCueSheetView::HandleCuePaste(BMessage *theMessage)
 
 					for (int32 chanIndex = pasteChannel; chanIndex < fChannelList->CountItems(); chanIndex++) {
 						// Get channel
-						TCueChannel *retryChannel = (TCueChannel *)fChannelList->ItemAt(chanIndex);
+						TCueChannel* retryChannel = (TCueChannel*)fChannelList->ItemAt(chanIndex);
 						if (retryChannel) {
 							retVal = retryChannel->CanInsertCue(insertCue, offsetTime, false);
 							if (retVal) {
@@ -1996,7 +1996,7 @@ void TCueSheetView::HandleCuePaste(BMessage *theMessage)
 					if (retVal == false) {
 						if ( AddChannel() ) {
 							// We wre able to add a channel.  Get a pointer to it
-							TCueChannel *newChannel = (TCueChannel *)fChannelList->ItemAt( fChannelList->CountItems() - 1 );
+							TCueChannel* newChannel = (TCueChannel*)fChannelList->ItemAt( fChannelList->CountItems() - 1 );
 							if (newChannel) {
 								// Inset cue into new channel
 								newChannel->InsertCue(insertCue, offsetTime);
@@ -2050,7 +2050,7 @@ void TCueSheetView::SelectAll()
 void TCueSheetView::AttachedToWindow()
 {
 	if(fParent == NULL) {
-		fParent = (TCueSheetWindow *)Window();
+		fParent = (TCueSheetWindow*)Window();
 
 		/*
 		   THeaderContainerView *container = fParent->GetHeaderContainer();
@@ -2149,7 +2149,7 @@ void TCueSheetView::SetExportStopTime(uint32 theTime)
 //	Set fParent to parent
 //
 
-void TCueSheetView::SetParent(TCueSheetWindow *parent)
+void TCueSheetView::SetParent(TCueSheetWindow* parent)
 {
 	fParent = parent;
 }

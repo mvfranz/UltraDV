@@ -37,7 +37,7 @@
 //
 //
 
-TMarkerCue::TMarkerCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) :
+TMarkerCue::TMarkerCue(int16 id, TCueChannel* parent, BRect bounds, BPoint point,  long startTime) :
 	TCueView(id, parent, bounds, point, startTime, "MarkerCue")
 {
 
@@ -52,7 +52,7 @@ TMarkerCue::TMarkerCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point
 //
 //	Construct from a CueChunk
 
-TMarkerCue::TMarkerCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) :
+TMarkerCue::TMarkerCue(BaseCueChunk* theChunk, TCueChannel* parent, BRect bounds) :
 	TCueView(theChunk, parent, bounds, "MarkerCue")
 {
 	// Perform default initialization
@@ -67,7 +67,7 @@ TMarkerCue::TMarkerCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds
 //	Construct from a BMessage
 //
 
-TMarkerCue::TMarkerCue(BMessage *theMessage) : TCueView(theMessage)
+TMarkerCue::TMarkerCue(BMessage* theMessage) : TCueView(theMessage)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -142,7 +142,7 @@ void TMarkerCue::Init()
 //	Init from BaseCueChunk
 //
 
-void TMarkerCue::Init(BaseCueChunk *theChunk)
+void TMarkerCue::Init(BaseCueChunk* theChunk)
 {
 	TCueView::Init(theChunk);
 }
@@ -158,7 +158,7 @@ void TMarkerCue::Init(BaseCueChunk *theChunk)
 //
 //
 
-BArchivable *TMarkerCue::Instantiate(BMessage *archive)
+BArchivable* TMarkerCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TMarkerCue") )
 		return new TMarkerCue(archive);
@@ -173,7 +173,7 @@ BArchivable *TMarkerCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TMarkerCue::Archive(BMessage *data, bool deep) const
+status_t TMarkerCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -249,7 +249,7 @@ void TMarkerCue::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TMarkerCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TMarkerCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Pass up to parent
 	TCueView::MouseMoved(where, code, a_message);
@@ -274,7 +274,7 @@ void TMarkerCue::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TMarkerCue::KeyDown(const char *bytes, int32 numBytes)
+void TMarkerCue::KeyDown(const char* bytes, int32 numBytes)
 {
 	TCueView::KeyDown(bytes, numBytes);
 }
@@ -288,7 +288,7 @@ void TMarkerCue::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TMarkerCue::KeyUp(const char *bytes, int32 numBytes)
+void TMarkerCue::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -299,7 +299,7 @@ void TMarkerCue::KeyUp(const char *bytes, int32 numBytes)
 //
 //	Receive messages
 //
-void TMarkerCue::MessageReceived(BMessage *message)
+void TMarkerCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -334,7 +334,7 @@ void TMarkerCue::OpenEditor()
 
 void TMarkerCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = NULL;
+	BBitmap* cueIcon = NULL;
 
 	cueIcon = GetCicnFromResource("MarkerCue");
 

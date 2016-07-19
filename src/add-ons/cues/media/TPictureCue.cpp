@@ -60,7 +60,7 @@
 //
 //
 
-TPictureCue::TPictureCue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime) :
+TPictureCue::TPictureCue(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime) :
 	TVisualCue(id, parent, bounds, startTime, "PictureCue")
 {
 	// Load picture file
@@ -74,7 +74,7 @@ TPictureCue::TPictureCue(int16 id, TCueChannel *parent, BRect bounds, uint32 sta
 //
 //	Construct from an entry_ref
 
-TPictureCue::TPictureCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect bounds, uint32 startTime) :
+TPictureCue::TPictureCue(entry_ref &theRef, int16 id,  TCueChannel* parent, BRect bounds, uint32 startTime) :
 	TVisualCue(theRef, id, parent, bounds, startTime, "PictureCue")
 {
 	// Init member variables
@@ -97,7 +97,7 @@ TPictureCue::TPictureCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRec
 	// First, make sure we have a valid ref
 	if ( IsImage(nodeInfo) ) {
 		//      Create a BMessage that includes the entry_ref to send to our open routine
-		BMessage *theMessage = new BMessage(B_REFS_RECEIVED);
+		BMessage* theMessage = new BMessage(B_REFS_RECEIVED);
 		theMessage->AddRef("refs", &theRef);
 
 		bool retVal = LoadPictureFile(theMessage);
@@ -121,7 +121,7 @@ TPictureCue::TPictureCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRec
 //	Construct from a BMessage
 //
 
-TPictureCue::TPictureCue(BMessage *theMessage) : TVisualCue(theMessage)
+TPictureCue::TPictureCue(BMessage* theMessage) : TVisualCue(theMessage)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -137,7 +137,7 @@ TPictureCue::TPictureCue(BMessage *theMessage) : TVisualCue(theMessage)
 	//	Load in bitmap
 
 	//      Create a BMessage that includes the entry_ref to send to our open routine
-	BMessage *fileMessage = new BMessage(B_REFS_RECEIVED);
+	BMessage* fileMessage = new BMessage(B_REFS_RECEIVED);
 	theMessage->AddRef("refs", &fFileRef);
 
 	bool retVal = LoadPictureFile(fileMessage);
@@ -208,7 +208,7 @@ void TPictureCue::Init()
 	if (fChannel->IsExpanded()) {
 		fIsExpanded = false;
 		Expand();
-	} else   {
+	} else {
 		fIsExpanded = true;
 		Contract();
 	}
@@ -225,7 +225,7 @@ void TPictureCue::Init()
 //
 //
 
-BArchivable *TPictureCue::Instantiate(BMessage *archive)
+BArchivable* TPictureCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TPictureCue") )
 		return new TPictureCue(archive);
@@ -240,7 +240,7 @@ BArchivable *TPictureCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TPictureCue::Archive(BMessage *data, bool deep) const
+status_t TPictureCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -296,9 +296,9 @@ void TPictureCue::RenderBitmapData()
 		//	If we are here, the effect must be a VisualEffect
 		for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 			//	Get the effects in the list
-			TCueEffectView *effectView = (TCueEffectView *)fEffectsList->ItemAt(index);
+			TCueEffectView* effectView = (TCueEffectView*)fEffectsList->ItemAt(index);
 			if (effectView) {
-				TVisualEffect *effect = (TVisualEffect *)effectView->Effect();
+				TVisualEffect* effect = (TVisualEffect*)effectView->Effect();
 
 				//	Setup transformation bitmap buffer
 				if (fTransformBitmap) {
@@ -369,7 +369,7 @@ void TPictureCue::RenderBitmapData()
 //	be simplified sometime.
 //
 
-void TPictureCue::CompositeBitmapToStage(BBitmap *srcBitmap)
+void TPictureCue::CompositeBitmapToStage(BBitmap* srcBitmap)
 {
 	/*// Get stage offscreen for analysis
 	   BBitmap *offscreen = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->GetStageView()->GetOffscreenBitmap();
@@ -543,7 +543,7 @@ void TPictureCue::CompositeBitmapToStage(BBitmap *srcBitmap)
 //
 //
 
-void TPictureCue::MessageReceived(BMessage *message)
+void TPictureCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -585,14 +585,14 @@ void TPictureCue::ShowPanel()
 
 	//      Create messenger to send panel messages to our channel.  We cannot send it to
 	//  ourself as we are not part of the view heirarchy.
-	BMessenger *messenger = new BMessenger( fChannel,  ((MuseumApp *)be_app)->GetCueSheet());
+	BMessenger* messenger = new BMessenger( fChannel,  ((MuseumApp*)be_app)->GetCueSheet());
 
 	// Create message containing pointer to ourself
-	BMessage *message = new BMessage();
+	BMessage* message = new BMessage();
 	message->AddPointer("TheCue", this);
 
 	// Create a RefFilter for an "image" type
-	TRefFilter *refFilter = new TRefFilter(kImageFilter);
+	TRefFilter* refFilter = new TRefFilter(kImageFilter);
 
 	// Construct a file panel and set it to modal
 	fPanel = new BFilePanel( B_OPEN_PANEL, messenger, NULL, B_FILE_NODE, false, message, refFilter, true, true );
@@ -628,7 +628,7 @@ void TPictureCue::HidePanel()
 {
 	if(fPanel) {
 		// Clean up any RefFilters
-		TRefFilter *theFilter = static_cast<TRefFilter *>(fPanel->RefFilter() );
+		TRefFilter* theFilter = static_cast<TRefFilter*>(fPanel->RefFilter() );
 		if (theFilter)
 			delete theFilter;
 
@@ -648,7 +648,7 @@ void TPictureCue::HidePanel()
 //	that can be classified as DATA_BITMAP and DATA_PICTURE
 //
 
-bool TPictureCue::LoadPictureFile(BMessage *message)
+bool TPictureCue::LoadPictureFile(BMessage* message)
 {
 
 	status_t myErr;
@@ -671,7 +671,7 @@ bool TPictureCue::LoadPictureFile(BMessage *message)
 	translator_info info;
 
 	// Get application translator
-	BTranslatorRoster *theTranslator = ((MuseumApp *)be_app)->GetTranslator();
+	BTranslatorRoster* theTranslator = ((MuseumApp*)be_app)->GetTranslator();
 
 	// We got an attribute.
 	if (B_OK <= fFile->ReadAttr("BEOS:TYPE", B_STRING_TYPE, 0, mimeStr, B_FILE_NAME_LENGTH) )
@@ -769,7 +769,7 @@ void TPictureCue::OpenEditor()
 			fEditor->Show();
 			fEditor->Activate(true);
 		}
-	} else   {
+	} else {
 		BRect bounds(50, 50, 350, 350);
 		fEditorOpen = true;
 		fEditor = new TPictureCueEditor(bounds, this);
@@ -877,7 +877,7 @@ void TPictureCue::HandlePlayback(uint32 theTime)
 
 void TPictureCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = GetAppIcons()->fPictureUpIcon;
+	BBitmap* cueIcon = GetAppIcons()->fPictureUpIcon;
 
 	if (cueIcon) {
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
@@ -900,7 +900,7 @@ void TPictureCue::LoadCueIcon()
 //	NULL, return the data for the current time
 //
 
-BBitmap *TPictureCue::GetBitmap(uint32 theTime)
+BBitmap* TPictureCue::GetBitmap(uint32 theTime)
 {
 	// Return modified bitmap if we have created it
 	if (fTransformBitmap)

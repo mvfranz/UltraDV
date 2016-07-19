@@ -20,7 +20,7 @@
 
 
 //	Local Constants
-const char *TRevealBottomRightTopLeftIn::kTransitionName = "RevealBottomRightTopLeftIn";
+const char* TRevealBottomRightTopLeftIn::kTransitionName = "RevealBottomRightTopLeftIn";
 
 //---------------------------------------------------------------------
 //	Constructor/destructor
@@ -86,7 +86,7 @@ string TRevealBottomRightTopLeftIn::Name() const
 //      zero if nothing need be done.
 //
 
-BBitmap *TRevealBottomRightTopLeftIn::TransformBitmap(uint32 time, const BBitmap *source,
+BBitmap* TRevealBottomRightTopLeftIn::TransformBitmap(uint32 time, const BBitmap* source,
                                                       const TCuePosition &registration, DisplayQuality quality)
 {
 	//	Only create offscreen at first pass
@@ -138,7 +138,7 @@ BBitmap *TRevealBottomRightTopLeftIn::TransformBitmap(uint32 time, const BBitmap
 	}
 
 	//	Clone offscreen
-	BBitmap *newBitmap = CloneBitmap(*fOffscreenBitmap);
+	BBitmap* newBitmap = CloneBitmap(*fOffscreenBitmap);
 	ASSERT(newBitmap);
 
 	return newBitmap;

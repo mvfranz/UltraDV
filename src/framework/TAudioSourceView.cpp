@@ -41,7 +41,7 @@
 //
 //
 
-TAudioSourceView::TAudioSourceView(BMessage *archive) : BView(archive)
+TAudioSourceView::TAudioSourceView(BMessage* archive) : BView(archive)
 {
 	// Perform default initialization
 	Init();
@@ -60,12 +60,12 @@ void TAudioSourceView::Init()
 	SetViewColor(kBeGrey);
 
 	// Locate view items
-	fDeviceMenuField        = (BMenuField *)FindView("DeviceMenuField");
-	fInputMenuField         = (BMenuField *)FindView("InputMenuField");
-	fVolumeBox                      = (BBox *)FindView("VolumeBox");
+	fDeviceMenuField        = (BMenuField*)FindView("DeviceMenuField");
+	fInputMenuField         = (BMenuField*)FindView("InputMenuField");
+	fVolumeBox                      = (BBox*)FindView("VolumeBox");
 
 	// Set up Input Slider
-	BView *inputView = (BView *)FindView("InputView");
+	BView* inputView = (BView*)FindView("InputView");
 	fInputSlider = new TLevelsSlider(inputView->Frame(), kAudioInputSlider);
 	fVolumeBox->AddChild(fInputSlider);
 	fVolumeBox->RemoveChild(inputView);
@@ -73,7 +73,7 @@ void TAudioSourceView::Init()
 	fInputSlider->Show();
 
 	// Set up Output Slider
-	BView *outputView = (BView *)FindView("OutputView");
+	BView* outputView = (BView*)FindView("OutputView");
 	fOutputSlider = new TLevelsSlider(outputView->Frame(), kAudioOutputSlider);
 	fVolumeBox->AddChild(fOutputSlider);
 	fVolumeBox->RemoveChild(outputView);
@@ -81,20 +81,20 @@ void TAudioSourceView::Init()
 	fOutputSlider->Show();
 
 	// Set up level indicator
-	BView   *levelsView = (BMenuField *)FindView("LevelsView");
+	BView* levelsView = (BMenuField*)FindView("LevelsView");
 	fAudioLevelsView = new TAudioLevelsView(levelsView->Frame());
 	fVolumeBox->RemoveChild(levelsView);
 	delete levelsView;
 	fVolumeBox->AddChild(fAudioLevelsView);
 
 	// Setup menus
-	BMenu *theMenu;
+	BMenu* theMenu;
 
 	// Setup Device menu
 	theMenu = fDeviceMenuField->Menu();
 	if (theMenu) {
 		// None
-		BMenuItem *defaultItem = new BMenuItem("Default", new BMessage(DEVICE_DEFAULT_MSG) );
+		BMenuItem* defaultItem = new BMenuItem("Default", new BMessage(DEVICE_DEFAULT_MSG) );
 		theMenu->AddItem(defaultItem);
 
 		// Select the first item
@@ -105,23 +105,23 @@ void TAudioSourceView::Init()
 	theMenu = fInputMenuField->Menu();
 	if (theMenu) {
 		// None
-		BMenuItem *noneItem = new BMenuItem("None", new BMessage(SOURCE_NONE_MSG) );
+		BMenuItem* noneItem = new BMenuItem("None", new BMessage(SOURCE_NONE_MSG) );
 		theMenu->AddItem(noneItem);
 
 		// Mic
-		BMenuItem *micItem = new BMenuItem("Mic", new BMessage(SOURCE_MIC_MSG) );
+		BMenuItem* micItem = new BMenuItem("Mic", new BMessage(SOURCE_MIC_MSG) );
 		theMenu->AddItem(micItem);
 
 		// Mic+20bB
-		BMenuItem *mic20Item = new BMenuItem("Mic+20bB", new BMessage(SOURCE_MIC_20_MSG) );
+		BMenuItem* mic20Item = new BMenuItem("Mic+20bB", new BMessage(SOURCE_MIC_20_MSG) );
 		theMenu->AddItem(mic20Item);
 
 		// CD
-		BMenuItem *cdItem = new BMenuItem("CD", new BMessage(SOURCE_CD_MSG) );
+		BMenuItem* cdItem = new BMenuItem("CD", new BMessage(SOURCE_CD_MSG) );
 		theMenu->AddItem(cdItem);
 
 		// Aux
-		BMenuItem *auxItem = new BMenuItem("Aux", new BMessage(SOURCE_AUX_MSG) );
+		BMenuItem* auxItem = new BMenuItem("Aux", new BMessage(SOURCE_AUX_MSG) );
 		theMenu->AddItem(auxItem);
 
 		// Select the current input item
@@ -165,7 +165,7 @@ void TAudioSourceView::Init()
 //
 //
 
-void TAudioSourceView::MessageReceived(BMessage *theMessage)
+void TAudioSourceView::MessageReceived(BMessage* theMessage)
 {
 	switch( theMessage->what)
 	{
@@ -230,28 +230,28 @@ void TAudioSourceView::AttachedToWindow()
 	//
 
 	// Device Menu
-	BMenu *deviceMenu = fDeviceMenuField->Menu();
+	BMenu* deviceMenu = fDeviceMenuField->Menu();
 	if (deviceMenu) {
-		BMenuItem *defaultItem = deviceMenu->FindItem(DEVICE_DEFAULT_MSG);
+		BMenuItem* defaultItem = deviceMenu->FindItem(DEVICE_DEFAULT_MSG);
 		defaultItem->SetTarget(this);
 	}
 
 	// Input Menu
-	BMenu *inputMenu = fInputMenuField->Menu();
+	BMenu* inputMenu = fInputMenuField->Menu();
 	if (inputMenu) {
-		BMenuItem *noneItem = inputMenu->FindItem(SOURCE_NONE_MSG);
+		BMenuItem* noneItem = inputMenu->FindItem(SOURCE_NONE_MSG);
 		noneItem->SetTarget(this);
 
-		BMenuItem *micItem = inputMenu->FindItem(SOURCE_MIC_MSG);
+		BMenuItem* micItem = inputMenu->FindItem(SOURCE_MIC_MSG);
 		micItem->SetTarget(this);
 
-		BMenuItem *mic20Item = inputMenu->FindItem(SOURCE_MIC_20_MSG);
+		BMenuItem* mic20Item = inputMenu->FindItem(SOURCE_MIC_20_MSG);
 		mic20Item->SetTarget(this);
 
-		BMenuItem *cdItem = inputMenu->FindItem(SOURCE_CD_MSG);
+		BMenuItem* cdItem = inputMenu->FindItem(SOURCE_CD_MSG);
 		cdItem->SetTarget(this);
 
-		BMenuItem *auxItem = inputMenu->FindItem(SOURCE_AUX_MSG);
+		BMenuItem* auxItem = inputMenu->FindItem(SOURCE_AUX_MSG);
 		auxItem->SetTarget(this);
 
 		// Select the current input item

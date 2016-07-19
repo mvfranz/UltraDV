@@ -167,7 +167,7 @@ port_id TTimePalette::ControlPort() const
 //	No an addon.  Return NULL
 //
 
-BMediaAddOn     *TTimePalette::AddOn(int32 * internal_id) const
+BMediaAddOn* TTimePalette::AddOn(int32* internal_id) const
 {
 	return NULL;
 }
@@ -183,9 +183,9 @@ BMediaAddOn     *TTimePalette::AddOn(int32 * internal_id) const
 //	Static service thread function
 //
 
-status_t TTimePalette::service_routine(void * data)
+status_t TTimePalette::service_routine(void* data)
 {
-	((TTimePalette *)data)->ServiceRoutine();
+	((TTimePalette*)data)->ServiceRoutine();
 
 	return 0;
 }
@@ -232,9 +232,9 @@ void TTimePalette::ServiceRoutine()
 //	Static run thread function
 //
 
-status_t TTimePalette::run_routine(void *data)
+status_t TTimePalette::run_routine(void* data)
 {
-	((TTimePalette *)data)->RunRoutine();
+	((TTimePalette*)data)->RunRoutine();
 	return 0;
 }
 

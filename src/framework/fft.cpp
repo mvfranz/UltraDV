@@ -4,7 +4,7 @@
 #include "fft.h"
 #define TWOPI (float)(2*3.14159265358979323846264338327950)
 
-void mul_hermitian(float *a, float *b, int n)
+void mul_hermitian(float* a, float* b, int n)
 {
 	int k, half = n>>1;
 	register float c, d, e, f;
@@ -21,7 +21,7 @@ void mul_hermitian(float *a, float *b, int n)
 	}
 }
 
-void scramble_real(float *x, int n)
+void scramble_real(float* x, int n)
 {
 	register int i,j,k;
 	float tmp;
@@ -41,9 +41,9 @@ void scramble_real(float *x, int n)
 	}
 }
 
-void fft_real_to_hermitian(float *z, int n)
+void fft_real_to_hermitian(float* z, int n)
 {
-	float *x, e, a, a3, sqrthalf = 1/(float)sqrt(2.0);
+	float* x, e, a, a3, sqrthalf = 1/(float)sqrt(2.0);
 	float cc1, ss1, cc3, ss3;
 	int nn = n>>1, is, id, i0, i1, i2, i3, i4, i5, i6, i7, i8;
 	float t1, t2, t3, t4, t5, t6;
@@ -144,9 +144,9 @@ void fft_real_to_hermitian(float *z, int n)
 	}
 }
 
-void fftinv_hermitian_to_real(float *z, int n)
+void fftinv_hermitian_to_real(float* z, int n)
 {
-	float *x, e, a, a3, sqrthalf = 1/(float)sqrt(2.0);
+	float* x, e, a, a3, sqrthalf = 1/(float)sqrt(2.0);
 	float cc1, ss1, cc3, ss3;
 	int nn = n>>1, is, id, i0, i1, i2, i3, i4, i5, i6, i7, i8;
 	float t1, t2, t3, t4, t5;

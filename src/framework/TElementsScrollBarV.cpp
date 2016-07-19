@@ -35,7 +35,7 @@
 //
 //
 
-TElementsScrollBarV::TElementsScrollBarV(BRect frame, const char *name, TElementsSorter *target, float min, float max ) :
+TElementsScrollBarV::TElementsScrollBarV(BRect frame, const char* name, TElementsSorter* target, float min, float max ) :
 	BScrollBar( frame, name, NULL, min, max, B_VERTICAL)
 {
 	fParent = target;
@@ -101,7 +101,7 @@ void TElementsScrollBarV::ValueChanged(float newValue)
 		bool negative;
 
 		// Construct message to send parent
-		BMessage *theMessage = new BMessage(SORTER_SCROLL_V_MSG);
+		BMessage* theMessage = new BMessage(SORTER_SCROLL_V_MSG);
 
 		if (newValue > fLastValue) {
 			negative = false;
@@ -109,7 +109,7 @@ void TElementsScrollBarV::ValueChanged(float newValue)
 			theMessage->AddFloat("NewValue", newValue);
 			theMessage->AddFloat("LastValue", fLastValue);
 			fParent->MessageReceived(theMessage);
-		} else   {
+		} else {
 			negative = true;
 			theMessage->AddBool("Negative", negative);
 			theMessage->AddFloat("NewValue", newValue);
@@ -131,7 +131,7 @@ void TElementsScrollBarV::ValueChanged(float newValue)
 //
 //
 
-void TElementsScrollBarV::MessageReceived(BMessage *msg)
+void TElementsScrollBarV::MessageReceived(BMessage* msg)
 {
 }
 
@@ -165,7 +165,7 @@ void TElementsScrollBarV::MouseUp(BPoint pt)
 //
 //
 
-void TElementsScrollBarV::MouseMoved(BPoint pt, uint32 code, const BMessage *msg)
+void TElementsScrollBarV::MouseMoved(BPoint pt, uint32 code, const BMessage* msg)
 {
 }
 

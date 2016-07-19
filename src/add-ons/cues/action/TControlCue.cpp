@@ -37,7 +37,7 @@
 //
 //
 
-TControlCue::TControlCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) :
+TControlCue::TControlCue(int16 id, TCueChannel* parent, BRect bounds, BPoint point,  long startTime) :
 	TCueView(id, parent, bounds, point, startTime, "ControlCue")
 {
 	// Perform default initialization
@@ -51,7 +51,7 @@ TControlCue::TControlCue(int16 id, TCueChannel *parent, BRect bounds, BPoint poi
 //
 //	Construct from a CueChunk
 
-TControlCue::TControlCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) :
+TControlCue::TControlCue(BaseCueChunk* theChunk, TCueChannel* parent, BRect bounds) :
 	TCueView(theChunk, parent, bounds, "ControlCue")
 {
 	// Perform default initialization
@@ -66,7 +66,7 @@ TControlCue::TControlCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect boun
 //	Construct from a BMessage
 //
 
-TControlCue::TControlCue(BMessage *theMessage) : TCueView(theMessage)
+TControlCue::TControlCue(BMessage* theMessage) : TCueView(theMessage)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -149,7 +149,7 @@ void TControlCue::Init()
 //	Init from BaseCueChunk
 //
 
-void TControlCue::Init(BaseCueChunk *theChunk)
+void TControlCue::Init(BaseCueChunk* theChunk)
 {
 	TCueView::Init(theChunk);
 }
@@ -165,7 +165,7 @@ void TControlCue::Init(BaseCueChunk *theChunk)
 //
 //
 
-BArchivable *TControlCue::Instantiate(BMessage *archive)
+BArchivable* TControlCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TControlCue") )
 		return new TControlCue(archive);
@@ -180,7 +180,7 @@ BArchivable *TControlCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TControlCue::Archive(BMessage *data, bool deep) const
+status_t TControlCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -256,7 +256,7 @@ void TControlCue::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TControlCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TControlCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Pass up to parent
 	TCueView::MouseMoved(where, code, a_message);
@@ -281,7 +281,7 @@ void TControlCue::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TControlCue::KeyDown(const char *bytes, int32 numBytes)
+void TControlCue::KeyDown(const char* bytes, int32 numBytes)
 {
 	TCueView::KeyDown(bytes, numBytes);
 }
@@ -295,7 +295,7 @@ void TControlCue::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TControlCue::KeyUp(const char *bytes, int32 numBytes)
+void TControlCue::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -306,7 +306,7 @@ void TControlCue::KeyUp(const char *bytes, int32 numBytes)
 //
 //	Receive messages
 //
-void TControlCue::MessageReceived(BMessage *message)
+void TControlCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -340,7 +340,7 @@ void TControlCue::OpenEditor()
 
 void TControlCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = NULL;
+	BBitmap* cueIcon = NULL;
 
 	cueIcon = GetCicnFromResource("ControlCue");
 

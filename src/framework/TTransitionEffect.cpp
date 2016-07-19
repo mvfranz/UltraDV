@@ -111,7 +111,7 @@ string TTransitionEffect::Name() const
 //      The base class version returns nothing.
 //
 
-const BBitmap *TTransitionEffect::CueIcon(bool up) const
+const BBitmap* TTransitionEffect::CueIcon(bool up) const
 {
 	return NULL;
 }
@@ -124,7 +124,7 @@ const BBitmap *TTransitionEffect::CueIcon(bool up) const
 //	Have the subclass create a new effect state
 //
 
-TEffectState *TTransitionEffect::NewEffectState() const
+TEffectState* TTransitionEffect::NewEffectState() const
 {
 	return NULL;
 }
@@ -156,7 +156,7 @@ void TTransitionEffect::Interpolate(TKeyFrameIterator kf) const
 //      zero if nothing need be done.
 //
 
-BBitmap *TTransitionEffect::TransformBitmap(uint32 time, const BBitmap* source,
+BBitmap* TTransitionEffect::TransformBitmap(uint32 time, const BBitmap* source,
                                             const TCuePosition& registration, DisplayQuality quality)
 {
 	return 0;
@@ -207,7 +207,7 @@ void TTransitionEffect::InitOffscreen(BRect offRect)
 //	Return descriptive icon for transition
 //
 
-BBitmap *TTransitionEffect::Icon()
+BBitmap* TTransitionEffect::Icon()
 {
 	return NULL;
 }

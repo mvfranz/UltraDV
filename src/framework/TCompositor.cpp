@@ -278,7 +278,7 @@ rgb_color ConvertPixelRGB16to32(uint16 srcPixel)
 //	Scale a bitmap using bilinear interpolation to create new pixels
 //
 
-void ScaleBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, bool center)
+void ScaleBitmapNN(BBitmap* srcBitmap, BBitmap* dstBitmap, BPoint scaleBy, bool center)
 {
 	uint32 sourceX, sourceY;        //      X and Y address of source pixel
 
@@ -291,8 +291,8 @@ void ScaleBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, bool 
 	const int32 dstBPR      = dstBitmap->BytesPerRow();
 
 	//      Get pointer to bitmap bits for pointer arithmatic
-	uchar *srcBits = (uchar *)srcBitmap->Bits();
-	uchar *dstBits = (uchar *)dstBitmap->Bits();
+	uchar* srcBits = (uchar*)srcBitmap->Bits();
+	uchar* dstBits = (uchar*)dstBitmap->Bits();
 
 	//	Increment pointers to proper offset within the bitmap
 	const int32 srcIncrement = GetBitmapPixelSize(srcBitmap->ColorSpace());
@@ -301,7 +301,7 @@ void ScaleBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, bool 
 	//	Perform scale by inverse mapping from destination to source
 	//
 
-	uchar   *dstRowPtr, *srcRowPtr;
+	uchar* dstRowPtr, * srcRowPtr;
 	uint32 srcYBPR;
 
 	//      Traverse through bitmap scanlines
@@ -326,7 +326,7 @@ void ScaleBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, bool 
 			//srcRowPtr += sourceX * srcIncrement;
 
 			//	Copy data
-			*(uint32 *)dstRowPtr = *(uint32 *)srcRowPtr;
+			*(uint32*)dstRowPtr = *(uint32*)srcRowPtr;
 
 			//	Increment line pointer
 			dstRowPtr += dstIncrement;
@@ -345,7 +345,7 @@ void ScaleBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, bool 
 //	Scale a bitmap using bilinear interpolation to create new pixels
 //
 
-void ScaleBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, bool center)
+void ScaleBitmapBilinear(BBitmap* srcBitmap, BBitmap* dstBitmap, BPoint scaleBy, bool center)
 {
 	//      Calculate destination dimensions
 	const int32 dstColumns  = dstBitmap->Bounds().Width();
@@ -356,8 +356,8 @@ void ScaleBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 	const int32 dstBPR      = dstBitmap->BytesPerRow();
 
 	//      Get pointer to bitmap bits for pointer arithmatic
-	uchar *srcBits = (uchar *)srcBitmap->Bits();
-	uchar *dstBits = (uchar *)dstBitmap->Bits();
+	uchar* srcBits = (uchar*)srcBitmap->Bits();
+	uchar* dstBits = (uchar*)dstBitmap->Bits();
 
 	//	Increment pointers to proper offset within the bitmap
 	const int32 srcIncrement = GetBitmapPixelSize(srcBitmap->ColorSpace());
@@ -368,10 +368,10 @@ void ScaleBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 	float scaleByYInv = 1.0 / scaleBy.y;
 
 	//	Allocate buffer for storing the values of m and m1
-	RowValues       *row, *rowPtr;
+	RowValues* row, * rowPtr;
 	float xFloat;
 
-	row = rowPtr = (RowValues *)malloc( sizeof(RowValues) * dstColumns);
+	row = rowPtr = (RowValues*)malloc( sizeof(RowValues) * dstColumns);
 
 	//	Fill the buffer once, to be used for each row
 	for (int32 index = 0; index < dstColumns; index++) {
@@ -388,7 +388,7 @@ void ScaleBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 	float srcYFloat;
 	int32 srcXInt, srcYInt;
 	float p,q, p1, q1;
-	uchar   *dstRowPtr, *srcPixel01, *srcPixel02;
+	uchar* dstRowPtr, * srcPixel01, * srcPixel02;
 	uint32 pixelA, pixelB, pixelC, pixelD;
 	uint32 newPixel;
 	float newPixelBlue, newPixelGreen, newPixelRed;
@@ -421,10 +421,10 @@ void ScaleBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 			p1 = rowPtr->p1;
 
 			//	Get the four pixels to interpolate from
-			pixelA = *(uint32 *)(srcPixel01 + (srcXInt * srcIncrement));
-			pixelB = *(uint32 *)(srcPixel01 + (srcXInt * srcIncrement) + srcIncrement);
-			pixelC = *(uint32 *)(srcPixel02 + (srcXInt * srcIncrement));
-			pixelD = *(uint32 *)(srcPixel02 + (srcXInt * srcIncrement) + srcIncrement);
+			pixelA = *(uint32*)(srcPixel01 + (srcXInt * srcIncrement));
+			pixelB = *(uint32*)(srcPixel01 + (srcXInt * srcIncrement) + srcIncrement);
+			pixelC = *(uint32*)(srcPixel02 + (srcXInt * srcIncrement));
+			pixelD = *(uint32*)(srcPixel02 + (srcXInt * srcIncrement) + srcIncrement);
 
 			//	Seperate pixel components
 			pixelABlue      = (pixelA & kBlueMask)  >> 24;
@@ -465,7 +465,7 @@ void ScaleBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 			newPixel = addPixBlue | addPixGreen | addPixRed;
 
 			//	Assign to destination
-			*(uint32 *)dstRowPtr = newPixel;
+			*(uint32*)dstRowPtr = newPixel;
 
 			//	Increment destination
 			dstRowPtr += dstIncrement;
@@ -492,9 +492,9 @@ void ScaleBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 #define HALF    (1<<11)
 #define EDGE    2               //	Two edge pixels at boundary - no write
 
-void ScaleBitmapBicubic(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, bool center)
+void ScaleBitmapBicubic(BBitmap* srcBitmap, BBitmap* dstBitmap, BPoint scaleBy, bool center)
 {
-	CubicTable      *hTablePtr, *vTablePtr;
+	CubicTable* hTablePtr, * vTablePtr;
 
 	//	Calculate source dimensions
 	const int32 srcColumns  = srcBitmap->Bounds().Width();
@@ -506,23 +506,23 @@ void ScaleBitmapBicubic(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, 
 
 	//	Allocate intermediate image
 	BRect interArea(0, 0, dstColumns, srcRows);
-	BBitmap *interBitmap = new BBitmap(interArea, B_RGB32);
+	BBitmap* interBitmap = new BBitmap(interArea, B_RGB32);
 
 	//      Set up bytes per row constants
 	const int32 srcBPR  = srcBitmap->BytesPerRow();
 	const int32 dstBPR      = dstBitmap->BytesPerRow();
 
 	//      Get pointer to bitmap bits for pointer arithmatic
-	uchar *srcBits = (uchar *)srcBitmap->Bits();
-	uchar *dstBits = (uchar *)dstBitmap->Bits();
+	uchar* srcBits = (uchar*)srcBitmap->Bits();
+	uchar* dstBits = (uchar*)dstBitmap->Bits();
 
 	//	Increment pointers to proper offset within the bitmap
 	const int32 srcIncrement = GetBitmapPixelSize(srcBitmap->ColorSpace());
 	const int32 dstIncrement = GetBitmapPixelSize(dstBitmap->ColorSpace());
 
 	//	Allocate memory for tables
-	hTablePtr = (CubicTable *) malloc( sizeof(CubicTable) * dstColumns );
-	vTablePtr = (CubicTable *) malloc( sizeof(CubicTable) * dstRows );
+	hTablePtr = (CubicTable*) malloc( sizeof(CubicTable) * dstColumns );
+	vTablePtr = (CubicTable*) malloc( sizeof(CubicTable) * dstRows );
 
 	//	Compute table for one row
 	CreateBicubicTableH(srcColumns, dstColumns, hTablePtr);
@@ -550,7 +550,7 @@ void ScaleBitmapBicubic(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, 
 //	Scale horizontally using a table of filters
 //
 
-void ScaleBitmapBicubicH(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, CubicTable *hTable)
+void ScaleBitmapBicubicH(BBitmap* srcBitmap, BBitmap* dstBitmap, BPoint scaleBy, CubicTable* hTable)
 {
 	//	Calculate source dimensions
 	const int32 srcColumns  = srcBitmap->Bounds().Width();
@@ -565,8 +565,8 @@ void ScaleBitmapBicubicH(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 	const int32 dstBPR      = dstBitmap->BytesPerRow();
 
 	//      Get pointer to bitmap bits for pointer arithmatic
-	uchar *srcBits = (uchar *)srcBitmap->Bits();
-	uchar *dstBits = (uchar *)dstBitmap->Bits();
+	uchar* srcBits = (uchar*)srcBitmap->Bits();
+	uchar* dstBits = (uchar*)dstBitmap->Bits();
 
 	//	Increment pointers to proper offset within the bitmap
 	const int32 srcIncrement = GetBitmapPixelSize(srcBitmap->ColorSpace());
@@ -576,8 +576,8 @@ void ScaleBitmapBicubicH(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 	//	Perform horizontal scale
 	//
 
-	CubicTable      *tablePtr;
-	uchar           *srcRowPtr, *dstRowPtr;
+	CubicTable* tablePtr;
+	uchar* srcRowPtr, * dstRowPtr;
 	int32 resultBlue, resultGreen, resultRed;
 	uint32 newPixel;
 	uint32 addPixBlue, addPixGreen, addPixRed;
@@ -606,11 +606,11 @@ void ScaleBitmapBicubicH(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 			srcRowPtr = srcBits + (tablePtr->srcOffset * srcIncrement);
 
 			//	Load pixels from source
-			pixel01 = *(int32 *) (srcRowPtr - src2X);
-			pixel02 = *(int32 *) (srcRowPtr - src1X);
-			pixel03 = *(int32 *) (srcRowPtr);
-			pixel04 = *(int32 *) (srcRowPtr + src1X);
-			pixel05 = *(int32 *) (srcRowPtr + src2X);
+			pixel01 = *(int32*) (srcRowPtr - src2X);
+			pixel02 = *(int32*) (srcRowPtr - src1X);
+			pixel03 = *(int32*) (srcRowPtr);
+			pixel04 = *(int32*) (srcRowPtr + src1X);
+			pixel05 = *(int32*) (srcRowPtr + src2X);
 
 			//	Compute convolution using info from table
 
@@ -676,7 +676,7 @@ void ScaleBitmapBicubicH(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 			newPixel = addPixBlue | addPixGreen | addPixRed;
 
 			//	Assign new pixel
-			*(uint32 *)dstRowPtr = newPixel;
+			*(uint32*)dstRowPtr = newPixel;
 
 			//	Increment rows and table
 			dstRowPtr += dstIncrement;
@@ -697,7 +697,7 @@ void ScaleBitmapBicubicH(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 //	Scale vertically using a table of filters
 //
 
-void ScaleBitmapBicubicV(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy, CubicTable *vTable)
+void ScaleBitmapBicubicV(BBitmap* srcBitmap, BBitmap* dstBitmap, BPoint scaleBy, CubicTable* vTable)
 {
 	//	Calculate source dimensions
 	const int32 srcColumns  = srcBitmap->Bounds().Width();
@@ -712,8 +712,8 @@ void ScaleBitmapBicubicV(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 	const int32 dstBPR      = dstBitmap->BytesPerRow();
 
 	//      Get pointer to bitmap bits for pointer arithmatic
-	uchar *srcBits = (uchar *)srcBitmap->Bits();
-	uchar *dstBits = (uchar *)dstBitmap->Bits();
+	uchar* srcBits = (uchar*)srcBitmap->Bits();
+	uchar* dstBits = (uchar*)dstBitmap->Bits();
 
 	//	Increment pointers to proper offset within the bitmap
 	const int32 srcIncrement = GetBitmapPixelSize(srcBitmap->ColorSpace());
@@ -727,8 +727,8 @@ void ScaleBitmapBicubicV(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 	const int32 src1Y = 1 * srcBPR;
 	const int32 src2Y = 2 * srcBPR;
 
-	CubicTable      *tablePtr;
-	uchar           *srcRowPtr, *dstRowPtr;
+	CubicTable* tablePtr;
+	uchar* srcRowPtr, * dstRowPtr;
 	int32 resultBlue, resultGreen, resultRed;
 	uint32 newPixel;
 	uint32 addPixBlue, addPixGreen, addPixRed;
@@ -753,11 +753,11 @@ void ScaleBitmapBicubicV(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 			srcRowPtr = srcBits + tablePtr->srcOffset * srcBPR;
 
 			//	Load pixels from source
-			pixel01 = *(int32 *) (srcRowPtr - src2Y);
-			pixel02 = *(int32 *) (srcRowPtr - src1Y);
-			pixel03 = *(int32 *) (srcRowPtr);
-			pixel04 = *(int32 *) (srcRowPtr + src1Y);
-			pixel05 = *(int32 *) (srcRowPtr + src2Y);
+			pixel01 = *(int32*) (srcRowPtr - src2Y);
+			pixel02 = *(int32*) (srcRowPtr - src1Y);
+			pixel03 = *(int32*) (srcRowPtr);
+			pixel04 = *(int32*) (srcRowPtr + src1Y);
+			pixel05 = *(int32*) (srcRowPtr + src2Y);
 
 			//	Compute convolution using info from table
 
@@ -823,7 +823,7 @@ void ScaleBitmapBicubicV(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 			newPixel = addPixBlue | addPixGreen | addPixRed;
 
 			//	Assign new pixel
-			*(uint32 *)dstRowPtr = newPixel;
+			*(uint32*)dstRowPtr = newPixel;
 
 			//	Increment rows and table
 			dstRowPtr += dstBPR;
@@ -843,7 +843,7 @@ void ScaleBitmapBicubicV(BBitmap *srcBitmap, BBitmap *dstBitmap, BPoint scaleBy,
 //	Create filter table for horizontal interpolation
 //
 
-void CreateBicubicTableH( const uint32 srcColumns, const uint32 dstColumns, CubicTable *tableH)
+void CreateBicubicTableH( const uint32 srcColumns, const uint32 dstColumns, CubicTable* tableH)
 {
 	float factorXInv;
 	float xSrcFloat;                                //      Dst column mapped back to source
@@ -880,7 +880,7 @@ void CreateBicubicTableH( const uint32 srcColumns, const uint32 dstColumns, Cubi
 //	Create filter table for vertical interpolation
 //
 
-void CreateBicubicTableV( const uint32 srcRows, const uint32 dstRows, CubicTable *tableV)
+void CreateBicubicTableV( const uint32 srcRows, const uint32 dstRows, CubicTable* tableV)
 {
 	float factorYInv;
 	float ySrcFloat;                                //      Dst row mapped back to source
@@ -945,7 +945,7 @@ float GetCubicFloat(float x)
 //	Rotate using the nearest neighbor algorithm
 //
 
-void RotateBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees, BPoint originPt)
+void RotateBitmapNN(BBitmap* srcBitmap, BBitmap* dstBitmap, float degrees, BPoint originPt)
 {
 
 	//	Calculate rotation angle
@@ -973,8 +973,8 @@ void RotateBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees, BPoin
 	const int32 dstIncrement = GetBitmapPixelSize(dstBitmap->ColorSpace());
 
 	//      Get pointer to bitmap bits for pointer arithmatic
-	uchar *srcBits = (uchar *)srcBitmap->Bits();
-	uchar *dstBits = (uchar *)dstBitmap->Bits();
+	uchar* srcBits = (uchar*)srcBitmap->Bits();
+	uchar* dstBits = (uchar*)dstBitmap->Bits();
 
 	//      Set up bytes per row constants
 	const int32 srcBPR  = srcBitmap->BytesPerRow();
@@ -994,7 +994,7 @@ void RotateBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees, BPoin
 	float floatX, floatY;
 	int32 intX, intY;
 
-	uchar   *dstRowPtr;
+	uchar* dstRowPtr;
 
 	dstRowPtr = dstBits;
 
@@ -1014,7 +1014,7 @@ void RotateBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees, BPoin
 
 			//	Clip the source pixel
 			if ( (intX >= 0) && (intX < srcColumns) && (intY >= 0) && (intY < srcRows) ) {
-				*(uint32 *)dstRowPtr = *(uint32 *)(srcBits + (intY * srcBPR) + (intX * srcIncrement) );
+				*(uint32*)dstRowPtr = *(uint32*)(srcBits + (intY * srcBPR) + (intX * srcIncrement) );
 			}
 
 			//	Increment
@@ -1034,7 +1034,7 @@ void RotateBitmapNN(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees, BPoin
 //	Rotate using bilinear interpolation
 //
 
-void RotateBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees, BPoint originPt)
+void RotateBitmapBilinear(BBitmap* srcBitmap, BBitmap* dstBitmap, float degrees, BPoint originPt)
 {
 
 	//	Calculate rotation angle
@@ -1062,8 +1062,8 @@ void RotateBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees,
 	const int32 dstIncrement = GetBitmapPixelSize(dstBitmap->ColorSpace());
 
 	//      Get pointer to bitmap bits for pointer arithmatic
-	uchar *srcBits = (uchar *)srcBitmap->Bits();
-	uchar *dstBits = (uchar *)dstBitmap->Bits();
+	uchar* srcBits = (uchar*)srcBitmap->Bits();
+	uchar* dstBits = (uchar*)dstBitmap->Bits();
 
 	//      Set up bytes per row constants
 	const int32 srcBPR  = srcBitmap->BytesPerRow();
@@ -1083,7 +1083,7 @@ void RotateBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees,
 	float floatX, floatY;
 	int32 intX, intY;
 
-	uchar   *dstRowPtr;
+	uchar* dstRowPtr;
 
 	dstRowPtr = dstBits;
 
@@ -1103,7 +1103,7 @@ void RotateBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees,
 
 			//	Clip the source pixel
 			if ( (intX >= 0) && (intX < srcColumns) && (intY >= 0) && (intY < srcRows) ) {
-				*(uint32 *)dstRowPtr = *(uint32 *)(srcBits + (intY * srcBPR) + (intX * srcIncrement) );
+				*(uint32*)dstRowPtr = *(uint32*)(srcBits + (intY * srcBPR) + (intX * srcIncrement) );
 			}
 
 			//	Increment
@@ -1125,7 +1125,7 @@ void RotateBitmapBilinear(BBitmap *srcBitmap, BBitmap *dstBitmap, float degrees,
 //	Mirror bitmap horizontaly
 //
 
-BBitmap *MirrorBitmapH(BBitmap *srcBitmap, bool center)
+BBitmap* MirrorBitmapH(BBitmap* srcBitmap, bool center)
 {
 	//	Calculate source dimensions
 	const int32 srcColumns  = srcBitmap->Bounds().Width();
@@ -1133,14 +1133,14 @@ BBitmap *MirrorBitmapH(BBitmap *srcBitmap, bool center)
 
 	//      Create bitmap to be returned by function.  Calculate new size based on scaled coodinates
 	BRect newArea(0, 0, srcColumns, srcRows);
-	BBitmap *dstBitmap = new BBitmap(newArea, B_RGB32);
+	BBitmap* dstBitmap = new BBitmap(newArea, B_RGB32);
 
 	//      Set up bytes per row constants
 	const int32 srcBPR  = srcBitmap->BytesPerRow();
 
 	//      Get pointer to bitmap bits for pointer arithmatic
-	uchar *srcBits = (uchar *)srcBitmap->Bits();
-	uchar *dstBits = (uchar *)dstBitmap->Bits();
+	uchar* srcBits = (uchar*)srcBitmap->Bits();
+	uchar* dstBits = (uchar*)dstBitmap->Bits();
 
 	//	Increment pointers to proper offset within the bitmap
 	const int32 srcIncrement = GetBitmapPixelSize(srcBitmap->ColorSpace());
@@ -1150,7 +1150,7 @@ BBitmap *MirrorBitmapH(BBitmap *srcBitmap, bool center)
 	//	we can use srcRows, srcBPR, etc.
 	//
 
-	uchar   *dstRowPtr, *srcRowPtr;
+	uchar* dstRowPtr, * srcRowPtr;
 
 	//      Traverse through bitmap scanlines
 	for( uint32 y = 0; y < srcRows; y++) {
@@ -1163,7 +1163,7 @@ BBitmap *MirrorBitmapH(BBitmap *srcBitmap, bool center)
 
 		//      Traverse through pixel rows.  Traverse the visible width of the image
 		for( uint32 x = 0; x < srcColumns; x++) {
-			*(uint32 *)dstRowPtr = *(uint32 *)srcRowPtr;
+			*(uint32*)dstRowPtr = *(uint32*)srcRowPtr;
 
 			//	Increment line pointers
 			srcRowPtr += srcIncrement;
@@ -1186,7 +1186,7 @@ BBitmap *MirrorBitmapH(BBitmap *srcBitmap, bool center)
 //	Mirror bitmap vertically
 //
 
-BBitmap *MirrorBitmapV(BBitmap *srcBitmap, bool center)
+BBitmap* MirrorBitmapV(BBitmap* srcBitmap, bool center)
 {
 	//	Calculate source dimensions
 	const int32 srcColumns  = srcBitmap->Bounds().Width();
@@ -1194,14 +1194,14 @@ BBitmap *MirrorBitmapV(BBitmap *srcBitmap, bool center)
 
 	//      Create bitmap to be returned by function.  Calculate new size based on scaled coodinates
 	BRect newArea(0, 0, srcColumns, srcRows);
-	BBitmap *dstBitmap = new BBitmap(newArea, B_RGB32);
+	BBitmap* dstBitmap = new BBitmap(newArea, B_RGB32);
 
 	//      Set up bytes per row constants
 	const int32 srcBPR  = srcBitmap->BytesPerRow();
 
 	//      Get pointer to bitmap bits for pointer arithmatic
-	uchar *srcBits = (uchar *)srcBitmap->Bits();
-	uchar *dstBits = (uchar *)dstBitmap->Bits();
+	uchar* srcBits = (uchar*)srcBitmap->Bits();
+	uchar* dstBits = (uchar*)dstBitmap->Bits();
 
 	//	Increment pointers to proper offset within the bitmap
 	const int32 srcIncrement = GetBitmapPixelSize(srcBitmap->ColorSpace());
@@ -1211,7 +1211,7 @@ BBitmap *MirrorBitmapV(BBitmap *srcBitmap, bool center)
 	//	we can use srcRows, srcBPR, etc.
 	//
 
-	uchar   *dstRowPtr, *srcRowPtr;
+	uchar* dstRowPtr, * srcRowPtr;
 
 	//      Traverse through bitmap scanlines
 	for( uint32 y = 0; y < srcRows; y++) {
@@ -1223,7 +1223,7 @@ BBitmap *MirrorBitmapV(BBitmap *srcBitmap, bool center)
 
 		//      Traverse through pixel rows.  Traverse the visible width of the image
 		for( uint32 x = 0; x < srcColumns; x++) {
-			*(uint32 *)dstRowPtr = *(uint32 *)srcRowPtr;
+			*(uint32*)dstRowPtr = *(uint32*)srcRowPtr;
 
 			//	Increment line pointers
 			srcRowPtr += srcIncrement;
@@ -1323,7 +1323,7 @@ BPoint PlotLine(BPoint startPt, BPoint endPt, int32 numSteps)
 			s -= m;
 			startPt.x += d1x;
 			startPt.y += d1y;
-		} else   {
+		} else {
 			startPt.x += d2x;
 			startPt.y += d2y;
 		}

@@ -39,7 +39,7 @@
 //
 //
 
-TSoloButton::TSoloButton(TCueChannel *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TSoloButton::TSoloButton(TCueChannel* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fChannel = parent;
@@ -65,7 +65,7 @@ TSoloButton::TSoloButton(TCueChannel *parent, BRect bounds, const char *name, BB
 //
 //
 
-TSoloButton::TSoloButton(BMessage *data) : BView(data)
+TSoloButton::TSoloButton(BMessage* data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
@@ -108,7 +108,7 @@ void TSoloButton::Init()
 //
 //
 
-BArchivable *TSoloButton::Instantiate(BMessage *archive)
+BArchivable* TSoloButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TSoloButton") )
@@ -123,7 +123,7 @@ BArchivable *TSoloButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TSoloButton::Archive(BMessage *data, bool deep) const
+status_t TSoloButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -185,10 +185,10 @@ void TSoloButton::MouseDown(BPoint where)
 	Invalidate();
 
 	// Create and send message
-	BMessage *soloMessage = new BMessage(SOLO_BUTTON_MSG);
+	BMessage* soloMessage = new BMessage(SOLO_BUTTON_MSG);
 	short id = fChannel->GetID();
 	soloMessage->AddInt16("ChannelID", fChannel->GetID());
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(soloMessage, fChannel);
+	(static_cast<MuseumApp*>(be_app)->GetCueSheet())->PostMessage(soloMessage, fChannel);
 	delete soloMessage;
 
 	// Set flag that we have been clicked. When the MouseUp method
@@ -230,7 +230,7 @@ void TSoloButton::AttachedToWindow()
 {
 	if (fHandler == NULL) {
 		// Set target
-		fHandler = (TCueSheetWindow *)Window();
+		fHandler = (TCueSheetWindow*)Window();
 
 	}
 	//	Pass up to parent
@@ -246,7 +246,7 @@ void TSoloButton::AttachedToWindow()
 //
 //
 
-void TSoloButton::SetChannel(TCueChannel *channel)
+void TSoloButton::SetChannel(TCueChannel* channel)
 {
 	fChannel = channel;
 }

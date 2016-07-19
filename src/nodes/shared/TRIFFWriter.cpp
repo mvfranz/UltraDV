@@ -31,7 +31,7 @@
 //
 //
 
-TRIFFWriter::TRIFFWriter(BFile *file)
+TRIFFWriter::TRIFFWriter(BFile* file)
 {
 
 	//	Save pointer to file
@@ -417,7 +417,7 @@ bool TRIFFWriter::WriteavihChunk()
 //
 //
 
-bool TRIFFWriter::WriteStreamHeader(AVIStreamHeader *streamHeader)
+bool TRIFFWriter::WriteStreamHeader(AVIStreamHeader* streamHeader)
 {
 	#ifdef DEBUG
 	printf("Writing strh chunk...\n");
@@ -462,7 +462,7 @@ bool TRIFFWriter::WriteStreamHeader(AVIStreamHeader *streamHeader)
 //		--	'vids'	(Video)
 //
 
-bool TRIFFWriter::WriteStreamFormat(AVIStreamHeader *streamHeader)
+bool TRIFFWriter::WriteStreamFormat(AVIStreamHeader* streamHeader)
 {
 	#ifdef DEBUG
 	printf("Writing strf...\n");
@@ -696,7 +696,7 @@ bool TRIFFWriter::WriteAVIHeader()
 //
 //
 
-bool TRIFFWriter::Write00DCChunk(uint32 chunkID, uint32 length, void *data)
+bool TRIFFWriter::Write00DCChunk(uint32 chunkID, uint32 length, void* data)
 {
 	bool retVal = true;
 
@@ -754,7 +754,7 @@ bool TRIFFWriter::Init00WBChunk(uint32 chunkID, uint32 length)
 //	Compressed waveform data
 //
 
-bool TRIFFWriter::Write00WBChunk(uint32 chunkID, uint32 length, void *data)
+bool TRIFFWriter::Write00WBChunk(uint32 chunkID, uint32 length, void* data)
 {
 	bool retVal = true;
 

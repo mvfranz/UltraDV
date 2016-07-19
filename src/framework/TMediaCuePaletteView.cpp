@@ -60,9 +60,9 @@ TMediaCuePaletteView::~TMediaCuePaletteView()
 
 void TMediaCuePaletteView::Init()
 {
-	BMessage        *theMessage = NULL;
-	BBitmap         *offBitmap;
-	BBitmap         *onBitmap;
+	BMessage* theMessage = NULL;
+	BBitmap* offBitmap;
+	BBitmap* onBitmap;
 
 	// Set view background color
 	SetViewColor(kBlueGrey);

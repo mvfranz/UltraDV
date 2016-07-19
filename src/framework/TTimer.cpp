@@ -31,7 +31,7 @@ int32 Timer(void* data);
 //
 //
 
-TTimer::TTimer(BHandler *theTarget, BMessage *theMessage, uint32 theInterval)
+TTimer::TTimer(BHandler* theTarget, BMessage* theMessage, uint32 theInterval)
 {
 	fTarget         = theTarget;
 	fMessage        = theMessage;
@@ -40,7 +40,7 @@ TTimer::TTimer(BHandler *theTarget, BMessage *theMessage, uint32 theInterval)
 	fMessenger = new BMessenger(fTarget);
 
 	// Spawn timer thread
-	fTimerThread = spawn_thread( start_timer, "GenericTimer", B_NORMAL_PRIORITY, (void *)this);
+	fTimerThread = spawn_thread( start_timer, "GenericTimer", B_NORMAL_PRIORITY, (void*)this);
 
 	if( fTimerThread != B_NO_MORE_THREADS && fTimerThread != B_NO_MEMORY) {
 		resume_thread(fTimerThread);
@@ -82,12 +82,12 @@ int32 TTimer::Timer()
 
 		// Is window still alive?  If not, exit.
 		if (fMessenger->LockTarget()) {
-			BLooper *myLooper;
-			BHandler *myHandler = fMessenger->Target(&myLooper);
+			BLooper* myLooper;
+			BHandler* myHandler = fMessenger->Target(&myLooper);
 			myLooper->Unlock();
 
 			fMessenger->SendMessage(fMessage);
-		} else   {
+		} else {
 			printf("LockTarget failure...\n");
 			return 0;
 		}
@@ -104,9 +104,9 @@ int32 TTimer::Timer()
 //	Static thread function
 //
 
-int32 TTimer::start_timer(void *arg)
+int32 TTimer::start_timer(void* arg)
 {
-	TTimer *obj = (TTimer *)arg;
+	TTimer* obj = (TTimer*)arg;
 	return(obj->Timer() );
 }
 

@@ -28,7 +28,7 @@
 //
 //
 
-TAppleVideoCodec::TAppleVideoCodec(TRIFFReader *reader) : TVideoCodec(reader)
+TAppleVideoCodec::TAppleVideoCodec(TRIFFReader* reader) : TVideoCodec(reader)
 {
 
 }
@@ -64,7 +64,7 @@ void TAppleVideoCodec::Init()
 //	Return text description of codec
 //
 
-bool TAppleVideoCodec::GetDescription(char *descText)
+bool TAppleVideoCodec::GetDescription(char* descText)
 {
 	return false;
 }
@@ -77,16 +77,16 @@ bool TAppleVideoCodec::GetDescription(char *descText)
 //	Decode frame passed in buffer
 //
 
-bool TAppleVideoCodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 dstDepth)
+bool TAppleVideoCodec::DecodeFrame(AVIVideoFrame* theFrame, void* dstBuffer, uint16 dstDepth)
 {
 	//	Get file and save position
-	BFile *theFile = m_Reader->GetFile();
+	BFile* theFile = m_Reader->GetFile();
 	off_t position = theFile->Position();
 	theFile->Seek(0, SEEK_SET);
 
 	//	Allocate buffer to contain frame data
 	const int32 bufSize = theFrame->Length;
-	void *srcBuffer = malloc(bufSize);
+	void* srcBuffer = malloc(bufSize);
 	ASSERT(srcBuffer);
 
 	//	Load bits from current frame
@@ -111,16 +111,16 @@ bool TAppleVideoCodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uin
 //	Decode Apple Quicktime Video "Road Pizza" Algorithm 'rpza'
 //
 
-bool TAppleVideoCodec::DecodeAppleVideo(uint32 width, uint32 height, void *srcBuffer, int32 bufSize, void *dstBuffer)
+bool TAppleVideoCodec::DecodeAppleVideo(uint32 width, uint32 height, void* srcBuffer, int32 bufSize, void* dstBuffer)
 {
 	uint32 changed;
 	int32 x, y, length, row_inc, blk_inc;
 	int32 minX, maxX, minY, maxY;
-	uchar   *im0, *im1, *im2, *im3;
+	uchar* im0, * im1, * im2, * im3;
 
 	//	Setup pointers
-	uchar *srcPtr   = (uchar *)srcBuffer;
-	uchar *dstPtr   = (uchar *)dstBuffer;
+	uchar* srcPtr   = (uchar*)srcBuffer;
+	uchar* dstPtr   = (uchar*)dstBuffer;
 
 	// skip 0xe1 byte
 	srcPtr++;
@@ -181,10 +181,10 @@ bool TAppleVideoCodec::DecodeAppleVideo(uint32 width, uint32 height, void *srcBu
 
 			while(skip--) {
 
-				uint32 *ip0 = (uint32 *)im0;
-				uint32 *ip1 = (uint32 *)im1;
-				uint32 *ip2 = (uint32 *)im2;
-				uint32 *ip3 = (uint32 *)im3;
+				uint32* ip0 = (uint32*)im0;
+				uint32* ip1 = (uint32*)im1;
+				uint32* ip2 = (uint32*)im2;
+				uint32* ip3 = (uint32*)im3;
 				AppleVideoC1(ip0,ip1,ip2,ip3,color,uint32);
 
 				QuickTimeMinMaxCheck(x, y, minX, minY, maxX, maxY);
@@ -208,7 +208,7 @@ bool TAppleVideoCodec::DecodeAppleVideo(uint32 width, uint32 height, void *srcBu
 				cA = (*srcPtr++) << 8;
 				cA |= *srcPtr++;
 				length -= 2;
-			} else   {
+			} else {
 				cA = (code << 8) | *srcPtr++;
 				length -= 1;
 			}
@@ -219,7 +219,7 @@ bool TAppleVideoCodec::DecodeAppleVideo(uint32 width, uint32 height, void *srcBu
 
 			//	Sixteen color block
 			if ( (code < 0x80) && ((cB & 0x8000)==0) ) {
-				uint32 i,d,*clr,c[16];
+				uint32 i,d,* clr,c[16];
 				uchar r[16],g[16],b[16];
 
 				clr = c;
@@ -236,10 +236,10 @@ bool TAppleVideoCodec::DecodeAppleVideo(uint32 width, uint32 height, void *srcBu
 
 				clr = c;
 
-				uint32 *ip0 = (uint32 *)im0;
-				uint32 *ip1 = (uint32 *)im1;
-				uint32 *ip2 = (uint32 *)im2;
-				uint32 *ip3 = (uint32 *)im3;
+				uint32* ip0 = (uint32*)im0;
+				uint32* ip1 = (uint32*)im1;
+				uint32* ip2 = (uint32*)im2;
+				uint32* ip3 = (uint32*)im3;
 				AppleVideoColor16(ip0, ip1, ip2, ip3, clr, uint32);
 
 				QuickTimeMinMaxCheck(x,y,minX,minY,maxX,maxY);
@@ -264,10 +264,10 @@ bool TAppleVideoCodec::DecodeAppleVideo(uint32 width, uint32 height, void *srcBu
 					msk3 = *srcPtr++;
 					length -= 4;
 
-					uint32 *ip0= (uint32 *)im0;
-					uint32 *ip1= (uint32 *)im1;
-					uint32 *ip2= (uint32 *)im2;
-					uint32 *ip3= (uint32 *)im3;
+					uint32* ip0= (uint32*)im0;
+					uint32* ip1= (uint32*)im1;
+					uint32* ip2= (uint32*)im2;
+					uint32* ip3= (uint32*)im3;
 
 					AppleVideoC4(ip0, c, msk0, uint32);
 					AppleVideoC4(ip1, c, msk1, uint32);
@@ -326,7 +326,7 @@ uint32 TAppleVideoCodec::QuickTimeGetColor(uint32 color)
 //
 //
 
-void TAppleVideoCodec::QuickTimeGetRGBColor( uchar *r, uchar *g, uchar *b, uint32 color)
+void TAppleVideoCodec::QuickTimeGetRGBColor( uchar* r, uchar* g, uchar* b, uint32 color)
 {
 	uint32 ra, ga, ba;
 
@@ -350,7 +350,7 @@ void TAppleVideoCodec::QuickTimeGetRGBColor( uchar *r, uchar *g, uchar *b, uint3
 //
 //
 
-void TAppleVideoCodec::QuickTimeGetAVColors(uint32 *c, uint32 cA, uint32 cB)
+void TAppleVideoCodec::QuickTimeGetAVColors(uint32* c, uint32 cA, uint32 cB)
 {
 	uint32 clr,rA,gA,bA,rB,gB,bB,r0,g0,b0,r1,g1,b1;
 	uint32 rA5,gA5,bA5,rB5,gB5,bB5;
@@ -437,7 +437,7 @@ void TAppleVideoCodec::QuickTimeGetAVColors(uint32 *c, uint32 cA, uint32 cB)
 //
 //
 
-void TAppleVideoCodec::QuickTimeGetAVRGBColors(uint32 *c, uchar *r, uchar *g, uchar *b, uint32 cA, uint32 cB)
+void TAppleVideoCodec::QuickTimeGetAVRGBColors(uint32* c, uchar* r, uchar* g, uchar* b, uint32 cA, uint32 cB)
 {
 	uint32 rA, gA, bA, rB, gB, bB, ra, ga, ba;
 

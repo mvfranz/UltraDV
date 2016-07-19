@@ -29,7 +29,7 @@
 //
 //
 
-TMSRLECodec::TMSRLECodec(TRIFFReader *reader) : TVideoCodec(reader)
+TMSRLECodec::TMSRLECodec(TRIFFReader* reader) : TVideoCodec(reader)
 {
 
 }
@@ -64,7 +64,7 @@ void TMSRLECodec::Init()
 //	Return text description of codec
 //
 
-bool TMSRLECodec::GetDescription(char *descText)
+bool TMSRLECodec::GetDescription(char* descText)
 {
 	return false;
 }
@@ -77,16 +77,16 @@ bool TMSRLECodec::GetDescription(char *descText)
 //	Decode frame passed in buffer
 //
 
-bool TMSRLECodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 dstDepth)
+bool TMSRLECodec::DecodeFrame(AVIVideoFrame* theFrame, void* dstBuffer, uint16 dstDepth)
 {
 	//	Get file and save position
-	BFile *theFile = m_Reader->GetFile();
+	BFile* theFile = m_Reader->GetFile();
 	off_t position = theFile->Position();
 	theFile->Seek(0, SEEK_SET);
 
 	//	Allocate buffer to contain frame data
 	const int32 bufSize = theFrame->Length;
-	void *srcBuffer = malloc(bufSize);
+	void* srcBuffer = malloc(bufSize);
 	ASSERT(srcBuffer);
 
 	//	Load bits from current frame
@@ -110,7 +110,7 @@ bool TMSRLECodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 d
 //	Decode Microsoft RLE and return BBitmap
 //
 
-bool TMSRLECodec::DecodeMicrosoftRLE(uint32 width, uint32 height, void *buffer, int32 bufSize, void *dstBuffer)
+bool TMSRLECodec::DecodeMicrosoftRLE(uint32 width, uint32 height, void* buffer, int32 bufSize, void* dstBuffer)
 {
 	uint32 opcode, mod;
 	int32 x, y, minX, maxX, minY, maxY;
@@ -125,8 +125,8 @@ bool TMSRLECodec::DecodeMicrosoftRLE(uint32 width, uint32 height, void *buffer, 
 	y               = height - 1;
 
 	//	Setup pointers
-	uchar *bufPtr = (uchar *)buffer;
-	uchar *bits = (uchar *)dstBuffer;
+	uchar* bufPtr = (uchar*)buffer;
+	uchar* bits = (uchar*)dstBuffer;
 
 	while( (y >= 0) && (dataSize > 0) ) {
 		mod      = *bufPtr++;
@@ -188,7 +188,7 @@ bool TMSRLECodec::DecodeMicrosoftRLE(uint32 width, uint32 height, void *buffer, 
 				if (x < minX)
 					minX = x;
 
-				uchar *iptr = (uchar *)(bits + (y * width + x) );
+				uchar* iptr = (uchar*)(bits + (y * width + x) );
 
 				while(cnt--) {
 					if (x >= width) {
@@ -196,7 +196,7 @@ bool TMSRLECodec::DecodeMicrosoftRLE(uint32 width, uint32 height, void *buffer, 
 						minX = 0;
 						x -= width;
 						y--;
-						iptr = (uchar *)(bits + y * width + x);
+						iptr = (uchar*)(bits + y * width + x);
 					}
 
 					*iptr++ = (uchar)(*bufPtr++);
@@ -239,7 +239,7 @@ bool TMSRLECodec::DecodeMicrosoftRLE(uint32 width, uint32 height, void *buffer, 
 			color = opcode;
 
 
-			uint32 *iptr = (uint32 *)(bits + ((y * width + x)<<2) );
+			uint32* iptr = (uint32*)(bits + ((y * width + x)<<2) );
 			uint32 clr = (uint32)color;
 
 			while(cnt--) {
@@ -248,7 +248,7 @@ bool TMSRLECodec::DecodeMicrosoftRLE(uint32 width, uint32 height, void *buffer, 
 					minX = 0;
 					x -= width;
 					y--;
-					iptr = (uint32 *)(bits + y * width + x);
+					iptr = (uint32*)(bits + y * width + x);
 				}
 				*iptr++ = clr;
 				x++;

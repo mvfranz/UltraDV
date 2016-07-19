@@ -28,7 +28,7 @@
 //
 //
 
-TBitmapView::TBitmapView(BRect area, char *name, BBitmap *bitmap, bool own,  uint32 resizeFlags) : BView(area, name, resizeFlags, B_WILL_DRAW)
+TBitmapView::TBitmapView(BRect area, char* name, BBitmap* bitmap, bool own,  uint32 resizeFlags) : BView(area, name, resizeFlags, B_WILL_DRAW)
 {
 	fBitmap         = bitmap;
 	fOwnership = own;

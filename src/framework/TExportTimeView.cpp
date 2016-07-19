@@ -38,7 +38,7 @@
 //
 //
 
-TExportTimeView::TExportTimeView(TCueSheetWindow *parent, BRect bounds) : BView(bounds, "ExportTimeView", B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TExportTimeView::TExportTimeView(TCueSheetWindow* parent, BRect bounds) : BView(bounds, "ExportTimeView", B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fCueSheetWindow = parent;
@@ -53,7 +53,7 @@ TExportTimeView::TExportTimeView(TCueSheetWindow *parent, BRect bounds) : BView(
 //
 //
 
-TExportTimeView::TExportTimeView(BMessage *data) : BView(data)
+TExportTimeView::TExportTimeView(BMessage* data) : BView(data)
 {
 	fCueSheetWindow = NULL;
 
@@ -94,7 +94,7 @@ void TExportTimeView::Init()
 //
 //
 
-BArchivable *TExportTimeView::Instantiate(BMessage *archive)
+BArchivable* TExportTimeView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TExportTimeView") )
@@ -110,7 +110,7 @@ BArchivable *TExportTimeView::Instantiate(BMessage *archive)
 //
 //
 
-status_t TExportTimeView::Archive(BMessage *data, bool deep) const
+status_t TExportTimeView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -300,7 +300,7 @@ void TExportTimeView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TExportTimeView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TExportTimeView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -360,7 +360,7 @@ void TExportTimeView::MouseMoved( BPoint where, uint32 code, const BMessage *a_m
 void TExportTimeView::AttachedToWindow()
 {
 	if(fCueSheetWindow == NULL) {
-		fCueSheetWindow = (TCueSheetWindow *)Window();
+		fCueSheetWindow = (TCueSheetWindow*)Window();
 	}
 
 	//	PAss up to parent
@@ -375,7 +375,7 @@ void TExportTimeView::AttachedToWindow()
 //---------------------------------------------------------------------
 //
 //
-void TExportTimeView::SetParent(TCueSheetWindow *parent)
+void TExportTimeView::SetParent(TCueSheetWindow* parent)
 {
 	fCueSheetWindow = parent;
 }

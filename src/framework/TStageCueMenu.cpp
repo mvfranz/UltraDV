@@ -36,20 +36,20 @@
 //
 //
 
-TStageCueMenu::TStageCueMenu(TVisualCue *target) : BPopUpMenu("StageCueMenu")
+TStageCueMenu::TStageCueMenu(TVisualCue* target) : BPopUpMenu("StageCueMenu")
 {
-	BMessage *menuMessage;
+	BMessage* menuMessage;
 
 	fCue = target;
 
 	// Create "Lock/Unlock"
 	menuMessage = new BMessage(STAGE_CUE_LOCK_MSG);
-	BMenuItem       *lockItem = new BMenuItem("Lock", menuMessage);
+	BMenuItem* lockItem = new BMenuItem("Lock", menuMessage);
 	AddItem(lockItem);
 
 	// Create "Show/Hide"
 	menuMessage = new BMessage(STAGE_CUE_HIDE_MSG);
-	BMenuItem       *hideItem = new BMenuItem("Hide", menuMessage);
+	BMenuItem* hideItem = new BMenuItem("Hide", menuMessage);
 	AddItem(hideItem);
 
 	// Seperator01
@@ -60,28 +60,28 @@ TStageCueMenu::TStageCueMenu(TVisualCue *target) : BPopUpMenu("StageCueMenu")
 	//	Create Quality submenu
 	//
 
-	BMenu *qualitySubMenu = new BMenu("Quality");
-	BMenuItem *qualitySubMenuItem = new BMenuItem(qualitySubMenu);
+	BMenu* qualitySubMenu = new BMenu("Quality");
+	BMenuItem* qualitySubMenuItem = new BMenuItem(qualitySubMenu);
 	AddItem(qualitySubMenuItem);
 
 	// Create "Wireframe"
 	menuMessage = new BMessage(STAGE_CUE_WIREFRAME_MSG);
-	BMenuItem       *wireItem = new BMenuItem("Wireframe", menuMessage);
+	BMenuItem* wireItem = new BMenuItem("Wireframe", menuMessage);
 	qualitySubMenu->AddItem(wireItem);
 
 	// Create "Preview"
 	menuMessage = new BMessage(STAGE_CUE_PREVIEW_MSG);
-	BMenuItem       *previewItem = new BMenuItem("Preview", menuMessage);
+	BMenuItem* previewItem = new BMenuItem("Preview", menuMessage);
 	qualitySubMenu->AddItem(previewItem);
 
 	// Create "Better"
 	menuMessage = new BMessage(STAGE_CUE_BETTER_MSG);
-	BMenuItem       *betterItem = new BMenuItem("Better", menuMessage);
+	BMenuItem* betterItem = new BMenuItem("Better", menuMessage);
 	qualitySubMenu->AddItem(betterItem);
 
 	// Create "Best"
 	menuMessage = new BMessage(STAGE_CUE_BEST_MSG);
-	BMenuItem       *bestItem = new BMenuItem("Best", menuMessage);
+	BMenuItem* bestItem = new BMenuItem("Best", menuMessage);
 	qualitySubMenu->AddItem(bestItem);
 
 	//	Check current display quality setting
@@ -111,49 +111,49 @@ TStageCueMenu::TStageCueMenu(TVisualCue *target) : BPopUpMenu("StageCueMenu")
 	//	Create Transform submenu
 	//
 
-	BMenu *transformSubMenu = new BMenu("Transform");
-	BMenuItem *transformSubMenuItem = new BMenuItem(transformSubMenu);
+	BMenu* transformSubMenu = new BMenu("Transform");
+	BMenuItem* transformSubMenuItem = new BMenuItem(transformSubMenu);
 	AddItem(transformSubMenuItem);
 
 	// Create "Rotate..."
 	menuMessage = new BMessage(STAGE_CUE_ROTATE_MSG);
-	BMenuItem       *rotateItem = new BMenuItem("Rotation...", menuMessage);
+	BMenuItem* rotateItem = new BMenuItem("Rotation...", menuMessage);
 	transformSubMenu->AddItem(rotateItem);
 
 	// Create "Crop..."
 	menuMessage = new BMessage(STAGE_CUE_CROP_MSG);
-	BMenuItem       *cropItem = new BMenuItem("Crop...", menuMessage);
+	BMenuItem* cropItem = new BMenuItem("Crop...", menuMessage);
 	transformSubMenu->AddItem(cropItem);
 
 	// Create "Scale..."
 	menuMessage = new BMessage(STAGE_CUE_SCALE_MSG);
-	BMenuItem       *scaleItem = new BMenuItem("Scale...", menuMessage);
+	BMenuItem* scaleItem = new BMenuItem("Scale...", menuMessage);
 	transformSubMenu->AddItem(scaleItem);
 
 	// Create "Shear..."
 	menuMessage = new BMessage(STAGE_CUE_SHEAR_MSG);
-	BMenuItem       *shearItem = new BMenuItem("Shear...", menuMessage);
+	BMenuItem* shearItem = new BMenuItem("Shear...", menuMessage);
 	transformSubMenu->AddItem(shearItem);
 
 	// Create "Skew..."
 	menuMessage = new BMessage(STAGE_CUE_SKEW_MSG);
-	BMenuItem       *skewItem = new BMenuItem("Skew...", menuMessage);
+	BMenuItem* skewItem = new BMenuItem("Skew...", menuMessage);
 	transformSubMenu->AddItem(skewItem);
 
 	// Create "Perspective..."
 	menuMessage = new BMessage(STAGE_CUE_PERSP_MSG);
-	BMenuItem       *perspItem = new BMenuItem("Perspective...", menuMessage);
+	BMenuItem* perspItem = new BMenuItem("Perspective...", menuMessage);
 	transformSubMenu->AddItem(perspItem);
 
 	// Create "Mirror..."
 	menuMessage = new BMessage(STAGE_CUE_MIRROR_MSG);
-	BMenuItem       *mirrorItem = new BMenuItem("Mirror...", menuMessage);
+	BMenuItem* mirrorItem = new BMenuItem("Mirror...", menuMessage);
 	transformSubMenu->AddItem(mirrorItem);
 
 
 	// Create "Opacity..."
 	menuMessage = new BMessage(STAGE_CUE_OPACITY_MSG);
-	BMenuItem       *opacityItem = new BMenuItem("Opacity...", menuMessage);
+	BMenuItem* opacityItem = new BMenuItem("Opacity...", menuMessage);
 	AddItem(opacityItem);
 
 	// Seperator03
@@ -162,57 +162,57 @@ TStageCueMenu::TStageCueMenu(TVisualCue *target) : BPopUpMenu("StageCueMenu")
 	//	Create Draw Mode submenu
 	//
 
-	BMenu *drawModeSubMenu = new BMenu("Drawing Mode");
-	BMenuItem *drawModeSubMenuItem = new BMenuItem(drawModeSubMenu);
+	BMenu* drawModeSubMenu = new BMenu("Drawing Mode");
+	BMenuItem* drawModeSubMenuItem = new BMenuItem(drawModeSubMenu);
 	AddItem(drawModeSubMenuItem);
 
 	menuMessage = new BMessage(STAGE_CUE_COPY_MSG);
-	BMenuItem *copyItem = new BMenuItem("Copy", menuMessage);
+	BMenuItem* copyItem = new BMenuItem("Copy", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_COPY);
 	drawModeSubMenu->AddItem(copyItem);
 
 	menuMessage = new BMessage(STAGE_CUE_OVER_MSG);
-	BMenuItem *overItem = new BMenuItem("Over", menuMessage);
+	BMenuItem* overItem = new BMenuItem("Over", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_OVER);
 	drawModeSubMenu->AddItem(overItem);
 
 	menuMessage = new BMessage(STAGE_CUE_ERASE_MSG);
-	BMenuItem *eraseItem = new BMenuItem("Erase", menuMessage);
+	BMenuItem* eraseItem = new BMenuItem("Erase", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_ERASE);
 	drawModeSubMenu->AddItem(eraseItem);
 
 	menuMessage = new BMessage(STAGE_CUE_INVERT_MSG);
-	BMenuItem *invertItem = new BMenuItem("Invert", menuMessage);
+	BMenuItem* invertItem = new BMenuItem("Invert", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_INVERT);
 	drawModeSubMenu->AddItem(invertItem);
 
 	menuMessage = new BMessage(STAGE_CUE_SELECT_MSG);
-	BMenuItem *selectItem = new BMenuItem("Select", menuMessage);
+	BMenuItem* selectItem = new BMenuItem("Select", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_SELECT);
 	drawModeSubMenu->AddItem(selectItem);
 
 	menuMessage = new BMessage(STAGE_CUE_MIN_MSG);
-	BMenuItem *minItem = new BMenuItem("Min", menuMessage);
+	BMenuItem* minItem = new BMenuItem("Min", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_MIN);
 	drawModeSubMenu->AddItem(minItem);
 
 	menuMessage = new BMessage(STAGE_CUE_MAX_MSG);
-	BMenuItem *maxItem = new BMenuItem("Max", menuMessage);
+	BMenuItem* maxItem = new BMenuItem("Max", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_MAX);
 	drawModeSubMenu->AddItem(maxItem);
 
 	menuMessage = new BMessage(STAGE_CUE_ADD_MSG);
-	BMenuItem *addItem = new BMenuItem("Add", menuMessage);
+	BMenuItem* addItem = new BMenuItem("Add", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_ADD);
 	drawModeSubMenu->AddItem(addItem);
 
 	menuMessage = new BMessage(STAGE_CUE_SUBTRACT_MSG);
-	BMenuItem *subtractItem = new BMenuItem("Subtract", menuMessage);
+	BMenuItem* subtractItem = new BMenuItem("Subtract", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_SUBTRACT);
 	drawModeSubMenu->AddItem(subtractItem);
 
 	menuMessage = new BMessage(STAGE_CUE_BLEND_MSG);
-	BMenuItem *blendItem = new BMenuItem("Blend", menuMessage);
+	BMenuItem* blendItem = new BMenuItem("Blend", menuMessage);
 	menuMessage->AddInt32("DrawingMode", B_OP_BLEND);
 	drawModeSubMenu->AddItem(blendItem);
 
@@ -245,10 +245,10 @@ TStageCueMenu::~TStageCueMenu()
 
 void TStageCueMenu::UpdateMenu()
 {
-	BMenuItem *theItem;
+	BMenuItem* theItem;
 
-	BMenuItem *drawingItem = FindItem("Drawing Mode");
-	BMenu *subMenu = drawingItem->Submenu();
+	BMenuItem* drawingItem = FindItem("Drawing Mode");
+	BMenu* subMenu = drawingItem->Submenu();
 
 	// Set drawing mode check
 	switch( fCue->GetDrawingMode())

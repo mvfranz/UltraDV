@@ -36,7 +36,7 @@
 //
 //
 
-TExportText::TExportText( TExportTimeView *parent, BRect bounds, const char *name, const char *text, uint32 resizeFlags, uint32 flags) :
+TExportText::TExportText( TExportTimeView* parent, BRect bounds, const char* name, const char* text, uint32 resizeFlags, uint32 flags) :
 	BStringView(bounds, name, text, resizeFlags, flags)
 {
 	fParent = parent;
@@ -86,7 +86,7 @@ void TExportText::Draw(BRect bounds)
 //
 //
 
-void TExportText::MessageReceived(BMessage *message)
+void TExportText::MessageReceived(BMessage* message)
 {
 
 	BStringView::MessageReceived(message);

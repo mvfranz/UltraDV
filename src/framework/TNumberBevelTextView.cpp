@@ -34,7 +34,7 @@
 //
 //
 
-TNumberBevelTextView::TNumberBevelTextView( BRect bounds, char *name, uint32 resizing, BMessage *theMessage) : BView(bounds, name, resizing, B_WILL_DRAW)
+TNumberBevelTextView::TNumberBevelTextView( BRect bounds, char* name, uint32 resizing, BMessage* theMessage) : BView(bounds, name, resizing, B_WILL_DRAW)
 {
 	fMessage = theMessage;
 
@@ -99,7 +99,7 @@ void TNumberBevelTextView::Draw(BRect inRect)
 	if (fTextView->IsFocus()) {
 		SetHighColor(kBeFocusBlue);
 		StrokeRect(bounds);
-	} else   {
+	} else {
 		SetHighColor(kBeShadow);
 		startPt.Set(bounds.left, bounds.bottom);
 		endPt.Set(bounds.left, bounds.top);
@@ -172,7 +172,7 @@ void TNumberBevelTextView::MouseUp(BPoint where)
 //
 //
 
-void TNumberBevelTextView::MouseMoved(BPoint where, uint32 code, const BMessage *message)
+void TNumberBevelTextView::MouseMoved(BPoint where, uint32 code, const BMessage* message)
 {
 	BView::MouseMoved(where, code, message);
 }
@@ -184,7 +184,7 @@ void TNumberBevelTextView::MouseMoved(BPoint where, uint32 code, const BMessage 
 //
 //
 
-void TNumberBevelTextView::KeyDown(const char *bytes, int32 numBytes)
+void TNumberBevelTextView::KeyDown(const char* bytes, int32 numBytes)
 {
 	BView::KeyDown(bytes, numBytes);
 }
@@ -216,7 +216,7 @@ void TNumberBevelTextView::MakeFocus(bool focusState)
 //
 //
 
-void TNumberBevelTextView::MessageReceived(BMessage *message)
+void TNumberBevelTextView::MessageReceived(BMessage* message)
 {
 
 	switch(message->what)

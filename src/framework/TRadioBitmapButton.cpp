@@ -28,7 +28,7 @@
 
 // Variant ala BPictureButton which requires a call to SetHandler()
 TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* off,
-                                       BBitmap* on, BMessage *message, uint32 resizingMode, uint32 flags) :
+                                       BBitmap* on, BMessage* message, uint32 resizingMode, uint32 flags) :
 	// defaults
 	//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
 	//		flags = B_WILL_DRAW | B_NAVIGABLE
@@ -38,7 +38,7 @@ TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* 
 }
 
 TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* off,
-                                       BBitmap* on, BHandler *handler, BMessage *message, uint32 resizingMode,
+                                       BBitmap* on, BHandler* handler, BMessage* message, uint32 resizingMode,
                                        uint32 flags) :
 	// defaults
 	//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP

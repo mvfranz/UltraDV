@@ -20,7 +20,7 @@
 
 
 //	Local Constants
-const char *TWipeRightIn::kTransitionName = "WipeRightIn";
+const char* TWipeRightIn::kTransitionName = "WipeRightIn";
 
 //---------------------------------------------------------------------
 //	Constructor/destructor
@@ -86,7 +86,7 @@ string TWipeRightIn::Name() const
 //      zero if nothing need be done.
 //
 
-BBitmap *TWipeRightIn::TransformBitmap(uint32 time, const BBitmap *source,
+BBitmap* TWipeRightIn::TransformBitmap(uint32 time, const BBitmap* source,
                                        const TCuePosition &registration, DisplayQuality quality)
 {
 	//	Only create offscreen at first pass
@@ -139,7 +139,7 @@ BBitmap *TWipeRightIn::TransformBitmap(uint32 time, const BBitmap *source,
 	}
 
 	//	Clone offscreen
-	BBitmap *newBitmap = CloneBitmap(*fOffscreenBitmap);
+	BBitmap* newBitmap = CloneBitmap(*fOffscreenBitmap);
 	ASSERT(newBitmap);
 
 	return newBitmap;
@@ -155,7 +155,7 @@ BBitmap *TWipeRightIn::TransformBitmap(uint32 time, const BBitmap *source,
 //	Return descriptive icon for transition
 //
 
-BBitmap *TWipeRightIn::Icon()
+BBitmap* TWipeRightIn::Icon()
 {
 	//	Set up
 	return(GetAppIcons()->fWipeRight);

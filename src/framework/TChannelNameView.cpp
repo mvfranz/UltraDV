@@ -40,7 +40,7 @@
 //
 //
 
-TChannelNameView::TChannelNameView( TCueChannel *channel, BRect bounds, const char *name, const char *text, uint32 resizeFlags, uint32 flags) :
+TChannelNameView::TChannelNameView( TCueChannel* channel, BRect bounds, const char* name, const char* text, uint32 resizeFlags, uint32 flags) :
 	BStringView(bounds, name, text, resizeFlags, flags)
 {
 	fChannel = channel;
@@ -56,7 +56,7 @@ TChannelNameView::TChannelNameView( TCueChannel *channel, BRect bounds, const ch
 //
 //
 
-TChannelNameView::TChannelNameView(BMessage *message) : BStringView(message)
+TChannelNameView::TChannelNameView(BMessage* message) : BStringView(message)
 {
 }
 
@@ -81,7 +81,7 @@ TChannelNameView::~TChannelNameView()
 //
 //
 
-BArchivable *TChannelNameView::Instantiate(BMessage *archive)
+BArchivable* TChannelNameView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TChannelNameView") )
@@ -96,7 +96,7 @@ BArchivable *TChannelNameView::Instantiate(BMessage *archive)
 //
 //
 
-status_t TChannelNameView::Archive(BMessage *data, bool deep) const
+status_t TChannelNameView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -156,7 +156,7 @@ void TChannelNameView::Draw(BRect bounds)
 //
 //
 
-void TChannelNameView::MessageReceived(BMessage *message)
+void TChannelNameView::MessageReceived(BMessage* message)
 {
 
 	BStringView::MessageReceived(message);
@@ -174,14 +174,14 @@ void TChannelNameView::MessageReceived(BMessage *message)
 void TChannelNameView::MouseDown(BPoint pt)
 {
 	// Do nothing if we are playing
-	if ( ((TCueSheetWindow *)fChannel->Window())->GetPlaybackEngine()->IsPlaying() )
+	if ( ((TCueSheetWindow*)fChannel->Window())->GetPlaybackEngine()->IsPlaying() )
 		return;
 
 	// If the option key is down, allow user to change the text
 	if ( IsOptionKeyDown() ) {
 		// Create the channel name dialog from a resource archive
-		BMessage *theMessage = GetWindowFromResource("ChannelNameWindow");
-		TChannelName *theDialog = new TChannelName(theMessage, fChannel);
+		BMessage* theMessage = GetWindowFromResource("ChannelNameWindow");
+		TChannelName* theDialog = new TChannelName(theMessage, fChannel);
 		ASSERT(theDialog);
 
 		// Move it under the mouse
@@ -209,7 +209,7 @@ void TChannelNameView::MouseDown(BPoint pt)
 //
 //
 
-void TChannelNameView::SetChannel(TCueChannel *channel)
+void TChannelNameView::SetChannel(TCueChannel* channel)
 {
 	fChannel = channel;
 }

@@ -36,7 +36,7 @@
 //
 //
 
-TVideoEditorText::TVideoEditorText(BHandler *target, int32 messageID, BRect bounds, char *name, uint32 resizing) :
+TVideoEditorText::TVideoEditorText(BHandler* target, int32 messageID, BRect bounds, char* name, uint32 resizing) :
 	BView(bounds, name, resizing, B_WILL_DRAW)
 {
 
@@ -55,7 +55,7 @@ TVideoEditorText::TVideoEditorText(BHandler *target, int32 messageID, BRect boun
 //
 
 
-TVideoEditorText::TVideoEditorText(const TVideoEditorText *theText) :
+TVideoEditorText::TVideoEditorText(const TVideoEditorText* theText) :
 	BView(theText->Bounds(), theText->Name(), theText->ResizingMode(), B_WILL_DRAW)
 {
 
@@ -74,20 +74,20 @@ TVideoEditorText::TVideoEditorText(const TVideoEditorText *theText) :
 //
 
 
-TVideoEditorText::TVideoEditorText(BMessage *data) : BView(data)
+TVideoEditorText::TVideoEditorText(BMessage* data) : BView(data)
 {
 	// Get our member variables from the BMessage
 	ssize_t numBytes;
-	rgb_color       *color;
-	BFont           *font;
+	rgb_color* color;
+	BFont* font;
 
 	data->FindInt32("MessageID", &fMessageID);
 	data->FindFloat("TextSize", &fTextSize);
 
-	data->FindData("Font", B_ANY_TYPE, (const void **)&font, &numBytes);
+	data->FindData("Font", B_ANY_TYPE, (const void**)&font, &numBytes);
 	fFont = *font;
 
-	data->FindData("Color", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes);
+	data->FindData("Color", B_RGB_COLOR_TYPE, (const void**)&color, &numBytes);
 	fColor = *color;
 
 	// Set up our key stroke counter
@@ -228,7 +228,7 @@ void TVideoEditorText::Init()
 //
 //
 
-BArchivable *TVideoEditorText::Instantiate(BMessage *archive)
+BArchivable* TVideoEditorText::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TVideoEditorText") )
 		return new TVideoEditorText(archive);
@@ -242,7 +242,7 @@ BArchivable *TVideoEditorText::Instantiate(BMessage *archive)
 //
 //
 
-status_t TVideoEditorText::Archive(BMessage *data, bool deep) const
+status_t TVideoEditorText::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -408,7 +408,7 @@ void TVideoEditorText::MouseUp(BPoint where)
 //
 //
 
-void TVideoEditorText::MouseMoved(BPoint where, uint32 code, const BMessage *message)
+void TVideoEditorText::MouseMoved(BPoint where, uint32 code, const BMessage* message)
 {
 }
 
@@ -419,7 +419,7 @@ void TVideoEditorText::MouseMoved(BPoint where, uint32 code, const BMessage *mes
 //
 //
 
-void TVideoEditorText::KeyDown(const char *bytes, int32 numBytes)
+void TVideoEditorText::KeyDown(const char* bytes, int32 numBytes)
 {
 	char theChar = *bytes;
 
@@ -447,7 +447,7 @@ void TVideoEditorText::KeyDown(const char *bytes, int32 numBytes)
 			DecrementCell();
 		else
 			IncrementCell();
-	} else if ( IsArrows(theChar) )   {
+	} else if ( IsArrows(theChar) ) {
 		switch(theChar)
 		{
 		// Increment value
@@ -530,7 +530,7 @@ void TVideoEditorText::MakeFocus(bool focusState)
 //
 //
 
-void TVideoEditorText::MessageReceived(BMessage *theMessage)
+void TVideoEditorText::MessageReceived(BMessage* theMessage)
 {
 	switch( theMessage->what)
 	{
@@ -567,7 +567,7 @@ void TVideoEditorText::MessageReceived(BMessage *theMessage)
 //	Set the view BFont and Font Color
 //
 
-void TVideoEditorText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_color theColor)
+void TVideoEditorText::SetFontAndColor(BFont* theFont, uint32 properties, rgb_color theColor)
 {
 	// Update our member variables
 	fFont   = theFont;
@@ -593,7 +593,7 @@ void TVideoEditorText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_co
 //	Set the text to the Insert text
 //
 
-void TVideoEditorText::SetText(char *theText)
+void TVideoEditorText::SetText(char* theText)
 {
 	sprintf(fText, theText);
 	Looper()->Lock();

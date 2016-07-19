@@ -20,7 +20,7 @@
 #include <string.h>
 
 
-TBitmapStream::TBitmapStream( BBitmap *bitmap)
+TBitmapStream::TBitmapStream( BBitmap* bitmap)
 {
 	fMap            = bitmap;
 	fDetached       = false;
@@ -46,7 +46,7 @@ TBitmapStream::~TBitmapStream()
 }
 
 
-status_t TBitmapStream::ReadAt( off_t pos, void *buffer, size_t size)
+status_t TBitmapStream::ReadAt( off_t pos, void* buffer, size_t size)
 {
 	if (!fMap)
 		return B_ERROR;
@@ -58,14 +58,14 @@ status_t TBitmapStream::ReadAt( off_t pos, void *buffer, size_t size)
 		return B_ERROR;
 
 	long toRead;
-	void *source;
+	void* source;
 
 	if ( fPosition < sizeof(DATABitmap) ) {
 		toRead = sizeof(DATABitmap)-pos;
-		source = ((char *)&fHeader)+pos;
-	} else   {
+		source = ((char*)&fHeader)+pos;
+	} else {
 		toRead = fSize-pos;
-		source = ((char *)fMap->Bits())+fPosition-sizeof(DATABitmap);
+		source = ((char*)fMap->Bits())+fPosition-sizeof(DATABitmap);
 	}
 
 	if (toRead > size)
@@ -76,7 +76,7 @@ status_t TBitmapStream::ReadAt( off_t pos, void *buffer, size_t size)
 }
 
 
-status_t TBitmapStream::WriteAt( off_t pos, const void *        data, size_t size)
+status_t TBitmapStream::WriteAt( off_t pos, const void*        data, size_t size)
 {
 	if (!size)
 		return B_NO_ERROR;
@@ -84,15 +84,15 @@ status_t TBitmapStream::WriteAt( off_t pos, const void *        data, size_t siz
 	ssize_t written = 0;
 	while (size > 0) {
 		long toWrite;
-		void    *dest;
+		void* dest;
 
 		//	We depend on writing the header separately in detecting changes to it
 		if (pos < sizeof(DATABitmap)) {
 			toWrite = sizeof(DATABitmap)-pos;
-			dest = ((char *)&fHeader)+pos;
-		} else   {
+			dest = ((char*)&fHeader)+pos;
+		} else {
 			toWrite = fHeader.dataSize-pos+sizeof(DATABitmap);
-			dest = ((char *)fMap->Bits())+pos-sizeof(DATABitmap);
+			dest = ((char*)fMap->Bits())+pos-sizeof(DATABitmap);
 		}
 
 		if (toWrite > size)
@@ -105,7 +105,7 @@ status_t TBitmapStream::WriteAt( off_t pos, const void *        data, size_t siz
 		memcpy(dest, data, toWrite);
 		pos += toWrite;
 		written += toWrite;
-		data = ((char *)data)+toWrite;
+		data = ((char*)data)+toWrite;
 		size -= toWrite;
 		if (pos > fSize)
 			fSize = pos;

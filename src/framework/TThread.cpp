@@ -25,9 +25,9 @@
 //
 // static thread rotuine
 
-static status_t thread_mainthread(void *data)
+static status_t thread_mainthread(void* data)
 {
-	TThread *aThread = (TThread *)data;
+	TThread* aThread = (TThread*)data;
 	return aThread->ThreadMain();
 }
 
@@ -38,7 +38,7 @@ static status_t thread_mainthread(void *data)
 //
 //
 
-TThread::TThread(const char *aName, long aPriority) : fThreadID(-1)
+TThread::TThread(const char* aName, long aPriority) : fThreadID(-1)
 {
 	// spawn the TThread
 	fThreadID = spawn_thread(thread_mainthread, aName, aPriority, this);
@@ -66,7 +66,7 @@ TThread::~TThread()
 //
 //
 
-status_t TThread::GetInfo(thread_info *info)
+status_t TThread::GetInfo(thread_info* info)
 {
 	return get_thread_info(fThreadID, info);
 }
@@ -115,7 +115,7 @@ status_t TThread::Suspend()
 //
 //
 
-status_t TThread::Rename(const char *newName)
+status_t TThread::Rename(const char* newName)
 {
 	return rename_thread(fThreadID, newName);
 }
@@ -139,7 +139,7 @@ status_t TThread::SetPriority(long newPriority)
 //
 //
 
-status_t TThread::WaitForExit(long *exitStatus)
+status_t TThread::WaitForExit(long* exitStatus)
 {
 	return wait_for_thread(fThreadID, exitStatus);
 }

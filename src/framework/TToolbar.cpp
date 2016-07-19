@@ -47,7 +47,7 @@
 //
 //
 
-TToolbar::TToolbar(BRect bounds, TCueSheetWindow *parent) : BView(bounds, "TooolbarView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW)
+TToolbar::TToolbar(BRect bounds, TCueSheetWindow* parent) : BView(bounds, "TooolbarView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW)
 {
 
 	fParent = parent;
@@ -64,16 +64,16 @@ TToolbar::TToolbar(BRect bounds, TCueSheetWindow *parent) : BView(bounds, "Toool
 //	Create new toolbar from a BMessage
 //
 
-TToolbar::TToolbar(BMessage *data) : BView (data)
+TToolbar::TToolbar(BMessage* data) : BView (data)
 {
 	fParent = NULL;
 
 	//	Find child views
-	fPointerButton  = (TPointerButton *)FindView("PointerButton");
-	fContractAllButton = (TContractAllButton *)FindView("ContractAllButton");
-	fExpandAllButton        = (TExpandAllButton *)FindView("ExpandAllButton");
-	fRazorButton            = (TRazorButton *)FindView("RazorButton");
-	fZoomButton             = (TZoomButton *)FindView("ZoomButton");
+	fPointerButton  = (TPointerButton*)FindView("PointerButton");
+	fContractAllButton = (TContractAllButton*)FindView("ContractAllButton");
+	fExpandAllButton        = (TExpandAllButton*)FindView("ExpandAllButton");
+	fRazorButton            = (TRazorButton*)FindView("RazorButton");
+	fZoomButton             = (TZoomButton*)FindView("ZoomButton");
 
 	//	Set up buton targets and handlers
 
@@ -110,8 +110,8 @@ void TToolbar::Init()
 	BRect bounds;
 
 	// Create Pointer button
-	BBitmap *pointerUp = GetIcon16FromResource("PointerUp");
-	BBitmap *pointerDn = GetIcon16FromResource("PointerDown");
+	BBitmap* pointerUp = GetIcon16FromResource("PointerUp");
+	BBitmap* pointerDn = GetIcon16FromResource("PointerDown");
 	bounds = fParent->Bounds();
 	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset,
 	            bounds.top + kButtonTopOffset + kToolButtonHeight );
@@ -120,8 +120,8 @@ void TToolbar::Init()
 	fPointerButton->Show();
 
 	// Create ContractAll button
-	BBitmap *contractUp = GetIcon16FromResource("ContractUp");
-	BBitmap *contractDn = GetIcon16FromResource("ContractDown");
+	BBitmap* contractUp = GetIcon16FromResource("ContractUp");
+	BBitmap* contractDn = GetIcon16FromResource("ContractDown");
 	bounds = fPointerButton->Frame();
 	bounds.Set( bounds.right + kButtonLeftOffset, bounds.top, bounds.right + kToolButtonWidth+kButtonLeftOffset, bounds.bottom );
 	fContractAllButton = new TContractAllButton(this, bounds, "ContractAllButton", contractDn, contractUp, this);
@@ -129,8 +129,8 @@ void TToolbar::Init()
 	fContractAllButton->Show();
 
 	// Create ExpandAll button
-	BBitmap *expandUp = GetIcon16FromResource("ExpandUp");
-	BBitmap *expandDn = GetIcon16FromResource("ExpandDown");
+	BBitmap* expandUp = GetIcon16FromResource("ExpandUp");
+	BBitmap* expandDn = GetIcon16FromResource("ExpandDown");
 	bounds = fContractAllButton->Frame();
 	bounds.Set( bounds.right + kButtonLeftOffset, bounds.top, bounds.right + kToolButtonWidth+kButtonLeftOffset, bounds.bottom );
 	fExpandAllButton = new TExpandAllButton(this, bounds, "ExpandAllButton", expandDn, expandUp, this);
@@ -138,8 +138,8 @@ void TToolbar::Init()
 	fExpandAllButton->Show();
 
 	// Create Razor button
-	BBitmap *razorUp = GetIcon16FromResource("RazorUp");
-	BBitmap *razorDn = GetIcon16FromResource("RazorDown");
+	BBitmap* razorUp = GetIcon16FromResource("RazorUp");
+	BBitmap* razorDn = GetIcon16FromResource("RazorDown");
 	bounds = fExpandAllButton->Frame();
 	bounds.Set( bounds.right + kButtonLeftOffset, bounds.top, bounds.right + kToolButtonWidth+kButtonLeftOffset, bounds.bottom );
 	fRazorButton = new TRazorButton(this, bounds, "RazorButton", razorDn, razorUp, this);
@@ -147,8 +147,8 @@ void TToolbar::Init()
 	fRazorButton->Show();
 
 	// Create Zoom button
-	BBitmap *zoomUp = GetIcon16FromResource("ZoomUp");
-	BBitmap *zoomDn = GetIcon16FromResource("ZoomDown");
+	BBitmap* zoomUp = GetIcon16FromResource("ZoomUp");
+	BBitmap* zoomDn = GetIcon16FromResource("ZoomDown");
 	bounds = fRazorButton->Frame();
 	bounds.Set( bounds.right + kButtonLeftOffset, bounds.top, bounds.right + kToolButtonWidth+kButtonLeftOffset, bounds.bottom );
 	fZoomButton = new TZoomButton(this, bounds, "ZoomButton", zoomDn, zoomUp, this);
@@ -167,7 +167,7 @@ void TToolbar::Init()
 //
 //
 
-BArchivable *TToolbar::Instantiate(BMessage *archive)
+BArchivable* TToolbar::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TToolbar") )
@@ -182,7 +182,7 @@ BArchivable *TToolbar::Instantiate(BMessage *archive)
 //
 //
 
-status_t TToolbar::Archive(BMessage *data, bool deep) const
+status_t TToolbar::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -262,7 +262,7 @@ void TToolbar::Draw(BRect updateRect)
 void TToolbar::AttachedToWindow()
 {
 	if(fParent == NULL) {
-		fParent = (TCueSheetWindow *)Window();
+		fParent = (TCueSheetWindow*)Window();
 	}
 
 	//	Pass up to parent
@@ -278,7 +278,7 @@ void TToolbar::AttachedToWindow()
 //---------------------------------------------------------------------
 //
 //
-void TToolbar::SetParent(TCueSheetWindow *parent)
+void TToolbar::SetParent(TCueSheetWindow* parent)
 {
 	fParent = parent;
 }

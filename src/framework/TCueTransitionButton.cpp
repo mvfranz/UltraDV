@@ -38,7 +38,7 @@
 //
 //
 
-TCueTransitionButton::TCueTransitionButton( TCueView *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler, uint32 flags, bool transitionIn) :
+TCueTransitionButton::TCueTransitionButton( TCueView* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler, uint32 flags, bool transitionIn) :
 	TChannelCueButton(parent, bounds, name, offBitmap, onBitmap, handler, flags)
 {
 
@@ -52,7 +52,7 @@ TCueTransitionButton::TCueTransitionButton( TCueView *parent, BRect bounds, cons
 //
 //
 
-TCueTransitionButton::TCueTransitionButton(const TCueTransitionButton *theButton) : TChannelCueButton(theButton)
+TCueTransitionButton::TCueTransitionButton(const TCueTransitionButton* theButton) : TChannelCueButton(theButton)
 {
 	fTransitionIn = theButton->fTransitionIn;
 }
@@ -64,7 +64,7 @@ TCueTransitionButton::TCueTransitionButton(const TCueTransitionButton *theButton
 //
 //
 
-TCueTransitionButton::TCueTransitionButton(BMessage *data) : TChannelCueButton(data)
+TCueTransitionButton::TCueTransitionButton(BMessage* data) : TChannelCueButton(data)
 {
 	// Find our member variables in the BMessage
 	data->FindBool("TransitionIn", &fTransitionIn);
@@ -90,7 +90,7 @@ TCueTransitionButton::~TCueTransitionButton()
 //
 //
 
-BArchivable *TCueTransitionButton::Instantiate(BMessage *archive)
+BArchivable* TCueTransitionButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TCueTransitionButton") )
@@ -105,7 +105,7 @@ BArchivable *TCueTransitionButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TCueTransitionButton::Archive(BMessage *data, bool deep) const
+status_t TCueTransitionButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -144,13 +144,13 @@ status_t TCueTransitionButton::Archive(BMessage *data, bool deep) const
 void TCueTransitionButton::AttachedToWindow()
 {
 	if (fCue == NULL) {
-		fCue            = (TCueView *)Parent();
+		fCue            = (TCueView*)Parent();
 		fHandler        = fCue;
 
 		if (fTransitionIn) {
 			fOffBitmap = GetAppIcons()->fTransitionIn;
 			fOnBitmap  = GetAppIcons()->fTransitionIn;
-		} else   {
+		} else {
 			fOffBitmap = GetAppIcons()->fTransitionOut;
 			fOnBitmap  = GetAppIcons()->fTransitionOut;
 		}
@@ -171,17 +171,17 @@ void TCueTransitionButton::AttachedToWindow()
 //	Handle messages
 //
 
-void TCueTransitionButton::MessageReceived(BMessage *message)
+void TCueTransitionButton::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
 	// Set icon button to new transition
 	case CHANGE_ICON_MSG:
 	{
-		const char *namePtr;
+		const char* namePtr;
 		message->FindString("TransitionName", &namePtr);
-		BBitmap *offBitmap= GetAppIcons()->GetIconByName(namePtr);
-		BBitmap *onBitmap = GetAppIcons()->GetIconByName(namePtr);
+		BBitmap* offBitmap= GetAppIcons()->GetIconByName(namePtr);
+		BBitmap* onBitmap = GetAppIcons()->GetIconByName(namePtr);
 		if (offBitmap) {
 			fOffBitmap = offBitmap;
 			fOnBitmap  = onBitmap;
@@ -215,7 +215,7 @@ void TCueTransitionButton::MouseDown(BPoint where)
 {
 
 	// Create and send message
-	BMessage *message = new BMessage(TRANSITION_BUTTON_MSG);
+	BMessage* message = new BMessage(TRANSITION_BUTTON_MSG);
 	BPoint menuPt( Frame().right, Frame().top);
 	message->AddPoint("MenuPoint", menuPt);
 	message->AddBool("TransitionIn", fTransitionIn);

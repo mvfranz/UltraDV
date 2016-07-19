@@ -71,21 +71,21 @@ void TAboutBox::Init()
 		return;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 	{
 		BResources res(&file);
-		data = (BBitmap *)res.FindResource('bits', "Splash", &size);
+		data = (BBitmap*)res.FindResource('bits', "Splash", &size);
 		if (!data)
 			return;
 	}
 
 	// Load bitmap
-	BBitmap *bitmap = new BBitmap(Bounds(), B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(Bounds(), B_COLOR_8_BIT);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 	//BBitmap *bitmap = new BBitmap(Bounds(), B_RGB_32_BIT);
 	//bitmap->SetBits(data, size, 0, B_RGB_32_BIT);
 
-	TBitmapView *bm = new TBitmapView(Bounds(), "AboutBitmap", bitmap, true);
+	TBitmapView* bm = new TBitmapView(Bounds(), "AboutBitmap", bitmap, true);
 
 	// Add it to the window
 	AddChild(bm);

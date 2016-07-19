@@ -47,7 +47,7 @@ const short kBorder = 6;
 //
 //
 
-TStageCue::TStageCue(TStageView *theStage, TVisualCue *theCue)
+TStageCue::TStageCue(TStageView* theStage, TVisualCue* theCue)
 {
 	// Save the stage
 	fStage = theStage;
@@ -99,7 +99,7 @@ void TStageCue::Init()
 //
 //
 
-void TStageCue::MessageReceived(BMessage *message)
+void TStageCue::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
@@ -124,7 +124,7 @@ void TStageCue::MessageReceived(BMessage *message)
 //	some sort of tool manipulation of the cue
 //
 
-void TStageCue::HandleMouseMessage(BMessage *message)
+void TStageCue::HandleMouseMessage(BMessage* message)
 {
 	//	What tool mode are we in?
 
@@ -186,7 +186,7 @@ void TStageCue::DrawSelectionRect(bool toOffscreen)
 	if (fIsSelected) {
 		// Draw to offscreen
 		if (toOffscreen) {
-			BView *offView = fStage->GetOffscreenView();
+			BView* offView = fStage->GetOffscreenView();
 
 			offView->Looper()->Lock();
 			offView->PushState();
@@ -249,7 +249,7 @@ void TStageCue::DrawSelectionRect(bool toOffscreen)
 //	Draw handles based on stage tool mode
 //
 
-void TStageCue::DrawResizingHandles(BView *theView)
+void TStageCue::DrawResizingHandles(BView* theView)
 {
 	//	Save state
 	theView->Looper()->Lock();
@@ -324,7 +324,7 @@ void TStageCue::DrawResizingHandles(BView *theView)
 //	Draw corner resize handles
 //
 
-void TStageCue::DrawResizeCorners(BView *theView)
+void TStageCue::DrawResizeCorners(BView* theView)
 {
 	//	Save state
 	theView->Looper()->Lock();
@@ -335,7 +335,7 @@ void TStageCue::DrawResizeCorners(BView *theView)
 	theView->SetPenSize(1.0);
 
 	// Stroke handles
-	BPolygon *handlePoly;
+	BPolygon* handlePoly;
 
 	handlePoly = fTopLeftResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);
@@ -365,7 +365,7 @@ void TStageCue::DrawResizeCorners(BView *theView)
 //	Draw middle resize handles
 //
 
-void TStageCue::DrawResizeMiddles(BView *theView)
+void TStageCue::DrawResizeMiddles(BView* theView)
 {
 	//	Save state
 	theView->Looper()->Lock();
@@ -381,7 +381,7 @@ void TStageCue::DrawResizeMiddles(BView *theView)
 	//theView->StrokePolygon(&fBottomMiddleResize, true);
 	//theView->StrokePolygon(&fLeftMiddleResize, true);
 
-	BPolygon *handlePoly;
+	BPolygon* handlePoly;
 
 	handlePoly = fTopMiddleResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);
@@ -412,7 +412,7 @@ void TStageCue::DrawResizeMiddles(BView *theView)
 //	Draw cue registration point
 //
 
-void TStageCue::DrawRegistrationPoint(BView *theView)
+void TStageCue::DrawRegistrationPoint(BView* theView)
 {
 	//	Save state
 	theView->Looper()->Lock();
@@ -483,7 +483,7 @@ void TStageCue::MouseDown(BPoint where)
 
 		uint32 type;
 		int32 count = 0;
-		BMessage *message = fStage->Window()->CurrentMessage();
+		BMessage* message = fStage->Window()->CurrentMessage();
 		if (B_OK == message->GetInfo("clicks", &type, &count) ) {
 			int32 clickCount = message->FindInt32("clicks", count-1);
 
@@ -503,8 +503,8 @@ void TStageCue::MouseDown(BPoint where)
 
 				// Determine which button has been clicked
 				uint32 buttons = 0;
-				BMessage *message = fStage->Window()->CurrentMessage();
-				message->FindInt32("buttons", (long *)&buttons);
+				BMessage* message = fStage->Window()->CurrentMessage();
+				message->FindInt32("buttons", (long*)&buttons);
 
 				switch(buttons)
 				{
@@ -572,7 +572,7 @@ void TStageCue::MouseDown(BPoint where)
 //	Handle mouse moved events
 //
 
-void TStageCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TStageCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	//	Do nothing if window is not active
 	if (fStage->Window()->IsActive() == false)
@@ -3300,7 +3300,7 @@ short TStageCue::GetResizeZoneID(BPoint thePoint)
 
 void TStageCue::SetMoveCursor(BPoint thePoint)
 {
-	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+	be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 }
 
 
@@ -3313,7 +3313,7 @@ void TStageCue::SetMoveCursor(BPoint thePoint)
 
 void TStageCue::SetRotateCursor(BPoint thePoint)
 {
-	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+	be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 }
 
 
@@ -3333,30 +3333,30 @@ void TStageCue::SetCropCursor(BPoint thePoint)
 		{
 		case kTopLeftResize:
 		case kBottomRightResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeDiagRightCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fResizeDiagRightCursor );
 			break;
 
 		case kTopRightResize:
 		case kBottomLeftResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeDiagLeftCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fResizeDiagLeftCursor );
 			break;
 
 		case kTopMiddleResize:
 		case kBottomMiddleResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeVertCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fSizeVertCursor );
 			break;
 
 		case kLeftMiddleResize:
 		case kRightMiddleResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeHorzCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fSizeHorzCursor );
 			break;
 
 		default:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 			break;
 		}
-	} else   {
-		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+	} else {
+		be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 	}
 }
 
@@ -3376,30 +3376,30 @@ void TStageCue::SetScaleCursor(BPoint thePoint)
 		{
 		case kTopLeftResize:
 		case kBottomRightResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeDiagRightCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fResizeDiagRightCursor );
 			break;
 
 		case kTopRightResize:
 		case kBottomLeftResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeDiagLeftCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fResizeDiagLeftCursor );
 			break;
 
 		case kTopMiddleResize:
 		case kBottomMiddleResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeVertCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fSizeVertCursor );
 			break;
 
 		case kLeftMiddleResize:
 		case kRightMiddleResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeHorzCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fSizeHorzCursor );
 			break;
 
 		default:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 			break;
 		}
-	} else   {
-		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+	} else {
+		be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 	}
 }
 
@@ -3422,15 +3422,15 @@ void TStageCue::SetShearCursor(BPoint thePoint)
 		case kTopRightResize:
 		case kBottomRightResize:
 		case kBottomLeftResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeHorzCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fSizeHorzCursor );
 			break;
 
 		default:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 			break;
 		}
-	} else   {
-		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+	} else {
+		be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 	}
 }
 
@@ -3444,7 +3444,7 @@ void TStageCue::SetShearCursor(BPoint thePoint)
 
 void TStageCue::SetSkewCursor(BPoint thePoint)
 {
-	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+	be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 }
 
 
@@ -3457,7 +3457,7 @@ void TStageCue::SetSkewCursor(BPoint thePoint)
 
 void TStageCue::SetPerspectiveCursor(BPoint thePoint)
 {
-	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+	be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 }
 
 
@@ -3476,20 +3476,20 @@ void TStageCue::SetMirrorCursor(BPoint thePoint)
 		{
 		case kTopMiddleResize:
 		case kBottomMiddleResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeVertCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fSizeVertCursor );
 			break;
 
 		case kLeftMiddleResize:
 		case kRightMiddleResize:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeHorzCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fSizeHorzCursor );
 			break;
 
 		default:
-			be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+			be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 			break;
 		}
-	} else   {
-		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
+	} else {
+		be_app->SetCursor(&static_cast<MuseumApp*>(be_app)->fMoveCursor );
 	}
 }
 
@@ -3504,7 +3504,7 @@ void TStageCue::SetMirrorCursor(BPoint thePoint)
 //	Set fChannelCue
 //
 
-void TStageCue::SetChannelCue(TVisualCue *theCue)
+void TStageCue::SetChannelCue(TVisualCue* theCue)
 {
 	fChannelCue = theCue;
 }
@@ -3522,10 +3522,10 @@ void TStageCue::SetChannelCue(TVisualCue *theCue)
 
 void TStageCue::OpenStageCueMenu(BPoint menuPt)
 {
-	BMenuItem       *selected;
+	BMenuItem* selected;
 
 	// Create the menu and mark the current transition
-	TStageCueMenu *theMenu = new TStageCueMenu(this->fChannelCue);
+	TStageCueMenu* theMenu = new TStageCueMenu(this->fChannelCue);
 
 	if (theMenu) {
 		// Set menu location point
@@ -3587,7 +3587,7 @@ void TStageCue::OpenCurrentToolDialog()
 
 	case kRotateMode:
 	{
-		BMessage *theMessage = new BMessage(STAGE_CUE_ROTATE_MSG);
+		BMessage* theMessage = new BMessage(STAGE_CUE_ROTATE_MSG);
 		fChannelCue->MessageReceived(theMessage);
 		delete theMessage;
 	}
@@ -3598,7 +3598,7 @@ void TStageCue::OpenCurrentToolDialog()
 
 	case kScaleMode:
 	{
-		BMessage *theMessage = new BMessage(STAGE_CUE_SCALE_MSG);
+		BMessage* theMessage = new BMessage(STAGE_CUE_SCALE_MSG);
 		fChannelCue->MessageReceived(theMessage);
 		delete theMessage;
 	}

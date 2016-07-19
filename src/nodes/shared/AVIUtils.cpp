@@ -34,7 +34,7 @@
 //
 //
 
-long ReadIntMsb(BFile *in, int size)
+long ReadIntMsb(BFile* in, int size)
 {
 	long value;
 
@@ -89,9 +89,9 @@ long ReadIntMsb(BFile *in, int size)
 //
 //
 
-long BytesToIntMsb(void *vBuff, int size)
+long BytesToIntMsb(void* vBuff, int size)
 {
-	unsigned char *buff = reinterpret_cast<unsigned char *>(vBuff);
+	unsigned char* buff = reinterpret_cast<unsigned char*>(vBuff);
 
 	if (size <= 0)
 		return 0;
@@ -110,7 +110,7 @@ long BytesToIntMsb(void *vBuff, int size)
 //
 //
 
-long ReadIntLsb(BFile *in, int size)
+long ReadIntLsb(BFile* in, int size)
 {
 	long value;
 
@@ -165,9 +165,9 @@ long ReadIntLsb(BFile *in, int size)
 //
 //
 
-long BytesToIntLsb(void *vBuff, int size)
+long BytesToIntLsb(void* vBuff, int size)
 {
-	unsigned char *buff = reinterpret_cast<unsigned char *>(vBuff);
+	unsigned char* buff = reinterpret_cast<unsigned char*>(vBuff);
 	if (size <= 0) return 0;
 	long l = static_cast<long>(*buff) & 255;
 	l |= BytesToIntLsb(buff+1,size-1)<<8;
@@ -181,7 +181,7 @@ long BytesToIntLsb(void *vBuff, int size)
 //
 //
 
-void SkipBytes(BFile *in, int size)
+void SkipBytes(BFile* in, int size)
 {
 	char getChar;
 
@@ -196,7 +196,7 @@ void SkipBytes(BFile *in, int size)
 //
 //
 
-void WriteIntMsb(BFile *out, long l, int size)
+void WriteIntMsb(BFile* out, long l, int size)
 {
 	if (size <= 0)
 		return;
@@ -215,7 +215,7 @@ void WriteIntMsb(BFile *out, long l, int size)
 //
 //
 
-ssize_t WriteAtIntMsb(BFile *out, int32 value, int size)
+ssize_t WriteAtIntMsb(BFile* out, int32 value, int size)
 {
 	if (size <= 0)
 		return 0;
@@ -267,7 +267,7 @@ ssize_t WriteAtIntMsb(BFile *out, int32 value, int size)
 //
 //
 
-void WriteIntLsb(BFile *out, long l, int size)
+void WriteIntLsb(BFile* out, long l, int size)
 {
 	if (size <= 0)
 		return;
@@ -286,7 +286,7 @@ void WriteIntLsb(BFile *out, long l, int size)
 //
 //
 
-ssize_t WriteAtIntLsb(BFile *out, int32 value, int size)
+ssize_t WriteAtIntLsb(BFile* out, int32 value, int size)
 {
 	if (size <= 0)
 		return 0;
@@ -334,7 +334,7 @@ ssize_t WriteAtIntLsb(BFile *out, int32 value, int size)
 //
 //
 
-void DumpAVIHeader(AVIHeader *theHeader)
+void DumpAVIHeader(AVIHeader* theHeader)
 {
 	#ifdef DEBUG
 	printf("=== Start AVIHeader ===\n");
@@ -362,7 +362,7 @@ void DumpAVIHeader(AVIHeader *theHeader)
 //
 //
 
-void DumpAVIStreamHeader(AVIStreamHeader *theHeader)
+void DumpAVIStreamHeader(AVIStreamHeader* theHeader)
 {
 	#ifdef DEBUG
 	printf("=== Start AVIStreamHeader ===\n");
@@ -393,7 +393,7 @@ void DumpAVIStreamHeader(AVIStreamHeader *theHeader)
 //
 //
 
-void DumpVIDSHeader(AVIVIDSHeader *theHeader)
+void DumpVIDSHeader(AVIVIDSHeader* theHeader)
 {
 	#ifdef DEBUG
 	printf("=== Start AVIVIDSHeader ===\n");
@@ -420,7 +420,7 @@ void DumpVIDSHeader(AVIVIDSHeader *theHeader)
 //
 //
 
-void DumpAUDSHeader(AVIAUDSHeader *theHeader)
+void DumpAUDSHeader(AVIAUDSHeader* theHeader)
 {
 	#ifdef DEBUG
 	printf("=== Start AVIAUDSHeader ===\n");
@@ -467,7 +467,7 @@ void DumpRIFFID(int32 theID)
 //	Dump bit flag setting in AVIHeader
 //
 
-void DumpAVIHeaderFlags(AVIHeader *theHeader)
+void DumpAVIHeaderFlags(AVIHeader* theHeader)
 {
 	#ifdef DEBUG
 	printf(" AVI flags: ");

@@ -35,7 +35,7 @@
 //
 //
 
-TPictureDurationDialog::TPictureDurationDialog(BMessage *theMessage, TCueView *theCue) : BWindow(theMessage)
+TPictureDurationDialog::TPictureDurationDialog(BMessage* theMessage, TCueView* theCue) : BWindow(theMessage)
 {
 	// Save transition rate
 	fCue = theCue;

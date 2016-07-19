@@ -27,7 +27,7 @@
 //
 
 TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
-                             BBitmap* on, BHandler *handler, BMessage *message, bool ownership,
+                             BBitmap* on, BHandler* handler, BMessage* message, bool ownership,
                              uint32 behavior, uint32 resizingMode, uint32 flags) :
 	// defaults
 	//		ownership = true
@@ -59,7 +59,7 @@ TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
 
 // Variant ala BPictureButton which requires a call to SetHandler()
 TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
-                             BBitmap* on, BMessage *message, bool ownership, uint32 behavior,
+                             BBitmap* on, BMessage* message, bool ownership, uint32 behavior,
                              uint32 resizingMode, uint32 flags) :
 	// defaults
 	//		ownership = true

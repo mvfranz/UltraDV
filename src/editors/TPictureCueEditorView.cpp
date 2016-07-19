@@ -33,7 +33,7 @@
 //
 
 
-TPictureCueEditorView::TPictureCueEditorView( BBitmap *bitmap ) : BView(bitmap->Bounds(), "EditorView", B_FOLLOW_LEFT|B_FOLLOW_TOP, B_WILL_DRAW|B_FRAME_EVENTS)
+TPictureCueEditorView::TPictureCueEditorView( BBitmap* bitmap ) : BView(bitmap->Bounds(), "EditorView", B_FOLLOW_LEFT|B_FOLLOW_TOP, B_WILL_DRAW|B_FRAME_EVENTS)
 {
 	fBitmap = bitmap;
 

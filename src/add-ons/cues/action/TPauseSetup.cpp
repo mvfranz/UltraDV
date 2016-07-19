@@ -13,7 +13,7 @@
 //
 
 
-TPauseSetup::TPauseSetup(BWindow *parent, BMessage *theMessage) :
+TPauseSetup::TPauseSetup(BWindow* parent, BMessage* theMessage) :
 	BWindow(theMessage)
 {
 

@@ -37,7 +37,7 @@ HeaderChunk sgHdr;                              // Copy of header chunk
 //
 //
 
-TMIDIFile::TMIDIFile(entry_ref *ref, uint32 openMode) : BFile(ref, openMode)
+TMIDIFile::TMIDIFile(entry_ref* ref, uint32 openMode) : BFile(ref, openMode)
 {
 	//fDiskBuffer = NULL;
 	// Initialize header
@@ -68,7 +68,7 @@ TMIDIFile::~TMIDIFile()
 //	Rewinds file and reads in the header chunk.
 //
 
-void TMIDIFile::ReadHeader(HeaderChunk *header)
+void TMIDIFile::ReadHeader(HeaderChunk* header)
 {
 	char buf[100];
 
@@ -97,7 +97,7 @@ void TMIDIFile::ReadHeader(HeaderChunk *header)
 //	Data events are ignored.
 //
 
-int32 TMIDIFile::ReadConductor(TMIDIConductor *condTrack)
+int32 TMIDIFile::ReadConductor(TMIDIConductor* condTrack)
 {
 	int16 lastStatus,                               // Last MIDI status byte read
 	      status,                                           // First byte read
@@ -203,16 +203,16 @@ int32 TMIDIFile::ReadConductor(TMIDIConductor *condTrack)
 			}
 
 			time = 0;
-		} else if (status == SYS_EXCL || status == END_SYS_EXCL)   {
+		} else if (status == SYS_EXCL || status == END_SYS_EXCL) {
 			length = ReadVariableLength();
 			// Ignore sys-ex messages
 			SkipNBytes(length);
-		} else   {
+		} else {
 			// running status
 			if (status < 0x80) {
 				dataByte1 = status;
 				status = lastStatus;
-			} else   {
+			} else {
 				dataByte1 = ReadByte();
 				lastStatus = status;
 			}
@@ -243,7 +243,7 @@ int32 TMIDIFile::ReadConductor(TMIDIConductor *condTrack)
 //
 
 
-int32 TMIDIFile::ReadType0(TMIDIConductor *condTrack, TMIDITrack *dataTrack)
+int32 TMIDIFile::ReadType0(TMIDIConductor* condTrack, TMIDITrack* dataTrack)
 {
 	HeaderChunk hdr;
 	int32 totalTime;
@@ -305,7 +305,7 @@ int16 TMIDIFile::ReadByte()
 
 	if (fDiskBuffer) {
 		// Index into disk buffer
-		value = *((unsigned char *)fDiskBuffer + fBufferLocation);
+		value = *((unsigned char*)fDiskBuffer + fBufferLocation);
 
 		if (++fBufferLocation >= fBufferSize && fBufferRemainder)
 			FillBuffer();
@@ -396,7 +396,7 @@ void TMIDIFile::ReadMidiChunkHeader()
 //	Conductor events are ignored.
 //
 
-int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
+int32 TMIDIFile::ReadNextTrack(TMIDITrack* dataTrack)
 {
 	int16 lastStatus,                                               // Last MIDI status byte read
 	      status,                                                           // First byte read
@@ -414,11 +414,11 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 	char cBuf[C_BUFF_SIZE];                                 // Buffer for reading text events
 
 	ExtDataBuffer dataHandle = NULL;                // Used to load in sysex events
-	unsigned char   *tempPtr;
+	unsigned char* tempPtr;
 
-	Event                   *theEvent;                              // Event buffer
+	Event* theEvent;                                                // Event buffer
 	int32 numItems = 0;                                     // total number of events in track
-	void                    *itemBuffer;                    // Buffer of items
+	void* itemBuffer;                                       // Buffer of items
 
 	// Read in header info
 	ReadMidiChunkHeader();
@@ -445,7 +445,7 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 	// Make a buffer big enough for 50,000 events
 	size_t theSize = sizeof(Event) * 5000;
 	itemBuffer = malloc( theSize);
-	theEvent = (Event *)itemBuffer;
+	theEvent = (Event*)itemBuffer;
 	ASSERT(theEvent);
 
 	try
@@ -491,7 +491,7 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 
 				// time = 0;
 
-			} else if (status == SYS_EXCL || status == END_SYS_EXCL)   {
+			} else if (status == SYS_EXCL || status == END_SYS_EXCL) {
 
 				length = ReadVariableLength();
 				// length doesn't include 0xF0
@@ -526,12 +526,12 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 					}
 				}
 				time = 0;
-			} else   {
+			} else {
 				// running status
 				if (status < 0x80) {
 					dataByte1 = status;
 					status = lastStatus;
-				} else   {
+				} else {
 					dataByte1 = ReadByte();
 					lastStatus = status;
 				}

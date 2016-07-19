@@ -63,7 +63,7 @@
 //
 //
 
-TMovieCue::TMovieCue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime) :
+TMovieCue::TMovieCue(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime) :
 	TVisualCue(id, parent, bounds, startTime, "MovieCue")
 {
 	// Load picture file
@@ -77,7 +77,7 @@ TMovieCue::TMovieCue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTi
 //
 //	Construct from an entry_ref
 
-TMovieCue::TMovieCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect bounds, uint32 startTime) :
+TMovieCue::TMovieCue(entry_ref &theRef, int16 id,  TCueChannel* parent, BRect bounds, uint32 startTime) :
 	TVisualCue(id, parent, bounds, startTime, "PictureCue")
 {
 	// Init member variables
@@ -99,7 +99,7 @@ TMovieCue::TMovieCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect bo
 	// First, make sure we have a valid ref
 	if ( IsVideo(nodeInfo) ) {
 		//      Create a BMessage that includes the entry_ref to send to our open routine
-		BMessage *theMessage = new BMessage(B_REFS_RECEIVED);
+		BMessage* theMessage = new BMessage(B_REFS_RECEIVED);
 		theMessage->AddRef("refs", &theRef);
 
 		bool retVal = LoadMovieFile(theMessage);
@@ -123,7 +123,7 @@ TMovieCue::TMovieCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect bo
 //	Construct from a BMessage
 //
 
-TMovieCue::TMovieCue(BMessage *theMessage) : TVisualCue(theMessage)
+TMovieCue::TMovieCue(BMessage* theMessage) : TVisualCue(theMessage)
 {
 	// Load cue icon
 	LoadCueIcon();
@@ -186,7 +186,7 @@ void TMovieCue::Init()
 	fCurrentAudioFrame = 0;
 
 	//	Get AVIHeader
-	AVIHeader *header = fReader->GetAVIHeader();
+	AVIHeader* header = fReader->GetAVIHeader();
 
 	//	Create offscreen
 	BRect movieRect( 0, 0, header->Width-1, header->Height-1);
@@ -270,7 +270,7 @@ bool TMovieCue::InitVideoCodec()
 	fVideoCodec = NULL;
 
 	//	Get video header to determine compression type
-	AVIVIDSHeader *vidsHeader = fReader->GetVIDSHeader();
+	AVIVIDSHeader* vidsHeader = fReader->GetVIDSHeader();
 
 	//	Determine compression and create codec
 	switch(vidsHeader->Compression)
@@ -342,7 +342,7 @@ bool TMovieCue::InitAudioCodec()
 	fAudioCodec = NULL;
 
 	//	Get video header to determine compression type
-	AVIAUDSHeader *audsHeader = fReader->GetAUDSHeader();
+	AVIAUDSHeader* audsHeader = fReader->GetAUDSHeader();
 
 	//	Determine compression and create codec
 	switch(audsHeader->Format)
@@ -414,7 +414,7 @@ bool TMovieCue::InitAudioCodec()
 //
 //
 
-BArchivable *TMovieCue::Instantiate(BMessage *archive)
+BArchivable* TMovieCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TMovieCue") )
 		return new TMovieCue(archive);
@@ -429,7 +429,7 @@ BArchivable *TMovieCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TMovieCue::Archive(BMessage *data, bool deep) const
+status_t TMovieCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -485,9 +485,9 @@ void TMovieCue::RenderBitmapData()
 		//	If we are here, the effect must be a VisualEffect
 		for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 			//	Get the effects in the list
-			TCueEffectView *effectView = (TCueEffectView *)fEffectsList->ItemAt(index);
+			TCueEffectView* effectView = (TCueEffectView*)fEffectsList->ItemAt(index);
 			if (effectView) {
-				TVisualEffect *effect = (TVisualEffect *)effectView->Effect();
+				TVisualEffect* effect = (TVisualEffect*)effectView->Effect();
 
 				//	Setup transformation bitmap buffer
 				if (fTransformBitmap) {
@@ -516,7 +516,7 @@ void TMovieCue::RenderBitmapData()
 //
 //	Receive messages
 //
-void TMovieCue::MessageReceived(BMessage *message)
+void TMovieCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -558,14 +558,14 @@ void TMovieCue::ShowPanel()
 
 	//      Create messenger to send panel messages to our channel.  We cannot send it to
 	//  ourself as we are not part of the view heirarchy.
-	BMessenger *messenger = new BMessenger( fChannel,  ((MuseumApp *)be_app)->GetCueSheet());
+	BMessenger* messenger = new BMessenger( fChannel,  ((MuseumApp*)be_app)->GetCueSheet());
 
 	// Create message containing pointer to ourself
-	BMessage *message = new BMessage();
+	BMessage* message = new BMessage();
 	message->AddPointer("TheCue", this);
 
 	// Create a RefFilter for a "video" type
-	TRefFilter *refFilter = new TRefFilter(kVideoFilter);
+	TRefFilter* refFilter = new TRefFilter(kVideoFilter);
 
 	// Construct a file panel and set it to modal
 	fPanel = new BFilePanel( B_OPEN_PANEL, messenger, NULL, B_FILE_NODE, false, message, refFilter, true, true );
@@ -600,7 +600,7 @@ void TMovieCue::HidePanel()
 {
 	if(fPanel) {
 		// Clean up any RefFilters
-		TRefFilter *theFilter = static_cast<TRefFilter *>(fPanel->RefFilter() );
+		TRefFilter* theFilter = static_cast<TRefFilter*>(fPanel->RefFilter() );
 		if (theFilter)
 			delete theFilter;
 
@@ -619,7 +619,7 @@ void TMovieCue::HidePanel()
 //	Load movie file
 //
 
-bool TMovieCue::LoadMovieFile(BMessage *message)
+bool TMovieCue::LoadMovieFile(BMessage* message)
 {
 
 	bool retVal = false;
@@ -659,8 +659,8 @@ void TMovieCue::OpenEditor()
 			fEditor->Show();
 			fEditor->Activate(true);
 		}
-	} else   {
-		BMessage *theMessage = GetWindowFromResource("VideoEditorWindow");
+	} else {
+		BMessage* theMessage = GetWindowFromResource("VideoEditorWindow");
 		fEditor = new TVideoEditor(&fFileRef, this, theMessage);
 
 		if (fEditor) {
@@ -692,7 +692,7 @@ void TMovieCue::HandlePlayback(uint32 theTime)
 		fCurrentVideoFrame = fReader->VideoFrameCount() - 1;
 
 	//	Get the frame
-	AVIVideoFrame *theFrame = (AVIVideoFrame *)fReader->GetVideoFrameList()->ItemAt(fCurrentVideoFrame);
+	AVIVideoFrame* theFrame = (AVIVideoFrame*)fReader->GetVideoFrameList()->ItemAt(fCurrentVideoFrame);
 	if (!theFrame) {
 		printf("AVIProducer::INVALID FRAME!\n");
 		return;
@@ -722,7 +722,7 @@ void TMovieCue::HandlePlayback(uint32 theTime)
 
 void TMovieCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = GetAppIcons()->fMovieUpIcon;
+	BBitmap* cueIcon = GetAppIcons()->fMovieUpIcon;
 
 	if (cueIcon) {
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
@@ -748,7 +748,7 @@ void TMovieCue::LoadCueIcon()
 //	NULL, return the data for the current time
 //
 
-BBitmap *TMovieCue::GetBitmap(uint32 theTime)
+BBitmap* TMovieCue::GetBitmap(uint32 theTime)
 {
 	// Return modified bitmap if we have created it
 	if (fTransformBitmap)

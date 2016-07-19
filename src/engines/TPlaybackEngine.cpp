@@ -45,7 +45,7 @@ const int16 kMsecsPerSecond = 1000;
 //
 //
 
-TPlaybackEngine::TPlaybackEngine(TCueSheetView *cueSheet) : BMediaNode("PlaybackEngine")
+TPlaybackEngine::TPlaybackEngine(TCueSheetView* cueSheet) : BMediaNode("PlaybackEngine")
 {
 	//	Stash parent cue sheet
 	fCueSheet = cueSheet;
@@ -238,7 +238,7 @@ void TPlaybackEngine::Preroll()
 //
 //
 
-status_t TPlaybackEngine::HandleMessage(int32 message, const void *data, size_t size)
+status_t TPlaybackEngine::HandleMessage(int32 message, const void* data, size_t size)
 {
 	switch(message)
 	{
@@ -356,7 +356,7 @@ port_id TPlaybackEngine::ControlPort() const
 //
 
 
-BMediaAddOn* TPlaybackEngine::AddOn( int32 *internal_id) const
+BMediaAddOn* TPlaybackEngine::AddOn( int32* internal_id) const
 {
 	return NULL;
 }
@@ -372,9 +372,9 @@ BMediaAddOn* TPlaybackEngine::AddOn( int32 *internal_id) const
 //	Static service thread function
 //
 
-status_t TPlaybackEngine::service_routine(void * data)
+status_t TPlaybackEngine::service_routine(void* data)
 {
-	((TPlaybackEngine *)data)->ServiceRoutine();
+	((TPlaybackEngine*)data)->ServiceRoutine();
 
 	return 0;
 }
@@ -421,9 +421,9 @@ void TPlaybackEngine::ServiceRoutine()
 //	Static run thread function
 //
 
-status_t TPlaybackEngine::run_routine(void *data)
+status_t TPlaybackEngine::run_routine(void* data)
 {
-	((TPlaybackEngine *)data)->RunRoutine();
+	((TPlaybackEngine*)data)->RunRoutine();
 
 	return 0;
 }

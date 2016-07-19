@@ -33,7 +33,7 @@ const uint32 MAX_QUEUED_MSGS = 10;
 //
 //
 
-TChaser::TChaser( void (*ticked_func)(void *arg, TTick *t), void *arg, const char *name, int32 aPriority) :
+TChaser::TChaser( void (*ticked_func)(void* arg, TTick *t), void* arg, const char* name, int32 aPriority) :
 	TThread(name, aPriority)
 {
 	Ticked                  = ticked_func;
@@ -86,7 +86,7 @@ void TChaser::Stop()
 status_t TChaser::ThreadMain()
 {
 	int32 i;
-	TTick           *t;
+	TTick* t;
 	int32 err = 0;
 
 	while(!IsStopping()) {
@@ -115,13 +115,13 @@ status_t TChaser::ThreadMain()
 
 					if(appinfo.team != areainfo.team) {
 						fAreaID = clone_area(   "TChaser area",
-						                        (void **)&fAreaAddress,
+						                        (void**)&fAreaAddress,
 						                        B_ANY_ADDRESS,
 						                        B_READ_AREA,
 						                        i);
-					} else   {
+					} else {
 						fAreaID = i;
-						fAreaAddress = (char *)areainfo.address;
+						fAreaAddress = (char*)areainfo.address;
 					}
 				}
 
@@ -131,7 +131,7 @@ status_t TChaser::ThreadMain()
 			}
 
 			if (msg == TICK_MSG) {
-				t = (TTick *)(fAreaAddress + (sizeof(TTick) * i));
+				t = (TTick*)(fAreaAddress + (sizeof(TTick) * i));
 				(*Ticked)(fCaller, t);
 			}
 		}

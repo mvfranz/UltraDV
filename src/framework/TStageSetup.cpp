@@ -36,7 +36,7 @@
 //
 //
 
-TStageSetup::TStageSetup(TStageWindow *theStage, BMessage *theMessage) : BWindow(theMessage)
+TStageSetup::TStageSetup(TStageWindow* theStage, BMessage* theMessage) : BWindow(theMessage)
 {
 
 	fStage = theStage;
@@ -72,21 +72,21 @@ void TStageSetup::Init()
 	fSaveColor = fStage->GetStageView()->ViewColor();
 
 	// Get dialog items
-	fDimesionsBox   = (BBox *)FindView("DimensionBox");
-	fSettingsBox    = (BBox *)FindView("SettingsBox");
-	fColorBox               = (BBox *)FindView("ColorBox");
+	fDimesionsBox   = (BBox*)FindView("DimensionBox");
+	fSettingsBox    = (BBox*)FindView("SettingsBox");
+	fColorBox               = (BBox*)FindView("ColorBox");
 
-	fWidth          = (BTextControl *)FindView("WidthText");
-	fHeight                 = (BTextControl *)FindView("HeightText");
-	fXPos           = (BTextControl *)FindView("XPosText");
-	fYPos                   = (BTextControl *)FindView("YPosText");
+	fWidth          = (BTextControl*)FindView("WidthText");
+	fHeight                 = (BTextControl*)FindView("HeightText");
+	fXPos           = (BTextControl*)FindView("XPosText");
+	fYPos                   = (BTextControl*)FindView("YPosText");
 
-	fTitleText      = (BTextControl *)FindView("TitleText");
+	fTitleText      = (BTextControl*)FindView("TitleText");
 
-	fCenterCheck    = (BCheckBox *)FindView("CenterCheck");
-	fTitleCheck     = (BCheckBox *)FindView("TitleCheck");
+	fCenterCheck    = (BCheckBox*)FindView("CenterCheck");
+	fTitleCheck     = (BCheckBox*)FindView("TitleCheck");
 
-	fStageColor     = (BColorControl *)FindView("StageColor");
+	fStageColor     = (BColorControl*)FindView("StageColor");
 
 	// Set up dialog items
 	char tmpStr[64];

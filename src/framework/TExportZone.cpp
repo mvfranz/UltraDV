@@ -43,7 +43,7 @@
 //
 //
 
-TExportZone::TExportZone(BRect bounds, TCueSheetWindow *parent) : BView(bounds, "ExportZoneView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW)
+TExportZone::TExportZone(BRect bounds, TCueSheetWindow* parent) : BView(bounds, "ExportZoneView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW)
 {
 	// Set CueSheet parent
 	fCueSheetWindow = parent;
@@ -60,13 +60,13 @@ TExportZone::TExportZone(BRect bounds, TCueSheetWindow *parent) : BView(bounds, 
 //	Construct from archive
 //
 
-TExportZone::TExportZone(BMessage *data) : BView(data)
+TExportZone::TExportZone(BMessage* data) : BView(data)
 {
 	fCueSheetWindow = NULL;
 
 	//	Load left and right slider tabs
-	fInMarker       = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderLeft;
-	fOutMarker      = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderRight;
+	fInMarker       = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fExportSliderLeft;
+	fOutMarker      = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fExportSliderRight;
 
 	//	Initialize drag type to non
 	fDragType = kNoDrag;
@@ -116,8 +116,8 @@ void TExportZone::Init()
 	fExportChannel.Set(fInRect.right, fInRect.top, fOutRect.left, fInRect.bottom-1);
 
 	//	Load left and right slider tabs
-	fInMarker       = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderLeft;
-	fOutMarker      = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderRight;
+	fInMarker       = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fExportSliderLeft;
+	fOutMarker      = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fExportSliderRight;
 
 	//	Initialize drag type to non
 	fDragType = kNoDrag;
@@ -133,7 +133,7 @@ void TExportZone::Init()
 //
 //
 
-BArchivable *TExportZone::Instantiate(BMessage *archive)
+BArchivable* TExportZone::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TExportZone") )
@@ -149,7 +149,7 @@ BArchivable *TExportZone::Instantiate(BMessage *archive)
 //
 //
 
-status_t TExportZone::Archive(BMessage *data, bool deep) const
+status_t TExportZone::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -199,18 +199,18 @@ void TExportZone::MouseDown(BPoint where)
 	Window()->Activate(true);
 
 	// Reset cue drag flag
-	static_cast<MuseumApp *>(be_app)->fIsCueDrag = false;
+	static_cast<MuseumApp*>(be_app)->fIsCueDrag = false;
 
 	//	Reset drag type
 	fDragType = kNoDrag;
 
 	// Check to see which button is down
 	uint32 buttons = 0;
-	Window()->CurrentMessage()->FindInt32("buttons", (int32 *)&buttons);
+	Window()->CurrentMessage()->FindInt32("buttons", (int32*)&buttons);
 
 	uint32 type;
 	int32 count = 0;
-	BMessage *message = Window()->CurrentMessage();
+	BMessage* message = Window()->CurrentMessage();
 
 	// Determine which button has been clicked
 	switch(buttons)
@@ -258,7 +258,7 @@ void TExportZone::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TExportZone::MouseMoved( BPoint where, uint32 code, const BMessage *message )
+void TExportZone::MouseMoved( BPoint where, uint32 code, const BMessage* message )
 {
 
 	// Do nothing if we are playing
@@ -398,7 +398,7 @@ void TExportZone::HandleDoubleClick(BPoint where)
 //	Receive messages
 //
 
-void TExportZone::MessageReceived(BMessage *message)
+void TExportZone::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -654,7 +654,7 @@ void TExportZone::TrackInMarker(BPoint mousePt)
 
 	if (oldRect.left <= fInRect.left) {
 		updateRect.right = fInRect.right;
-	} else   {
+	} else {
 		updateRect.left  = fInRect.left;
 	}
 
@@ -706,7 +706,7 @@ void TExportZone::TrackOutMarker(BPoint mousePt)
 
 	if (fOutRect.left <= oldRect.left) {
 		updateRect.left = fOutRect.left;
-	} else   {
+	} else {
 		updateRect.right  = fOutRect.right;
 	}
 
@@ -835,7 +835,7 @@ void TExportZone::TrackZone(BPoint mousePt)
 void TExportZone::AttachedToWindow()
 {
 	if(fCueSheetWindow == NULL) {
-		fCueSheetWindow = (TCueSheetWindow *)Window();
+		fCueSheetWindow = (TCueSheetWindow*)Window();
 	}
 
 	//	PAss up to parent
@@ -851,7 +851,7 @@ void TExportZone::AttachedToWindow()
 //---------------------------------------------------------------------
 //
 //
-void TExportZone::SetParent(TCueSheetWindow *parent)
+void TExportZone::SetParent(TCueSheetWindow* parent)
 {
 	fCueSheetWindow = parent;
 }

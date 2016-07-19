@@ -36,7 +36,7 @@
 //
 //
 
-TMIDIConductor::TMIDIConductor(TMIDICue *parent)
+TMIDIConductor::TMIDIConductor(TMIDICue* parent)
 {
 	// Save parent cue
 	fParent = parent;
@@ -67,7 +67,7 @@ TMIDIConductor::~TMIDIConductor()
 {
 	// Clean up event list
 	for (int32 index = 0; index < CountItems(); index++) {
-		ConductorEvent *theEvent = (ConductorEvent *)ItemAt(index);
+		ConductorEvent* theEvent = (ConductorEvent*)ItemAt(index);
 
 		if (theEvent)
 			free(theEvent);
@@ -92,10 +92,10 @@ TMIDIConductor::~TMIDIConductor()
 
 void TMIDIConductor::InsertTempo(long tempo, long time)
 {
-	ConductorEvent  *theEvent;
+	ConductorEvent* theEvent;
 
 	// Allocate event
-	theEvent = (ConductorEvent *)malloc( sizeof(ConductorEvent) );
+	theEvent = (ConductorEvent*)malloc( sizeof(ConductorEvent) );
 
 	fCurrentDelta += time;
 	fCurrentLocation += time;
@@ -119,10 +119,10 @@ void TMIDIConductor::InsertTempo(long tempo, long time)
 
 void TMIDIConductor::InsertMeter(short num, short den, long time)
 {
-	ConductorEvent  *theEvent;
+	ConductorEvent* theEvent;
 
 	// Allocate event
-	theEvent = (ConductorEvent *)malloc( sizeof(ConductorEvent) );
+	theEvent = (ConductorEvent*)malloc( sizeof(ConductorEvent) );
 
 	fCurrentDelta += time;
 	fCurrentLocation += time;
@@ -215,10 +215,10 @@ long TMIDIConductor::StartTime(void)
 
 void TMIDIConductor::SetEndTime(long eTime)
 {
-	ConductorEvent  *theEvent;
+	ConductorEvent* theEvent;
 
 	// Allocate event
-	theEvent = (ConductorEvent *)malloc( sizeof(ConductorEvent) );
+	theEvent = (ConductorEvent*)malloc( sizeof(ConductorEvent) );
 
 	fCurrentDelta += eTime;
 	fCurrentLocation += eTime;
@@ -245,10 +245,10 @@ void TMIDIConductor::SetEndTime(long eTime)
 
 void TMIDIConductor::Reset()
 {
-	ConductorEvent  *e;
+	ConductorEvent* e;
 
 	fCurrentEvent = 1;
-	e = (ConductorEvent *)ItemAt(1);
+	e = (ConductorEvent*)ItemAt(1);
 	fCurrentDelta = e->time;
 
 	fPlayTime = fTotalTime;
@@ -272,7 +272,7 @@ long TMIDIConductor::GetStartDelta(long mSecLocation)
 	long uSecLocation, uSecsPerTick;
 	long nextTempo = 0;
 	long theIndex;
-	ConductorEvent  *e;
+	ConductorEvent* e;
 
 	uSecLocation = 0;
 	theIndex = 1;
@@ -283,7 +283,7 @@ long TMIDIConductor::GetStartDelta(long mSecLocation)
 			uSecsPerTick = nextTempo;
 			nextTempo = 0;
 		}
-		e = (ConductorEvent *)ItemAt(theIndex++);
+		e = (ConductorEvent*)ItemAt(theIndex++);
 
 		if (e->type == tempoChange)
 			nextTempo = e->d.tempo;
@@ -331,11 +331,11 @@ long TMIDIConductor::GetStartDelta(long mSecLocation)
 
 void TMIDIConductor::SetPosition(long where)
 {
-	ConductorEvent  *e;
+	ConductorEvent* e;
 
 	fPlayTime = fTotalTime - where;                 // Moved from below 1.5a31
 	fCurrentEvent = 0;
-	e = (ConductorEvent *)ItemAt(++fCurrentEvent);
+	e = (ConductorEvent*)ItemAt(++fCurrentEvent);
 	fCurrentDelta = e->time;
 
 	fLastTempo = 0;
@@ -345,7 +345,7 @@ void TMIDIConductor::SetPosition(long where)
 			fLastTempo = e->d.tempo;
 
 		where -= e->time;
-		e = (ConductorEvent *)ItemAt(++fCurrentEvent);
+		e = (ConductorEvent*)ItemAt(++fCurrentEvent);
 		fCurrentDelta = e->time;
 
 	}
@@ -367,14 +367,14 @@ void TMIDIConductor::SetPosition(long where)
 
 int32 TMIDIConductor::GetTotalTimeMSec()
 {
-	ConductorEvent  *theEvent;
+	ConductorEvent* theEvent;
 	int32 currentUsecsPerTick = 0;
 	int32 index = 1;
 	int32 timeCountdown = fTotalTime;
 	int32 mSecTime = 0;
 
 	for (int32 index = 0; index < CountItems(); index++) {
-		theEvent = (ConductorEvent *)ItemAt(index);
+		theEvent = (ConductorEvent*)ItemAt(index);
 
 		// Check for valid event
 		if (theEvent) {
@@ -408,9 +408,9 @@ int32 TMIDIConductor::TicksToMSec(int32 location)
 	int32 pos = 0;
 	int32 uSecsPerTick = 0, uSecAccum = 0;
 	int32 index = 0;
-	ConductorEvent  *theEvent;
+	ConductorEvent* theEvent;
 
-	theEvent = (ConductorEvent *)ItemAt(index);
+	theEvent = (ConductorEvent*)ItemAt(index);
 
 	while (pos < location) {
 
@@ -428,7 +428,7 @@ int32 TMIDIConductor::TicksToMSec(int32 location)
 			uSecsPerTick = (int32)theEvent->d.tempo * fTempoRatio / kTempoDivisor;
 
 		if (index < CountItems())
-			theEvent = (ConductorEvent *)ItemAt(index++);
+			theEvent = (ConductorEvent*)ItemAt(index++);
 	}
 
 	return (uSecAccum + 500L) / 1000;
@@ -497,7 +497,7 @@ void TMIDIConductor::CalcMarkerTimes()
 //	Add the marker to the marker array
 //
 
-void TMIDIConductor::InsertMarker( char *str, int32 time)
+void TMIDIConductor::InsertMarker( char* str, int32 time)
 {
 	// Allocate marker
 	MarkerPtr marker;

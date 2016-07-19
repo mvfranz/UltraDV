@@ -28,7 +28,7 @@
 //
 //
 
-TAudioCodec::TAudioCodec( TRIFFReader *reader)
+TAudioCodec::TAudioCodec( TRIFFReader* reader)
 {
 	m_Reader = reader;
 
@@ -64,7 +64,7 @@ void TAudioCodec::Init()
 //	Return text description of codec
 //
 
-bool TAudioCodec::GetDescription(char *descText)
+bool TAudioCodec::GetDescription(char* descText)
 {
 	sprintf(descText, "Basic Audio CODEC");
 

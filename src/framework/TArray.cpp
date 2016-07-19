@@ -30,7 +30,7 @@
 #define ASSERT_INDEX(index)     ASSERT( (index > 0)&&(index <= fNumItems))
 #define ITEM_OFFSET(index) ((index-1) * fElementSize)
 //#define ITEM_PTR(index) (&((char *)*fItems)[ ITEM_OFFSET(index) ])
-#define ITEM_PTR(index) (&((char *)fItems)[ ITEM_OFFSET(index) ])
+#define ITEM_PTR(index) (&((char*)fItems)[ ITEM_OFFSET(index) ])
 
 // Macro for obtaining a pointer to temporary storage for one
 // element The temporary storage is an extra slot kept at the
@@ -102,7 +102,7 @@ void TArray::SetBlockSize(short aBlockSize)
 //	Sends dependents an arrayElementChanged message.
 //
 
-void TArray::SetArrayItem( void *itemPtr, int32 index)
+void TArray::SetArrayItem( void* itemPtr, int32 index)
 {
 	ASSERT_INDEX( index);
 
@@ -118,7 +118,7 @@ void TArray::SetArrayItem( void *itemPtr, int32 index)
 //
 
 
-void TArray::Store( const void *itemPtr, int32 index)
+void TArray::Store( const void* itemPtr, int32 index)
 {
 	//BlockMoveData( itemPtr, ITEM_PTR( index), fElementSize);
 	memcpy( ITEM_PTR(index), itemPtr, fElementSize);
@@ -133,7 +133,7 @@ void TArray::Store( const void *itemPtr, int32 index)
 //	itemPtr must point to storage of sufficient size to hold one element.
 //
 
-void TArray::GetArrayItem( void *itemPtr, int32 index)
+void TArray::GetArrayItem( void* itemPtr, int32 index)
 {
 	ASSERT_INDEX( index);
 
@@ -149,7 +149,7 @@ void TArray::GetArrayItem( void *itemPtr, int32 index)
 //	Protected method to retrieve an array element.
 //
 
-void TArray::Retrieve( void *itemPtr, int32 index)
+void TArray::Retrieve( void* itemPtr, int32 index)
 {
 	//BlockMoveData( ITEM_PTR( index), itemPtr, fElementSize);
 	memcpy( itemPtr, ITEM_PTR( index),  fElementSize);
@@ -166,7 +166,7 @@ void TArray::Retrieve( void *itemPtr, int32 index)
 //	of the array.
 //
 
-void TArray::InsertAtIndex( void *itemPtr, int32 index)
+void TArray::InsertAtIndex( void* itemPtr, int32 index)
 {
 	ASSERT(index > 0);
 	ASSERT( fLockChanges == false);
@@ -289,7 +289,7 @@ void TArray::MoveItemToIndex( int32 currentIndex, int32 newIndex)
 		//BlockMoveData( ITEM_PTR( currentIndex+1), ITEM_PTR( currentIndex), (newIndex - currentIndex) * fElementSize);
 		memcpy( ITEM_PTR( currentIndex), ITEM_PTR( currentIndex+1), (newIndex - currentIndex) * fElementSize);
 
-	} else if (currentIndex > newIndex)   {
+	} else if (currentIndex > newIndex) {
 		// Element is after target location.
 		// Shift items between target and current locations up one
 		//BlockMoveData( ITEM_PTR( newIndex), ITEM_PTR( newIndex+1), (currentIndex - newIndex) * fElementSize);
@@ -340,9 +340,9 @@ bool TArray::SetLockChanges( bool fLockChanges)
 //      to qsort.
 //
 
-int32 TArray::Search( void *itemPtr, CompareFunc compare)
+int32 TArray::Search( void* itemPtr, CompareFunc compare)
 {
-	register char   * items;
+	register char* items;
 	register int32 i;
 	int32 foundIndex = BAD_INDEX;
 
@@ -489,7 +489,7 @@ int32 TArray::ItemOffset( int32 itemIndex)
 //
 //
 
-void TArray::AddEnd(void *itemPtr)
+void TArray::AddEnd(void* itemPtr)
 {
 	ASSERT(itemPtr!=NULL);
 	InsertAtIndex(itemPtr, GetNumItems()+1);

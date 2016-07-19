@@ -56,7 +56,7 @@ TVideoSettingsDialog::TVideoSettingsDialog(BRect bounds) : BWindow( bounds, "Vid
 TVideoSettingsDialog::~TVideoSettingsDialog()
 {
 	//	Close running connections
-	BMediaRoster *roster = BMediaRoster::Roster();
+	BMediaRoster* roster = BMediaRoster::Roster();
 
 	roster->StopNode(fFrom.node, 0, true);
 	roster->StopNode(fTo.node, 0, true);
@@ -84,7 +84,7 @@ void TVideoSettingsDialog::Init()
 	//
 
 	//	Get MediaRoster
-	BMediaRoster *mediaRoster = BMediaRoster::Roster();
+	BMediaRoster* mediaRoster = BMediaRoster::Roster();
 	if (!mediaRoster) {
 		(new BAlert("", "Cannot connect to the media server!", "Quit"))->Go();
 		PostMessage(B_QUIT_REQUESTED);
@@ -174,7 +174,7 @@ void TVideoSettingsDialog::Init()
 		return;
 	}
 
-	BTimeSource *source = mediaRoster->MakeTimeSourceFor(fTimeSource);
+	BTimeSource* source = mediaRoster->MakeTimeSourceFor(fTimeSource);
 
 	//	Start them
 	bigtime_t start_delay = 0;
@@ -227,13 +227,13 @@ void TVideoSettingsDialog::Init()
 	//
 
 	// Get app instance
-	MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
+	MuseumApp* theApp = static_cast<MuseumApp*>(be_app);
 
 	// get active cue sheet
-	TCueSheetWindow *cueSheet = theApp->GetCueSheet();
+	TCueSheetWindow* cueSheet = theApp->GetCueSheet();
 	if (cueSheet) {
 		// Create local copy of VideoSettings
-		TCueSheetPrefs *thePrefs = cueSheet->GetCueSheetPrefs();
+		TCueSheetPrefs* thePrefs = cueSheet->GetCueSheetPrefs();
 		fTempVideoSettings = thePrefs->fVideoSettings;
 	}
 
@@ -278,12 +278,12 @@ void TVideoSettingsDialog::MessageReceived(BMessage* message)
 	case OK_MSG:
 	{
 		// get app instance
-		MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
+		MuseumApp* theApp = static_cast<MuseumApp*>(be_app);
 
 		// get active cue sheet
-		TCueSheetWindow *cueSheet = theApp->GetCueSheet();
+		TCueSheetWindow* cueSheet = theApp->GetCueSheet();
 		if (cueSheet) {
-			TCueSheetPrefs *thePrefs = cueSheet->GetCueSheetPrefs();
+			TCueSheetPrefs* thePrefs = cueSheet->GetCueSheetPrefs();
 
 			// Update the prefs
 			thePrefs->fVideoSettings = fTempVideoSettings;

@@ -79,8 +79,8 @@ void TVideoCaptureToolbar::Init()
 	BRect bounds;
 
 	// Create Play button
-	BBitmap *recordUp = GetIcon16FromResource("Record");
-	BBitmap *recordDn = GetIcon16FromResource("AudioStopUp");
+	BBitmap* recordUp = GetIcon16FromResource("Record");
+	BBitmap* recordDn = GetIcon16FromResource("AudioStopUp");
 	bounds = Bounds();
 	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset,
 	            bounds.top + kButtonTopOffset + kToolButtonHeight );
@@ -146,7 +146,7 @@ void TVideoCaptureToolbar::Draw(BRect updateRect)
 //	Handle key down event
 //
 
-void TVideoCaptureToolbar::KeyDown(const char *bytes, int32 numBytes)
+void TVideoCaptureToolbar::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	BView::KeyDown(bytes, numBytes);

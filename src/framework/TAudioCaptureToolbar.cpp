@@ -70,8 +70,8 @@ void TAudioCaptureToolbar::Init()
 	BRect bounds;
 
 	// Create Play button
-	BBitmap *recordUp = GetIcon16FromResource("Record");
-	BBitmap *recordDn = GetIcon16FromResource("AudioStopUp");
+	BBitmap* recordUp = GetIcon16FromResource("Record");
+	BBitmap* recordDn = GetIcon16FromResource("AudioStopUp");
 	bounds = Bounds();
 	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset,
 	            bounds.top + kButtonTopOffset + kToolButtonHeight );

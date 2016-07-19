@@ -34,7 +34,7 @@
 //
 //
 
-TVideoEditorShuttle::TVideoEditorShuttle(TVideoEditor *editor, BMessage *message) : BView(message)
+TVideoEditorShuttle::TVideoEditorShuttle(TVideoEditor* editor, BMessage* message) : BView(message)
 {
 	fEditor = editor;
 

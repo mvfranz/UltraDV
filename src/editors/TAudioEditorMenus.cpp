@@ -34,7 +34,7 @@
 //
 
 
-TAudioEditorMenus::TAudioEditorMenus(BMenuBar* mbar, TAudioEditor *parent)
+TAudioEditorMenus::TAudioEditorMenus(BMenuBar* mbar, TAudioEditor* parent)
 {
 
 	// Save the BMenuBar into our member variable

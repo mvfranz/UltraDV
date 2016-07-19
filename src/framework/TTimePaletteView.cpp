@@ -87,16 +87,16 @@ void TTimePaletteView::Init()
 		return;
 
 	size_t size;
-	BBitmap         *data;
+	BBitmap* data;
 
 	BResources res(&file);
-	data = (BBitmap *)res.FindResource('bits', "Locator", &size);
+	data = (BBitmap*)res.FindResource('bits', "Locator", &size);
 	if (!data)
 		return;
 
 	// Load bitmap
 	BRect bitmapRect = Bounds();
-	BBitmap *bitmap = new BBitmap(bitmapRect, B_COLOR_8_BIT);
+	BBitmap* bitmap = new BBitmap(bitmapRect, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 	fLocatorBitmap = new TBitmapView( bitmapRect, "LocatorBitmap", bitmap, true, B_FOLLOW_ALL);
@@ -176,7 +176,7 @@ void TTimePaletteView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TTimePaletteView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TTimePaletteView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -200,7 +200,7 @@ void TTimePaletteView::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TTimePaletteView::KeyDown(const char *bytes, int32 numBytes)
+void TTimePaletteView::KeyDown(const char* bytes, int32 numBytes)
 {
 }
 
@@ -213,7 +213,7 @@ void TTimePaletteView::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TTimePaletteView::KeyUp(const char *bytes, int32 numBytes)
+void TTimePaletteView::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 

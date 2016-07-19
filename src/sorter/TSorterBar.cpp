@@ -40,7 +40,7 @@ const int16 kResizeZoneWidth    = 5;
 //
 //
 
-TSorterBar::TSorterBar(BRect bounds, char *title, TSorterContainer *parent, SorterType theType) : BView(bounds, "SorterBarView", B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
+TSorterBar::TSorterBar(BRect bounds, char* title, TSorterContainer* parent, SorterType theType) : BView(bounds, "SorterBarView", B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
 {
 	fParent         = parent;
 	fTitle  = title;
@@ -93,7 +93,7 @@ void TSorterBar::Init()
 //	Handle messages
 //
 
-void TSorterBar::MessageReceived(BMessage *theMessage)
+void TSorterBar::MessageReceived(BMessage* theMessage)
 {
 	switch(theMessage->what)
 	{
@@ -103,7 +103,7 @@ void TSorterBar::MessageReceived(BMessage *theMessage)
 		BPoint mousePt;
 
 		if ( theMessage->FindPoint("where", &mousePt) == B_OK) {
-			BMessage *theMessage = new BMessage(SORTER_RESIZE_MSG);
+			BMessage* theMessage = new BMessage(SORTER_RESIZE_MSG);
 			theMessage->AddPoint("ResizePoint", mousePt);
 			Parent()->MessageReceived(theMessage);
 		}
@@ -228,7 +228,7 @@ void TSorterBar::MouseDown(BPoint where)
 		InvertRect(invertRect);
 
 		// Tell parent we were clicked
-		BMessage *theMessage = new BMessage(SORTER_CLICK_MSG);
+		BMessage* theMessage = new BMessage(SORTER_CLICK_MSG);
 		fParent->MessageReceived(theMessage);
 		delete theMessage;
 	}
@@ -253,7 +253,7 @@ void TSorterBar::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TSorterBar::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TSorterBar::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 

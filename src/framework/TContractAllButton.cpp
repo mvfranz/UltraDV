@@ -37,7 +37,7 @@
 //
 //
 
-TContractAllButton::TContractAllButton(TToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TContractAllButton::TContractAllButton(TToolbar* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fParent = parent;
@@ -62,7 +62,7 @@ TContractAllButton::TContractAllButton(TToolbar *parent, BRect bounds, const cha
 //
 //
 
-TContractAllButton::TContractAllButton(BMessage *data) : BView(data)
+TContractAllButton::TContractAllButton(BMessage* data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
@@ -106,7 +106,7 @@ void TContractAllButton::Init()
 //
 //
 
-BArchivable *TContractAllButton::Instantiate(BMessage *archive)
+BArchivable* TContractAllButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TContractAllButton") )
@@ -121,7 +121,7 @@ BArchivable *TContractAllButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TContractAllButton::Archive(BMessage *data, bool deep) const
+status_t TContractAllButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -196,8 +196,8 @@ void TContractAllButton::MouseDown(BPoint where)
 void TContractAllButton::AttachedToWindow()
 {
 	if(fParent == NULL) {
-		fParent         = (TToolbar *)Parent();
-		fHandler        = (TToolbar *)Parent();
+		fParent         = (TToolbar*)Parent();
+		fHandler        = (TToolbar*)Parent();
 	}
 
 	//	Pass up to parent
@@ -224,9 +224,9 @@ void TContractAllButton::DoClick()
 	Draw(Bounds());
 
 	// Create and send message to channel and header
-	BMessage *message = new BMessage(CONTRACT_ALL_BUTTON_MSG);
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet(), NULL );
+	BMessage* message = new BMessage(CONTRACT_ALL_BUTTON_MSG);
+	(static_cast<MuseumApp*>(be_app)->GetCueSheet())->PostMessage(message, (BHandler*)static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
+	(static_cast<MuseumApp*>(be_app)->GetCueSheet())->PostMessage(message, (BHandler*)static_cast<MuseumApp*>(be_app)->GetCueSheet(), NULL );
 	delete message;
 
 	// Wait a short while before restoring to up position

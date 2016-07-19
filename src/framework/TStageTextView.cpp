@@ -28,7 +28,7 @@
 //
 //
 
-TStageTextView::TStageTextView(BRect bounds, char *name, TCueView *theCue) : TStageCue(bounds, name, theCue)
+TStageTextView::TStageTextView(BRect bounds, char* name, TCueView* theCue) : TStageCue(bounds, name, theCue)
 {
 
 }
@@ -127,7 +127,7 @@ void TStageTextView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TStageTextView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TStageTextView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -151,7 +151,7 @@ void TStageTextView::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TStageTextView::KeyDown(const char *bytes, int32 numBytes)
+void TStageTextView::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	BView::KeyDown(bytes, numBytes);
@@ -166,7 +166,7 @@ void TStageTextView::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TStageTextView::KeyUp(const char *bytes, int32 numBytes)
+void TStageTextView::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 

@@ -28,7 +28,7 @@
 //
 //
 
-TVideoCodec::TVideoCodec( TRIFFReader *reader)
+TVideoCodec::TVideoCodec( TRIFFReader* reader)
 {
 	m_Reader = reader;
 
@@ -64,7 +64,7 @@ void TVideoCodec::Init()
 //	Return text description of codec
 //
 
-bool TVideoCodec::GetDescription(char *descText)
+bool TVideoCodec::GetDescription(char* descText)
 {
 
 	return false;

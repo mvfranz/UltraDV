@@ -32,7 +32,7 @@ media_raw_video_format video_format = { 29.97,1,0,239,B_VIDEO_TOP_LEFT_RIGHT,1,1
 //---------------------------------------------------------------
 
 AVIConsumer::AVIConsumer(
-	const char * name) :
+	const char* name) :
 	BMediaNode(name),
 	BBufferConsumer(B_MEDIA_RAW_VIDEO)
 {
@@ -146,8 +146,8 @@ AVIConsumer::~AVIConsumer()
 
 //---------------------------------------------------------------
 
-BMediaAddOn *
-AVIConsumer::AddOn(long *) const
+BMediaAddOn*
+AVIConsumer::AddOn(long*) const
 {
 	return NULL;
 }
@@ -253,7 +253,7 @@ AVIConsumer::TimeWarp(bigtime_t at_real_time,
 //---------------------------------------------------------------
 
 void
-AVIConsumer::BufferReceived(BBuffer * buffer)
+AVIConsumer::BufferReceived(BBuffer* buffer)
 {
 	LOOP("AVIConsumer::BufferReceived\n");
 
@@ -294,7 +294,7 @@ AVIConsumer::Connected(
 	const media_source & producer,
 	const media_destination & where,
 	const media_format & with_format,
-	media_input * out_input)
+	media_input* out_input)
 {
 	FUNCTION("AVIConsumer::Connected()\n");
 
@@ -364,7 +364,7 @@ AVIConsumer::Disconnected(
 status_t
 AVIConsumer::AcceptFormat(
 	const media_destination & /*dest*/,
-	media_format * format)
+	media_format* format)
 {
 	FUNCTION("AVIConsumer::AcceptFormat()\n");
 	if (format->type != B_MEDIA_NO_TYPE) {
@@ -391,8 +391,8 @@ AVIConsumer::AcceptFormat(
 
 status_t
 AVIConsumer::GetNextInput(
-	int32 * cookie,
-	media_input * out_input)
+	int32* cookie,
+	media_input* out_input)
 {
 	FUNCTION("AVIConsumer::GetNextInput()\n");
 
@@ -426,8 +426,8 @@ AVIConsumer::DisposeInputCookie(int32 /*cookie*/)
 status_t
 AVIConsumer::GetLatencyFor(
 	const media_destination & /* input */,
-	bigtime_t * out_latency,
-	media_node_id * out_timesource)
+	bigtime_t* out_latency,
+	media_node_id* out_timesource)
 {
 	FUNCTION("AVIConsumer::GetLatencyFor()\n");
 	*out_latency = mMyLatency;
@@ -476,10 +476,10 @@ AVIConsumer::FormatChanged(
 //---------------------------------------------------------------
 
 status_t
-AVIConsumer::sRun(void * data)
+AVIConsumer::sRun(void* data)
 {
 	FUNCTION("AVIConsumer::sRun()\n");
-	((AVIConsumer *)data)->ServiceThread();
+	((AVIConsumer*)data)->ServiceThread();
 	return 0;
 }
 
@@ -524,10 +524,10 @@ AVIConsumer::ServiceThread()
 //---------------------------------------------------------------
 
 status_t
-AVIConsumer::vRun(void * data)
+AVIConsumer::vRun(void* data)
 {
 	FUNCTION("AVIConsumer::vRun()\n");
-	((AVIConsumer *)data)->DisplayThread();
+	((AVIConsumer*)data)->DisplayThread();
 	return 0;
 }
 
@@ -612,7 +612,7 @@ AVIConsumer::DisplayThread()
 					continue;
 				}
 
-				BBuffer *buffer   = mBufferQueue->PopFirstBuffer(0);
+				BBuffer* buffer   = mBufferQueue->PopFirstBuffer(0);
 				uint32 connection = buffer->Header()->destination;
 
 				LOOP("Popped buffer for connection %d, Start time: %.4f, system time: %.4f diff: %.4f\n",
@@ -643,14 +643,14 @@ AVIConsumer::DisplayThread()
 						printf("Draw time = %.4f\n",t1/M1);
 
 					continue;
-				} else   {
+				} else {
 					// If we're too early, push frame back on stack
 					if (perfTimeNow < buffer->Header()->start_time) {
 						LOOP("push buffer back on stack!\n");
 						mBufferQueue->PushBuffer(buffer, buffer->Header()->start_time);
 						release_sem(mBufferAvailable);
 						continue;
-					} else   {
+					} else {
 						// if we've already passed a half frame time past the buffer start time
 						// and RunMode = INCREASE_LATENCY, increase latency and display the frame
 						if ( (perfTimeNow > buffer->Header()->start_time) &&
@@ -671,7 +671,7 @@ AVIConsumer::DisplayThread()
 							mWindow[connection]->Unlock();
 
 							continue;
-						} else   {
+						} else {
 							// we're more than a half frame time past the buffer start time
 							// drop the frame
 							ERROR("VidConsumer::DisplayThread - dropped late frame: %.4f @ %.4f\n", (double)buffer->Header()->start_time/M1, (double)perfTimeNow/M1);
@@ -734,7 +734,7 @@ bool AVIConsumer::InitAVIFile()
 
 	printf("%s\n", fileName);
 
-	BFile *theFile = new BFile();
+	BFile* theFile = new BFile();
 	if (theFile->SetTo(fileName, B_CREATE_FILE | B_READ_WRITE | B_ERASE_FILE) == B_NO_ERROR) {
 
 		//	Clean up old RIFFWriter
@@ -749,7 +749,7 @@ bool AVIConsumer::InitAVIFile()
 		//mColorspace = with_format.u.raw_video.display.format;
 
 		//	Set up initial AVI headers
-		AVIHeader *aviHeader = m_RIFFWriter->GetAVIHeader();
+		AVIHeader* aviHeader = m_RIFFWriter->GetAVIHeader();
 
 		aviHeader->TimeBetweenFrames    = 29.97 * 1000 * 1000;  //	In microseconds
 		aviHeader->MaximumDataRate              = 0;
@@ -775,7 +775,7 @@ bool AVIConsumer::InitAVIFile()
 			return retVal;
 
 		//	Set up first stream header, in this case video
-		AVIStreamHeader *streamOneHeader        = m_RIFFWriter->GetStreamOneHeader();
+		AVIStreamHeader* streamOneHeader        = m_RIFFWriter->GetStreamOneHeader();
 		streamOneHeader->DataType                       = kRiff_vids_Chunk;
 		streamOneHeader->DataHandler            = RIFF_rgb;
 		streamOneHeader->Flags                          = 0;
@@ -790,7 +790,7 @@ bool AVIConsumer::InitAVIFile()
 		streamOneHeader->SampleSize                     = 0;
 
 		//	Setup VIDSHeader
-		AVIVIDSHeader *vidsHeader       = m_RIFFWriter->GetVIDSHeader();
+		AVIVIDSHeader* vidsHeader       = m_RIFFWriter->GetVIDSHeader();
 		vidsHeader->Size                        = sizeof(AVIVIDSHeader);
 		vidsHeader->Width                       = mXSize;
 		vidsHeader->Height                      = mYSize;

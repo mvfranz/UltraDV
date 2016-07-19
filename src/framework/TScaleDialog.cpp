@@ -46,7 +46,7 @@
 //
 //
 
-TScaleDialog::TScaleDialog(TVisualCue *theCue, BMessage *theMessage) : BWindow(theMessage)
+TScaleDialog::TScaleDialog(TVisualCue* theCue, BMessage* theMessage) : BWindow(theMessage)
 {
 	//	Save reference to PictureCue
 	fCue = theCue;
@@ -95,13 +95,13 @@ void TScaleDialog::Init()
 	// Get dialog items
 	//
 
-	fBackView = (BView *)FindView("ScaleView");
+	fBackView = (BView*)FindView("ScaleView");
 
 	//	Get TextControls and swap them out for our own
 	//
 
 	//	Width
-	BTextControl *widthControl      = (BTextControl *)FindView("WidthTextControl");
+	BTextControl* widthControl      = (BTextControl*)FindView("WidthTextControl");
 	fWidthText = new TNumberTextControl( widthControl->Frame(), widthControl->Label(), widthControl->Name(),
 	                                     NULL, new BMessage(SCALE_WIDTH_TEXT_MSG));
 	fWidthText->SetDivider(widthControl->Divider());
@@ -111,7 +111,7 @@ void TScaleDialog::Init()
 	delete widthControl;
 
 	//	Height
-	BTextControl *heightControl     = (BTextControl *)FindView("HeightTextControl");
+	BTextControl* heightControl     = (BTextControl*)FindView("HeightTextControl");
 	fHeightText = new TNumberTextControl( heightControl->Frame(), heightControl->Label(), heightControl->Name(),
 	                                      NULL, new BMessage(SCALE_HEIGHT_TEXT_MSG));
 	fHeightText->SetDivider(heightControl->Divider());
@@ -124,24 +124,24 @@ void TScaleDialog::Init()
 	// Setup menus
 	//
 
-	BMenu *theMenu;
+	BMenu* theMenu;
 
-	fWidthMenu       = (BMenuField *)FindView("WidthMenu");
-	fHeightMenu = (BMenuField *)FindView("HeightMenu");
+	fWidthMenu       = (BMenuField*)FindView("WidthMenu");
+	fHeightMenu = (BMenuField*)FindView("HeightMenu");
 
 	//	Width Menu
 	theMenu = fWidthMenu->Menu();
 	if (theMenu) {
 		// Pixels
-		BMenuItem *pixelsItem = new BMenuItem("Pixels", new BMessage(SCALE_W_PIXELS_MSG));
+		BMenuItem* pixelsItem = new BMenuItem("Pixels", new BMessage(SCALE_W_PIXELS_MSG));
 		theMenu->AddItem(pixelsItem);
 
 		//	Inches
-		BMenuItem *inchesItem = new BMenuItem("Inches", new BMessage(SCALE_W_INCHES_MSG));
+		BMenuItem* inchesItem = new BMenuItem("Inches", new BMessage(SCALE_W_INCHES_MSG));
 		theMenu->AddItem(inchesItem);
 
 		// Percent
-		BMenuItem *percentItem = new BMenuItem("Percent", new BMessage(SCALE_W_PERCENT_MSG));
+		BMenuItem* percentItem = new BMenuItem("Percent", new BMessage(SCALE_W_PERCENT_MSG));
 		theMenu->AddItem(percentItem);
 
 		// Set the target
@@ -155,15 +155,15 @@ void TScaleDialog::Init()
 	theMenu = fHeightMenu->Menu();
 	if (theMenu) {
 		// Pixels
-		BMenuItem *pixelsItem = new BMenuItem("Pixels", new BMessage(SCALE_H_PIXELS_MSG));
+		BMenuItem* pixelsItem = new BMenuItem("Pixels", new BMessage(SCALE_H_PIXELS_MSG));
 		theMenu->AddItem(pixelsItem);
 
 		//	Inches
-		BMenuItem *inchesItem = new BMenuItem("Inches", new BMessage(SCALE_H_INCHES_MSG));
+		BMenuItem* inchesItem = new BMenuItem("Inches", new BMessage(SCALE_H_INCHES_MSG));
 		theMenu->AddItem(inchesItem);
 
 		// Percent
-		BMenuItem *percentItem = new BMenuItem("Percent", new BMessage(SCALE_H_PERCENT_MSG));
+		BMenuItem* percentItem = new BMenuItem("Percent", new BMessage(SCALE_H_PERCENT_MSG));
 		theMenu->AddItem(percentItem);
 
 		// Set the target
@@ -174,12 +174,12 @@ void TScaleDialog::Init()
 	}
 
 	//	Get checkboxes
-	fAspectCheck    = (BCheckBox *)FindView("AspectCheck");
+	fAspectCheck    = (BCheckBox*)FindView("AspectCheck");
 
 	//	Get buttons
-	fOKButton               = (BButton *)FindView("OKButton");
-	fApplyButton    = (BButton *)FindView("ApplyButton");
-	fCancelButton   = (BButton *)FindView("CancelButton");
+	fOKButton               = (BButton*)FindView("OKButton");
+	fApplyButton    = (BButton*)FindView("ApplyButton");
+	fCancelButton   = (BButton*)FindView("CancelButton");
 
 	//
 	//	Set controls
@@ -236,13 +236,13 @@ void TScaleDialog::MessageReceived(BMessage* message)
 	case SCALE_WIDTH_TEXT_MSG:
 	{
 		//	Get text value
-		const char *numStr = fWidthText->Text();
+		const char* numStr = fWidthText->Text();
 		int32 theVal = atoi(numStr);
 
 		//	Do we need to maintain aspect ratio?
 		if (fAspectRatio) {
 			//	Get width text value
-			const char *numText = fWidthText->Text();
+			const char* numText = fWidthText->Text();
 			float width = atof(numText);
 
 			//	Get width in pixels
@@ -293,7 +293,7 @@ void TScaleDialog::MessageReceived(BMessage* message)
 	case SCALE_HEIGHT_TEXT_MSG:
 	{
 		//	Get text value
-		const char *numStr = fHeightText->Text();
+		const char* numStr = fHeightText->Text();
 		int16 theVal = atoi(numStr);
 
 		//	Do we need to maintain aspect ratio?
@@ -363,7 +363,7 @@ void TScaleDialog::MessageReceived(BMessage* message)
 		}
 
 		//	Inform cue we are gone
-		BMessage *theMessage = new BMessage(SCALE_CLOSE_MSG);
+		BMessage* theMessage = new BMessage(SCALE_CLOSE_MSG);
 		fCue->MessageReceived(theMessage);
 		delete theMessage;
 
@@ -391,7 +391,7 @@ void TScaleDialog::MessageReceived(BMessage* message)
 
 
 		//	Inform cue we are gone
-		BMessage *theMessage = new BMessage(SCALE_CLOSE_MSG);
+		BMessage* theMessage = new BMessage(SCALE_CLOSE_MSG);
 		fCue->MessageReceived(theMessage);
 		delete theMessage;
 
@@ -530,8 +530,8 @@ void TScaleDialog::ConvertHeightToPercent()
 void TScaleDialog::UpdateCue()
 {
 	if (fCue->IsOnStage()) {
-		TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-		TStageView       *stageView = theStage->GetStageView();
+		TStageWindow* theStage  = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage();
+		TStageView* stageView = theStage->GetStageView();
 
 		theStage->Lock();
 		stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
@@ -555,7 +555,7 @@ float TScaleDialog::GetNewWidth()
 	const BRect scaleArea = fCue->GetScaledArea();
 	const BRect area          = fCue->GetArea();
 
-	const char *numStr = fWidthText->Text();
+	const char* numStr = fWidthText->Text();
 	const float theVal = atof(numStr);
 
 	//	Calculate return value as a percent
@@ -599,7 +599,7 @@ float TScaleDialog::GetNewHeight()
 	const BRect scaleArea = fCue->GetScaledArea();
 	const BRect area          = fCue->GetArea();
 
-	const char *numStr = fHeightText->Text();
+	const char* numStr = fHeightText->Text();
 	const float theVal = atof(numStr);
 
 	//	Calculate return value as a percent

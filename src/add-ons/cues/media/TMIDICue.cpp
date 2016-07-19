@@ -47,7 +47,7 @@
 //
 //
 
-TMIDICue::TMIDICue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime) :
+TMIDICue::TMIDICue(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime) :
 	TCueView(id, parent, bounds, startTime, "MIDICue")
 {
 	// Init member variables
@@ -65,7 +65,7 @@ TMIDICue::TMIDICue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime
 //
 //	Construct from an entry_ref
 
-TMIDICue::TMIDICue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect bounds, uint32 startTime) :
+TMIDICue::TMIDICue(entry_ref &theRef, int16 id,  TCueChannel* parent, BRect bounds, uint32 startTime) :
 	TCueView(id, parent, bounds, startTime, "MIDICue")
 {
 	// Init member variables
@@ -86,7 +86,7 @@ TMIDICue::TMIDICue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect boun
 	// First, make sure we have a valid ref
 	if ( IsMIDI(nodeInfo) ) {
 		//      Create a BMessage that includes the entry_ref to send to our open routine
-		BMessage *theMessage = new BMessage(B_REFS_RECEIVED);
+		BMessage* theMessage = new BMessage(B_REFS_RECEIVED);
 		theMessage->AddRef("refs", &theRef);
 
 		bool retVal = LoadMIDIFile(theMessage);
@@ -137,7 +137,7 @@ TMIDICue::~TMIDICue()
 	if (fTrackList) {
 		// Delete tracks in list
 		for (int32 index = 0; index < fTrackList->CountItems(); index++) {
-			TMIDITrack      *theTrack =  (TMIDITrack *)fTrackList->ItemAt(index);
+			TMIDITrack* theTrack =  (TMIDITrack*)fTrackList->ItemAt(index);
 
 			if (theTrack)
 				delete theTrack;
@@ -209,7 +209,7 @@ void TMIDICue::Init()
 	if (fChannel->IsExpanded()) {
 		fIsExpanded = false;
 		Expand();
-	} else   {
+	} else {
 		fIsExpanded = true;
 		Contract();
 	}
@@ -246,7 +246,7 @@ void TMIDICue::MouseDown(BPoint where)
 {
 	// Play midi file
 	uint32 buttons = 0;
-	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+	Window()->CurrentMessage()->FindInt32("buttons", (long*)&buttons);
 
 	// Determine which button has been clicked
 	switch(buttons)
@@ -275,7 +275,7 @@ void TMIDICue::MouseDown(BPoint where)
 //
 //	Receive messages
 //
-void TMIDICue::MessageReceived(BMessage *message)
+void TMIDICue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -325,10 +325,10 @@ void TMIDICue::ShowPanel()
 
 	//      Create messenger to send panel messages to our channel.  We cannot send it to
 	//  ourself as we are not part of the view heirarchy.
-	BMessenger *messenger = new BMessenger( fChannel,  ((MuseumApp *)be_app)->GetCueSheet());
+	BMessenger* messenger = new BMessenger( fChannel,  ((MuseumApp*)be_app)->GetCueSheet());
 
 	// Create message containing pointer to ourself
-	BMessage *message = new BMessage();
+	BMessage* message = new BMessage();
 	message->AddPointer("TheCue", this);
 
 	// Construct a file panel and set it to modal
@@ -378,10 +378,10 @@ void TMIDICue::HidePanel()
 //	Load a MIDI file using BSoundFile
 //
 
-bool TMIDICue::LoadMIDIFile(BMessage *message)
+bool TMIDICue::LoadMIDIFile(BMessage* message)
 {
 
-	TMIDITrack      *curTrack;
+	TMIDITrack* curTrack;
 	int32 time, totalTime;
 	int16 tempoRatio = kTempoDivisor;
 
@@ -420,7 +420,7 @@ bool TMIDICue::LoadMIDIFile(BMessage *message)
 			// Add to track list
 			fTrackList->AddItem(curTrack);
 
-		} else   {
+		} else {
 			// Read in conductor
 			totalTime = fMIDIFile->ReadConductor(fMIDIConductor);
 
@@ -488,9 +488,9 @@ int32 TMIDICue::PlayMidiFile()
 //	Static thread function
 //
 
-int32 TMIDICue::play_midi_file(void *arg)
+int32 TMIDICue::play_midi_file(void* arg)
 {
-	TMIDICue *obj = (TMIDICue *)arg;
+	TMIDICue* obj = (TMIDICue*)arg;
 	return(obj->PlayMidiFile() );
 }
 
@@ -517,7 +517,7 @@ void TMIDICue::PlayCue(uint32 theTime)
 	fSynthFile->Start();
 
 	// Create thread and let it do the playback...
-	fPlaybackThread = spawn_thread( play_midi_file, "MIDIPlayer", B_REAL_TIME_DISPLAY_PRIORITY, (void *) this);
+	fPlaybackThread = spawn_thread( play_midi_file, "MIDIPlayer", B_REAL_TIME_DISPLAY_PRIORITY, (void*) this);
 
 	if ( fPlaybackThread == B_NO_ERROR )
 		resume_thread(fPlaybackThread);
@@ -629,7 +629,7 @@ void TMIDICue::CalcDuration()
 
 void TMIDICue::LoadCueIcon()
 {
-	BBitmap *cueIcon = GetAppIcons()->fMIDIUpIcon;
+	BBitmap* cueIcon = GetAppIcons()->fMIDIUpIcon;
 
 	if (cueIcon) {
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));

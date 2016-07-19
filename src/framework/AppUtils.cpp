@@ -208,7 +208,7 @@ void TimeToString(uint32 mSecTime, short format, char str[256], bool stripLeadin
 			sprintf((char*)str, "-%02d:%02d:%02d.%02d\0", hours, minutes, seconds, fraction);
 		else
 			sprintf((char*)str, "-%02d:%02d:%02d:%02d\0", hours, minutes, seconds, fraction);
-	} else   {
+	} else {
 		if (format == B_TIMECODE_30_DROP_2 || format == B_TIMECODE_30)
 			sprintf((char*)str, "%02d:%02d:%02d.%02d\0", hours, minutes, seconds, fraction);
 		else
@@ -224,7 +224,7 @@ void TimeToString(uint32 mSecTime, short format, char str[256], bool stripLeadin
 //	Return string indicating current time scale
 //
 
-void GetTimeScaleString(short resolution, char *timeStr)
+void GetTimeScaleString(short resolution, char* timeStr)
 {
 	switch (resolution)
 	{
@@ -550,11 +550,11 @@ bool IsControlKeyDown()
 //	Check for down state of control key
 //
 
-void AdjustScrollBar( BScrollBar *scrollBar, float page, float pageStep, float total, float start)
+void AdjustScrollBar( BScrollBar* scrollBar, float page, float pageStep, float total, float start)
 {
 	if (total <= page) {
 		scrollBar->SetRange(start, start);
-	} else   {
+	} else {
 		scrollBar->SetRange(start, start+total-page);
 	}
 
@@ -581,9 +581,9 @@ void AdjustScrollBar( BScrollBar *scrollBar, float page, float pageStep, float t
 
 uint32 Duration()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
-		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() )
-			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->Duration();
+	if ( static_cast<MuseumApp*>(be_app)->GetCueSheet() ) {
+		if ( static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView() )
+			return static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView()->Duration();
 		else
 			return 0;
 	} else
@@ -600,9 +600,9 @@ uint32 Duration()
 
 uint32 GetCurrentTime()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
-		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() )
-			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetCurrentTime();
+	if ( static_cast<MuseumApp*>(be_app)->GetCueSheet() ) {
+		if ( static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView() )
+			return static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView()->GetCurrentTime();
 		else
 			return 0;
 	} else
@@ -619,9 +619,9 @@ uint32 GetCurrentTime()
 
 uint32 StartTime()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
-		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() )
-			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->StartTime();
+	if ( static_cast<MuseumApp*>(be_app)->GetCueSheet() ) {
+		if ( static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView() )
+			return static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView()->StartTime();
 		else
 			return 0;
 	} else
@@ -638,9 +638,9 @@ uint32 StartTime()
 
 short GetCurrentResolution()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
-		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() ) {
-			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetResolution();
+	if ( static_cast<MuseumApp*>(be_app)->GetCueSheet() ) {
+		if ( static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView() ) {
+			return static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView()->GetResolution();
 		} else
 			return 0;
 	} else
@@ -657,9 +657,9 @@ short GetCurrentResolution()
 
 timecode_type GetCurrentTimeFormat()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
-		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() )
-			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetTimeFormat();
+	if ( static_cast<MuseumApp*>(be_app)->GetCueSheet() ) {
+		if ( static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView() )
+			return static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView()->GetTimeFormat();
 		else
 			return B_TIMECODE_DEFAULT;
 	} else
@@ -675,7 +675,7 @@ timecode_type GetCurrentTimeFormat()
 
 bool IsPlaying()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetPlaybackEngine()->IsPlaying() )
+	if ( static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetPlaybackEngine()->IsPlaying() )
 		return true;
 	else
 		return false;
@@ -693,7 +693,7 @@ bool IsPlaying()
 //
 
 
-int SortCuesByChannelID( const void *itemOne, const void *itemTwo)
+int SortCuesByChannelID( const void* itemOne, const void* itemTwo)
 {
 	//TStageCue **firstCue =  (TStageCue **)itemOne;
 	//TStageCue **secondCue = (TStageCue **)itemTwo;
@@ -719,10 +719,10 @@ int SortCuesByChannelID( const void *itemOne, const void *itemTwo)
 //
 
 
-BWindow  *FindWindow(const char *title)
+BWindow* FindWindow(const char* title)
 {
-	BWindow        *theWindow = NULL;
-	const char *tmpTitle;
+	BWindow* theWindow = NULL;
+	const char* tmpTitle;
 
 	for ( int32 index = 0; index < be_app->CountWindows(); index++) {
 		theWindow = be_app->WindowAt(index);
@@ -751,7 +751,7 @@ BWindow  *FindWindow(const char *title)
 //	Center window on current screen
 //
 
-void CenterWindow(BWindow *theWindow)
+void CenterWindow(BWindow* theWindow)
 {
 	// Get screen settings
 	BScreen theScreen(B_MAIN_SCREEN_ID);
@@ -780,10 +780,10 @@ void CenterWindow(BWindow *theWindow)
 void UpdateStage()
 {
 	//	Force an update of the stage
-	TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-	TStageWindow *stageWindow = cueSheet->GetStage();
+	TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
+	TStageWindow* stageWindow = cueSheet->GetStage();
 	stageWindow->Lock();
-	TStageView *theView = cueSheet->GetStage()->GetStageView();
+	TStageView* theView = cueSheet->GetStage()->GetStageView();
 	if (theView) {
 		theView->StageDraw(theView->Bounds(), GetCurrentTime());
 		theView->Invalidate();
@@ -801,7 +801,7 @@ void UpdateStage()
 //	Calculate the difference between two rects
 //
 
-bool DiffRect( BRect *rectOne, BRect *rectTwo, BRect *dstRect)
+bool DiffRect( BRect* rectOne, BRect* rectTwo, BRect* dstRect)
 {
 	BRect diffRect;
 
@@ -827,7 +827,7 @@ bool DiffRect( BRect *rectOne, BRect *rectTwo, BRect *dstRect)
 			// no shared side...
 			else
 				return false;
-		} else   {
+		} else {
 			// Determine shared side of rect
 			//
 
@@ -865,13 +865,13 @@ bool DiffRect( BRect *rectOne, BRect *rectTwo, BRect *dstRect)
 //	Fill bitmap with color
 //
 
-void FillBitmap(BBitmap * map, uint32 color)
+void FillBitmap(BBitmap* map, uint32 color)
 {
 	ASSERT(map->ColorSpace() == B_RGB_32_BIT);
 	ASSERT(sizeof(double) == 8);
 
-	uchar *dst = (uchar *)map->Bits();
-	uchar *end = dst+map->BitsLength();
+	uchar* dst = (uchar*)map->Bits();
+	uchar* end = dst+map->BitsLength();
 
 	if (((ulong)dst)&4) {
 		*(uint32*)dst = color;
@@ -881,9 +881,9 @@ void FillBitmap(BBitmap * map, uint32 color)
 	double d;
 	uint32 a[2] = { color, color };
 
-	d = *(double *)a;
+	d = *(double*)a;
 	while (end-dst > 7) {
-		*(double *)dst = d;
+		*(double*)dst = d;
 		dst += 8;
 	}
 
@@ -899,9 +899,9 @@ void FillBitmap(BBitmap * map, uint32 color)
 //	Clone bitmap
 //
 
-BBitmap *CloneBitmap(const BBitmap &input)
+BBitmap* CloneBitmap(const BBitmap &input)
 {
-	BBitmap *clone = new BBitmap(input.Bounds(), input.ColorSpace());
+	BBitmap* clone = new BBitmap(input.Bounds(), input.ColorSpace());
 	ASSERT(input.BytesPerRow() == clone->BytesPerRow());
 	ASSERT(input.BitsLength() <= clone->BitsLength());
 	memcpy(clone->Bits(), input.Bits(), input.BitsLength());
@@ -958,7 +958,7 @@ bool IsImage(BNodeInfo &nodeInfo)
 
 		BMimeType superType;
 		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
-			const char *superTypeStr= superType.Type();
+			const char* superTypeStr= superType.Type();
 
 			if ( strcmp(superTypeStr, "image") == 0)
 				return true;
@@ -988,7 +988,7 @@ bool IsAudio(BNodeInfo &nodeInfo)
 
 		BMimeType superType;
 		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
-			const char *superTypeStr= superType.Type();
+			const char* superTypeStr= superType.Type();
 
 			if ( strcmp(superTypeStr, "audio") == 0) {
 				//	Make sure it is not a MIDI file
@@ -1022,7 +1022,7 @@ bool IsMIDI(BNodeInfo &nodeInfo)
 
 		BMimeType superType;
 		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
-			const char *superTypeStr= superType.Type();
+			const char* superTypeStr= superType.Type();
 
 			if ( strcmp(superTypeStr, "audio") == 0) {
 				//	Make sure it is not a MIDI file
@@ -1055,7 +1055,7 @@ bool IsVideo(BNodeInfo &nodeInfo)
 
 		BMimeType superType;
 		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
-			const char *superTypeStr= superType.Type();
+			const char* superTypeStr= superType.Type();
 
 			if ( strcmp(superTypeStr, "video") == 0)
 				return true;
@@ -1085,7 +1085,7 @@ bool IsText(BNodeInfo &nodeInfo)
 
 		BMimeType superType;
 		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
-			const char *superTypeStr= superType.Type();
+			const char* superTypeStr= superType.Type();
 
 			if ( strcmp(superTypeStr,  "text") == 0)
 				return true;
@@ -1115,7 +1115,7 @@ bool IsCueSheet(BNodeInfo &nodeInfo)
 
 		BMimeType superType;
 		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
-			const char *superTypeStr= superType.Type();
+			const char* superTypeStr= superType.Type();
 
 			if ( strcmp(superTypeStr, "application") == 0) {
 				//	Make sure it is not a MIDI file

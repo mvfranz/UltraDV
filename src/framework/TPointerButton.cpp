@@ -36,7 +36,7 @@
 //
 //
 
-TPointerButton::TPointerButton(TToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TPointerButton::TPointerButton(TToolbar* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fParent = parent;
@@ -62,7 +62,7 @@ TPointerButton::TPointerButton(TToolbar *parent, BRect bounds, const char *name,
 //
 //
 
-TPointerButton::TPointerButton(BMessage *data) : BView(data)
+TPointerButton::TPointerButton(BMessage* data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
@@ -105,7 +105,7 @@ void TPointerButton::Init()
 //
 //
 
-BArchivable *TPointerButton::Instantiate(BMessage *archive)
+BArchivable* TPointerButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TPointerButton") )
@@ -120,7 +120,7 @@ BArchivable *TPointerButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TPointerButton::Archive(BMessage *data, bool deep) const
+status_t TPointerButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -208,8 +208,8 @@ void TPointerButton::MouseDown(BPoint where)
 void TPointerButton::AttachedToWindow()
 {
 	if(fParent == NULL) {
-		fParent         = (TToolbar *)Parent();
-		fHandler        = (TToolbar *)Parent();
+		fParent         = (TToolbar*)Parent();
+		fHandler        = (TToolbar*)Parent();
 	}
 
 	//	Pass up to parent

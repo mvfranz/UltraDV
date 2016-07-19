@@ -32,7 +32,7 @@
 //
 //
 
-TVideoEditorControlsView::TVideoEditorControlsView(BMessage *message) : BView(message)
+TVideoEditorControlsView::TVideoEditorControlsView(BMessage* message) : BView(message)
 {
 	// Perform default initialization
 	Init();

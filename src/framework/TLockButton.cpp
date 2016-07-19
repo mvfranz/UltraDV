@@ -40,7 +40,7 @@
 //
 //
 
-TLockButton::TLockButton(TCueChannel *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TLockButton::TLockButton(TCueChannel* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fChannel = parent;
@@ -66,7 +66,7 @@ TLockButton::TLockButton(TCueChannel *parent, BRect bounds, const char *name, BB
 //
 //
 
-TLockButton::TLockButton(BMessage *data) : BView(data)
+TLockButton::TLockButton(BMessage* data) : BView(data)
 {
 	fHandler = NULL;
 
@@ -112,7 +112,7 @@ void TLockButton::Init()
 //
 //
 
-BArchivable *TLockButton::Instantiate(BMessage *archive)
+BArchivable* TLockButton::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TLockButton") )
@@ -127,7 +127,7 @@ BArchivable *TLockButton::Instantiate(BMessage *archive)
 //
 //
 
-status_t TLockButton::Archive(BMessage *data, bool deep) const
+status_t TLockButton::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -189,8 +189,8 @@ void TLockButton::MouseDown(BPoint where)
 	Invalidate();
 
 	// Create and send message to channel
-	BMessage *message = new BMessage(LOCK_CHANNEL_MSG);
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
+	BMessage* message = new BMessage(LOCK_CHANNEL_MSG);
+	(static_cast<MuseumApp*>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
 	delete message;
 
 	// Set flag that we have been clicked. When the MouseUp method
@@ -230,7 +230,7 @@ void TLockButton::AttachedToWindow()
 {
 	if (fHandler == NULL) {
 		// Set target
-		fHandler = (TCueSheetWindow *)Window();
+		fHandler = (TCueSheetWindow*)Window();
 
 	}
 	//	Pass up to parent
@@ -247,7 +247,7 @@ void TLockButton::AttachedToWindow()
 //
 //
 
-void TLockButton::SetChannel(TCueChannel *channel)
+void TLockButton::SetChannel(TCueChannel* channel)
 {
 	fChannel = channel;
 }

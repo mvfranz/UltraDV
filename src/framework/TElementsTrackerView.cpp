@@ -36,7 +36,7 @@
 //
 //
 
-TElementsTrackerView::TElementsTrackerView(BRect bounds, TElementsView *parent) : BView(bounds, "ElementsTrackerView", B_FOLLOW_ALL, B_WILL_DRAW)
+TElementsTrackerView::TElementsTrackerView(BRect bounds, TElementsView* parent) : BView(bounds, "ElementsTrackerView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	fParent = parent;
 
@@ -115,7 +115,7 @@ void TElementsTrackerView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TElementsTrackerView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TElementsTrackerView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 

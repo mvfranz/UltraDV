@@ -65,7 +65,7 @@ TVideoCaptureWindow::TVideoCaptureWindow() : BWindow(kVidCapBounds, "Capture Vid
 TVideoCaptureWindow::~TVideoCaptureWindow()
 {
 	//	Get roster
-	BMediaRoster *roster = BMediaRoster::Roster();
+	BMediaRoster* roster = BMediaRoster::Roster();
 
 	//	Stop timesource
 	status_t retVal = roster->StopNode(fTimeSource, 0, true);
@@ -112,7 +112,7 @@ void TVideoCaptureWindow::Init()
 	AddChild(fStatusBar);
 
 	// Set status text
-	BMessage *textMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
+	BMessage* textMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 	textMessage->AddString("StatusText", "Ready to Capture...");
 	fStatusBar->MessageReceived(textMessage);
 	delete textMessage;
@@ -123,7 +123,7 @@ void TVideoCaptureWindow::Init()
 	//
 
 	//	Get MediaRoster
-	BMediaRoster *mediaRoster = BMediaRoster::Roster();
+	BMediaRoster* mediaRoster = BMediaRoster::Roster();
 	if (!mediaRoster) {
 		(new BAlert("", "Cannot connect to the media server!", "Quit"))->Go();
 		PostMessage(B_QUIT_REQUESTED);
@@ -211,7 +211,7 @@ void TVideoCaptureWindow::Init()
 	mediaRoster->GetStartLatencyFor(fTimeSource, &start_delay);
 	start_delay += estimate_max_scheduling_latency(find_thread(NULL));
 
-	BTimeSource *source = BMediaRoster::Roster()->MakeTimeSourceFor(fTimeSource);
+	BTimeSource* source = BMediaRoster::Roster()->MakeTimeSourceFor(fTimeSource);
 	bool running = source->IsRunning();
 	printf("running: %s\n", running ? "true" : "false");
 	bigtime_t perf = source->Now() + start_delay;

@@ -48,7 +48,7 @@ using namespace std;
 //
 //
 
-TNewProject::TNewProject(MuseumApp *parent, BMessage *theMessage) : BWindow(theMessage)
+TNewProject::TNewProject(MuseumApp* parent, BMessage* theMessage) : BWindow(theMessage)
 {
 	fParent = parent;
 
@@ -84,14 +84,14 @@ void TNewProject::Init()
 {
 	WATCH("In TNewProject::Init\n");
 	// Get dialog items
-	fBackground = (BView *)FindView("NewProjectView");
+	fBackground = (BView*)FindView("NewProjectView");
 	ASSERT(fBackground);
 
-	BBox *settingsBox = (BBox *)FindView("SettingsBox");
+	BBox* settingsBox = (BBox*)FindView("SettingsBox");
 	ASSERT(settingsBox);
 
 	// replace setting with our own box
-	BMessage *theMessage = new BMessage();
+	BMessage* theMessage = new BMessage();
 	settingsBox->Archive(theMessage, true);
 	fSettingsBox = new TNewProjectBox(theMessage);
 	fBackground->RemoveChild(settingsBox);
@@ -99,18 +99,18 @@ void TNewProject::Init()
 	delete settingsBox;
 	delete theMessage;
 
-	fPresetsBox = (BBox *)FindView("PresetsBox");
+	fPresetsBox = (BBox*)FindView("PresetsBox");
 	ASSERT(fPresetsBox);
 
-	fPresetsListScrollView = (BScrollView *)FindView("PresetsListScrollView");
+	fPresetsListScrollView = (BScrollView*)FindView("PresetsListScrollView");
 	ASSERT(fPresetsListScrollView);
 
-	fPresetsListView = (BListView *)FindView("PresetsListView");
+	fPresetsListView = (BListView*)FindView("PresetsListView");
 	ASSERT(fPresetsListView);
-	BMessage *selectMessage = new BMessage(LIST_SELECT_MSG);
+	BMessage* selectMessage = new BMessage(LIST_SELECT_MSG);
 	fPresetsListView->SetSelectionMessage(selectMessage);
 
-	BMessage *invokeMessage = new BMessage(LIST_INVOKE_MSG);
+	BMessage* invokeMessage = new BMessage(LIST_INVOKE_MSG);
 	fPresetsListView->SetInvocationMessage(invokeMessage);
 
 	//
@@ -179,11 +179,11 @@ void TNewProject::MessageReceived(BMessage* message)
 	{
 		WATCH("TWP::MR: OK button\n");
 		// Retrive preset from list
-		TPreset *thePreset = static_cast<TPreset *>(fPresetList->ItemAt(GetSelectedItem()));
+		TPreset* thePreset = static_cast<TPreset*>(fPresetList->ItemAt(GetSelectedItem()));
 
 		// Archive it and add it to the message
 		BMessage invokeMessage(NEW_PROJECT_MSG);
-		BMessage *archiveMessage = new BMessage();
+		BMessage* archiveMessage = new BMessage();
 		thePreset->Archive(archiveMessage);
 		invokeMessage.AddMessage("Preset", archiveMessage);
 
@@ -199,7 +199,7 @@ void TNewProject::MessageReceived(BMessage* message)
 		WATCH("TWP:MR: CANCEL\n");
 		//      Quit application if there are no cue sheets open, otherwise
 		//	just quit
-		BList *theList = fParent->GetCueSheetList();
+		BList* theList = fParent->GetCueSheetList();
 		if (theList) {
 			if (theList->CountItems() == 0)
 				fParent->PostMessage(B_QUIT_REQUESTED);
@@ -243,11 +243,11 @@ void TNewProject::MessageReceived(BMessage* message)
 			message->FindInt32("index", &theItem);
 
 			// Retreive preset from list
-			TPreset *thePreset = static_cast<TPreset *>(fPresetList->ItemAt(theItem));
+			TPreset* thePreset = static_cast<TPreset*>(fPresetList->ItemAt(theItem));
 
 			// Archive it and add it to the message
 			BMessage invokeMessage(NEW_PROJECT_MSG);
-			BMessage *archiveMessage = new BMessage();
+			BMessage* archiveMessage = new BMessage();
 			thePreset->Archive(archiveMessage);
 			invokeMessage.AddMessage("Preset", archiveMessage);
 
@@ -309,10 +309,10 @@ void TNewProject::GetDialogSettings()
 //	Load cue add-ons in the /add-ons/cues directory
 //
 
-BList  *TNewProject::LoadPresets()
+BList* TNewProject::LoadPresets()
 {
 	// Create list to hold presets to be returned
-	BList *presetList = new BList();
+	BList* presetList = new BList();
 
 	// Get listing of add-ons in directory
 	app_info appInfo;
@@ -328,13 +328,13 @@ BList  *TNewProject::LoadPresets()
 	}
 
 	status_t myErr;
-	BList           *refList = new BList();
+	BList* refList = new BList();
 
 	if (settingsDir.InitCheck() == B_OK) { // ABH this fails
 		int32 entries = settingsDir.CountEntries();
 
 		for( int32 index = 0; index < entries; index++) {
-			BEntry *theEntry = new BEntry();
+			BEntry* theEntry = new BEntry();
 			myErr = settingsDir.GetNextEntry(theEntry, true);
 
 			// Add it to our list if we are successful
@@ -378,12 +378,12 @@ BList  *TNewProject::LoadPresets()
 	for (int32 index = 0; index < refList->CountItems(); index++) {
 		// Validate that the items in the list are cue add-ons
 		//BEntry *presetEntry = (BEntry *)refList->ItemAt(index);
-		BEntry *presetEntry = static_cast<BEntry *>(refList->ItemAt(index));
+		BEntry* presetEntry = static_cast<BEntry*>(refList->ItemAt(index));
 
 		if (presetEntry) {
 
 			// Create file from ref
-			BFile *openFile = new BFile(presetEntry, B_READ_ONLY);
+			BFile* openFile = new BFile(presetEntry, B_READ_ONLY);
 
 			if (openFile->InitCheck() == B_OK) {
 
@@ -395,20 +395,20 @@ BList  *TNewProject::LoadPresets()
 				if (fileHeader.chunkID == kPresetChunkID) {
 
 					// Load in archived BMessage
-					void *data = malloc( fileHeader.chunkSize);
+					void* data = malloc( fileHeader.chunkSize);
 					openFile->Read(data, fileHeader.chunkSize);
 
 					// Unflatten the archive
-					BMessage *presetMessage = new BMessage();
-					presetMessage->Unflatten((const char *)data);
+					BMessage* presetMessage = new BMessage();
+					presetMessage->Unflatten((const char*)data);
 
 					if (presetMessage) {
 
-						BArchivable *unarchived = instantiate_object(presetMessage);
+						BArchivable* unarchived = instantiate_object(presetMessage);
 						if ( unarchived ) {
 
 							// Add cue to our list of unarchived cues
-							TPreset *thePreset = cast_as(unarchived, TPreset);
+							TPreset* thePreset = cast_as(unarchived, TPreset);
 							if (thePreset)
 								presetList->AddItem(thePreset);
 						}
@@ -444,7 +444,7 @@ BList  *TNewProject::LoadPresets()
 //	Load presets into list
 //
 
-void TNewProject::SetupPresetList(BList *presetList, BListView *presetListView )
+void TNewProject::SetupPresetList(BList* presetList, BListView* presetListView )
 {
 	ASSERT(presetList);
 	ASSERT(presetListView);
@@ -457,10 +457,10 @@ void TNewProject::SetupPresetList(BList *presetList, BListView *presetListView )
 	}
 
 	for( int32 index = 0; index < presetList->CountItems(); index++ ) {
-		TPreset *thePreset = static_cast<TPreset *>(presetList->ItemAt(index));
+		TPreset* thePreset = static_cast<TPreset*>(presetList->ItemAt(index));
 
 		if (thePreset) {
-			BStringItem *theItem = new BStringItem(thePreset->fName, 0, true);
+			BStringItem* theItem = new BStringItem(thePreset->fName, 0, true);
 			presetListView->AddItem(theItem);
 		}
 	}
@@ -474,11 +474,11 @@ void TNewProject::SetupPresetList(BList *presetList, BListView *presetListView )
 //	Free presets in list
 //
 
-void TNewProject::FreePresetList(BList *presetList)
+void TNewProject::FreePresetList(BList* presetList)
 {
 	if (presetList) {
 		for(int32 index = 0; index < presetList->CountItems(); index++) {
-			TPreset *preset = static_cast<TPreset *>(presetList->ItemAt(index));
+			TPreset* preset = static_cast<TPreset*>(presetList->ItemAt(index));
 			if (preset)
 				delete preset;
 		}

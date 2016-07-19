@@ -77,7 +77,7 @@ TransitionCallback transitionInTable[] =
 //	as member variables so they are acessible to the transition callback.
 //
 
-TTransition::TTransition( TVisualCue *srcView, BView *dstView, TStageView *theStage, int16 transitionID, uint32 duration, bool transitionIn)
+TTransition::TTransition( TVisualCue* srcView, BView* dstView, TStageView* theStage, int16 transitionID, uint32 duration, bool transitionIn)
 {
 	fDstBitmap = NULL;
 
@@ -268,7 +268,7 @@ void TTransition::TransitionTask()
 		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, END_TRANSITION);
 		fIsDone = true;
 		Reset();
-	} else   {
+	} else {
 		// Do the transition
 		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, RUN_TRANSITION);
 	}
@@ -282,7 +282,7 @@ void TTransition::TransitionTask()
 //	Draw transition to offscreen
 //
 
-void TTransition::DrawData(uint32 theTime, BView *offView)
+void TTransition::DrawData(uint32 theTime, BView* offView)
 {
 
 	if (fIsDone == true)
@@ -324,7 +324,7 @@ void TTransition::DrawData(uint32 theTime, BView *offView)
 		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, END_TRANSITION);
 		fIsDone = true;
 		Reset();
-	} else   {
+	} else {
 		// Do the transition
 		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, RUN_TRANSITION);
 	}
@@ -341,10 +341,10 @@ void TTransition::DrawData(uint32 theTime, BView *offView)
 //	handle opacity, etc.
 //
 
-void TransitionDrawBitmap(BBitmap *bitmap, TVisualCue *srcView, BView *dstView, BRect srcRect, BRect dstRect)
+void TransitionDrawBitmap(BBitmap* bitmap, TVisualCue* srcView, BView* dstView, BRect srcRect, BRect dstRect)
 {
 	// Determine if we need to do a straight blit or use transparency
-	if ( static_cast<TVisualCue *>(srcView)->GetTransparency() == 1.0) {
+	if ( static_cast<TVisualCue*>(srcView)->GetTransparency() == 1.0) {
 		// Draw bitmap
 		dstView->Looper()->Lock();
 		dstView->PushState();
@@ -354,7 +354,7 @@ void TransitionDrawBitmap(BBitmap *bitmap, TVisualCue *srcView, BView *dstView, 
 
 		dstView->PopState();
 		dstView->Looper()->Unlock();
-	} else   {
+	} else {
 
 
 	}
@@ -370,7 +370,7 @@ void TransitionDrawBitmap(BBitmap *bitmap, TVisualCue *srcView, BView *dstView, 
 //	Wipe the transition in from the right side of the stage cue to the left
 //
 
-void    WipeRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void    WipeRightIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 
 	// Lock Views
@@ -420,7 +420,7 @@ void    WipeRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBi
 //	Wipe the transition in from the top side of the stage cue to the bottom
 //
 
-void WipeDownIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeDownIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -470,7 +470,7 @@ void WipeDownIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap
 //	Wipe the transition in from the top side of the stage cue to the bottom
 //
 
-void WipeLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeLeftIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -515,7 +515,7 @@ void WipeLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap
 
 
 
-void WipeUpIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeUpIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -565,7 +565,7 @@ void WipeUpIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *
 //
 //
 
-void WipeTopLeftToBottomRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeTopLeftToBottomRightIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 
 	// Lock Views
@@ -618,7 +618,7 @@ void WipeTopLeftToBottomRightIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 //
 //
 
-void WipeTopRightToBottomLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeTopRightToBottomLeftIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -669,7 +669,7 @@ void WipeTopRightToBottomLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 //
 //
 
-void WipeBottomLeftToTopRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeBottomLeftToTopRightIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -721,7 +721,7 @@ void WipeBottomLeftToTopRightIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 //
 //
 
-void WipeBottomRightToTopLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeBottomRightToTopLeftIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -772,7 +772,7 @@ void WipeBottomRightToTopLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 //
 //
 
-void RevealRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealRightIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 
 	// Lock Views
@@ -821,7 +821,7 @@ void RevealRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBit
 //
 //
 
-void RevealDownIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealDownIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -870,7 +870,7 @@ void RevealDownIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitm
 //
 //
 
-void RevealLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealLeftIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -917,7 +917,7 @@ void RevealLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitm
 //
 //
 
-void RevealUpIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealUpIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -965,7 +965,7 @@ void RevealUpIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap
 //
 //
 
-void RevealTopLeftBottomRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealTopLeftBottomRightIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 
 	// Lock Views
@@ -1017,7 +1017,7 @@ void RevealTopLeftBottomRightIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 //
 //
 
-void RevealTopRightBottomLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealTopRightBottomLeftIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1068,7 +1068,7 @@ void RevealTopRightBottomLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 //
 //
 
-void RevealBottomLeftTopRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealBottomLeftTopRightIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1118,7 +1118,7 @@ void RevealBottomLeftTopRightIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 //
 //
 
-void RevealBottomRightTopLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealBottomRightTopLeftIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1169,7 +1169,7 @@ void RevealBottomRightTopLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 //
 //
 
-void CurtainsInIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void CurtainsInIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 }
 
@@ -1180,7 +1180,7 @@ void CurtainsInIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitm
 //
 //
 
-void CurtainsOutIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void CurtainsOutIn(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1240,7 +1240,7 @@ void CurtainsOutIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBit
 //	Wipe the transition in from the right side of the stage cue to the left
 //
 
-void WipeRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeRightOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 
 	// Lock Views
@@ -1286,7 +1286,7 @@ void WipeRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitm
 //	Wipe the transition out from the top side of the stage cue to the bottom
 //
 
-void WipeDownOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeDownOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1332,7 +1332,7 @@ void WipeDownOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitma
 //	Wipe the transition out from the right side of the stage to the left
 //
 
-void WipeLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeLeftOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1379,7 +1379,7 @@ void WipeLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitma
 //	Wipe the transition out from the bottom the stage to the top
 //
 
-void WipeUpOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeUpOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1425,7 +1425,7 @@ void WipeUpOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap 
 //
 //
 
-void WipeTopLeftToBottomRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeTopLeftToBottomRightOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 
 	// Lock Views
@@ -1475,7 +1475,7 @@ void WipeTopLeftToBottomRightOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 //
 //
 
-void WipeTopRightToBottomLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeTopRightToBottomLeftOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1522,7 +1522,7 @@ void WipeTopRightToBottomLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 //
 //
 
-void WipeBottomLeftToTopRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeBottomLeftToTopRightOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1571,7 +1571,7 @@ void WipeBottomLeftToTopRightOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 //
 //
 
-void WipeBottomRightToTopLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void WipeBottomRightToTopLeftOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1618,7 +1618,7 @@ void WipeBottomRightToTopLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 //
 //
 
-void RevealRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealRightOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 
 	// Lock Views
@@ -1663,7 +1663,7 @@ void RevealRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBi
 //
 //
 
-void RevealDownOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealDownOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1707,7 +1707,7 @@ void RevealDownOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBit
 //
 //
 
-void RevealLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealLeftOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1751,7 +1751,7 @@ void RevealLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBit
 //
 //
 
-void RevealUpOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealUpOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1796,7 +1796,7 @@ void RevealUpOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitma
 //
 //
 
-void RevealTopLeftBottomRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealTopLeftBottomRightOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1843,7 +1843,7 @@ void RevealTopLeftBottomRightOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 //
 //
 
-void RevealTopRightBottomLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealTopRightBottomLeftOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1890,7 +1890,7 @@ void RevealTopRightBottomLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 //
 //
 
-void RevealBottomLeftTopRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealBottomLeftTopRightOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1938,7 +1938,7 @@ void RevealBottomLeftTopRightOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 //
 //
 
-void RevealBottomRightTopLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void RevealBottomRightTopLeftOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();
@@ -1986,7 +1986,7 @@ void RevealBottomRightTopLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 //
 //
 
-void CurtainsInOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void CurtainsInOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 }
 
@@ -1997,7 +1997,7 @@ void CurtainsInOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBit
 //
 //
 
-void CurtainsOutOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void CurtainsOutOut(TVisualCue* srcView, BView* dstView, BBitmap* srcBitmap, BBitmap* dstBitmap, BRegion* theRegion, int16 percentDone, int16 selector )
 {
 	// Lock Views
 	srcView->Looper()->Lock();

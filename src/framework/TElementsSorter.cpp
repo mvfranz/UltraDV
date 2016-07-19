@@ -44,7 +44,7 @@
 //
 //
 
-TElementsSorter::TElementsSorter(BRect bounds, TElementsView *parent) :
+TElementsSorter::TElementsSorter(BRect bounds, TElementsView* parent) :
 	BView(bounds, "ElementsSorter", B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	fParent = parent;
@@ -66,7 +66,7 @@ TElementsSorter::~TElementsSorter()
 	// Clear out our sorter list
 	if (fSorterList) {
 		for (int32 index = 0; index < fSorterList->CountItems(); index++) {
-			TSorterContainer * theSorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(index));
+			TSorterContainer* theSorter = static_cast<TSorterContainer*>(fSorterList->ItemAt(index));
 			if (theSorter)
 				delete theSorter;
 		}
@@ -205,7 +205,7 @@ void TElementsSorter::Draw(BRect updateRect)
 	PushState();
 
 	//  Draw dummy header to the right of our rightmost TSorter
-	TSorterContainer *sorter = static_cast<TSorterContainer *>(fSorterList->ItemAt( fSorterList->CountItems()-1) );
+	TSorterContainer* sorter = static_cast<TSorterContainer*>(fSorterList->ItemAt( fSorterList->CountItems()-1) );
 	if (sorter) {
 		BRect bounds    = Bounds();
 		bounds.bottom   = bounds.top + kSorterHeight;
@@ -252,7 +252,7 @@ void TElementsSorter::Draw(BRect updateRect)
 //	Handle mouse down events
 //
 
-void TElementsSorter::MessageReceived(BMessage *theMessage)
+void TElementsSorter::MessageReceived(BMessage* theMessage)
 {
 	switch(theMessage->what)
 	{
@@ -331,7 +331,7 @@ void TElementsSorter::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TElementsSorter::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TElementsSorter::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -355,17 +355,17 @@ void TElementsSorter::DeleteItem( int32 theItem )
 
 		// Delete from all lists
 		for (int32 index = 0; index < fSorterList->CountItems(); index++) {
-			TSorterContainer *theContainer = static_cast<TSorterContainer *>(fSorterList->ItemAt(index));
+			TSorterContainer* theContainer = static_cast<TSorterContainer*>(fSorterList->ItemAt(index));
 			if (theContainer) {
-				TSorterList *theList = theContainer->GetSorterList();
+				TSorterList* theList = theContainer->GetSorterList();
 				if (theList) {
 					// Remove itemView or iconView depending on type
 					if ( theContainer->GetType() == kIconSorter ) {
-						TSorterIconListItem *listItem = static_cast<TSorterIconListItem *>(theList->RemoveItem(theItem));
+						TSorterIconListItem* listItem = static_cast<TSorterIconListItem*>(theList->RemoveItem(theItem));
 						if (listItem)
 							delete listItem;
-					} else   {
-						TSorterListItem *listItem = static_cast<TSorterListItem *>(theList->RemoveItem(theItem));
+					} else {
+						TSorterListItem* listItem = static_cast<TSorterListItem*>(theList->RemoveItem(theItem));
 						if (listItem)
 							delete listItem;
 					}
@@ -374,9 +374,9 @@ void TElementsSorter::DeleteItem( int32 theItem )
 		}
 
 		// Select first item in list
-		TSorterContainer *theContainer = static_cast<TSorterContainer *>(fSorterList->ItemAt(0));
+		TSorterContainer* theContainer = static_cast<TSorterContainer*>(fSorterList->ItemAt(0));
 		if (theContainer) {
-			TSorterList *theList = theContainer->GetSorterList();
+			TSorterList* theList = theContainer->GetSorterList();
 			if (theList) {
 				if ( theList->CountItems() > 0) {
 					theList->Select(0);
@@ -397,7 +397,7 @@ void TElementsSorter::DeleteItem( int32 theItem )
 //	Handle a sorter being clicked
 //
 
-void TElementsSorter::HandleSorterClick(BMessage *theMessage)
+void TElementsSorter::HandleSorterClick(BMessage* theMessage)
 {
 	// Extract sorter ID from message
 	int16 theID;
@@ -405,13 +405,13 @@ void TElementsSorter::HandleSorterClick(BMessage *theMessage)
 	if (theMessage->FindInt16("ID", &theID) == B_OK) {
 		if (theID != fLastSorterClicked) {
 			// Get sorter from list
-			TSorterContainer *theSorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(theID) );
+			TSorterContainer* theSorter = static_cast<TSorterContainer*>(fSorterList->ItemAt(theID) );
 			if (theSorter) {
 				// Activate new sorter
 				theSorter->MakeActive(true);
 
 				// Deactivate previously clicked sorter
-				TSorterContainer *lastSorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(fLastSorterClicked) );
+				TSorterContainer* lastSorter = static_cast<TSorterContainer*>(fSorterList->ItemAt(fLastSorterClicked) );
 				if (lastSorter)
 					lastSorter->MakeActive(false);
 
@@ -433,14 +433,14 @@ void TElementsSorter::HandleSorterClick(BMessage *theMessage)
 //	Handle a sorter being resized
 //
 
-void TElementsSorter::HandleSorterResize(BMessage *theMessage)
+void TElementsSorter::HandleSorterResize(BMessage* theMessage)
 {
 	// Extract sorter ID from message
 	int16 theID;
 
 	if (theMessage->FindInt16("ID", &theID) == B_OK) {
 		// Get sorter from list
-		TSorterContainer *theSorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(theID) );
+		TSorterContainer* theSorter = static_cast<TSorterContainer*>(fSorterList->ItemAt(theID) );
 		if (theSorter) {
 			// Get drag point
 			BPoint dragPt;
@@ -458,10 +458,10 @@ void TElementsSorter::HandleSorterResize(BMessage *theMessage)
 
 					// Now scoot the other views over
 					for (int32 index = theID+1; index < fSorterList->CountItems(); index++ ) {
-						TSorterContainer *moveSorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(index) );
+						TSorterContainer* moveSorter = static_cast<TSorterContainer*>(fSorterList->ItemAt(index) );
 						if (moveSorter) {
 							// Get previous item in list for MoveTo coordinates
-							TSorterContainer *prevSorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(index-1) );
+							TSorterContainer* prevSorter = static_cast<TSorterContainer*>(fSorterList->ItemAt(index-1) );
 							if (prevSorter) {
 								moveSorter->MoveTo( prevSorter->Frame().right+1, moveSorter->Frame().top);
 							}
@@ -482,11 +482,11 @@ void TElementsSorter::HandleSorterResize(BMessage *theMessage)
 //	Handle a sorter being scrolled vertically
 //
 
-void TElementsSorter::HandleSorterScrollV(BMessage *theMessage)
+void TElementsSorter::HandleSorterScrollV(BMessage* theMessage)
 {
 	// Inform all of our attached TSorterContainer objects
 	for (int32 index = 0; index < fSorterList->CountItems(); index++) {
-		TSorterContainer *theSorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(index) );
+		TSorterContainer* theSorter = static_cast<TSorterContainer*>(fSorterList->ItemAt(index) );
 		if (theSorter)
 			theSorter->MessageReceived(theMessage);
 	}
@@ -499,14 +499,14 @@ void TElementsSorter::HandleSorterScrollV(BMessage *theMessage)
 //	Handle a sorter being selected
 //
 
-void TElementsSorter::HandleSorterSelect(BMessage *theMessage)
+void TElementsSorter::HandleSorterSelect(BMessage* theMessage)
 {
-	TSorterList *theList;
-	if ( theMessage->FindPointer("source", (void **)&theList) == B_OK) {
+	TSorterList* theList;
+	if ( theMessage->FindPointer("source", (void**)&theList) == B_OK) {
 		if ( theList->CurrentSelection() >= 0) {
 
 			// Get sorter and determine who to select and deselect
-			TSorterContainer *theSorter = theList->GetParent();
+			TSorterContainer* theSorter = theList->GetParent();
 			if (theSorter) {
 				// Select the name sorter of this row
 				fNameSorter->GetSorterList()->Select( theList->CurrentSelection() );
@@ -531,7 +531,7 @@ void TElementsSorter::HandleSorterSelect(BMessage *theMessage)
 //	Handle a sorter being selected
 //
 
-void TElementsSorter::HandleSorterInvoke(BMessage *theMessage)
+void TElementsSorter::HandleSorterInvoke(BMessage* theMessage)
 {
 	/*
 	   TSorterList *theList;
@@ -578,11 +578,11 @@ BRect TElementsSorter::GetScrollArea()
 	BRect bounds = Bounds();
 
 	// Get first sorter in list
-	TSorterContainer *firstSorter = static_cast<TSorterContainer *>(fSorterList->FirstItem() );
+	TSorterContainer* firstSorter = static_cast<TSorterContainer*>(fSorterList->FirstItem() );
 	firstFrame = firstSorter->Frame();
 
 	// Get last sorter in list
-	TSorterContainer *lastSorter = static_cast<TSorterContainer *>(fSorterList->ItemAt( fSorterList->CountItems() - 1) );
+	TSorterContainer* lastSorter = static_cast<TSorterContainer*>(fSorterList->ItemAt( fSorterList->CountItems() - 1) );
 	if (lastSorter)
 		lastFrame = lastSorter->Frame();
 
@@ -600,11 +600,11 @@ BRect TElementsSorter::GetScrollArea()
 //	Synchronize the contents of the lists based on list item IDs
 //
 
-void TElementsSorter::SynchronizeLists(TSorterContainer *syncSource)
+void TElementsSorter::SynchronizeLists(TSorterContainer* syncSource)
 {
 	// use syncSource as the list that all others are sorted against
 	for (int32 index = 0; index < fSorterList->CountItems(); index++) {
-		TSorterContainer *theContainer = static_cast<TSorterContainer *>(fSorterList->ItemAt(index));
+		TSorterContainer* theContainer = static_cast<TSorterContainer*>(fSorterList->ItemAt(index));
 		if (theContainer) {
 			// Don't sync against ourself
 			if (theContainer != syncSource) {
@@ -625,7 +625,7 @@ void TElementsSorter::SynchronizeLists(TSorterContainer *syncSource)
 //	Handle files dragged into window
 //
 
-void TElementsSorter::HandleRefsMessage(BMessage *theMessage)
+void TElementsSorter::HandleRefsMessage(BMessage* theMessage)
 {
 
 	uint32 theType;
@@ -654,7 +654,7 @@ void TElementsSorter::HandleRefsMessage(BMessage *theMessage)
 //	Handle a single ref that has been sent to us in a message
 //
 
-void TElementsSorter::HandleRefMessage(BMessage *theMessage)
+void TElementsSorter::HandleRefMessage(BMessage* theMessage)
 {
 
 	entry_ref theRef;
@@ -747,11 +747,11 @@ status_t TElementsSorter::HandleFile(entry_ref &theRef, struct stat &st)
 				if ( IsSupportedType(nodeInfo) ) {
 					//      Pass the node info to all of our sorters.  They will
 					//	know what to do with it.
-					BMessage *refMessage = new BMessage(SORTER_REFS_MSG);
+					BMessage* refMessage = new BMessage(SORTER_REFS_MSG);
 					refMessage->AddRef("FileRef", &theRef);
 
 					for (int32 index = 0; index < fSorterList->CountItems(); index++) {
-						TSorterContainer *sorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(index));
+						TSorterContainer* sorter = static_cast<TSorterContainer*>(fSorterList->ItemAt(index));
 						if (sorter)
 							sorter->MessageReceived(refMessage);
 					}
@@ -760,7 +760,7 @@ status_t TElementsSorter::HandleFile(entry_ref &theRef, struct stat &st)
 
 					// Get active list, sort and sync
 					for (int32 sortIndex = 0; sortIndex < fSorterList->CountItems(); sortIndex++) {
-						TSorterContainer *theContainer = static_cast<TSorterContainer *>(fSorterList->ItemAt(sortIndex));
+						TSorterContainer* theContainer = static_cast<TSorterContainer*>(fSorterList->ItemAt(sortIndex));
 						if (theContainer) {
 							if (theContainer->IsActive()) {
 								theContainer->Sort();

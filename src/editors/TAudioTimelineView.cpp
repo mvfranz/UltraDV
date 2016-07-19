@@ -35,7 +35,7 @@
 //
 //
 
-TAudioTimelineView::TAudioTimelineView(BRect bounds, TAudioEditor *parent) : BView(bounds, "AudioTimelineView", B_FOLLOW_LEFT, B_WILL_DRAW)
+TAudioTimelineView::TAudioTimelineView(BRect bounds, TAudioEditor* parent) : BView(bounds, "AudioTimelineView", B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Set CueSheet parent
 	fAudioEditor = parent;
@@ -86,9 +86,9 @@ void TAudioTimelineView::Init()
 	// gzr: to do... Why does 63 == white?
 	int32 bitsLength = fIndicator->BitsLength();
 	for ( int32 index = 0; index < bitsLength; index++) {
-		unsigned char color = ((unsigned char *)fIndicator->Bits())[index];
+		unsigned char color = ((unsigned char*)fIndicator->Bits())[index];
 		if (color == 63) {
-			((unsigned char *)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
+			((unsigned char*)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
 		}
 	}
 }
@@ -189,7 +189,7 @@ void TAudioTimelineView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TAudioTimelineView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TAudioTimelineView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Draw new tick position
 	UpdateTimeTick(where);
@@ -214,7 +214,7 @@ void TAudioTimelineView::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TAudioTimelineView::KeyDown(const char *bytes, int32 numBytes)
+void TAudioTimelineView::KeyDown(const char* bytes, int32 numBytes)
 {
 }
 
@@ -227,7 +227,7 @@ void TAudioTimelineView::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TAudioTimelineView::KeyUp(const char *bytes, int32 numBytes)
+void TAudioTimelineView::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -264,9 +264,9 @@ void TAudioTimelineView::FrameResized(float new_width, float new_height)
 //	Receive messages
 //
 
-void TAudioTimelineView::MessageReceived(BMessage *message)
+void TAudioTimelineView::MessageReceived(BMessage* message)
 {
-	BLooper *looper = Looper();
+	BLooper* looper = Looper();
 	looper->Lock();
 
 	switch(message->what)
@@ -425,7 +425,7 @@ void TAudioTimelineView::UpdateTimeTick(BPoint where)
 	fLastTick = where;
 
 	// Send a message to the Time Palette telling it about the new tick time
-	BMessage *message = new BMessage(NEW_TIME_MSG);
+	BMessage* message = new BMessage(NEW_TIME_MSG);
 
 	// Get insert time based on point.x
 	/*double theTime = PixelsToTime((where.x), fCueSheetWindow->GetCueSheetView()->fTimeFormat, fCueSheetWindow->GetCueSheetView()->fResolution);
@@ -466,7 +466,7 @@ void TAudioTimelineView::DrawIndicator()
 	// Draw the indicator line down all views
 	// We do this by sending a message out to the audio editor view
 	// and they will draw the line where indicated
-	BMessage *message = new BMessage(UPDATE_AUDIOINDICATOR_MSG);
+	BMessage* message = new BMessage(UPDATE_AUDIOINDICATOR_MSG);
 	drawPt.Set( fIndicatorRect.left + (fIndicatorRect.Width() / 2), fIndicatorRect.top);
 	message->AddPoint("IndicatorPoint", drawPt);
 

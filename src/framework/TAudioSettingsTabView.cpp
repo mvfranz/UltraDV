@@ -36,7 +36,7 @@
 //
 //
 
-TAudioSettingsTabView::TAudioSettingsTabView(TAudioSettingsView *parent, BRect frame, const char *name) :
+TAudioSettingsTabView::TAudioSettingsTabView(TAudioSettingsView* parent, BRect frame, const char* name) :
 //				BTabView(frame, name, B_WIDTH_AS_USUAL, B_FOLLOW_ALL, B_WILL_DRAW|B_FULL_UPDATE_ON_RESIZE|B_NAVIGABLE_JUMP|B_FRAME_EVENTS|B_NAVIGABLE)
 	BTabView(frame, name)
 {
@@ -53,7 +53,7 @@ TAudioSettingsTabView::TAudioSettingsTabView(TAudioSettingsView *parent, BRect f
 //	Construct from BMesage
 //
 
-TAudioSettingsTabView::TAudioSettingsTabView( BMessage *data) : BTabView(data)
+TAudioSettingsTabView::TAudioSettingsTabView( BMessage* data) : BTabView(data)
 {
 	Init();
 }
@@ -79,12 +79,12 @@ TAudioSettingsTabView::~TAudioSettingsTabView()
 
 void TAudioSettingsTabView::Init()
 {
-	BMessage *theMessage = NULL;
+	BMessage* theMessage = NULL;
 
 	// Create all the tab views
 
 	// Get SoundCompressionView from resource
-	BTab *compressionTab = new BTab();
+	BTab* compressionTab = new BTab();
 	theMessage = GetWindowFromResource("SoundCompressionView");
 	ASSERT(theMessage);
 	fCompressionView = new TAudioCompressionView(theMessage);
@@ -92,7 +92,7 @@ void TAudioSettingsTabView::Init()
 	compressionTab->SetLabel("Compression");
 
 	// Get SoundSampleView from resource
-	BTab *sampleTab = new BTab();
+	BTab* sampleTab = new BTab();
 	theMessage = GetWindowFromResource("SoundSampleView");
 	ASSERT(theMessage);
 	fSampleView = new TAudioSampleView(this, theMessage);
@@ -100,7 +100,7 @@ void TAudioSettingsTabView::Init()
 	sampleTab->SetLabel("Sample");
 
 	// Get SoundSourceView from resource
-	BTab *sourceTab = new BTab();
+	BTab* sourceTab = new BTab();
 	theMessage = GetWindowFromResource("SoundSourceView");
 	ASSERT(theMessage);
 	fSourceView = new TAudioSourceView(theMessage);
@@ -118,7 +118,7 @@ void TAudioSettingsTabView::Init()
 //
 //
 
-BArchivable *TAudioSettingsTabView::Instantiate(BMessage *archive)
+BArchivable* TAudioSettingsTabView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TAudioSettingsTabView") )
@@ -133,7 +133,7 @@ BArchivable *TAudioSettingsTabView::Instantiate(BMessage *archive)
 //
 //
 
-status_t TAudioSettingsTabView::Archive(BMessage *data, bool deep) const
+status_t TAudioSettingsTabView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -159,7 +159,7 @@ status_t TAudioSettingsTabView::Archive(BMessage *data, bool deep) const
 //
 //
 
-void TAudioSettingsTabView::MessageReceived(BMessage *message)
+void TAudioSettingsTabView::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
@@ -257,7 +257,7 @@ void TAudioSettingsTabView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TAudioSettingsTabView::MouseMoved( BPoint where, uint32 code, const BMessage *message )
+void TAudioSettingsTabView::MouseMoved( BPoint where, uint32 code, const BMessage* message )
 {
 	switch(code)
 	{

@@ -35,7 +35,7 @@
 //
 //
 
-TTimeBevelTextView::TTimeBevelTextView( BRect bounds, char *name, uint32 resizing) : BView(bounds, name, resizing, B_WILL_DRAW)
+TTimeBevelTextView::TTimeBevelTextView( BRect bounds, char* name, uint32 resizing) : BView(bounds, name, resizing, B_WILL_DRAW)
 {
 	// Perform default initialization
 	Init();
@@ -160,7 +160,7 @@ void TTimeBevelTextView::MouseUp(BPoint where)
 //
 //
 
-void TTimeBevelTextView::MouseMoved(BPoint where, uint32 code, const BMessage *message)
+void TTimeBevelTextView::MouseMoved(BPoint where, uint32 code, const BMessage* message)
 {
 	BView::MouseMoved(where, code, message);
 }
@@ -172,7 +172,7 @@ void TTimeBevelTextView::MouseMoved(BPoint where, uint32 code, const BMessage *m
 //
 //
 
-void TTimeBevelTextView::KeyDown(const char *bytes, int32 numBytes)
+void TTimeBevelTextView::KeyDown(const char* bytes, int32 numBytes)
 {
 	BView::KeyDown(bytes, numBytes);
 }
@@ -200,7 +200,7 @@ void TTimeBevelTextView::MakeFocus(bool focusState)
 //
 //
 
-void TTimeBevelTextView::MessageReceived(BMessage *message)
+void TTimeBevelTextView::MessageReceived(BMessage* message)
 {
 
 	switch(message->what)

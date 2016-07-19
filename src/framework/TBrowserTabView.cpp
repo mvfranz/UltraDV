@@ -36,7 +36,7 @@
 //
 //
 
-TBrowserTabView::TBrowserTabView( BRect frame, const char *name) :
+TBrowserTabView::TBrowserTabView( BRect frame, const char* name) :
 //				BTabView(frame, name, B_WIDTH_AS_USUAL, B_FOLLOW_ALL, B_WILL_DRAW|B_FULL_UPDATE_ON_RESIZE|B_NAVIGABLE_JUMP|B_FRAME_EVENTS|B_NAVIGABLE)
 	BTabView(frame, name)
 {
@@ -51,7 +51,7 @@ TBrowserTabView::TBrowserTabView( BRect frame, const char *name) :
 //	Construct from BMesage
 //
 
-TBrowserTabView::TBrowserTabView( BMessage *data) : BTabView(data)
+TBrowserTabView::TBrowserTabView( BMessage* data) : BTabView(data)
 {
 	Init();
 }
@@ -104,7 +104,7 @@ void TBrowserTabView::Init()
 //
 //
 
-BArchivable *TBrowserTabView::Instantiate(BMessage *archive)
+BArchivable* TBrowserTabView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TBrowserTabView") )
@@ -119,7 +119,7 @@ BArchivable *TBrowserTabView::Instantiate(BMessage *archive)
 //
 //
 
-status_t TBrowserTabView::Archive(BMessage *data, bool deep) const
+status_t TBrowserTabView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -147,7 +147,7 @@ status_t TBrowserTabView::Archive(BMessage *data, bool deep) const
 //
 //
 
-void TBrowserTabView::MessageReceived(BMessage *message)
+void TBrowserTabView::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
@@ -268,7 +268,7 @@ void TBrowserTabView::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TBrowserTabView::MouseMoved( BPoint where, uint32 code, const BMessage *message )
+void TBrowserTabView::MouseMoved( BPoint where, uint32 code, const BMessage* message )
 {
 	switch(code)
 	{

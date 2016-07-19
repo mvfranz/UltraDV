@@ -49,7 +49,7 @@ const short kAudioScalerWidth = 170;
 //	not been attached to a cue.
 //
 
-TAudioEditor::TAudioEditor(BRect bounds, entry_ref *ref, TAudioCue *theCue) : BWindow(bounds, "Untitled", B_DOCUMENT_WINDOW, 0,0)
+TAudioEditor::TAudioEditor(BRect bounds, entry_ref* ref, TAudioCue* theCue) : BWindow(bounds, "Untitled", B_DOCUMENT_WINDOW, 0,0)
 {
 	// Save file ref
 	fFileRef = *ref;
@@ -124,7 +124,7 @@ void TAudioEditor::Init()
 	// Create menubar
 	BRect mbarRect  = Bounds();
 	mbarRect.bottom = mbarRect.top+kMenuHeight;
-	BMenuBar *mbar  = new BMenuBar(mbarRect, "mbar");
+	BMenuBar* mbar  = new BMenuBar(mbarRect, "mbar");
 	fEditorMenu     = new TAudioEditorMenus(mbar, this);
 	AddChild(mbar);
 
@@ -298,7 +298,7 @@ void TAudioEditor::InitSoundfileAttributes()
 //	Handle file menu
 //
 
-void TAudioEditor::HandleFileMenu(BMessage *message)
+void TAudioEditor::HandleFileMenu(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -337,7 +337,7 @@ void TAudioEditor::HandleFileMenu(BMessage *message)
 //	Handle edit menu
 //
 
-void TAudioEditor::HandleEditMenu(BMessage *message)
+void TAudioEditor::HandleEditMenu(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -446,7 +446,7 @@ void TAudioEditor::ShowFileSavePanel()
 	if (fFileSavePanel) {
 		fFileSavePanel->SetTarget(messenger);
 		fFileSavePanel->Show();
-	} else   {
+	} else {
 		// Construct a file panel and set it to modal
 		fFileSavePanel = new BFilePanel( B_SAVE_PANEL, &messenger, NULL, B_FILE_NODE, false, NULL, NULL, true, true );
 
@@ -477,7 +477,7 @@ int32 TAudioEditor::SaveAlert()
 {
 	int32 result;
 
-	BAlert *theAlert = new BAlert( "Museum", "This document has been changed since the last save.  Save before closing?",
+	BAlert* theAlert = new BAlert( "Museum", "This document has been changed since the last save.  Save before closing?",
 	                               "Don't Save", "Cancel", "Save", B_WIDTH_FROM_WIDEST, B_WARNING_ALERT);
 
 	theAlert->SetShortcut(0, B_ESCAPE);
@@ -494,11 +494,11 @@ int32 TAudioEditor::SaveAlert()
 //
 //
 
-void TAudioEditor::Save(BMessage *message)
+void TAudioEditor::Save(BMessage* message)
 {
 	status_t myErr;
 	entry_ref theRef;
-	char            *theString = NULL;
+	char* theString = NULL;
 
 	// Get directory to save data to
 	message->FindRef("directory", &theRef);
@@ -512,7 +512,7 @@ void TAudioEditor::Save(BMessage *message)
 	// Save out data
 	if (fNewFile == false) {
 		// Create the file.
-		BFile *saveFile = new BFile();
+		BFile* saveFile = new BFile();
 
 		myErr = saveDir.CreateFile(theString, saveFile, false);
 		if (myErr != B_OK)
@@ -530,10 +530,10 @@ void TAudioEditor::Save(BMessage *message)
 		info.SetType("audio/raw");
 
 		// Set icons
-		BBitmap *smallIcon      = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon16;
+		BBitmap* smallIcon      = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fAudioIcon16;
 		info.SetIcon( smallIcon, B_MINI_ICON);
 
-		BBitmap *largeIcon      = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon32;
+		BBitmap* largeIcon      = static_cast<MuseumApp*>(be_app)->fMuseumIcons->fAudioIcon32;
 		info.SetIcon( largeIcon, B_LARGE_ICON);
 
 		// Clean up
@@ -562,7 +562,7 @@ void TAudioEditor::Save(BMessage *message)
 		// Add file to Browser
 		BMessage theMessage(ADD_REF_MSG);
 		theMessage.AddRef("FileRef", &newRef);
-		TBrowserWindow *theBrowser = static_cast<MuseumApp *>(be_app)->GetBrowser();
+		TBrowserWindow* theBrowser = static_cast<MuseumApp*>(be_app)->GetBrowser();
 		if (theBrowser)
 			theBrowser->PostMessage(&theMessage, NULL);
 

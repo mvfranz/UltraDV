@@ -37,7 +37,7 @@
 //
 //
 
-TPictureCueEditorToolbar::TPictureCueEditorToolbar(BRect bounds, TCueView *theCue) : BView(bounds, "PictureEditToolbar", B_FOLLOW_TOP | B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW)
+TPictureCueEditorToolbar::TPictureCueEditorToolbar(BRect bounds, TCueView* theCue) : BView(bounds, "PictureEditToolbar", B_FOLLOW_TOP | B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW)
 {
 	fCue = theCue;
 
@@ -76,8 +76,8 @@ void TPictureCueEditorToolbar::Init()
 	//
 
 	// Create Duration button
-	BBitmap *deltaUp = GetIcon16FromResource("DeltaUp");
-	BBitmap *deltaDn = GetIcon16FromResource("DeltaDown");
+	BBitmap* deltaUp = GetIcon16FromResource("DeltaUp");
+	BBitmap* deltaDn = GetIcon16FromResource("DeltaDown");
 
 	BRect bounds;
 	bounds.left     = Bounds().left + kButtonLeftOffset;
@@ -172,7 +172,7 @@ void TPictureCueEditorToolbar::Draw(BRect updateRect)
 	PopState();
 }
 
-void TPictureCueEditorToolbar::KeyDown(const char *bytes, int32 numBytes)
+void TPictureCueEditorToolbar::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	BView::KeyDown(bytes, numBytes);

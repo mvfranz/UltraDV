@@ -64,7 +64,7 @@
 //
 //
 
-TVisualCue::TVisualCue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime, char *cueName) :
+TVisualCue::TVisualCue(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime, char* cueName) :
 	TCueView(id, parent, bounds, startTime, cueName)
 {
 	// Init member variables
@@ -79,7 +79,7 @@ TVisualCue::TVisualCue(int16 id, TCueChannel *parent, BRect bounds, uint32 start
 //
 //	Construct from an entry_ref
 
-TVisualCue::TVisualCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect bounds, uint32 startTime, char *cueName) :
+TVisualCue::TVisualCue(entry_ref &theRef, int16 id,  TCueChannel* parent, BRect bounds, uint32 startTime, char* cueName) :
 	TCueView(id, parent, bounds, startTime, cueName)
 {
 	// Init member variables
@@ -95,15 +95,15 @@ TVisualCue::TVisualCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect 
 //	Construct from a BMessage
 //
 
-TVisualCue::TVisualCue(BMessage *theMessage) : TCueView(theMessage)
+TVisualCue::TVisualCue(BMessage* theMessage) : TCueView(theMessage)
 {
 	// Init member varibles
 	fBitmap                         = NULL;
 	fTransformBitmap        = NULL;
 
 	ssize_t numBytes;
-	DisplayQuality  *quality;
-	theMessage->FindData("DisplayQuality", B_ANY_TYPE, (const void **)&quality, &numBytes );
+	DisplayQuality* quality;
+	theMessage->FindData("DisplayQuality", B_ANY_TYPE, (const void**)&quality, &numBytes );
 	fDisplayQuality = *quality;
 
 	//      Set the file to none.  The bitmap data was passed in to us,
@@ -192,7 +192,7 @@ void TVisualCue::Init()
 	//
 
 	//	Set time in local cue time, not global time
-	TWipeRightOut *effect = new TWipeRightOut();
+	TWipeRightOut* effect = new TWipeRightOut();
 	effect->EndTime(fDuration);
 	effect->Duration(fDuration - 100);
 
@@ -209,7 +209,7 @@ void TVisualCue::Init()
 	//--------------
 
 	//	Create effect view and add to list
-	TTransitionView *effectView = new TTransitionView(effectRect, this, effect);
+	TTransitionView* effectView = new TTransitionView(effectRect, this, effect);
 	fEffectsList->AddItem(effectView);
 
 	//	Create render semaphore
@@ -316,7 +316,7 @@ BRect TVisualCue::GetCroppedArea()
 //
 //
 
-BArchivable *TVisualCue::Instantiate(BMessage *archive)
+BArchivable* TVisualCue::Instantiate(BMessage* archive)
 {
 	if ( validate_instantiation(archive, "TVisualCue") )
 		return new TVisualCue(archive);
@@ -331,7 +331,7 @@ BArchivable *TVisualCue::Instantiate(BMessage *archive)
 //
 //
 
-status_t TVisualCue::Archive(BMessage *data, bool deep) const
+status_t TVisualCue::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -564,7 +564,7 @@ void TVisualCue::DrawSubTicks(int32 index)
 //
 //
 
-void TVisualCue::MessageReceived(BMessage *message)
+void TVisualCue::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
@@ -640,7 +640,7 @@ void TVisualCue::HidePanel()
 {
 	if(fPanel) {
 		// Clean up any RefFilters
-		TRefFilter *theFilter = static_cast<TRefFilter *>(fPanel->RefFilter() );
+		TRefFilter* theFilter = static_cast<TRefFilter*>(fPanel->RefFilter() );
 		if (theFilter)
 			delete theFilter;
 
@@ -875,7 +875,7 @@ void TVisualCue::SetQualityMode(DisplayQuality theMode)
 //	NULL, return the data for the current time
 //
 
-BBitmap *TVisualCue::GetBitmap(uint32 theTime)
+BBitmap* TVisualCue::GetBitmap(uint32 theTime)
 {
 	return fBitmap;
 }

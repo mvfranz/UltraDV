@@ -32,7 +32,7 @@
 //
 //
 
-TChannelName::TChannelName(BMessage *theMessage, TCueChannel *theChannel) : BWindow(theMessage)
+TChannelName::TChannelName(BMessage* theMessage, TCueChannel* theChannel) : BWindow(theMessage)
 {
 
 	// Save channel
@@ -64,7 +64,7 @@ void TChannelName::Init()
 {
 	// Set edit text to display name ChannelNameText
 	fTextParent = FindView("ChannelNameView");
-	fTextView = (BTextControl *)fTextParent->FindView("ChannelNameText");
+	fTextView = (BTextControl*)fTextParent->FindView("ChannelNameText");
 	fTextView->SetText(fChannel->GetName());
 	fTextView->MakeFocus(true);
 }

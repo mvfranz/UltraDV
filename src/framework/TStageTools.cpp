@@ -109,7 +109,7 @@ void TStageTools::MessageReceived(BMessage* message)
 	//	Inform stage that current tool has been changed
 	case UPDATE_STATUS_TEXT_MSG:
 		fToolsStatusView->MessageReceived(message);
-		static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->PostMessage(message, static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->GetStageView());
+		static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage()->PostMessage(message, static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage()->GetStageView());
 		break;
 
 	default:

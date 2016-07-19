@@ -35,7 +35,7 @@
 //	Default constructor
 //
 
-TRotateSlider::TRotateSlider( TRotateDialog *dialog, TNumberTextControl *rotateText, TVisualCue *theCue, BRect frame, const char *name, const char *label, BMessage *message, int32 minValue,
+TRotateSlider::TRotateSlider( TRotateDialog* dialog, TNumberTextControl* rotateText, TVisualCue* theCue, BRect frame, const char* name, const char* label, BMessage* message, int32 minValue,
                               int32 maxValue, thumb_style thumbType, uint32 resizingMode, uint32 flags) :
 	TSlider(frame, name, label, message, minValue, maxValue, thumbType, resizingMode, flags)
 {
@@ -43,7 +43,7 @@ TRotateSlider::TRotateSlider( TRotateDialog *dialog, TNumberTextControl *rotateT
 	fDialog                 = dialog;
 	fTextControl    = rotateText;
 	fCue                    = theCue;
-	fStage                  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
+	fStage                  = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage();
 	fStageView      = fStage->GetStageView();
 }
 
@@ -56,7 +56,7 @@ TRotateSlider::TRotateSlider( TRotateDialog *dialog, TNumberTextControl *rotateT
 //	Construct from message
 //
 
-TRotateSlider::TRotateSlider(BMessage *data) : TSlider(data)
+TRotateSlider::TRotateSlider(BMessage* data) : TSlider(data)
 {
 }
 
@@ -120,7 +120,7 @@ void TRotateSlider::SetValue(int32 value)
 //	Set TNumberTextControl member variable
 //
 
-void TRotateSlider::SetTextControl(TNumberTextControl *textControl)
+void TRotateSlider::SetTextControl(TNumberTextControl* textControl)
 {
 	fTextControl = textControl;
 }

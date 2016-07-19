@@ -34,7 +34,7 @@
 //
 //
 
-TCueSheetScrollBarV::TCueSheetScrollBarV( TCueSheetWindow *parent, BRect frame, BView *target, float min, float max ) :
+TCueSheetScrollBarV::TCueSheetScrollBarV( TCueSheetWindow* parent, BRect frame, BView* target, float min, float max ) :
 	BScrollBar( frame, "VCueScroll", target, min, max, B_VERTICAL)
 {
 	fCueSheetWindow = parent;
@@ -50,7 +50,7 @@ TCueSheetScrollBarV::TCueSheetScrollBarV( TCueSheetWindow *parent, BRect frame, 
 //	Contruct from an archive
 //
 
-TCueSheetScrollBarV::TCueSheetScrollBarV(BMessage *data ) : BScrollBar(data)
+TCueSheetScrollBarV::TCueSheetScrollBarV(BMessage* data ) : BScrollBar(data)
 {
 	fCueSheetWindow = NULL;
 
@@ -78,7 +78,7 @@ TCueSheetScrollBarV::~TCueSheetScrollBarV()
 //
 //
 
-BArchivable *TCueSheetScrollBarV::Instantiate(BMessage *archive)
+BArchivable* TCueSheetScrollBarV::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TCueSheetScrollBarV") )
@@ -94,7 +94,7 @@ BArchivable *TCueSheetScrollBarV::Instantiate(BMessage *archive)
 //
 //
 
-status_t TCueSheetScrollBarV::Archive(BMessage *data, bool deep) const
+status_t TCueSheetScrollBarV::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -174,7 +174,7 @@ void TCueSheetScrollBarV::ValueChanged(float newValue)
 void TCueSheetScrollBarV::AttachedToWindow()
 {
 	if(fCueSheetWindow == NULL) {
-		fCueSheetWindow = (TCueSheetWindow *)Window();
+		fCueSheetWindow = (TCueSheetWindow*)Window();
 	}
 
 	//	Pass up to parent
@@ -190,7 +190,7 @@ void TCueSheetScrollBarV::AttachedToWindow()
 //---------------------------------------------------------------------
 //
 //
-void TCueSheetScrollBarV::SetParent(TCueSheetWindow *parent)
+void TCueSheetScrollBarV::SetParent(TCueSheetWindow* parent)
 {
 	fCueSheetWindow = parent;
 }

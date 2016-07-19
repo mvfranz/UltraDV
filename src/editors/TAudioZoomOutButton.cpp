@@ -35,7 +35,7 @@
 //
 //
 
-TAudioZoomOutButton::TAudioZoomOutButton(TAudioEditorToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
+TAudioZoomOutButton::TAudioZoomOutButton(TAudioEditorToolbar* parent, BRect bounds, const char* name, BBitmap* offBitmap, BBitmap* onBitmap, BHandler* handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
 	fParent = parent;
@@ -137,7 +137,7 @@ void TAudioZoomOutButton::MouseUp(BPoint where)
 //	Handle mouse moved events
 //
 
-void TAudioZoomOutButton::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TAudioZoomOutButton::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 }
 
@@ -161,7 +161,7 @@ void TAudioZoomOutButton::WindowActivated(bool state)
 //	Handle key down event
 //
 
-void TAudioZoomOutButton::KeyDown(const char *bytes, int32 numBytes)
+void TAudioZoomOutButton::KeyDown(const char* bytes, int32 numBytes)
 {
 }
 
@@ -174,7 +174,7 @@ void TAudioZoomOutButton::KeyDown(const char *bytes, int32 numBytes)
 //	Handle key up event
 //
 
-void TAudioZoomOutButton::KeyUp(const char *bytes, int32 numBytes)
+void TAudioZoomOutButton::KeyUp(const char* bytes, int32 numBytes)
 {
 }
 
@@ -225,8 +225,8 @@ void TAudioZoomOutButton::DoClick()
 	Draw(Bounds());
 
 	// Now send message to the view that the user is zooming out...
-	BMessage *message = new BMessage(AUDIO_ZOOMOUT_BUTTON_MSG);
-	fParent->Window()->PostMessage(message, (( TAudioEditor *)fParent->Window())->GetEditorView() );
+	BMessage* message = new BMessage(AUDIO_ZOOMOUT_BUTTON_MSG);
+	fParent->Window()->PostMessage(message, (( TAudioEditor*)fParent->Window())->GetEditorView() );
 	delete message;
 
 	// Wait a short while before restoring to up position

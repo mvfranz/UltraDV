@@ -34,7 +34,7 @@
 //
 //
 
-TElementsScrollBarH::TElementsScrollBarH(BRect frame, const char *name, BView *target, float min, float max ) :
+TElementsScrollBarH::TElementsScrollBarH(BRect frame, const char* name, BView* target, float min, float max ) :
 	BScrollBar( frame, name, target, min, max, B_HORIZONTAL)
 {
 
@@ -123,7 +123,7 @@ void TElementsScrollBarH::ValueChanged(float newValue)
 //
 //
 
-void TElementsScrollBarH::MessageReceived(BMessage *msg)
+void TElementsScrollBarH::MessageReceived(BMessage* msg)
 {
 }
 
@@ -157,7 +157,7 @@ void TElementsScrollBarH::MouseUp(BPoint pt)
 //
 //
 
-void TElementsScrollBarH::MouseMoved(BPoint pt, uint32 code, const BMessage *msg)
+void TElementsScrollBarH::MouseMoved(BPoint pt, uint32 code, const BMessage* msg)
 {
 }
 

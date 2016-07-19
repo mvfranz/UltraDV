@@ -38,7 +38,7 @@
 //
 //
 
-TDeleteChannel::TDeleteChannel(BRect bounds, TCueSheetView *theCueSheet) : BWindow( bounds, "Delete Channel", B_TITLED_WINDOW,
+TDeleteChannel::TDeleteChannel(BRect bounds, TCueSheetView* theCueSheet) : BWindow( bounds, "Delete Channel", B_TITLED_WINDOW,
 	                                                                            B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE, 0)
 
 {
@@ -155,10 +155,10 @@ void TDeleteChannel::MessageReceived(BMessage* message)
 
 		// Send message to cue sheet view
 		if (afterChannel > 0 && afterChannel <= numChannels) {
-			BMessage *theMessage = new BMessage(DELETE_CHANNEL_MSG);
+			BMessage* theMessage = new BMessage(DELETE_CHANNEL_MSG);
 			theMessage->AddInt32("NumChannels", deleteChannels);
 			theMessage->AddInt32("AfterChannel", afterChannel);
-			(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(theMessage, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
+			(static_cast<MuseumApp*>(be_app)->GetCueSheet())->PostMessage(theMessage, (BHandler*)static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
 			delete theMessage;
 		}
 

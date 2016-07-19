@@ -56,7 +56,7 @@
 //
 //
 
-TStageView::TStageView(BRect bounds, TStageWindow *parent) : BView(bounds, "StageView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
+TStageView::TStageView(BRect bounds, TStageWindow* parent) : BView(bounds, "StageView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
 	BMediaNode("StageNode")
 {
 	// We don't need a background color
@@ -74,7 +74,7 @@ TStageView::TStageView(BRect bounds, TStageWindow *parent) : BView(bounds, "Stag
 //
 //
 
-TStageView::TStageView(BMessage *archive) : BView(archive),
+TStageView::TStageView(BMessage* archive) : BView(archive),
 	BMediaNode("StageNode")
 {
 	// Perform default initialization
@@ -183,7 +183,7 @@ void TStageView::Init()
 //
 //
 
-BArchivable *TStageView::Instantiate(BMessage *archive)
+BArchivable* TStageView::Instantiate(BMessage* archive)
 {
 
 	if ( validate_instantiation(archive, "TStageView") )
@@ -198,7 +198,7 @@ BArchivable *TStageView::Instantiate(BMessage *archive)
 //
 //
 
-status_t TStageView::Archive(BMessage *data, bool deep) const
+status_t TStageView::Archive(BMessage* data, bool deep) const
 {
 
 	status_t myErr;
@@ -244,7 +244,7 @@ void TStageView::Draw(BRect updateRect)
 
 	// Inform any StageCues
 	for (int32 index = 0; index < m_StageCueList->CountItems(); index++) {
-		TStageCue *stageCue = (TStageCue *)m_StageCueList->ItemAt(index);
+		TStageCue* stageCue = (TStageCue*)m_StageCueList->ItemAt(index);
 		if (stageCue)
 			stageCue->Draw(updateRect);
 	}
@@ -268,21 +268,21 @@ void TStageView::StageDraw(BRect updateRect, uint32 theTime)
 		printf("TSV::SD m_Parent is null!\n");
 
 	//	Get cue data at time
-	TCueSheetWindow *testCueSheet = m_Parent->GetCueSheet();
+	TCueSheetWindow* testCueSheet = m_Parent->GetCueSheet();
 	if (!testCueSheet)
 		printf("TSV::SD testCueSheet is null!\n");
-	TCueSheetView *testCueSheetView = testCueSheet->GetCueSheetView();
+	TCueSheetView* testCueSheetView = testCueSheet->GetCueSheetView();
 	if (!testCueSheetView)
 		printf("TSV::SD testCueSheetView is null!\n");
-	BList *channelList = m_Parent->GetCueSheet()->GetCueSheetView()->GetChannelList();
+	BList* channelList = m_Parent->GetCueSheet()->GetCueSheetView()->GetChannelList();
 
 	printf("TSV:SD: end\n");
 
 	if (channelList) {
 		for (int32 index = 0; index < channelList->CountItems(); index++) {
-			TCueChannel *theChannel = (TCueChannel *)channelList->ItemAt(index);
+			TCueChannel* theChannel = (TCueChannel*)channelList->ItemAt(index);
 			if (theChannel) {
-				TVisualCue *theCue = theChannel->GetVisualCueAtTime(theTime);
+				TVisualCue* theCue = theChannel->GetVisualCueAtTime(theTime);
 				if (theCue) {
 					//	Proceed only if visible
 					if (!theCue->IsMuted()) {
@@ -291,7 +291,7 @@ void TStageView::StageDraw(BRect updateRect, uint32 theTime)
 						acquire_sem(renderSem);
 
 						//	Update offscreen using transparency
-						BBitmap *bitmap = theCue->GetBitmap(theTime);
+						BBitmap* bitmap = theCue->GetBitmap(theTime);
 						if (bitmap) {
 							if (m_OffscreenView->LockLooper()) {
 								BRect offsetRect = theCue->CuePosition()->Enclosure();
@@ -325,7 +325,7 @@ void TStageView::StageDraw(BRect updateRect, uint32 theTime)
 //
 //
 
-void TStageView::MessageReceived(BMessage *message)
+void TStageView::MessageReceived(BMessage* message)
 {
 
 	switch (message->what)
@@ -383,11 +383,11 @@ void TStageView::MessageReceived(BMessage *message)
 //	Send message to all stage cues
 //
 
-void TStageView::SendMessageToAllCues(BMessage *message)
+void TStageView::SendMessageToAllCues(BMessage* message)
 {
 	// Determine who in cue list is selected
 	for (int32 index = 0; index < m_StageCueList->CountItems(); index++) {
-		TStageCue *theCue = (TStageCue *)m_StageCueList->ItemAt(index);
+		TStageCue* theCue = (TStageCue*)m_StageCueList->ItemAt(index);
 		if (theCue) {
 			theCue->MessageReceived(message);
 		}
@@ -402,11 +402,11 @@ void TStageView::SendMessageToAllCues(BMessage *message)
 //	Send message to all selected stage cues
 //
 
-void TStageView::SendMessageToSelectedCues(BMessage *message)
+void TStageView::SendMessageToSelectedCues(BMessage* message)
 {
 	// Determine who in cue list is selected
 	for (int32 index = 0; index < m_StageCueList->CountItems(); index++) {
-		TStageCue *theCue = (TStageCue *)m_StageCueList->ItemAt(index);
+		TStageCue* theCue = (TStageCue*)m_StageCueList->ItemAt(index);
 		if (theCue) {
 			if (theCue->Selected())
 				theCue->MessageReceived(message);
@@ -440,7 +440,7 @@ void TStageView::MouseDown(BPoint where)
 		//	to the top of the z-order by placing it last in the list.  This is a temporary promotion
 		//	and has no effect on the cues channel playback z-order
 		for (int32 index = m_StageCueList->CountItems()-1; index >= 0; index--) {
-			TStageCue *stageCue = (TStageCue *)m_StageCueList->ItemAt(index);
+			TStageCue* stageCue = (TStageCue*)m_StageCueList->ItemAt(index);
 
 			//	We have a cue.  Does it contain the click?
 			if ( stageCue->GetChannelCue()->CuePosition()->Contains(where) || stageCue->PointInResizeZones(where) ) {
@@ -453,7 +453,7 @@ void TStageView::MouseDown(BPoint where)
 				//	as it is highest in the z-order.
 				else{
 					//  Get the selected cue
-					TStageCue *deselectCue = (TStageCue *)m_StageCueList->ItemAt(m_StageCueList->CountItems()-1);
+					TStageCue* deselectCue = (TStageCue*)m_StageCueList->ItemAt(m_StageCueList->CountItems()-1);
 					deselectCue->Deselect();
 
 					// Promote clicked cue in the z-order by placing it at end of list
@@ -480,21 +480,21 @@ void TStageView::MouseDown(BPoint where)
 		//	If so, activate it...
 
 		// Get a pointer to the cue sheet
-		TCueSheetView *theCueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView();
+		TCueSheetView* theCueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView();
 
 		//      Now create a list of cues that can be drawn at this time within this rect,
 		//	starting from the start channel and working our way up to the stop channel
 		//
 
 		//      Find the cues that are at the current time.
-		BList *cueList = new BList();
+		BList* cueList = new BList();
 
 		for ( int32 index = 0; index < theCueSheet->GetTotalChannels(); index++) {
-			TCueChannel *theChannel = (TCueChannel *)theCueSheet->GetChannelList()->ItemAt(index);
+			TCueChannel* theChannel = (TCueChannel*)theCueSheet->GetChannelList()->ItemAt(index);
 
 			// We have a valid channel.  Get cue at this time slice...
 			if (theChannel) {
-				TCueView *theCue = theChannel->GetCueAtTime(GetCurrentTime());
+				TCueView* theCue = theChannel->GetCueAtTime(GetCurrentTime());
 
 				// Is it a visible cue and not muted?
 				if (theCue && theCue->IsVisible() && theCue->IsMuted() == false) {
@@ -507,9 +507,9 @@ void TStageView::MouseDown(BPoint where)
 		//  Create stage cues for each item in the cueList.  Add the new stage cues to our
 		//	m_StageCueList
 		for(int32 cueIndex = 0; cueIndex < cueList->CountItems(); cueIndex++) {
-			TVisualCue *listCue = (TVisualCue *)cueList->ItemAt(cueIndex);
+			TVisualCue* listCue = (TVisualCue*)cueList->ItemAt(cueIndex);
 			if (listCue) {
-				TStageCue *stageCue = new TStageCue(this, listCue);
+				TStageCue* stageCue = new TStageCue(this, listCue);
 				m_StageCueList->AddItem(stageCue);
 			}
 		}
@@ -523,7 +523,7 @@ void TStageView::MouseDown(BPoint where)
 			//	to the top of the z-order by placing it last in the list.  This is a temporary promotion
 			//	and has no effect on the cues channel playback z-order
 			for (int32 index = m_StageCueList->CountItems()-1; index >= 0; index--) {
-				TStageCue *stageCue = (TStageCue *)m_StageCueList->ItemAt(index);
+				TStageCue* stageCue = (TStageCue*)m_StageCueList->ItemAt(index);
 
 				//	We have a cue.  Does it contain the click?
 				if ( stageCue->GetChannelCue()->CuePosition()->Contains(where) || stageCue->PointInResizeZones(where) ) {
@@ -551,7 +551,7 @@ void TStageView::MouseDown(BPoint where)
 //	Handle mouse moved events
 //
 
-void TStageView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
+void TStageView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Do nothing if we are playing
 	if ( IsPlaying() )
@@ -560,7 +560,7 @@ void TStageView::MouseMoved( BPoint where, uint32 code, const BMessage *a_messag
 	//	Determine if we have a MouseMove within a selected StageCue
 	const int32 stageCues = m_StageCueList->CountItems();
 	if (stageCues > 0) {
-		TStageCue *stageCue = (TStageCue *)m_StageCueList->ItemAt(stageCues-1);
+		TStageCue* stageCue = (TStageCue*)m_StageCueList->ItemAt(stageCues-1);
 
 		//	We have a cue.  Does it contain the move?
 		if (stageCue) {
@@ -677,13 +677,13 @@ void TStageView::BlitOffscreen()
 //	to free offscreen bitmap returned
 //
 
-BBitmap *TStageView::CreateComposite(int32 startID, int32 stopID, long theTime, BRect theRect)
+BBitmap* TStageView::CreateComposite(int32 startID, int32 stopID, long theTime, BRect theRect)
 {
 
 	// Create offscreen bitmap and view.  Create the view the size of the stage
-	BBitmap *offscreen = new BBitmap( theRect, B_RGB32, true, false);
+	BBitmap* offscreen = new BBitmap( theRect, B_RGB32, true, false);
 	ASSERT(offscreen);
-	BView *offscreenView = new BView( offscreen->Bounds(), "CompositeView", B_FOLLOW_NONE, 0);
+	BView* offscreenView = new BView( offscreen->Bounds(), "CompositeView", B_FOLLOW_NONE, 0);
 	ASSERT(offscreenView);
 	offscreen->AddChild(offscreenView);
 
@@ -698,24 +698,24 @@ BBitmap *TStageView::CreateComposite(int32 startID, int32 stopID, long theTime, 
 	offscreenView->Sync();
 
 	// Get a pointer to the cue sheet
-	TCueSheetView *theCueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView();
+	TCueSheetView* theCueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetCueSheetView();
 
 	//      Now create a list of cues that can be drawn at this time within this rect,
 	//	starting from the start channel and working our way up to the stop channel
 	//
 
-	BList *cueList = new BList();
+	BList* cueList = new BList();
 
 	//      Find the cues that fall with in the updateRect and within the current time.
 	//	Iterate through all of the cues, check their visible bounds and determine
 	printf("TStageView::CreateComposite GetChannelList\n");
 	//	if they may be affected. If so, add the cue to the list
 	for ( int32 index = startID; index < stopID; index++) {
-		TCueChannel *theChannel = (TCueChannel *)theCueSheet->GetChannelList()->ItemAt(index-1);
+		TCueChannel* theChannel = (TCueChannel*)theCueSheet->GetChannelList()->ItemAt(index-1);
 
 		// We have a valid channel.  Get cue at this time slice...
 		if (theChannel) {
-			TVisualCue *theCue = (TVisualCue *)theChannel->GetCueAtTime(theTime);
+			TVisualCue* theCue = (TVisualCue*)theChannel->GetCueAtTime(theTime);
 
 			// Is it a visible cue and not muted?
 			if (theCue && theCue->IsVisible() && theCue->IsMuted() == false) {
@@ -729,7 +729,7 @@ BBitmap *TStageView::CreateComposite(int32 startID, int32 stopID, long theTime, 
 
 	// Now go through the list and inform all cues that need to be redrawn to do so..
 	for( int32 index = 0; index < cueList->CountItems(); index++) {
-		TVisualCue *drawCue = (TVisualCue *)cueList->ItemAt(index);
+		TVisualCue* drawCue = (TVisualCue*)cueList->ItemAt(index);
 		drawCue->RenderData(theTime, theRect);
 	}
 
@@ -758,16 +758,16 @@ BBitmap *TStageView::CreateComposite(int32 startID, int32 stopID, long theTime, 
 //
 //
 
-BBitmap *TStageView::CopyStageBitmap(BRect theRect)
+BBitmap* TStageView::CopyStageBitmap(BRect theRect)
 {
 	//	Center rect
 	BRect viewRect = theRect;
 	viewRect.OffsetTo(0, 0);
 
 	// Create offscreen bitmap and view.  Create the view the size of the stage
-	BBitmap *offscreen = new BBitmap( viewRect, B_RGB32, true, false);
+	BBitmap* offscreen = new BBitmap( viewRect, B_RGB32, true, false);
 	ASSERT(offscreen);
-	BView *offscreenView = new BView( offscreen->Bounds(), "CompositeView", B_FOLLOW_NONE, 0);
+	BView* offscreenView = new BView( offscreen->Bounds(), "CompositeView", B_FOLLOW_NONE, 0);
 	ASSERT(offscreenView);
 	offscreen->AddChild(offscreenView);
 
@@ -846,9 +846,9 @@ int32 TStageView::StageOffscreen()
 //	Static thread function
 //
 
-int32 TStageView::stage_offscreen(void *arg)
+int32 TStageView::stage_offscreen(void* arg)
 {
-	TStageView *obj = (TStageView *)arg;
+	TStageView* obj = (TStageView*)arg;
 	return(obj->StageOffscreen() );
 }
 
@@ -867,7 +867,7 @@ void TStageView::ClearStageCueList()
 {
 	//	Deselect items in list
 	for (int32 index = 0; index < m_StageCueList->CountItems(); index++) {
-		TStageCue *stageCue = (TStageCue *)m_StageCueList->ItemAt(index);
+		TStageCue* stageCue = (TStageCue*)m_StageCueList->ItemAt(index);
 		if (stageCue) {
 			stageCue->Deselect();
 			delete stageCue;
@@ -959,7 +959,7 @@ port_id TStageView::ControlPort() const
 //
 
 
-BMediaAddOn* TStageView::AddOn( int32 *internal_id) const
+BMediaAddOn* TStageView::AddOn( int32* internal_id) const
 {
 	return NULL;
 }
@@ -975,9 +975,9 @@ BMediaAddOn* TStageView::AddOn( int32 *internal_id) const
 //	Static service thread function
 //
 
-status_t TStageView::service_routine(void * data)
+status_t TStageView::service_routine(void* data)
 {
-	((TStageView *)data)->ServiceRoutine();
+	((TStageView*)data)->ServiceRoutine();
 
 	return 0;
 }
@@ -1027,9 +1027,9 @@ void TStageView::ServiceRoutine()
 //	Static run thread function
 //
 
-status_t TStageView::run_routine(void *data)
+status_t TStageView::run_routine(void* data)
 {
-	((TStageView *)data)->RunRoutine();
+	((TStageView*)data)->RunRoutine();
 	return 0;
 }
 

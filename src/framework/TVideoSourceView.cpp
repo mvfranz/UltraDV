@@ -41,7 +41,7 @@
 //
 //
 
-TVideoSourceView::TVideoSourceView(TVideoSettingsTabView *parent, BMessage *archive) : BView(archive)
+TVideoSourceView::TVideoSourceView(TVideoSettingsTabView* parent, BMessage* archive) : BView(archive)
 {
 	fParent = parent;
 
@@ -74,18 +74,18 @@ void TVideoSourceView::Init()
 	SetViewColor(kBeGrey);
 
 	// Locate view items
-	fDigitizerMenuField     = (BMenuField *)FindView("DigitizerMenuField");
-	fInputMenuField                 = (BMenuField *)FindView("InputMenuField");
-	fFormatMenuField                = (BMenuField *)FindView("FormatMenuField");
+	fDigitizerMenuField     = (BMenuField*)FindView("DigitizerMenuField");
+	fInputMenuField                 = (BMenuField*)FindView("InputMenuField");
+	fFormatMenuField                = (BMenuField*)FindView("FormatMenuField");
 
-	fGammaCorrectionCheckBox        = (BCheckBox *)FindView("GammaCorrectionCheckBox");
-	fLumaCoringCheckBox             = (BCheckBox *)FindView("LumaCoringCheckBox");
-	fErrorDiffusionCheckBox         = (BCheckBox *)FindView("ErrorDiffusionCheckBox");
-	fLumaCombCheckBox                       = (BCheckBox *)FindView("LumaCombCheckBox");
-	fChromaCombCheckBox             = (BCheckBox *)FindView("ChromaCombCheckBox");
+	fGammaCorrectionCheckBox        = (BCheckBox*)FindView("GammaCorrectionCheckBox");
+	fLumaCoringCheckBox             = (BCheckBox*)FindView("LumaCoringCheckBox");
+	fErrorDiffusionCheckBox         = (BCheckBox*)FindView("ErrorDiffusionCheckBox");
+	fLumaCombCheckBox                       = (BCheckBox*)FindView("LumaCombCheckBox");
+	fChromaCombCheckBox             = (BCheckBox*)FindView("ChromaCombCheckBox");
 
 	//	Set up  preview view bounds.  Use attached view in BBox to set up size
-	BView *previewView      = (BView *)FindView("PreviewView");
+	BView* previewView      = (BView*)FindView("PreviewView");
 	fPreviewRect = previewView->Frame();
 	RemoveChild(previewView);
 	delete previewView;
@@ -121,7 +121,7 @@ void TVideoSourceView::Init()
 	// Set up menus
 	//
 
-	BMenu *theMenu;
+	BMenu* theMenu;
 
 	// Setup Digitizer menu
 	theMenu = fDigitizerMenuField->Menu();
@@ -208,8 +208,8 @@ void TVideoSourceView::AttachedToWindow()
 	printf("TVideoCompressionView::AttachedToWindow()\n");
 
 	//	Get pointer to previewView and attach to BBox
-	BBox *previewBox = (BBox *)FindView("PreviewBox");
-	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
+	BBox* previewBox = (BBox*)FindView("PreviewBox");
+	TVideoPreviewView* previewView = fParent->GetParent()->GetParent()->PreviewView();
 	if (previewView) {
 		previewBox->AddChild(previewView);
 		previewView->MoveTo(fPreviewRect.left, fPreviewRect.top);
@@ -232,8 +232,8 @@ void TVideoSourceView::DetachedFromWindow()
 	printf("TVideoCompressionView::DetachedFromWindow()\n");
 
 	//	Get pointer to previewView and detach from BBox
-	BBox *previewBox = (BBox *)FindView("PreviewBox");
-	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
+	BBox* previewBox = (BBox*)FindView("PreviewBox");
+	TVideoPreviewView* previewView = fParent->GetParent()->GetParent()->PreviewView();
 	if (previewView) {
 		previewView->Hide();
 		previewBox->RemoveChild(previewView);
@@ -256,7 +256,7 @@ void TVideoSourceView::DetachedFromWindow()
 
 void TVideoSourceView::ApplyToSource()
 {
-	BMenu *theMenu;
+	BMenu* theMenu;
 
 	theMenu = fDigitizerMenuField->Menu();
 	fParent->GetParent()->MessageReceived(theMenu->FindMarked()->Message());
@@ -286,7 +286,7 @@ void TVideoSourceView::ApplyToSource()
 //	Setup digitizer menu based on prefs
 //
 
-void TVideoSourceView::SetDigitizerMenuItem(BMenu *theMenu)
+void TVideoSourceView::SetDigitizerMenuItem(BMenu* theMenu)
 {
 	// Switch based on
 	switch( fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer)
@@ -389,7 +389,7 @@ void TVideoSourceView::SetDigitizerMenuItem(BMenu *theMenu)
 //	Setup input menu based on prefs
 //
 
-void TVideoSourceView::SetInputMenuItem(BMenu *theMenu)
+void TVideoSourceView::SetInputMenuItem(BMenu* theMenu)
 {
 	// Switch based on
 	switch( fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoSourceSettings.fInput)

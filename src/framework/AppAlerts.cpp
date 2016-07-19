@@ -31,7 +31,7 @@
 
 void CueBoundsAlert()
 {
-	BAlert *theAlert = new BAlert("Museum", "A cue may not occupy the same\n space as another cue.", "OK");
+	BAlert* theAlert = new BAlert("Museum", "A cue may not occupy the same\n space as another cue.", "OK");
 	CenterWindow(theAlert);
 	theAlert->Go();
 }
@@ -44,11 +44,11 @@ void CueBoundsAlert()
 //	Inform user that we cannot read the data in the image
 //
 
-void UnhandledImageFormat(entry_ref *ref)
+void UnhandledImageFormat(entry_ref* ref)
 {
 	char msg[1024];
 	sprintf(msg, "No Translation Kit add-on found for '%s'.", ref->name);
-	BAlert *theAlert = new BAlert("Museum", msg, "OK");
+	BAlert* theAlert = new BAlert("Museum", msg, "OK");
 	CenterWindow(theAlert);
 	theAlert->Go();
 }
@@ -60,11 +60,11 @@ void UnhandledImageFormat(entry_ref *ref)
 //	Inform user that we cannot read the data in the image
 //
 
-void UnhandledMIDIFormat(entry_ref *ref)
+void UnhandledMIDIFormat(entry_ref* ref)
 {
 	char msg[1024];
 	sprintf(msg, "Unable to read '%s'.  Invalid MIDI file.", ref->name);
-	BAlert *theAlert = new BAlert("Museum", msg, "OK");
+	BAlert* theAlert = new BAlert("Museum", msg, "OK");
 	CenterWindow(theAlert);
 	theAlert->Go();
 }
@@ -81,7 +81,7 @@ int32 SaveAlert()
 {
 	int32 result;
 
-	BAlert *theAlert = new BAlert( "Museum", "This document has been changed since the last save.  Save before quiting?",
+	BAlert* theAlert = new BAlert( "Museum", "This document has been changed since the last save.  Save before quiting?",
 	                               "Don't Save", "Cancel", "Save", B_WIDTH_FROM_WIDEST, B_WARNING_ALERT);
 
 	theAlert->SetShortcut(0, B_ESCAPE);
@@ -100,11 +100,11 @@ int32 SaveAlert()
 //	General purpose error dialog
 //
 
-int32 ErrorAlert(char *theError)
+int32 ErrorAlert(char* theError)
 {
 	int32 result;
 
-	BAlert *theAlert = new BAlert( "Museum", theError, "OK", NULL, NULL, B_WIDTH_FROM_WIDEST, B_WARNING_ALERT);
+	BAlert* theAlert = new BAlert( "Museum", theError, "OK", NULL, NULL, B_WIDTH_FROM_WIDEST, B_WARNING_ALERT);
 
 	theAlert->SetShortcut(0, B_ESCAPE);
 	CenterWindow(theAlert);
