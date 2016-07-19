@@ -31,7 +31,7 @@ const int32 RATE_SCALE = 1.0;
 //
 
 TAudioEngine::TAudioEngine() : BSoundPlayer("AudioEngine")
-{	
+{
 	//	Start Engine
 	Start();
 }
@@ -46,7 +46,7 @@ TAudioEngine::TAudioEngine() : BSoundPlayer("AudioEngine")
 TAudioEngine::~TAudioEngine()
 {
 	//	Stop playback off all sounds
-	
+
 	//	Stop node
-	Stop();		
+	Stop();
 }

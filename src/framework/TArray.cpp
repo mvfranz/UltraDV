@@ -27,7 +27,7 @@
 
 // Macros for calculating item offsets and addresses.
 // They are all one-based indices
-#define ASSERT_INDEX(index)	ASSERT( (index > 0)&&(index <= fNumItems))
+#define ASSERT_INDEX(index)     ASSERT( (index > 0)&&(index <= fNumItems))
 #define ITEM_OFFSET(index) ((index-1) * fElementSize)
 //#define ITEM_PTR(index) (&((char *)*fItems)[ ITEM_OFFSET(index) ])
 #define ITEM_PTR(index) (&((char *)fItems)[ ITEM_OFFSET(index) ])
@@ -36,7 +36,7 @@
 // element The temporary storage is an extra slot kept at the
 // end of the item handle.
 //#define TMP_ITEM_PTR	(&((char*)*fItems)[ ITEM_OFFSET(fNumItems+1) ])
-#define TMP_ITEM_PTR	(&((char*)fItems)[ ITEM_OFFSET(fNumItems+1) ])
+#define TMP_ITEM_PTR    (&((char*)fItems)[ ITEM_OFFSET(fNumItems+1) ])
 
 
 
@@ -51,11 +51,11 @@
 
 TArray::TArray( int32 anElementSize) : TCollection()
 {
-	fBlockSize 		= 3;
-	fElementSize 		= anElementSize;
-	fSlots 			= 0;
-	fLockChanges 		= false;
-	fUsingTemporary 	= false;
+	fBlockSize              = 3;
+	fElementSize            = anElementSize;
+	fSlots                  = 0;
+	fLockChanges            = false;
+	fUsingTemporary         = false;
 
 	//fItems = malloc( fElementSize );
 	fItems = malloc( sizeof(fElementSize) * fElementSize );
@@ -87,7 +87,7 @@ TArray::~TArray()
 //	allocate when more space is needed.
 //
 
-void	TArray::SetBlockSize(short aBlockSize)
+void TArray::SetBlockSize(short aBlockSize)
 {
 	fBlockSize = aBlockSize;
 
@@ -173,22 +173,20 @@ void TArray::InsertAtIndex( void *itemPtr, int32 index)
 
 	if (fLockChanges) return;
 
-	if (fNumItems >= fSlots)				// Check if we need more space
+	if (fNumItems >= fSlots)                                // Check if we need more space
 		MoreSlots();
 
-	if (index <= fNumItems)
-	{									// Move items at position >= index
-										//   down one slot, unless it is
-										//   the last item
+	if (index <= fNumItems) {                                               // Move items at position >= index
+		                                                                //   down one slot, unless it is
+		                                                                //   the last item
 		//BlockMoveData( ITEM_PTR( index), ITEM_PTR( index + 1), (fNumItems - index + 1) * fElementSize);
 		memcpy( ITEM_PTR( index + 1), ITEM_PTR( index), (fNumItems - index + 1) * fElementSize);
-	}
-	else
+	} else
 		index = fNumItems + 1;
 
-	fNumItems++;							// There's another item in the list
+	fNumItems++;                                                    // There's another item in the list
 
-										// Stick new object in the empty slot
+	// Stick new object in the empty slot
 	Store( itemPtr, index);
 
 }
@@ -213,8 +211,7 @@ void TArray::DeleteItem( int32 index)
 	fNumItems--;
 
 	// Shift items following the object
-	if (index <= fNumItems)
-	{
+	if (index <= fNumItems) {
 		//  to remove up one slot, thereby	overwriting it
 		// BlockMoveData( ITEM_PTR( index+1), ITEM_PTR( index), (fNumItems - index + 1) * fElementSize);
 		memcpy( ITEM_PTR( index), ITEM_PTR( index+1), (fNumItems - index + 1) * fElementSize);
@@ -222,8 +219,7 @@ void TArray::DeleteItem( int32 index)
 
 	// The number of free fSlots is greater than the fBlockSize.
 	// Reduce the size of the items handle.
-	if (fSlots > fNumItems + fBlockSize)
-	{
+	if (fSlots > fNumItems + fBlockSize) {
 		Resize( fSlots-fBlockSize);
 	}
 }
@@ -287,16 +283,13 @@ void TArray::MoveItemToIndex( int32 currentIndex, int32 newIndex)
 
 	CopyToTemporary( currentIndex);
 
-	if (currentIndex < newIndex)
-	{
+	if (currentIndex < newIndex) {
 		// Element is before target location. Shift items between current
 		//   and target locations down one
 		//BlockMoveData( ITEM_PTR( currentIndex+1), ITEM_PTR( currentIndex), (newIndex - currentIndex) * fElementSize);
 		memcpy( ITEM_PTR( currentIndex), ITEM_PTR( currentIndex+1), (newIndex - currentIndex) * fElementSize);
 
-	}
-	else if (currentIndex > newIndex)
-	{
+	} else if (currentIndex > newIndex)   {
 		// Element is after target location.
 		// Shift items between target and current locations up one
 		//BlockMoveData( ITEM_PTR( newIndex), ITEM_PTR( newIndex+1), (currentIndex - newIndex) * fElementSize);
@@ -339,26 +332,24 @@ bool TArray::SetLockChanges( bool fLockChanges)
 //---------------------------------------------------------------------
 //
 //	Find an array element matching the data at itemPtr. matchFunc is used
-// 	to perform the comparison and should be declared:
-// 		int compare( void *item1, void *item2);
+//      to perform the comparison and should be declared:
+//              int compare( void *item1, void *item2);
 //
-// 	and should return 0 if the items are equivalent.
-// 	NOTE: this makes compare compatible with the compare function passed
-// 	to qsort.
+//      and should return 0 if the items are equivalent.
+//      NOTE: this makes compare compatible with the compare function passed
+//      to qsort.
 //
 
 int32 TArray::Search( void *itemPtr, CompareFunc compare)
 {
-	register char	* items;
-	register int32 	i;
-	int32			foundIndex = BAD_INDEX;
+	register char   * items;
+	register int32 i;
+	int32 foundIndex = BAD_INDEX;
 
 
 	items = (char*) fItems;
-	for (i = 0; i < fNumItems; i++)
-	{
-		if (compare( itemPtr, items) == 0)
-		{
+	for (i = 0; i < fNumItems; i++) {
+		if (compare( itemPtr, items) == 0) {
 			foundIndex = i+1;
 			break;
 		}
@@ -376,7 +367,7 @@ int32 TArray::Search( void *itemPtr, CompareFunc compare)
 //---------------------------------------------------------------------
 //
 //	Swap two items. Sends dependents an arrayElementChanged message for both
-// 	items.
+//      items.
 //
 
 void TArray::Swap( int32 index1, int32 index2)
@@ -448,48 +439,48 @@ int32 TArray::ItemOffset( int32 itemIndex)
 
 
 /******************************************************************************
- Copy {OVERRIDE}
+   Copy {OVERRIDE}
 
- 	Make a copy of the array, including the item handle.
+        Make a copy of the array, including the item handle.
 ******************************************************************************/
 /*
-CObject *TArray::Copy(void)
-{
-	TArray *theCopy;
-	Handle	itemsCopy;
-	OSErr	err;
-	bool	savedAlloc;
+   CObject *TArray::Copy(void)
+   {
+        TArray *theCopy;
+        Handle	itemsCopy;
+        OSErr	err;
+        bool	savedAlloc;
 
-	theCopy = (TArray*) CCollection::Copy();
+        theCopy = (TArray*) CCollection::Copy();
 
-	TRY
-	{
-		itemsCopy = theCopy->fItems;
+        TRY
+        {
+                itemsCopy = theCopy->fItems;
 
-		savedAlloc = SetAllocation( kAllocCanFail);
-		err = HandToHand( &itemsCopy);
-		SetAllocation( savedAlloc);
+                savedAlloc = SetAllocation( kAllocCanFail);
+                err = HandToHand( &itemsCopy);
+                SetAllocation( savedAlloc);
 
-		FailOSErr( err);
+                FailOSErr( err);
 
-		theCopy->fItems = itemsCopy;
-	}
-	CATCH
-	{
-		// if copying item handle failed, then we should
-		// kill the copy created by CObject::Copy. We
-		// clear the item handle so disposing of the
-		// copy doesn't dispose of this array's item handle
+                theCopy->fItems = itemsCopy;
+        }
+        CATCH
+        {
+                // if copying item handle failed, then we should
+                // kill the copy created by CObject::Copy. We
+                // clear the item handle so disposing of the
+                // copy doesn't dispose of this array's item handle
 
-		theCopy->fItems = NULL;
-		theCopy->Dispose();
-	}
-	ENDTRY;
+                theCopy->fItems = NULL;
+                theCopy->Dispose();
+        }
+        ENDTRY;
 
-	return theCopy;
+        return theCopy;
 
-}
-*/
+   }
+ */
 
 
 //---------------------------------------------------------------------

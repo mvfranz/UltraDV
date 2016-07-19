@@ -131,16 +131,14 @@ status_t TZoomButton::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TZoomButton");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -209,10 +207,9 @@ void TZoomButton::MouseDown(BPoint where)
 
 void TZoomButton::AttachedToWindow()
 {
-	if(fParent == NULL)
-	{
-		fParent 	= (TToolbar *)Parent();
-		fHandler 	= (TToolbar *)Parent();
+	if(fParent == NULL) {
+		fParent         = (TToolbar *)Parent();
+		fHandler        = (TToolbar *)Parent();
 	}
 
 	//	Pass up to parent

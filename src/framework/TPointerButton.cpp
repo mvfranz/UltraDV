@@ -46,7 +46,7 @@ TPointerButton::TPointerButton(TToolbar *parent, BRect bounds, const char *name,
 
 	// Store bitmaps
 	fOffBitmap = offBitmap;
-	fOnBitmap 	= onBitmap;
+	fOnBitmap       = onBitmap;
 
 	// Store target and handler
 	fHandler = handler;
@@ -130,16 +130,14 @@ status_t TPointerButton::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TPointerButton");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -209,10 +207,9 @@ void TPointerButton::MouseDown(BPoint where)
 
 void TPointerButton::AttachedToWindow()
 {
-	if(fParent == NULL)
-	{
-		fParent 	= (TToolbar *)Parent();
-		fHandler 	= (TToolbar *)Parent();
+	if(fParent == NULL) {
+		fParent         = (TToolbar *)Parent();
+		fHandler        = (TToolbar *)Parent();
 	}
 
 	//	Pass up to parent

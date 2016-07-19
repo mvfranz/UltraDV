@@ -35,7 +35,7 @@
 //
 
 TCueSheetScrollBarV::TCueSheetScrollBarV( TCueSheetWindow *parent, BRect frame, BView *target, float min, float max ) :
-					BScrollBar( frame, "VCueScroll", target, min, max, B_VERTICAL)
+	BScrollBar( frame, "VCueScroll", target, min, max, B_VERTICAL)
 {
 	fCueSheetWindow = parent;
 
@@ -104,16 +104,14 @@ status_t TCueSheetScrollBarV::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BScrollBar::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TCueSheetScrollBarV");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -132,7 +130,7 @@ status_t TCueSheetScrollBarV::Archive(BMessage *data, bool deep) const
 
 void TCueSheetScrollBarV::Init()
 {
-	// 	Get current scrollvalue and save it in our tracking variable.
+	//      Get current scrollvalue and save it in our tracking variable.
 	//	We use this value to scroll the HeaderZone in concert with
 	//	the CueSheetView
 	fLastValue = Value();
@@ -150,8 +148,7 @@ void TCueSheetScrollBarV::ValueChanged(float newValue)
 	BScrollBar::ValueChanged(newValue);
 
 	// We need to offset the HeaderContainer as well...
-	if (newValue != fLastValue)
-	{
+	if (newValue != fLastValue) {
 		if (newValue > fLastValue)
 			fCueSheetWindow->GetHeaderContainer()->ScrollBy(0, newValue - fLastValue);
 		else
@@ -176,8 +173,7 @@ void TCueSheetScrollBarV::ValueChanged(float newValue)
 
 void TCueSheetScrollBarV::AttachedToWindow()
 {
-	if(fCueSheetWindow == NULL)
-	{
+	if(fCueSheetWindow == NULL) {
 		fCueSheetWindow = (TCueSheetWindow *)Window();
 	}
 
@@ -196,5 +192,5 @@ void TCueSheetScrollBarV::AttachedToWindow()
 //
 void TCueSheetScrollBarV::SetParent(TCueSheetWindow *parent)
 {
- 	fCueSheetWindow = parent;
+	fCueSheetWindow = parent;
 }

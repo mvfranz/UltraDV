@@ -70,8 +70,8 @@ TTransportPaletteView::~TTransportPaletteView()
 
 void TTransportPaletteView::Init()
 {
-	BBitmap 	*offBitmap;
-	BBitmap		*onBitmap;
+	BBitmap         *offBitmap;
+	BBitmap         *onBitmap;
 
 	// Set view background color
 	SetViewColor(kBlack);
@@ -98,20 +98,20 @@ void TTransportPaletteView::Init()
 	offBitmap = GetTransportButton("RewindEndDown");
 	onBitmap = GetTransportButton("RewindEndUp");
 
-   	// Create button
-   	fStartButton = new TBitmapButton( buttonRect, "StartButton", offBitmap, onBitmap, this, new BMessage(START_BUTTON_MSG), true);
+	// Create button
+	fStartButton = new TBitmapButton( buttonRect, "StartButton", offBitmap, onBitmap, this, new BMessage(START_BUTTON_MSG), true);
 	AddChild(fStartButton);
 
 
-    // Play Button
-    //
+	// Play Button
+	//
 
 	// Set button location
 	buttonRect.Set( buttonRect.left+kTransportButtonOffset+kTransportButtonWidth, buttonRect.top,
-				 buttonRect.left+(kTransportButtonWidth*2)+kTransportButtonOffset, buttonRect.bottom);
+	                buttonRect.left+(kTransportButtonWidth*2)+kTransportButtonOffset, buttonRect.bottom);
 
 
-    // Load Off and On bitmaps
+	// Load Off and On bitmaps
 	offBitmap = GetTransportButton("PlayUp");
 	onBitmap  = GetTransportButton("PlayDown");
 
@@ -120,14 +120,14 @@ void TTransportPaletteView::Init()
 	AddChild(fPlayButton);
 
 
-    // Pause Button
-    //
+	// Pause Button
+	//
 
- 	// Set button location
+	// Set button location
 	buttonRect.Set( buttonRect.left+kTransportButtonOffset+kTransportButtonWidth, buttonRect.top,
-				 buttonRect.left+(kTransportButtonWidth*2)+kTransportButtonOffset, buttonRect.bottom);
+	                buttonRect.left+(kTransportButtonWidth*2)+kTransportButtonOffset, buttonRect.bottom);
 
-    // Load Off and On bitmaps
+	// Load Off and On bitmaps
 	offBitmap = GetTransportButton("PauseDown");
 	onBitmap = GetTransportButton("PauseUp");
 
@@ -136,11 +136,11 @@ void TTransportPaletteView::Init()
 	AddChild(fPauseButton);
 
 	// FF To End Button
-    //
+	//
 
 	// Set button location
-	buttonRect.right 	= Bounds().right - kTransportButtonOffset;
-	buttonRect.left		= buttonRect.right - kTransportButtonWidth;
+	buttonRect.right        = Bounds().right - kTransportButtonOffset;
+	buttonRect.left         = buttonRect.right - kTransportButtonWidth;
 
 	// Load Off and On bitmaps
 	offBitmap = GetTransportButton("FFEndDown");
@@ -151,38 +151,38 @@ void TTransportPaletteView::Init()
 	AddChild(fEndButton);
 
 
-    //
-    //	Second Row
-    //
+	//
+	//	Second Row
+	//
 
 	//
 	//	Rewind Button
 
-    // Set button location
-	buttonRect.left 	= Bounds().left + kTransportButtonOffset;
-	buttonRect.right 	= buttonRect.left + kTransportButtonWidth;
-	buttonRect.bottom 	= Bounds().bottom - kTransportButtonOffset;
-	buttonRect.top 		= buttonRect.bottom - kTransportButtonHeight;
+	// Set button location
+	buttonRect.left         = Bounds().left + kTransportButtonOffset;
+	buttonRect.right        = buttonRect.left + kTransportButtonWidth;
+	buttonRect.bottom       = Bounds().bottom - kTransportButtonOffset;
+	buttonRect.top          = buttonRect.bottom - kTransportButtonHeight;
 
 
-    // Load Off and On bitmaps
-	offBitmap 	= GetTransportButton("RewindDown");
-	onBitmap 	= GetTransportButton("RewindUp");
+	// Load Off and On bitmaps
+	offBitmap       = GetTransportButton("RewindDown");
+	onBitmap        = GetTransportButton("RewindUp");
 
 	// Create button
 	fRewindButton = new TBitmapButton(buttonRect, "RewindButton", offBitmap, onBitmap, this, new BMessage(REWIND_BUTTON_MSG), true);
 	AddChild(fRewindButton);
 
 	// FF Button
-    //
+	//
 
 	// Set button location
-	buttonRect.right 	= Bounds().right - kTransportButtonOffset;
-	buttonRect.left 	= buttonRect.right - kTransportButtonWidth;
+	buttonRect.right        = Bounds().right - kTransportButtonOffset;
+	buttonRect.left         = buttonRect.right - kTransportButtonWidth;
 
 	// Load Off and On bitmaps
-	offBitmap 	= GetTransportButton("FFDown");
-	onBitmap 	= GetTransportButton("FFUp");
+	offBitmap       = GetTransportButton("FFDown");
+	onBitmap        = GetTransportButton("FFUp");
 
 	// Create button
 	fFFButton = new TBitmapButton(buttonRect, "FFButton", offBitmap, onBitmap, this, new BMessage(FF_BUTTON_MSG), true);
@@ -200,9 +200,9 @@ void TTransportPaletteView::Init()
 	float strWidth = StringWidth("00:00:00:00");
 
 	// Create text display
-	BRect textBounds 	= Bounds();
-	textBounds.right	= textBounds.left + strWidth;
-	textBounds.bottom 	= textBounds.top + kTransportFontSize;
+	BRect textBounds        = Bounds();
+	textBounds.right        = textBounds.left + strWidth;
+	textBounds.bottom       = textBounds.top + kTransportFontSize;
 
 	// Move to proper location
 	textBounds.OffsetBy(52, 42);
@@ -239,8 +239,7 @@ void TTransportPaletteView::Draw(BRect updateRect)
 {
 	TBitmapView::Draw(updateRect);
 
-	if (fTransportText)
-	{
+	if (fTransportText) {
 		fTransportText->Draw(updateRect);
 	}
 }
@@ -259,134 +258,132 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 {
 	switch (message->what)
 	{
-		//	Update text
-		case TIMELINE_DRAG_MSG:
-		case UPDATE_TIMELINE_MSG:
-			{
-				char text[12];
-				uint32 theTime = message->FindInt32("TheTime");
-				TimeToString(theTime, GetCurrentTimeFormat(), text, false);
-				fTransportText->SetText(text);
-			}
-			break;
+	//	Update text
+	case TIMELINE_DRAG_MSG:
+	case UPDATE_TIMELINE_MSG:
+	{
+		char text[12];
+		uint32 theTime = message->FindInt32("TheTime");
+		TimeToString(theTime, GetCurrentTimeFormat(), text, false);
+		fTransportText->SetText(text);
+	}
+	break;
 
-		//	Go to beginning of cue sheet
-		case START_BUTTON_MSG:
-			{
-				//	Stop playback
-				TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-				TPlaybackEngine	*engine = cueSheet->GetPlaybackEngine();
+	//	Go to beginning of cue sheet
+	case START_BUTTON_MSG:
+	{
+		//	Stop playback
+		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+		TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+		engine->Stop(0, true);
+
+		//	Reset current time
+		cueSheet->GetCueSheetView()->SetCurrentTime(StartTime());
+
+		//	Inform timeline which updates everyone
+		TTimelineView *timeLine = cueSheet->GetTimeline();
+		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		message->AddInt32("TheTime", GetCurrentTime());
+		timeLine->MessageReceived(message);
+		cueSheet->GetCueSheetView()->MessageReceived(message);
+	}
+	break;
+
+	//	Step back a time unit
+	case REWIND_BUTTON_MSG:
+	{
+		//	Stop playback
+		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+		TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+		engine->Stop(0, true);
+
+		//	Set current time
+		uint32 time = GetCurrentTime();
+		time -= GetUnitMSec( GetCurrentTimeFormat(), GetCurrentResolution() ) / GetFPSValue(GetCurrentTimeFormat());
+
+		if (time >= StartTime())
+			cueSheet->GetCueSheetView()->SetCurrentTime(time);
+
+		//	Inform timeline which updates everyone
+		TTimelineView *timeLine = cueSheet->GetTimeline();
+		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		message->AddInt32("TheTime", GetCurrentTime());
+		timeLine->MessageReceived(message);
+		cueSheet->GetCueSheetView()->MessageReceived(message);
+	}
+	break;
+
+	//	Start PlaybackEngine time source
+	case PLAY_BUTTON_MSG:
+	{
+		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+		if (cueSheet) {
+			TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+			if (engine)
+				engine->Start(0);
+		}
+	}
+	break;
+
+	case PAUSE_BUTTON_MSG:
+	case STOP_BUTTON_MSG:
+	{
+		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+		if (cueSheet) {
+			TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+			if (engine)
 				engine->Stop(0, true);
+		}
+	}
+	break;
 
-				//	Reset current time
-				cueSheet->GetCueSheetView()->SetCurrentTime(StartTime());
+	case FF_BUTTON_MSG:
+	{
+		//	Stop playback
+		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+		TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+		engine->Stop(0, true);
 
-				//	Inform timeline which updates everyone
-				TTimelineView *timeLine = cueSheet->GetTimeline();
-				BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
-				message->AddInt32("TheTime", GetCurrentTime());
-				timeLine->MessageReceived(message);
-				cueSheet->GetCueSheetView()->MessageReceived(message);
-			}
-			break;
+		//	Set current time
+		uint32 time = GetCurrentTime();
+		time += GetUnitMSec( GetCurrentTimeFormat(), GetCurrentResolution() ) / GetFPSValue(GetCurrentTimeFormat());
 
-		//	Step back a time unit
-		case REWIND_BUTTON_MSG:
-			{
-				//	Stop playback
-				TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-				TPlaybackEngine	*engine = cueSheet->GetPlaybackEngine();
-				engine->Stop(0, true);
+		if (time <= StartTime() + Duration())
+			cueSheet->GetCueSheetView()->SetCurrentTime(time);
 
-				//	Set current time
-				uint32 time = GetCurrentTime();
-				time -= GetUnitMSec( GetCurrentTimeFormat(), GetCurrentResolution() ) / GetFPSValue(GetCurrentTimeFormat());
+		//	Inform timeline which updates everyone
+		TTimelineView *timeLine = cueSheet->GetTimeline();
+		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		message->AddInt32("TheTime", GetCurrentTime());
+		timeLine->MessageReceived(message);
+		cueSheet->GetCueSheetView()->MessageReceived(message);
+	}
+	break;
 
-				if (time >= StartTime())
-					cueSheet->GetCueSheetView()->SetCurrentTime(time);
+	case END_BUTTON_MSG:
+	{
+		//	Stop playback
+		TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+		TPlaybackEngine *engine = cueSheet->GetPlaybackEngine();
+		engine->Stop(0, true);
 
-				//	Inform timeline which updates everyone
-				TTimelineView *timeLine = cueSheet->GetTimeline();
-				BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
-				message->AddInt32("TheTime", GetCurrentTime());
-				timeLine->MessageReceived(message);
-				cueSheet->GetCueSheetView()->MessageReceived(message);
-			}
-			break;
+		//	Reset current time
+		cueSheet->GetCueSheetView()->SetCurrentTime( StartTime() + Duration());
 
-		//	Start PlaybackEngine time source
-		case PLAY_BUTTON_MSG:
-			{
-				TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-				if (cueSheet)
-				{
-					TPlaybackEngine	*engine = cueSheet->GetPlaybackEngine();
-					if (engine)
-						engine->Start(0);
-				}
-			}
-			break;
+		//	Inform timeline which updates everyone
+		TTimelineView *timeLine = cueSheet->GetTimeline();
+		BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+		message->AddInt32("TheTime", GetCurrentTime());
+		timeLine->MessageReceived(message);
+		cueSheet->GetCueSheetView()->MessageReceived(message);
+	}
+	break;
 
-		case PAUSE_BUTTON_MSG:
-		case STOP_BUTTON_MSG:
-			{
-				TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-				if (cueSheet)
-				{
-					TPlaybackEngine	*engine = cueSheet->GetPlaybackEngine();
-					if (engine)
-						engine->Stop(0, true);
-				}
-			}
-			break;
+	case RECORD_BUTTON_MSG:
+		break;
 
-		case FF_BUTTON_MSG:
-			{
-				//	Stop playback
-				TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-				TPlaybackEngine	*engine = cueSheet->GetPlaybackEngine();
-				engine->Stop(0, true);
-
-				//	Set current time
-				uint32 time = GetCurrentTime();
-				time += GetUnitMSec( GetCurrentTimeFormat(), GetCurrentResolution() ) / GetFPSValue(GetCurrentTimeFormat());
-
-				if (time <= StartTime() + Duration())
-					cueSheet->GetCueSheetView()->SetCurrentTime(time);
-
-				//	Inform timeline which updates everyone
-				TTimelineView *timeLine = cueSheet->GetTimeline();
-				BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
-				message->AddInt32("TheTime", GetCurrentTime());
-				timeLine->MessageReceived(message);
-				cueSheet->GetCueSheetView()->MessageReceived(message);
-			}
-			break;
-
-		case END_BUTTON_MSG:
-			{
-				//	Stop playback
-				TCueSheetWindow *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-				TPlaybackEngine	*engine = cueSheet->GetPlaybackEngine();
-				engine->Stop(0, true);
-
-				//	Reset current time
-				cueSheet->GetCueSheetView()->SetCurrentTime( StartTime() + Duration());
-
-				//	Inform timeline which updates everyone
-				TTimelineView *timeLine = cueSheet->GetTimeline();
-				BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
-				message->AddInt32("TheTime", GetCurrentTime());
-				timeLine->MessageReceived(message);
-				cueSheet->GetCueSheetView()->MessageReceived(message);
-			}
-			break;
-
-		case RECORD_BUTTON_MSG:
-			break;
-
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -410,8 +407,8 @@ BBitmap *GetTransportButton(char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res(&file);
 	data = (BBitmap *)res.FindResource('bits', theResource, &size);

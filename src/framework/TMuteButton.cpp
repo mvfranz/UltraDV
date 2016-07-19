@@ -73,8 +73,8 @@ TMuteButton::TMuteButton(BMessage *data) : BView(data)
 	fMouseDown = false;
 
 	// Set bitmaps
-	fOffBitmap	= GetAppIcons()->fMuteUp;
-	fOnBitmap 	= GetAppIcons()->fMuteDown;
+	fOffBitmap      = GetAppIcons()->fMuteUp;
+	fOnBitmap       = GetAppIcons()->fMuteDown;
 }
 
 //---------------------------------------------------------------------
@@ -135,16 +135,14 @@ status_t TMuteButton::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TMuteButton");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -231,8 +229,7 @@ void TMuteButton::MouseUp(BPoint where)
 
 void TMuteButton::AttachedToWindow()
 {
-	if (fHandler == NULL)
-	{
+	if (fHandler == NULL) {
 		// Set target
 		fHandler = (TCueSheetWindow *)Window();
 

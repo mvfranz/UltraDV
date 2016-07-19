@@ -49,39 +49,35 @@ thread_id StartMouseWatcher(BView* TargetView)
 
 int32 MouseWatcher(void* data)
 {
-	BMessenger	*TheMessenger = (BMessenger*)data;
-	BPoint 		PreviousPos;
-	uint32 		PreviousButtons;
-	bool 		FirstCheck = true;
-	BMessage 	MessageToSend;
+	BMessenger      *TheMessenger = (BMessenger*)data;
+	BPoint PreviousPos;
+	uint32 PreviousButtons;
+	bool FirstCheck = true;
+	BMessage MessageToSend;
 
 	MessageToSend.AddPoint("where",BPoint(0,0));
 	MessageToSend.AddInt32("buttons",0);
 
-	while(true)
-	{
-		if (!TheMessenger->LockTarget())
-		{
+	while(true) {
+		if (!TheMessenger->LockTarget()) {
 			delete TheMessenger;
-			return 0;			// window is dead so exit
+			return 0;                       // window is dead so exit
 		}
 
 		BLooper *TheLooper;
-		BView	*TheView = (BView*)TheMessenger->Target(&TheLooper);
-		BPoint 	Where;
-		uint32 	Buttons;
+		BView   *TheView = (BView*)TheMessenger->Target(&TheLooper);
+		BPoint Where;
+		uint32 Buttons;
 		TheView->GetMouse(&Where,&Buttons,false);
 
-		if(FirstCheck)
-		{
+		if(FirstCheck) {
 			PreviousPos = Where;
 			PreviousButtons = Buttons;
 			FirstCheck = false;
 		}
 
 		bool Send = false;
-		if(Buttons != PreviousButtons || Buttons == 0 || Where != PreviousPos)
-		{
+		if(Buttons != PreviousButtons || Buttons == 0 || Where != PreviousPos) {
 			if(Buttons == 0)
 				MessageToSend.what = MW_MOUSE_UP;
 			else if(Buttons != PreviousButtons)
@@ -99,8 +95,7 @@ int32 MouseWatcher(void* data)
 		if(Send)
 			TheMessenger->SendMessage(&MessageToSend);
 
-		if(Buttons == 0)
-		{
+		if(Buttons == 0) {
 			//Button was released
 			delete TheMessenger;
 			return 0;

@@ -19,7 +19,7 @@
 
 #include "TIconView.h"
 
-#include <assert.h>		// For assert()
+#include <assert.h>             // For assert()
 
 //---------------------------------------------------------------------
 //	Constructor
@@ -28,7 +28,7 @@
 //
 
 TIconView::TIconView(BRect bounds) :
-		BView(bounds, "IconView", B_FOLLOW_ALL | B_FRAME_EVENTS, B_WILL_DRAW)
+	BView(bounds, "IconView", B_FOLLOW_ALL | B_FRAME_EVENTS, B_WILL_DRAW)
 {
 	// Perform default initialization
 	Init();

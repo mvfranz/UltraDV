@@ -40,12 +40,12 @@
 //
 
 TCueTimeText::TCueTimeText(BHandler *target, int32 messageID, BRect bounds, const char *name, uint32 resizing, TextDrawModes drawMode) :
-			  BView(bounds, name, resizing, B_WILL_DRAW)
+	BView(bounds, name, resizing, B_WILL_DRAW)
 {
 
-	fTarget 		= target;
-	fMessageID  	= messageID;
-	fDrawMode 		= drawMode;
+	fTarget                 = target;
+	fMessageID      = messageID;
+	fDrawMode               = drawMode;
 
 	Init();
 }
@@ -60,10 +60,10 @@ TCueTimeText::TCueTimeText(BHandler *target, int32 messageID, BRect bounds, cons
 
 
 TCueTimeText::TCueTimeText(const TCueTimeText *theText) :
-			  BView(theText->Bounds(), theText->Name(), theText->ResizingMode(), B_WILL_DRAW)
+	BView(theText->Bounds(), theText->Name(), theText->ResizingMode(), B_WILL_DRAW)
 {
-	fTarget 		= theText->fTarget;
-	fMessageID  	= theText->fMessageID;
+	fTarget                 = theText->fTarget;
+	fMessageID      = theText->fMessageID;
 
 	Init();
 }
@@ -82,9 +82,9 @@ TCueTimeText::TCueTimeText(BMessage *data) : BView(data)
 	fTarget = NULL;
 
 	// Get our member variables from the BMessage
-	ssize_t 	numBytes;
-	rgb_color	*color;
-	BFont 		*font;
+	ssize_t numBytes;
+	rgb_color       *color;
+	BFont           *font;
 
 	data->FindInt32("MessageID", &fMessageID);
 	data->FindFloat("TextSize", &fTextSize);
@@ -101,40 +101,40 @@ TCueTimeText::TCueTimeText(BMessage *data) : BView(data)
 	fKeyCount = 0;
 
 	// Set up font
-   	SetFont(&fFont);
+	SetFont(&fFont);
 
-   	// Perform default initialization
+	// Perform default initialization
 	sprintf(fText, "00:00:00:00");
 
-	// 	Set up time rects.  We divide the area up into four areas
+	//      Set up time rects.  We divide the area up into four areas
 	//	for hour, minutes, seconds and frames
-	float 	numberWidth;
-	float 	spaceWidth;
+	float numberWidth;
+	float spaceWidth;
 
 	// Get bound and adjust for border type
 	BRect bounds = Bounds();
 	switch(fDrawMode)
 	{
-		case kTextBevel:
-			bounds.left+=2;
-			bounds.right-=2;
-			bounds.top+=2;
-			bounds.bottom-=2;
-			break;
+	case kTextBevel:
+		bounds.left+=2;
+		bounds.right-=2;
+		bounds.top+=2;
+		bounds.bottom-=2;
+		break;
 
-		case kTextOutline:
-			bounds.left++;
-			bounds.right--;
-			bounds.top++;
-			bounds.bottom--;
-			break;
+	case kTextOutline:
+		bounds.left++;
+		bounds.right--;
+		bounds.top++;
+		bounds.bottom--;
+		break;
 
-		default:
-			bounds.left++;
-			bounds.right--;
-			bounds.top++;
-			bounds.bottom--;
-			break;
+	default:
+		bounds.left++;
+		bounds.right--;
+		bounds.top++;
+		bounds.bottom--;
+		break;
 	}
 
 	// Get text drawing location
@@ -145,27 +145,27 @@ TCueTimeText::TCueTimeText(BMessage *data) : BView(data)
 	startX = (bounds.right - width)/2;
 
 	numberWidth = StringWidth("00");
-	spaceWidth 	= StringWidth(":");
+	spaceWidth      = StringWidth(":");
 
-	fHoursRect.left 		= bounds.left;
-	fHoursRect.top 		= bounds.top;
-	fHoursRect.right 		= fHoursRect.left + startX + numberWidth;
-	fHoursRect.bottom 		= bounds.bottom;
+	fHoursRect.left                 = bounds.left;
+	fHoursRect.top          = bounds.top;
+	fHoursRect.right                = fHoursRect.left + startX + numberWidth;
+	fHoursRect.bottom               = bounds.bottom;
 
-	fMinutesRect.left 		= fHoursRect.right + spaceWidth;
-	fMinutesRect.top 		= bounds.top;
-	fMinutesRect.right 	= fMinutesRect.left + numberWidth;
-	fMinutesRect.bottom 	= bounds.bottom;
+	fMinutesRect.left               = fHoursRect.right + spaceWidth;
+	fMinutesRect.top                = bounds.top;
+	fMinutesRect.right      = fMinutesRect.left + numberWidth;
+	fMinutesRect.bottom     = bounds.bottom;
 
-	fSecondsRect.left 		= fMinutesRect.right + spaceWidth;
-	fSecondsRect.top 		= bounds.top;
-	fSecondsRect.right 	= fSecondsRect.left + numberWidth;
-	fSecondsRect.bottom 	= bounds.bottom;
+	fSecondsRect.left               = fMinutesRect.right + spaceWidth;
+	fSecondsRect.top                = bounds.top;
+	fSecondsRect.right      = fSecondsRect.left + numberWidth;
+	fSecondsRect.bottom     = bounds.bottom;
 
-	fFramesRect.left 		= fSecondsRect.right + spaceWidth;
-	fFramesRect.top 		= bounds.top;
-	fFramesRect.right 		= bounds.right;
-	fFramesRect.bottom 	= bounds.bottom;
+	fFramesRect.left                = fSecondsRect.right + spaceWidth;
+	fFramesRect.top                 = bounds.top;
+	fFramesRect.right               = bounds.right;
+	fFramesRect.bottom      = bounds.bottom;
 
 	// Set cell to none
 	fCurrentCell = 0;
@@ -198,43 +198,43 @@ void TCueTimeText::Init()
 	// Set up font
 	BFont font(be_plain_font);
 	fFont = font;
-   	fFont.SetSize(10.0);
-   	SetFont(&fFont);
-   	fColor = kBlack;
+	fFont.SetSize(10.0);
+	SetFont(&fFont);
+	fColor = kBlack;
 
 	// Perform default initialization
 	SetViewColor(kWhite);
 	sprintf(fText, "00:00:00:00");
 
-	// 	Set up time rects.  We divide the area up into four areas
+	//      Set up time rects.  We divide the area up into four areas
 	//	for hour, minutes, seconds and frames
-	float 	numberWidth;
-	float 	spaceWidth;
+	float numberWidth;
+	float spaceWidth;
 
 	// Get bounds and adjust for border type
 	BRect bounds = Bounds();
 	switch(fDrawMode)
 	{
-		case kTextBevel:
-			bounds.left+=2;
-			bounds.right-=2;
-			bounds.top+=2;
-			bounds.bottom-=2;
-			break;
+	case kTextBevel:
+		bounds.left+=2;
+		bounds.right-=2;
+		bounds.top+=2;
+		bounds.bottom-=2;
+		break;
 
-		case kTextOutline:
-			bounds.left++;
-			bounds.right--;
-			bounds.top++;
-			bounds.bottom--;
-			break;
+	case kTextOutline:
+		bounds.left++;
+		bounds.right--;
+		bounds.top++;
+		bounds.bottom--;
+		break;
 
-		default:
-			bounds.left++;
-			bounds.right--;
-			bounds.top++;
-			bounds.bottom--;
-			break;
+	default:
+		bounds.left++;
+		bounds.right--;
+		bounds.top++;
+		bounds.bottom--;
+		break;
 	}
 
 	// Get text drawing location
@@ -245,27 +245,27 @@ void TCueTimeText::Init()
 	startX = (bounds.right - width)/2;
 
 	numberWidth = StringWidth("00");
-	spaceWidth 	= StringWidth(":");
+	spaceWidth      = StringWidth(":");
 
-	fHoursRect.left 		= bounds.left;
-	fHoursRect.top 		= bounds.top;
-	fHoursRect.right 		= fHoursRect.left + startX + numberWidth;
-	fHoursRect.bottom 		= bounds.bottom;
+	fHoursRect.left                 = bounds.left;
+	fHoursRect.top          = bounds.top;
+	fHoursRect.right                = fHoursRect.left + startX + numberWidth;
+	fHoursRect.bottom               = bounds.bottom;
 
-	fMinutesRect.left 		= fHoursRect.right + spaceWidth;
-	fMinutesRect.top 		= bounds.top;
-	fMinutesRect.right 	= fMinutesRect.left + numberWidth;
-	fMinutesRect.bottom 	= bounds.bottom;
+	fMinutesRect.left               = fHoursRect.right + spaceWidth;
+	fMinutesRect.top                = bounds.top;
+	fMinutesRect.right      = fMinutesRect.left + numberWidth;
+	fMinutesRect.bottom     = bounds.bottom;
 
-	fSecondsRect.left 		= fMinutesRect.right + spaceWidth;
-	fSecondsRect.top 		= bounds.top;
-	fSecondsRect.right 	= fSecondsRect.left + numberWidth;
-	fSecondsRect.bottom 	= bounds.bottom;
+	fSecondsRect.left               = fMinutesRect.right + spaceWidth;
+	fSecondsRect.top                = bounds.top;
+	fSecondsRect.right      = fSecondsRect.left + numberWidth;
+	fSecondsRect.bottom     = bounds.bottom;
 
-	fFramesRect.left 		= fSecondsRect.right + spaceWidth;
-	fFramesRect.top 		= bounds.top;
-	fFramesRect.right 		= bounds.right;
-	fFramesRect.bottom 	= bounds.bottom;
+	fFramesRect.left                = fSecondsRect.right + spaceWidth;
+	fFramesRect.top                 = bounds.top;
+	fFramesRect.right               = bounds.right;
+	fFramesRect.bottom      = bounds.bottom;
 
 	// Set cell to none
 	fCurrentCell = 0;
@@ -305,8 +305,7 @@ status_t TCueTimeText::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TCueTimeText");
 
@@ -337,8 +336,7 @@ status_t TCueTimeText::Archive(BMessage *data, bool deep) const
 
 void TCueTimeText::AttachedToWindow()
 {
-	if (fTarget == NULL)
-	{
+	if (fTarget == NULL) {
 		fTarget = (TCueView *)Parent();
 	}
 
@@ -367,86 +365,85 @@ void TCueTimeText::Draw(BRect updateRect)
 
 	switch (fDrawMode)
 	{
-		case kTextBevel:
-			{
-				// Draw standard Be Style bevel
-				BPoint startPt, endPt;
-				BRect bounds = Bounds();
-				bounds.InsetBy(1, 1);
+	case kTextBevel:
+	{
+		// Draw standard Be Style bevel
+		BPoint startPt, endPt;
+		BRect bounds = Bounds();
+		bounds.InsetBy(1, 1);
 
-				// Draw blue outline is text view has focus
-				if (IsFocus())
-					DrawHighliteRect();
-				else
-				{
-					SetHighColor(kBeShadow);
-					startPt.Set(bounds.left, bounds.bottom);
-					endPt.Set(bounds.left, bounds.top);
-					StrokeLine(startPt, endPt);
-					startPt.Set(bounds.left, bounds.top);
-					endPt.Set(bounds.right, bounds.top);
-					StrokeLine(startPt, endPt);
+		// Draw blue outline is text view has focus
+		if (IsFocus())
+			DrawHighliteRect();
+		else{
+			SetHighColor(kBeShadow);
+			startPt.Set(bounds.left, bounds.bottom);
+			endPt.Set(bounds.left, bounds.top);
+			StrokeLine(startPt, endPt);
+			startPt.Set(bounds.left, bounds.top);
+			endPt.Set(bounds.right, bounds.top);
+			StrokeLine(startPt, endPt);
 
-					SetHighColor(kBeGrey);
-					startPt.Set(bounds.right, bounds.top+1);
-					endPt.Set(bounds.right, bounds.bottom);
-					StrokeLine(startPt, endPt);
-					startPt.Set(bounds.right, bounds.bottom);
-					endPt.Set(bounds.left+1, bounds.bottom);
-					StrokeLine(startPt, endPt);
-				}
+			SetHighColor(kBeGrey);
+			startPt.Set(bounds.right, bounds.top+1);
+			endPt.Set(bounds.right, bounds.bottom);
+			StrokeLine(startPt, endPt);
+			startPt.Set(bounds.right, bounds.bottom);
+			endPt.Set(bounds.left+1, bounds.bottom);
+			StrokeLine(startPt, endPt);
+		}
 
-				bounds = Bounds();
-				SetHighColor(kBeDarkGrey);
-				startPt.Set(bounds.left, bounds.bottom);
-				endPt.Set(bounds.left, bounds.top);
-				StrokeLine(startPt, endPt);
-				startPt.Set(bounds.left, bounds.top);
-				endPt.Set(bounds.right, bounds.top);
-				StrokeLine(startPt, endPt);
+		bounds = Bounds();
+		SetHighColor(kBeDarkGrey);
+		startPt.Set(bounds.left, bounds.bottom);
+		endPt.Set(bounds.left, bounds.top);
+		StrokeLine(startPt, endPt);
+		startPt.Set(bounds.left, bounds.top);
+		endPt.Set(bounds.right, bounds.top);
+		StrokeLine(startPt, endPt);
 
-				SetHighColor(kWhite);
-				startPt.Set(bounds.right, bounds.top+1);
-				endPt.Set(bounds.right, bounds.bottom);
-				StrokeLine(startPt, endPt);
-				startPt.Set(bounds.right, bounds.bottom);
-				endPt.Set(bounds.left+1, bounds.bottom);
-				StrokeLine(startPt, endPt);
-			}
-			break;
+		SetHighColor(kWhite);
+		startPt.Set(bounds.right, bounds.top+1);
+		endPt.Set(bounds.right, bounds.bottom);
+		StrokeLine(startPt, endPt);
+		startPt.Set(bounds.right, bounds.bottom);
+		endPt.Set(bounds.left+1, bounds.bottom);
+		StrokeLine(startPt, endPt);
+	}
+	break;
 
-		// Draw outline
-		case kTextOutline:
-			{
-				BRect bounds = Bounds();
-				SetHighColor(kTextHilite);
-				BPoint startPt, endPt;
-				startPt.Set(bounds.right, bounds.top);
-				endPt.Set(bounds.right, bounds.bottom);
-				StrokeLine(startPt, endPt);
-				startPt.Set(bounds.right, bounds.bottom);
-				endPt.Set(bounds.left+1, bounds.bottom);
-				StrokeLine(startPt, endPt);
-				SetHighColor(kTextShadow);
-				startPt.Set(bounds.left, bounds.bottom);
-				endPt.Set(bounds.left, bounds.top);
-				StrokeLine(startPt, endPt);
-				startPt.Set(bounds.left, bounds.top);
-				endPt.Set(bounds.right-1, bounds.top);
-				StrokeLine(startPt, endPt);
-			}
-			break;
+	// Draw outline
+	case kTextOutline:
+	{
+		BRect bounds = Bounds();
+		SetHighColor(kTextHilite);
+		BPoint startPt, endPt;
+		startPt.Set(bounds.right, bounds.top);
+		endPt.Set(bounds.right, bounds.bottom);
+		StrokeLine(startPt, endPt);
+		startPt.Set(bounds.right, bounds.bottom);
+		endPt.Set(bounds.left+1, bounds.bottom);
+		StrokeLine(startPt, endPt);
+		SetHighColor(kTextShadow);
+		startPt.Set(bounds.left, bounds.bottom);
+		endPt.Set(bounds.left, bounds.top);
+		StrokeLine(startPt, endPt);
+		startPt.Set(bounds.left, bounds.top);
+		endPt.Set(bounds.right-1, bounds.top);
+		StrokeLine(startPt, endPt);
+	}
+	break;
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 	// Draw text
 	SetHighColor(fColor);
 
 	// Center text
-	BPoint 	drawPt;
-	BRect	bounds = Bounds();
+	BPoint drawPt;
+	BRect bounds = Bounds();
 	float width = fFont.StringWidth(fText);
 	font_height fh;
 	fFont.GetHeight(&fh);
@@ -489,9 +486,9 @@ void TCueTimeText::DrawHighliteRect()
 
 void TCueTimeText::ClearHighliteRect()
 {
-	BPoint 	startPt, endPt;
+	BPoint startPt, endPt;
 
-	BRect 	bounds = Bounds();
+	BRect bounds = Bounds();
 	bounds.InsetBy(1, 1);
 
 	SetHighColor(kBeShadow);
@@ -524,8 +521,7 @@ void TCueTimeText::ClearHighliteRect()
 void TCueTimeText::MouseDown(BPoint where)
 {
 	// Do nothing if locked...
-	if (fTarget)
-	{
+	if (fTarget) {
 		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
@@ -545,47 +541,33 @@ void TCueTimeText::MouseDown(BPoint where)
 	CheckLastEdit();
 
 	// Determine where the click is
-	if ( fHoursRect.Contains(where) )
-	{
-		if (fCurrentCell != 1)
-		{
+	if ( fHoursRect.Contains(where) ) {
+		if (fCurrentCell != 1) {
 			InvertCurrentCell();
 			InvertRect(fHoursRect);
 			fCurrentCell = 1;
 		}
-	}
-	else if ( fMinutesRect.Contains(where) )
-	{
-		if (fCurrentCell != 2)
-		{
+	} else if ( fMinutesRect.Contains(where) )   {
+		if (fCurrentCell != 2) {
 			InvertCurrentCell();
 			InvertRect(fMinutesRect);
 			fCurrentCell = 2;
 		}
-	}
-
-	else if ( fSecondsRect.Contains(where) )
-	{
-		if (fCurrentCell != 3)
-		{
+	} else if ( fSecondsRect.Contains(where) )   {
+		if (fCurrentCell != 3) {
 			InvertCurrentCell();
 			InvertRect(fSecondsRect);
 			fCurrentCell = 3;
 		}
-	}
-
-	else if ( fFramesRect.Contains(where) )
-	{
-		if (fCurrentCell != 4)
-		{
+	} else if ( fFramesRect.Contains(where) )   {
+		if (fCurrentCell != 4) {
 			InvertCurrentCell();
 			InvertRect(fFramesRect);
 			fCurrentCell = 4;
 		}
 	}
 	// Default to first cell if all else fails
-	else
-	{
+	else{
 		InvertCurrentCell();
 		InvertRect(fHoursRect);
 		fCurrentCell = 1;
@@ -604,8 +586,7 @@ void TCueTimeText::MouseDown(BPoint where)
 void TCueTimeText::MouseUp(BPoint where)
 {
 	// Do nothing if locked...
-	if (fTarget)
-	{
+	if (fTarget) {
 		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
@@ -645,8 +626,7 @@ void TCueTimeText::KeyDown(const char *bytes, int32 numBytes)
 	char theChar = *bytes;
 
 	// Do nothing if locked...
-	if (fTarget)
-	{
+	if (fTarget) {
 		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
@@ -657,55 +637,49 @@ void TCueTimeText::KeyDown(const char *bytes, int32 numBytes)
 		fKeyCount = 1;
 
 	//	Check for a return or enter
-	if (theChar == B_ENTER || theChar == B_RETURN || theChar == 'r')
-	{
+	if (theChar == B_ENTER || theChar == B_RETURN || theChar == 'r') {
 		MakeFocus(false);
 	}
 	// We have a number.  Update the cell...
-	else if ( isdigit(theChar) )
-	{
+	else if ( isdigit(theChar) ) {
 		UpdateCurrentCell(theChar);
 	}
 	// Reset selected cell to zero
-	else if ( IsDelete(theChar) || IsBackspace(theChar) )
-	{
+	else if ( IsDelete(theChar) || IsBackspace(theChar) ) {
 		//ClearCell();
 	}
 	// Tab key or period '.' moves us through the time elements
-	else if( IsTab(theChar) || theChar == '.' )
-	{
+	else if( IsTab(theChar) || theChar == '.' ) {
 		// Check for shift key.  This move us back through the elements
 		if ( IsShiftKeyDown() )
 			DecrementCell();
 		else
 			IncrementCell();
-	}
-	else if ( IsArrows(theChar) )
-	{
+	} else if ( IsArrows(theChar) )   {
 		switch(theChar)
 		{
-			// Increment value
-			case B_UP_ARROW:
-				break;
+		// Increment value
+		case B_UP_ARROW:
+			break;
 
-			// Decrement value
-			case B_DOWN_ARROW:
-				break;
+		// Decrement value
+		case B_DOWN_ARROW:
+			break;
 
-			// Select next cell
-			case B_LEFT_ARROW:
-				DecrementCell();
-				break;
+		// Select next cell
+		case B_LEFT_ARROW:
+			DecrementCell();
+			break;
 
-			// Select previous cell
-			case B_RIGHT_ARROW:
-				IncrementCell();
-				break;
+		// Select previous cell
+		case B_RIGHT_ARROW:
+			IncrementCell();
+			break;
 		}
 	}
 	// Illegal character
 	else
-		;//beep();
+		; //beep();
 }
 
 
@@ -719,21 +693,17 @@ void TCueTimeText::KeyDown(const char *bytes, int32 numBytes)
 void TCueTimeText::MakeFocus(bool focusState)
 {
 	// Do nothing if locked...
-	if (fTarget)
-	{
+	if (fTarget) {
 		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
 
 	// If we are out of focus, deselect cells
-	if (focusState == false)
-	{
-		if (fTarget)
-		{
+	if (focusState == false) {
+		if (fTarget) {
 			BLooper *looper = fTarget->Looper();
 
-			if ( looper->Lock() )
-			{
+			if ( looper->Lock() ) {
 				// Check integrity of last edited value
 				CheckLastEdit();
 
@@ -756,8 +726,7 @@ void TCueTimeText::MakeFocus(bool focusState)
 			ClearHighliteRect();
 	}
 	// We are getting focus
-	else
-	{
+	else{
 		//	If we are in bevel mode, force a redraw to update Highlite
 		if (fDrawMode == kTextBevel)
 			DrawHighliteRect();
@@ -779,8 +748,7 @@ void TCueTimeText::MakeFocus(bool focusState)
 void TCueTimeText::MessageReceived(BMessage *message)
 {
 	// Do nothing if locked...
-	if (fTarget)
-	{
+	if (fTarget) {
 		if ( ((TCueView *)fTarget)->IsLocked() || ((TCueView *)fTarget)->GetChannel()->IsLocked() )
 			return;
 	}
@@ -802,10 +770,10 @@ void TCueTimeText::MessageReceived(BMessage *message)
 void TCueTimeText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_color theColor)
 {
 	// Update our member variables
-	fFont 	= theFont;
+	fFont   = theFont;
 	fColor = theColor;
 
-   	SetFont(&fFont);
+	SetFont(&fFont);
 }
 
 
@@ -822,8 +790,7 @@ void TCueTimeText::SetText(char *theText)
 	sprintf(fText, theText);
 
 	// Force redraw
-	if ( Looper()->Lock())
-	{
+	if ( Looper()->Lock()) {
 		Invalidate();
 		Looper()->Unlock();
 	}
@@ -841,73 +808,73 @@ void TCueTimeText::UpdateCurrentCell(char theChar)
 {
 
 	BRect updateRect;
-	updateRect.left 	= fHoursRect.left;
-	updateRect.top 		= fHoursRect.top;
-	updateRect.right 	= fFramesRect.right;
-	updateRect.bottom 	= fFramesRect.bottom;
+	updateRect.left         = fHoursRect.left;
+	updateRect.top          = fHoursRect.top;
+	updateRect.right        = fFramesRect.right;
+	updateRect.bottom       = fFramesRect.bottom;
 
 
 	switch(fCurrentCell)
 	{
-		case kHoursCell:
-			{
-				if (fKeyCount == 1)
-					strcpy( &fText[0], "0");
-				else
-					fText[0] 	= fText[1];
+	case kHoursCell:
+	{
+		if (fKeyCount == 1)
+			strcpy( &fText[0], "0");
+		else
+			fText[0]        = fText[1];
 
-				fText[1] 	= theChar;
+		fText[1]        = theChar;
 
-				//Invalidate(fHoursRect);
-				Invalidate(updateRect);
-			}
-			break;
+		//Invalidate(fHoursRect);
+		Invalidate(updateRect);
+	}
+	break;
 
-		case kMinutesCell:
-			{
-				if (fKeyCount == 1)
-					strcpy( &fText[3], "0");
-				else
-					fText[3] 	= fText[4];
+	case kMinutesCell:
+	{
+		if (fKeyCount == 1)
+			strcpy( &fText[3], "0");
+		else
+			fText[3]        = fText[4];
 
-				fText[4] 	= theChar;
+		fText[4]        = theChar;
 
-				//Invalidate(fMinutesRect);
-				Invalidate(updateRect);
-			}
-			break;
+		//Invalidate(fMinutesRect);
+		Invalidate(updateRect);
+	}
+	break;
 
-		case kSecondsCell:
-			{
-				if (fKeyCount == 1)
-					strcpy( &fText[6], "0");
-				else
-					fText[6] 	= fText[7];
+	case kSecondsCell:
+	{
+		if (fKeyCount == 1)
+			strcpy( &fText[6], "0");
+		else
+			fText[6]        = fText[7];
 
-				fText[7] 	= theChar;
+		fText[7]        = theChar;
 
-				//Invalidate(fSecondsRect);
-				Invalidate(updateRect);
-			}
-			break;
+		//Invalidate(fSecondsRect);
+		Invalidate(updateRect);
+	}
+	break;
 
-		// Set the frames to the entered value
-		case kFramesCell:
-			{
-				if (fKeyCount == 1)
-					strcpy( &fText[9], "0");
-				else
-					fText[9] 	= fText[10];
+	// Set the frames to the entered value
+	case kFramesCell:
+	{
+		if (fKeyCount == 1)
+			strcpy( &fText[9], "0");
+		else
+			fText[9]        = fText[10];
 
-				fText[10] 	= theChar;
+		fText[10]       = theChar;
 
-				//Invalidate(fFramesRect);
-				Invalidate(updateRect);
-			}
-			break;
+		//Invalidate(fFramesRect);
+		Invalidate(updateRect);
+	}
+	break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -921,77 +888,77 @@ void TCueTimeText::UpdateCurrentCell(char theChar)
 
 void TCueTimeText::CheckLastEdit()
 {
-	char 	textBuf[2];
-	int32	tmpNum;
+	char textBuf[2];
+	int32 tmpNum;
 
 	// Check for bad characters and number overflow
 	switch(fCurrentCell)
 	{
-		case kHoursCell:
-			strncpy(textBuf, &fText[0], 2);
+	case kHoursCell:
+		strncpy(textBuf, &fText[0], 2);
+		break;
+
+	case kMinutesCell:
+	{
+		strncpy(textBuf, &fText[3], 2);
+
+		tmpNum = atoi(textBuf);
+
+		if (tmpNum > 59)
+			strncpy(&fText[3], "59", 2);
+
+		Invalidate(fMinutesRect);
+	}
+	break;
+
+	case kSecondsCell:
+	{
+		strncpy(textBuf, &fText[6], 2);
+
+		tmpNum = atoi(textBuf);
+
+		if (tmpNum > 59)
+			strncpy(&fText[6], "59", 2);
+
+		Invalidate(fSecondsRect);
+	}
+	break;
+
+	case kFramesCell:
+	{
+		strncpy(textBuf, &fText[9], 2);
+
+		tmpNum = atoi(textBuf);
+
+		switch (GetCurrentTimeFormat())
+		{
+		case B_TIMECODE_DEFAULT:
+			if (tmpNum > 100)
+				strncpy(&fText[9], "99", 2);
 			break;
 
-		case kMinutesCell:
-			{
-				strncpy(textBuf, &fText[3], 2);
-
-				tmpNum = atoi(textBuf);
-
-				if (tmpNum > 59)
-					strncpy(&fText[3], "59", 2);
-
-				Invalidate(fMinutesRect);
-			}
+		case B_TIMECODE_24:
+			if (tmpNum > 24)
+				strncpy(&fText[9], "24", 2);
 			break;
 
-		case kSecondsCell:
-			{
-				strncpy(textBuf, &fText[6], 2);
-
-				tmpNum = atoi(textBuf);
-
-				if (tmpNum > 59)
-					strncpy(&fText[6], "59", 2);
-
-				Invalidate(fSecondsRect);
-			}
+		case B_TIMECODE_25:
+			if (tmpNum > 25)
+				strncpy(&fText[9], "25", 2);
 			break;
 
-		case kFramesCell:
-			{
-				strncpy(textBuf, &fText[9], 2);
-
-				tmpNum = atoi(textBuf);
-
-				switch (GetCurrentTimeFormat())
-				{
-					case B_TIMECODE_DEFAULT:
-						if (tmpNum > 100)
-							strncpy(&fText[9], "99", 2);
-						break;
-
-					case B_TIMECODE_24:
-						if (tmpNum > 24)
-							strncpy(&fText[9], "24", 2);
-						break;
-
-					case B_TIMECODE_25:
-						if (tmpNum > 25)
-							strncpy(&fText[9], "25", 2);
-						break;
-
-					case B_TIMECODE_30_DROP_2:
-					case B_TIMECODE_30:
-						if (tmpNum > 30)
-							strncpy(&fText[9], "30", 2);
-						break;
-				}
-				Invalidate(fFramesRect);
-			}
+		case B_TIMECODE_30_DROP_2:
+		case B_TIMECODE_30:
+			if (tmpNum > 30)
+				strncpy(&fText[9], "30", 2);
 			break;
+		}
+		Invalidate(fFramesRect);
+	}
+	break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	ConvertToTime(fCurrentCell);
@@ -1009,15 +976,15 @@ void TCueTimeText::CheckLastEdit()
 //	Check to see if character is backspace
 //
 
-bool  TCueTimeText::IsBackspace(char theChar)
+bool TCueTimeText::IsBackspace(char theChar)
 {
 	switch(theChar)
 	{
-		case B_BACKSPACE:
-			return true;
+	case B_BACKSPACE:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -1030,18 +997,18 @@ bool  TCueTimeText::IsBackspace(char theChar)
 //	Check to see if character is one of the arrow keys
 //
 
-bool  TCueTimeText::IsArrows(char theChar)
+bool TCueTimeText::IsArrows(char theChar)
 {
 	switch(theChar)
 	{
-		case B_UP_ARROW:
-		case B_LEFT_ARROW:
-		case B_DOWN_ARROW:
-		case B_RIGHT_ARROW:
-			return true;
+	case B_UP_ARROW:
+	case B_LEFT_ARROW:
+	case B_DOWN_ARROW:
+	case B_RIGHT_ARROW:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -1053,15 +1020,15 @@ bool  TCueTimeText::IsArrows(char theChar)
 //	Check to see if character is the delete key
 //
 
-bool  TCueTimeText::IsDelete(char theChar)
+bool TCueTimeText::IsDelete(char theChar)
 {
 	switch(theChar)
 	{
-		case B_DELETE:
-			return true;
+	case B_DELETE:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -1074,15 +1041,15 @@ bool  TCueTimeText::IsDelete(char theChar)
 //	Check to see if character is the tab key
 //
 
-bool  TCueTimeText::IsTab(char theChar)
+bool TCueTimeText::IsTab(char theChar)
 {
 	switch(theChar)
 	{
-		case B_TAB:
-			return true;
+	case B_TAB:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -1129,24 +1096,24 @@ void TCueTimeText::InvertCurrentCell()
 {
 	switch(fCurrentCell)
 	{
-		case 1:
-			InvertRect(fHoursRect);
-			break;
+	case 1:
+		InvertRect(fHoursRect);
+		break;
 
-		case 2:
-			InvertRect(fMinutesRect);
-			break;
+	case 2:
+		InvertRect(fMinutesRect);
+		break;
 
-		case 3:
-			InvertRect(fSecondsRect);
-			break;
+	case 3:
+		InvertRect(fSecondsRect);
+		break;
 
-		case 4:
-			InvertRect(fFramesRect);
-			break;
+	case 4:
+		InvertRect(fFramesRect);
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -1223,195 +1190,192 @@ void TCueTimeText::IncrementCell()
 
 void TCueTimeText::ConvertToTime(int16 theCell)
 {
-	int32 	oldVal, delta;
-	char 	textBuf[12];
-	char	tmpStr[3];
-	int16 	tmpNum;
+	int32 oldVal, delta;
+	char textBuf[12];
+	char tmpStr[3];
+	int16 tmpNum;
 
 	// Fill buffer with current text
 	strncpy(textBuf, fText, 12);
 	tmpStr[2] = '\n';
 
 	/*
-	// Determine current time format and convert text to time
-	if ( GetCurrentTimeFormat() == kSMPTE30)
-	{
-		char	text[256];
-		bool	changed = false;
-		int16	hours, minutes, seconds, frames;
+	   // Determine current time format and convert text to time
+	   if ( GetCurrentTimeFormat() == kSMPTE30)
+	   {
+	        char	text[256];
+	        bool	changed = false;
+	        int16	hours, minutes, seconds, frames;
 
-		TimeToString(fTime, GetCurrentTimeFormat(), text, false);
+	        TimeToString(fTime, GetCurrentTimeFormat(), text, false);
 
-		// Stick the new value (if it changed) into the string and reverse calc the time
-		switch (theCell)
-		{
-			// Hours
-			case 1:
-				oldVal = ((text[1] - '0') * 10) + (text[2] - '0');
-				if (textBuf[0] != oldVal)
-				{
-					text[1] = textBuf[0] / 10 + '0';
-					textBuf[0] %= 10;
-					text[2] = textBuf[0] + '0';
-					changed = true;
-				}
-				break;
+	        // Stick the new value (if it changed) into the string and reverse calc the time
+	        switch (theCell)
+	        {
+	                // Hours
+	                case 1:
+	                        oldVal = ((text[1] - '0') * 10) + (text[2] - '0');
+	                        if (textBuf[0] != oldVal)
+	                        {
+	                                text[1] = textBuf[0] / 10 + '0';
+	                                textBuf[0] %= 10;
+	                                text[2] = textBuf[0] + '0';
+	                                changed = true;
+	                        }
+	                        break;
 
-			// Minutes
-			case 2:
-				oldVal = ((text[4] - '0') * 10) + (text[5] - '0');
-				if (textBuf[1] != oldVal)
-				{
-					text[4] = textBuf[1] / 10 + '0';
-					textBuf[1] %= 10;
-					text[5] = textBuf[1] + '0';
-					changed = true;
-				}
-				break;
+	                // Minutes
+	                case 2:
+	                        oldVal = ((text[4] - '0') * 10) + (text[5] - '0');
+	                        if (textBuf[1] != oldVal)
+	                        {
+	                                text[4] = textBuf[1] / 10 + '0';
+	                                textBuf[1] %= 10;
+	                                text[5] = textBuf[1] + '0';
+	                                changed = true;
+	                        }
+	                        break;
 
-			// Seconds
-			case 3:
-				oldVal = ((text[7] - '0') * 10) + (text[8] - '0');
-				if (textBuf[2] != oldVal)
-				{
-					text[7] = textBuf[2] / 10 + '0';
-					textBuf[2] %= 10;
-					text[8] = textBuf[2] + '0';
-					changed = true;
-				}
-				break;
+	                // Seconds
+	                case 3:
+	                        oldVal = ((text[7] - '0') * 10) + (text[8] - '0');
+	                        if (textBuf[2] != oldVal)
+	                        {
+	                                text[7] = textBuf[2] / 10 + '0';
+	                                textBuf[2] %= 10;
+	                                text[8] = textBuf[2] + '0';
+	                                changed = true;
+	                        }
+	                        break;
 
-			// Frames
-			case 4:
-				oldVal = ((text[10] - '0') * 10) + (text[11] - '0');
+	                // Frames
+	                case 4:
+	                        oldVal = ((text[10] - '0') * 10) + (text[11] - '0');
 
-				if (textBuf[3] < 2 && text[7] == '0' && text[8] == '0' && text[5] != '0')
-					textBuf[3] = 2;
+	                        if (textBuf[3] < 2 && text[7] == '0' && text[8] == '0' && text[5] != '0')
+	                                textBuf[3] = 2;
 
-				if (textBuf[3] != oldVal)
-				{
-					text[10] = textBuf[3] / 10 + '0';
-					textBuf[3] %= 10;
-					text[11] = textBuf[3] + '0';
-					changed = true;
-				}
-				break;
-		}
+	                        if (textBuf[3] != oldVal)
+	                        {
+	                                text[10] = textBuf[3] / 10 + '0';
+	                                textBuf[3] %= 10;
+	                                text[11] = textBuf[3] + '0';
+	                                changed = true;
+	                        }
+	                        break;
+	        }
 
-		if (changed)
-		{
-			hours = ((text[1] - '0') * 10) + (text[2] - '0');
-			minutes = ((text[4] - '0') * 10) + (text[5] - '0');
-			seconds = ((text[7] - '0') * 10) + (text[8] - '0');
-			frames = ((text[10] - '0') * 10) + (text[11] - '0');
+	        if (changed)
+	        {
+	                hours = ((text[1] - '0') * 10) + (text[2] - '0');
+	                minutes = ((text[4] - '0') * 10) + (text[5] - '0');
+	                seconds = ((text[7] - '0') * 10) + (text[8] - '0');
+	                frames = ((text[10] - '0') * 10) + (text[11] - '0');
 
-			fTime = (long)hours * 3600000L;				// Hours
-			fTime += (long)(minutes / 10) * 600000;		// Ten minutes
-			minutes %= 10;
+	                fTime = (long)hours * 3600000L;				// Hours
+	                fTime += (long)(minutes / 10) * 600000;		// Ten minutes
+	                minutes %= 10;
 
-			if (minutes)
-			{
-				// First minute
-				fTime += 60060.066;
-				fTime += ((uint32)(minutes - 1) * 59993.326);
-			}
+	                if (minutes)
+	                {
+	                        // First minute
+	                        fTime += 60060.066;
+	                        fTime += ((uint32)(minutes - 1) * 59993.326);
+	                }
 
-			if (seconds)
-			{
-				// First second
-				if (minutes)
-					fTime += 934;
-				else
-					fTime += 1001;
-				fTime += (long)(seconds - 1) * 1001;
-			}
+	                if (seconds)
+	                {
+	                        // First second
+	                        if (minutes)
+	                                fTime += 934;
+	                        else
+	                                fTime += 1001;
+	                        fTime += (long)(seconds - 1) * 1001;
+	                }
 
-			if (frames >= 2 && !seconds && minutes)
-				frames -= 2;
+	                if (frames >= 2 && !seconds && minutes)
+	                        frames -= 2;
 
-			fTime += ((uint32)(frames + 0.5) * 33.3667);
-		}
+	                fTime += ((uint32)(frames + 0.5) * 33.3667);
+	        }
 
-	}
-	else switch (theCell)
-	*/
+	   }
+	   else switch (theCell)
+	 */
 	switch (theCell)
 	{
-		// Hours
-		case 1:
-			oldVal = fTime / 3600000;
+	// Hours
+	case 1:
+		oldVal = fTime / 3600000;
 
-			strncpy(tmpStr, &textBuf[0], 2);
-			tmpNum = atoi(tmpStr);
+		strncpy(tmpStr, &textBuf[0], 2);
+		tmpNum = atoi(tmpStr);
 
-			if (tmpNum != oldVal)
-			{
-				delta = tmpNum - oldVal;
-				fTime += (delta * 3600000);
-			}
+		if (tmpNum != oldVal) {
+			delta = tmpNum - oldVal;
+			fTime += (delta * 3600000);
+		}
+		break;
+
+	// Minutes
+	case 2:
+		// Convert time to minutes
+		oldVal = fTime % 3600000;
+		oldVal /= 60000;
+
+		strncpy(tmpStr, &textBuf[3], 2);
+		tmpNum = atoi(tmpStr);
+
+		if (tmpNum != oldVal) {
+			delta = tmpNum - oldVal;
+			fTime += (delta * 60000);
+		}
+		break;
+
+	// Seconds
+	case 3:
+		oldVal = fTime % 3600000;
+		oldVal %= 60000;
+		oldVal /= 1000;
+
+		strncpy(tmpStr, &textBuf[6], 2);
+		tmpNum = atoi(tmpStr);
+
+		if (tmpNum != oldVal) {
+			delta = tmpNum - oldVal;
+			fTime += (delta * 1000);
+		}
+		break;
+
+	// Frames/100ths
+	case 4:
+		fTime /= 1000;
+		fTime *= 1000;
+
+		strncpy(tmpStr, &textBuf[9], 2);
+		tmpNum = atoi(tmpStr);
+
+		switch (GetCurrentTimeFormat())
+		{
+
+		case B_TIMECODE_DEFAULT:
+			fTime += (tmpNum * 10);
 			break;
 
-		// Minutes
-		case 2:
-			// Convert time to minutes
-			oldVal = fTime % 3600000;
-			oldVal /= 60000;
-
-			strncpy(tmpStr, &textBuf[3], 2);
-			tmpNum = atoi(tmpStr);
-
-			if (tmpNum != oldVal)
-			{
-				delta = tmpNum - oldVal;
-				fTime += (delta * 60000);
-			}
+		case B_TIMECODE_24:
+			fTime += ((tmpNum * 1000 + 12) / 24);
 			break;
 
-		// Seconds
-		case 3:
-			oldVal = fTime % 3600000;
-			oldVal %= 60000;
-			oldVal /= 1000;
-
-			strncpy(tmpStr, &textBuf[6], 2);
-			tmpNum = atoi(tmpStr);
-
-			if (tmpNum != oldVal)
-			{
-				delta = tmpNum - oldVal;
-				fTime += (delta * 1000);
-			}
+		case B_TIMECODE_25:
+			fTime += ((tmpNum * 1000 + 13) / 25);
 			break;
 
-		// Frames/100ths
-		case 4:
-			fTime /= 1000;
-			fTime *= 1000;
-
-			strncpy(tmpStr, &textBuf[9], 2);
-			tmpNum = atoi(tmpStr);
-
-			switch (GetCurrentTimeFormat())
-			{
-
-				case B_TIMECODE_DEFAULT:
-					fTime += (tmpNum * 10);
-					break;
-
-				case B_TIMECODE_24:
-					fTime += ((tmpNum * 1000 + 12) / 24);
-					break;
-
-				case B_TIMECODE_25:
-					fTime += ((tmpNum * 1000 + 13) / 25);
-					break;
-
-				case B_TIMECODE_30_DROP_2:
-				case B_TIMECODE_30:
-					fTime += ((tmpNum * 1000 + 15) / 30);
-					break;
-			}
+		case B_TIMECODE_30_DROP_2:
+		case B_TIMECODE_30:
+			fTime += ((tmpNum * 1000 + 15) / 30);
 			break;
+		}
+		break;
 	}
 }
 
@@ -1426,8 +1390,7 @@ void TCueTimeText::ConvertToTime(int16 theCell)
 int32 TCueTimeText::GetTime()
 {
 	// Convert all cells
-	for (int16 index = kHoursCell; index < kTotalCells; index++)
-	{
+	for (int16 index = kHoursCell; index < kTotalCells; index++) {
 		ConvertToTime(index);
 	}
 

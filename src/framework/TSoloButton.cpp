@@ -71,8 +71,8 @@ TSoloButton::TSoloButton(BMessage *data) : BView(data)
 	fMouseDown = false;
 
 	// Set bitmaps
-	fOffBitmap	= GetAppIcons()->fSoloUp;
-	fOnBitmap 	= GetAppIcons()->fSoloDown;
+	fOffBitmap      = GetAppIcons()->fSoloUp;
+	fOnBitmap       = GetAppIcons()->fSoloDown;
 }
 
 //---------------------------------------------------------------------
@@ -133,16 +133,14 @@ status_t TSoloButton::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TSoloButton");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -230,8 +228,7 @@ void TSoloButton::MouseUp(BPoint where)
 
 void TSoloButton::AttachedToWindow()
 {
-	if (fHandler == NULL)
-	{
+	if (fHandler == NULL) {
 		// Set target
 		fHandler = (TCueSheetWindow *)Window();
 

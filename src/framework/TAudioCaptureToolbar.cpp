@@ -56,10 +56,10 @@ TAudioCaptureToolbar::TAudioCaptureToolbar(BRect bounds) : BView(bounds, "VidCap
 //	Create toolbar buttons
 //
 
-const short kButtonLeftOffset 	= 5;
-const short kButtonTopOffset 	= 4;
-const short kToolButtonWidth	= 16;
-const short kToolButtonHeight	= 16;
+const short kButtonLeftOffset   = 5;
+const short kButtonTopOffset    = 4;
+const short kToolButtonWidth    = 16;
+const short kToolButtonHeight   = 16;
 
 void TAudioCaptureToolbar::Init()
 {
@@ -74,9 +74,9 @@ void TAudioCaptureToolbar::Init()
 	BBitmap *recordDn = GetIcon16FromResource("AudioStopUp");
 	bounds = Bounds();
 	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset,
-				bounds.top + kButtonTopOffset + kToolButtonHeight );
+	            bounds.top + kButtonTopOffset + kToolButtonHeight );
 	fRecordButton = new TBitmapButton( bounds, "RecordButton", recordUp, recordDn,
-										 this, new BMessage(AUDCAP_RECORD_MSG), true, B_TWO_STATE_BUTTON);
+	                                   this, new BMessage(AUDCAP_RECORD_MSG), true, B_TWO_STATE_BUTTON);
 	AddChild(fRecordButton);
 	fRecordButton->Show();
 	fRecordButton->SetTarget(Parent());

@@ -33,7 +33,7 @@
 //
 
 TVideoEditorControlsView::TVideoEditorControlsView(BMessage *message) : BView(message)
-{	
+{
 	// Perform default initialization
 	Init();
 }
@@ -59,7 +59,7 @@ TVideoEditorControlsView::~TVideoEditorControlsView()
 void TVideoEditorControlsView::Init()
 {
 	// We don't need a background color
-	SetViewColor(B_TRANSPARENT_32_BIT);	
+	SetViewColor(B_TRANSPARENT_32_BIT);
 }
 
 
@@ -79,15 +79,15 @@ void TVideoEditorControlsView::Init()
 void TVideoEditorControlsView::Draw(BRect updateRect)
 {
 	PushState();
-	
+
 	const BRect bounds = Bounds();
-	
+
 	BPoint startPt, endPt;
-		
+
 	// Fill backgoround
 	SetHighColor(kBlueGrey);
 	FillRect(updateRect);
-		
+
 	// Draw Highlite
 	SetHighColor(kLightGrey);
 	startPt.Set(bounds.left, bounds.bottom);
@@ -95,14 +95,14 @@ void TVideoEditorControlsView::Draw(BRect updateRect)
 	StrokeLine(startPt, endPt);
 	endPt.Set(bounds.right, bounds.top);
 	StrokeLine(endPt);
-	
+
 	// Draw Shadow
 	SetHighColor(kDarkGrey);
 	endPt.Set(bounds.right, bounds.bottom);
 	StrokeLine(endPt);
 	endPt.Set(bounds.left, bounds.bottom);
 	StrokeLine(endPt);
-	
+
 	PopState();
 }
 

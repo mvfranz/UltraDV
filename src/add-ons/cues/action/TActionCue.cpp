@@ -6,13 +6,13 @@
 //
 //	Date:	01.26.98
 //
-//	Desc:	Implilentation of the Action cue.  An action cue can perform the following 
+//	Desc:	Implilentation of the Action cue.  An action cue can perform the following
 //			actions:
 //				--None
 //				--Pause/Continue
 //				--Jump to Time
 //				--Jump to Market
-//				--Return From Last Jump	
+//				--Return From Last Jump
 //				--Run Script
 //
 //	Copyright ©1998 mediapede Software
@@ -44,9 +44,9 @@
 //
 //
 
-TActionCue::TActionCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) : 
-			TCueView(id, parent, bounds, point, startTime, "ActionCue")
-{	
+TActionCue::TActionCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) :
+	TCueView(id, parent, bounds, point, startTime, "ActionCue")
+{
 	// Perform default initialization
 	Init();
 }
@@ -58,9 +58,9 @@ TActionCue::TActionCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point
 //
 //	Construct from a CueChunk
 
-TActionCue::TActionCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) : 
-				TCueView(theChunk, parent, bounds, "ActionCue")
-{	
+TActionCue::TActionCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) :
+	TCueView(theChunk, parent, bounds, "ActionCue")
+{
 	// Perform default initialization
 	Init(theChunk);
 }
@@ -74,9 +74,9 @@ TActionCue::TActionCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds
 //
 
 TActionCue::TActionCue(BMessage *theMessage) : TCueView(theMessage)
-{	
+{
 	// Load cue icon
-	LoadCueIcon();	
+	LoadCueIcon();
 }
 
 //---------------------------------------------------------------------
@@ -97,51 +97,51 @@ TActionCue::~TActionCue()
 //	Perform default initialization tasks
 
 void TActionCue::Init()
-{	
+{
 
 	// Set up default settings
-	fIsLocked 		= false;
-	
-	fIsSelected 	= false;
-	
-	fLowColor 		= kWhite;	
-	fHighColor 	= kBlack;	
-	fIsPrepared 	= false;
-	fIsPlaying 	= false;
-	
+	fIsLocked               = false;
+
+	fIsSelected     = false;
+
+	fLowColor               = kWhite;
+	fHighColor      = kBlack;
+	fIsPrepared     = false;
+	fIsPlaying      = false;
+
 	// Action cues have no duration
-	fHasDuration 	= false;
-	fCanStretch	= true;
-	
-	fCanEnvelope	= false;
-	
+	fHasDuration    = false;
+	fCanStretch     = true;
+
+	fCanEnvelope    = false;
+
 	/*
-	bool			fCanWindow;			// true if cue can window into file
-	bool			fCanLoop;				// true if cue can loop
-	bool			fHasDuration;			// true if cue has a duration
-	bool			fIsVisible;			// true if cue is visual
-	bool			fCanCrop;				// true if cue can visual crop
-	bool			fCanTransition;		// true if cue can transition
-	bool			fCanTransitionOut;		// true if cue can transition out
-	bool			fCanPath;				// true if cue can path
-	bool			fHasEditor;			// true if cue has internal editor
-		
-	BRect			fOriginalArea;			// Visual size of untouched image
-	BRect			fArea;					// Total visual area (in stage coords).
-	BRect			fCroppedArea;			// Crop area (in itsArea coords).
-	*/
-		
+	   bool			fCanWindow;			// true if cue can window into file
+	   bool			fCanLoop;				// true if cue can loop
+	   bool			fHasDuration;			// true if cue has a duration
+	   bool			fIsVisible;			// true if cue is visual
+	   bool			fCanCrop;				// true if cue can visual crop
+	   bool			fCanTransition;		// true if cue can transition
+	   bool			fCanTransitionOut;		// true if cue can transition out
+	   bool			fCanPath;				// true if cue can path
+	   bool			fHasEditor;			// true if cue has internal editor
+
+	   BRect			fOriginalArea;			// Visual size of untouched image
+	   BRect			fArea;					// Total visual area (in stage coords).
+	   BRect			fCroppedArea;			// Crop area (in itsArea coords).
+	 */
+
 	// Default initialization
 	TCueView::Init();
-	
+
 	// Add the cue to the cue channel
 // ABH
 //	if ( fChannel->CanInsertCue(this, fInsertPoint, true))
 //	if ( fChannel->CanInsertCue((TCueView*)this, fInsertPoint, true))
 	{
 		fChannel->AddChild(this);
-		fChannel->InsertCue(this, fInsertPoint, fInsertTime);		
-		Select();								
+		fChannel->InsertCue(this, fInsertPoint, fInsertTime);
+		Select();
 	}
 
 	// We are now fully instantiated
@@ -154,12 +154,12 @@ void TActionCue::Init()
 //	Init
 //---------------------------------------------------------------------
 //
-//	Init from BaseCueChunk	
+//	Init from BaseCueChunk
 //
 
 void TActionCue::Init(BaseCueChunk *theChunk)
 {
-	TCueView::Init(theChunk);	
+	TCueView::Init(theChunk);
 }
 
 
@@ -173,14 +173,14 @@ void TActionCue::Init(BaseCueChunk *theChunk)
 //
 //
 
-BArchivable *TActionCue::Instantiate(BMessage *archive) 
-{ 	
-	if ( validate_instantiation(archive, "TActionCue") ) 
-		return new TActionCue(archive); 
-		
-	return NULL; 
+BArchivable *TActionCue::Instantiate(BMessage *archive)
+{
+	if ( validate_instantiation(archive, "TActionCue") )
+		return new TActionCue(archive);
+
+	return NULL;
 }
-  
+
 
 //---------------------------------------------------------------------
 //	Archive
@@ -190,22 +190,21 @@ BArchivable *TActionCue::Instantiate(BMessage *archive)
 
 status_t TActionCue::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = TCueView::Archive(data, deep);
-	
-	if (myErr == B_OK)
-	{				
+
+	if (myErr == B_OK) {
 		// Add ourselves to the archive
-		data->AddString("class", "TActionCue");						
+		data->AddString("class", "TActionCue");
 	}
-	
+
 	Looper()->Unlock();
-		
+
 	return myErr;
 }
 
@@ -224,10 +223,10 @@ void TActionCue::Draw(BRect updateRect)
 {
 	// Save colors
 	rgb_color saveColor = HighColor();
-	
+
 	// Restore color
 	SetHighColor(saveColor);
-	
+
 	TCueView::Draw(updateRect);
 }
 
@@ -292,7 +291,7 @@ void TActionCue::WindowActivated(bool state)
 
 void TActionCue::KeyDown(const char *bytes, int32 numBytes)
 {
-	TCueView::KeyDown(bytes, numBytes);						
+	TCueView::KeyDown(bytes, numBytes);
 }
 
 
@@ -318,10 +317,10 @@ void TActionCue::KeyUp(const char *bytes, int32 numBytes)
 void TActionCue::MessageReceived(BMessage *message)
 {
 	switch(message->what)
-	{	
-		default:
-			TCueView::MessageReceived(message);						
-			break;			
+	{
+	default:
+		TCueView::MessageReceived(message);
+		break;
 	}
 }
 
@@ -354,16 +353,15 @@ void TActionCue::OpenEditor()
 void TActionCue::LoadCueIcon()
 {
 	BBitmap *cueIcon = NULL;
-	
+
 	cueIcon = GetCicnFromResource("ActionCue");
 
-	if (cueIcon)
-	{
+	if (cueIcon) {
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
-		area.OffsetBy(kResizeZoneWidth+5, 0);		
+		area.OffsetBy(kResizeZoneWidth+5, 0);
 // ABH		fCueIcon = new TBitmapView(area, cueIcon, false);
 		fCueIcon = new TBitmapView(area, "ActionCue", cueIcon, false);
-		AddChild(fCueIcon);		
-	}	
+		AddChild(fCueIcon);
+	}
 }
 

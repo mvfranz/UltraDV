@@ -66,7 +66,7 @@ TRazorButton::TRazorButton(BMessage *data) : BView(data)
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
 
- 	fOffBitmap = GetIcon16FromResource("RazorDown");
+	fOffBitmap = GetIcon16FromResource("RazorDown");
 	fOnBitmap  = GetIcon16FromResource("RazorUp");
 
 }
@@ -129,16 +129,14 @@ status_t TRazorButton::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TRazorButton");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -207,10 +205,9 @@ void TRazorButton::MouseDown(BPoint where)
 
 void TRazorButton::AttachedToWindow()
 {
-	if(fParent == NULL)
-	{
-		fParent 	= (TToolbar *)Parent();
-		fHandler 	= (TToolbar *)Parent();
+	if(fParent == NULL) {
+		fParent         = (TToolbar *)Parent();
+		fHandler        = (TToolbar *)Parent();
 	}
 
 	//	Pass up to parent

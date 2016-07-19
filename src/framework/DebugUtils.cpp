@@ -46,7 +46,7 @@ void DebugAlert(char *theString)
 void DumpRect(BRect theRect)
 {
 	#ifdef DEBUG
-		printf("theRect = %f, %f, %f, %f\n", theRect.left, theRect.top, theRect.right, theRect.bottom  );
+	printf("theRect = %f, %f, %f, %f\n", theRect.left, theRect.top, theRect.right, theRect.bottom  );
 	#endif
 }
 
@@ -61,6 +61,6 @@ void DumpRect(BRect theRect)
 void DumpPoint(BPoint thePoint)
 {
 	#ifdef DEBUG
-		printf("thePoint = %f, %f\n", thePoint.x, thePoint.y);
+	printf("thePoint = %f, %f\n", thePoint.x, thePoint.y);
 	#endif
 }

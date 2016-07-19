@@ -99,9 +99,9 @@ void TOpacityDialog::Init()
 	// Create Slider
 	BRect sliderBounds;
 
-	sliderBounds.left 	= bounds.left + 10;
-	sliderBounds.top 	= bounds.top + 10;
-	sliderBounds.right 	= sliderBounds.left + 255;
+	sliderBounds.left       = bounds.left + 10;
+	sliderBounds.top        = bounds.top + 10;
+	sliderBounds.right      = sliderBounds.left + 255;
 	sliderBounds.bottom = sliderBounds.top + 55;
 
 	fSlider = new TOpacitySlider(this, NULL, fCue, sliderBounds, "OpacitySlider", "Opacity", new BMessage(OPACITY_MSG), 0, 100, B_TRIANGLE_THUMB);
@@ -118,10 +118,10 @@ void TOpacityDialog::Init()
 
 	//	Percentage Text Control
 	BRect textBounds;
-	textBounds.left 	= fSlider->Frame().right + 5;
-	textBounds.top 		= bounds.top + 10 + ((55/2) - (25/2));
-	textBounds.right	= textBounds.left + 30;
-	textBounds.bottom	= textBounds.top +19;
+	textBounds.left         = fSlider->Frame().right + 5;
+	textBounds.top          = bounds.top + 10 + ((55/2) - (25/2));
+	textBounds.right        = textBounds.left + 30;
+	textBounds.bottom       = textBounds.top +19;
 	fOpacityText = new TNumberTextControl(textBounds, NULL, "OpacityText",  "0", new BMessage(OPACITY_TEXT_MSG));
 	fBackView->AddChild(fOpacityText);
 
@@ -135,10 +135,10 @@ void TOpacityDialog::Init()
 
 	//	Realtime Preview Checkbox
 	BRect checkRect;
-	checkRect.left		= fSlider->Frame().left;
-	checkRect.right		= checkRect.left + 100;
-	checkRect.top		= fSlider->Frame().bottom + 5;
-	checkRect.bottom 	= checkRect.top + 15;
+	checkRect.left          = fSlider->Frame().left;
+	checkRect.right         = checkRect.left + 100;
+	checkRect.top           = fSlider->Frame().bottom + 5;
+	checkRect.bottom        = checkRect.top + 15;
 
 	fUpdateCheckbox = new BCheckBox( checkRect, "RealtimeUpdate", "Realtime Update", new BMessage(OPACITY_UPDATE_MSG));
 	fBackView->AddChild(fUpdateCheckbox);
@@ -150,28 +150,28 @@ void TOpacityDialog::Init()
 
 	// Create the Cancel button
 	BRect cancelFrame = Bounds();
-	cancelFrame.left 	+= 35;
-	cancelFrame.right 	= cancelFrame.left + 60;
+	cancelFrame.left        += 35;
+	cancelFrame.right       = cancelFrame.left + 60;
 	cancelFrame.bottom  -= 15;
-	cancelFrame.top 	= cancelFrame.bottom - 20;
+	cancelFrame.top         = cancelFrame.bottom - 20;
 	fCancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);
 	fBackView->AddChild(fCancelButton);
 
 	// Create the Apply button
 	BRect applyFrame = Bounds();
-	applyFrame.left  	= (Bounds().Width() /2) - (60 / 2);
-	applyFrame.right 	= applyFrame.left + 60;
-	applyFrame.bottom  	-= 15;
-	applyFrame.top 		= applyFrame.bottom - 20;
+	applyFrame.left         = (Bounds().Width() /2) - (60 / 2);
+	applyFrame.right        = applyFrame.left + 60;
+	applyFrame.bottom       -= 15;
+	applyFrame.top          = applyFrame.bottom - 20;
 	fApplyButton = new BButton(applyFrame, "Apply", "Apply", new BMessage(APPLY_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);
 	fBackView->AddChild(fApplyButton);
 
 	// Create the OK button
 	BRect okFrame = Bounds();
-	okFrame.right 	-= 35;
-	okFrame.left 	=  okFrame.right - 60;
+	okFrame.right   -= 35;
+	okFrame.left    =  okFrame.right - 60;
 	okFrame.bottom  -= 15;
-	okFrame.top 	= okFrame.bottom - 20;
+	okFrame.top     = okFrame.bottom - 20;
 	fOKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);
 	fBackView->AddChild(fOKButton);
 	fOKButton->MakeDefault(true);
@@ -200,163 +200,154 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 
 	switch(message->what)
 	{
-		//	Result of slider operation.  Inform cue of new setting
-		case OPACITY_MSG:
-			{
-				//	Get new value
-				float sliderVal = (float)(fSlider->Value()) / 100;
+	//	Result of slider operation.  Inform cue of new setting
+	case OPACITY_MSG:
+	{
+		//	Get new value
+		float sliderVal = (float)(fSlider->Value()) / 100;
 
-				//	Get text value
-				const char *numStr = fOpacityText->Text();
-				int16 theVal = atoi(numStr);
+		//	Get text value
+		const char *numStr = fOpacityText->Text();
+		int16 theVal = atoi(numStr);
 
-				//	Update text if needed
-				if (theVal != fSlider->Value())
-				{
-					char newStr[3];
-					sprintf(newStr, "%d", fSlider->Value());
-					fOpacityText->SetText(newStr);
-				}
+		//	Update text if needed
+		if (theVal != fSlider->Value()) {
+			char newStr[3];
+			sprintf(newStr, "%d", fSlider->Value());
+			fOpacityText->SetText(newStr);
+		}
 
-				if (fRealtimePreview)
-				{
-					fCue->SetTransparency(sliderVal) ;
+		if (fRealtimePreview) {
+			fCue->SetTransparency(sliderVal);
 
-					// Inform stage to redraw
-					if (fCue->IsOnStage())
-					{
-						TStageWindow *theStage	= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-						TStageView 	 *stageView = theStage->GetStageView();
+			// Inform stage to redraw
+			if (fCue->IsOnStage()) {
+				TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
+				TStageView       *stageView = theStage->GetStageView();
 
-						theStage->Lock();
-						stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
-						stageView->Draw( fCue->GetDrawArea());
-						theStage->Unlock();
-					}
-				}
+				theStage->Lock();
+				stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
+				stageView->Draw( fCue->GetDrawArea());
+				theStage->Unlock();
 			}
-			break;
+		}
+	}
+	break;
 
-		//	Set state of Realtime Updating
-		case OPACITY_UPDATE_MSG:
-			{
-				fRealtimePreview = fUpdateCheckbox->Value();
+	//	Set state of Realtime Updating
+	case OPACITY_UPDATE_MSG:
+	{
+		fRealtimePreview = fUpdateCheckbox->Value();
+	}
+	break;
+
+	//	The user has modified the opacity text
+	case OPACITY_TEXT_MSG:
+	{
+		//	Get text value
+		const char *numStr = fOpacityText->Text();
+		int16 theVal = atoi(numStr);
+
+		//	Clip number to acceptable range
+		if (theVal > 100)
+			theVal = 100;
+
+		//	Update text control and adjust slider
+		if (fSlider->Value() != theVal) {
+			fSlider->SetValue(theVal);
+			fSlider->Invoke();
+		}
+	}
+	break;
+
+	//	Apply changes to cue
+	case APPLY_MSG:
+	{
+		// Get new cue opacity
+		float opacity =  (float)(fSlider->Value() ) / 100;
+
+		//	Determine if cue opacity needs to be updated
+		if (opacity != fSavedOpacity) {
+			fSavedOpacity = opacity;
+
+			fCue->SetTransparency(opacity);
+
+			// Redraw if necessary
+			UpdateCue();
+		}
+	}
+	break;
+
+	// User pressed OK button.
+	case OK_MSG:
+	{
+		// Get new cue opacity
+		float opacity =  (float)(fSlider->Value() ) / 100;
+
+		//	Determine if cue opacity needs to be updated
+		if (opacity != fSavedOpacity) {
+			fCue->SetTransparency(opacity);
+
+			// Inform stage to redraw
+			if (fCue->IsOnStage()) {
+				TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
+				TStageView       *stageView = theStage->GetStageView();
+
+				theStage->Lock();
+				stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
+				stageView->Draw( fCue->GetDrawArea());
+				theStage->Unlock();
 			}
-			break;
+		}
 
-		//	The user has modified the opacity text
-		case OPACITY_TEXT_MSG:
-			{
-				//	Get text value
-				const char *numStr = fOpacityText->Text();
-				int16 theVal = atoi(numStr);
+		//	Inform cue we are gone
+		BMessage *theMessage = new BMessage(OPACITY_CLOSE_MSG);
+		fCue->MessageReceived(theMessage);
+		delete theMessage;
 
-				//	Clip number to acceptable range
-				if (theVal > 100)
-					theVal = 100;
+		// Close the dialog
+		Lock();
+		Quit();
+	}
+	break;
 
-				//	Update text control and adjust slider
-				if (fSlider->Value() != theVal)
-				{
-					fSlider->SetValue(theVal);
-					fSlider->Invoke();
-				}
+	// User has canceled the dialog
+	case CANCEL_MSG:
+	{
+		//	Get current opacity
+		float currentOpacity = fCue->GetTransparency();
+
+		//	Restore to saved opacity
+		if (currentOpacity != fSavedOpacity) {
+			fCue->SetTransparency(fSavedOpacity);
+
+			// Inform stage to redraw
+			if (fCue->IsOnStage()) {
+				TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
+				TStageView       *stageView = theStage->GetStageView();
+
+				theStage->Lock();
+				stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
+				stageView->Draw( fCue->GetDrawArea());
+				theStage->Unlock();
 			}
-			break;
+		}
 
-		//	Apply changes to cue
-		case APPLY_MSG:
-			{
-				// Get new cue opacity
-				float opacity =  (float)( fSlider->Value() ) / 100;
+		//	Inform cue we are gone
+		BMessage *theMessage = new BMessage(OPACITY_CLOSE_MSG);
+		fCue->MessageReceived(theMessage);
+		delete theMessage;
 
-				//	Determine if cue opacity needs to be updated
-				if (opacity != fSavedOpacity)
-				{
-					fSavedOpacity = opacity;
+		//	Close dialog
+		Lock();
+		Quit();
 
-					fCue->SetTransparency(opacity);
+	}
+	break;
 
-					// Redraw if necessary
-					UpdateCue();
-				}
-			}
-			break;
-
-		// User pressed OK button.
-		case OK_MSG:
-			{
-				// Get new cue opacity
-				float opacity =  (float)( fSlider->Value() ) / 100;
-
-				//	Determine if cue opacity needs to be updated
-				if (opacity != fSavedOpacity)
-				{
-					fCue->SetTransparency(opacity);
-
-					// Inform stage to redraw
-					if (fCue->IsOnStage())
-					{
-						TStageWindow *theStage	= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-						TStageView 	 *stageView = theStage->GetStageView();
-
-						theStage->Lock();
-						stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
-						stageView->Draw( fCue->GetDrawArea());
-						theStage->Unlock();
-					}
-				}
-
-				//	Inform cue we are gone
-				BMessage *theMessage = new BMessage(OPACITY_CLOSE_MSG);
-				fCue->MessageReceived(theMessage);
-				delete theMessage;
-
-				// Close the dialog
-				Lock();
-				Quit();
-			}
-			break;
-
-		// User has canceled the dialog
-		case CANCEL_MSG:
-			{
-				//	Get current opacity
-				float currentOpacity = fCue->GetTransparency();
-
-				//	Restore to saved opacity
-				if (currentOpacity != fSavedOpacity)
-				{
-					fCue->SetTransparency(fSavedOpacity);
-
-					// Inform stage to redraw
-					if (fCue->IsOnStage())
-					{
-						TStageWindow *theStage	= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-						TStageView 	 *stageView = theStage->GetStageView();
-
-						theStage->Lock();
-						stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
-						stageView->Draw( fCue->GetDrawArea());
-						theStage->Unlock();
-					}
-				}
-
-				//	Inform cue we are gone
-				BMessage *theMessage = new BMessage(OPACITY_CLOSE_MSG);
-				fCue->MessageReceived(theMessage);
-				delete theMessage;
-
-				//	Close dialog
-				Lock();
-				Quit();
-
-			}
-			break;
-
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 
 	}
 
@@ -375,10 +366,9 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 
 void TOpacityDialog::UpdateCue()
 {
-	if (fCue->IsOnStage())
-	{
-		TStageWindow *theStage	= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-		TStageView 	 *stageView = theStage->GetStageView();
+	if (fCue->IsOnStage()) {
+		TStageWindow *theStage  = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
+		TStageView       *stageView = theStage->GetStageView();
 
 		theStage->Lock();
 		stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());

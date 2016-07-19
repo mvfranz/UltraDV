@@ -52,7 +52,7 @@ TCollection::~TCollection()
 
 long TCollection::GetNumItems()
 {
-	return( fNumItems);
+	return(fNumItems);
 }
 
 
@@ -66,5 +66,5 @@ long TCollection::GetNumItems()
 
 bool TCollection::IsEmpty()
 {
-	return( fNumItems == 0L );
+	return(fNumItems == 0L);
 }

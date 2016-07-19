@@ -27,15 +27,15 @@
 //
 
 TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
-		BBitmap* on, BHandler *handler, BMessage *message, bool ownership,
-		uint32 behavior, uint32 resizingMode, uint32 flags) :
-		// defaults
-		//		ownership = true
-		//		behavior = B_ONE_STATE_BUTTON
-		//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
-		//		flags = B_WILL_DRAW | B_NAVIGABLE
+                             BBitmap* on, BHandler *handler, BMessage *message, bool ownership,
+                             uint32 behavior, uint32 resizingMode, uint32 flags) :
+	// defaults
+	//		ownership = true
+	//		behavior = B_ONE_STATE_BUTTON
+	//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
+	//		flags = B_WILL_DRAW | B_NAVIGABLE
 	BPictureButton(bounds, name, new BPicture(), new BPicture(), message,
-			behavior, resizingMode, flags),
+	               behavior, resizingMode, flags),
 	fOnBitmap(on),
 	fOffBitmap(off),
 	fHandlerHadNoLooper(NULL),
@@ -57,17 +57,17 @@ TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
 	SetViewColor(B_TRANSPARENT_32_BIT);
 }
 
-	// Variant ala BPictureButton which requires a call to SetHandler()
+// Variant ala BPictureButton which requires a call to SetHandler()
 TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
-		BBitmap* on, BMessage *message, bool ownership, uint32 behavior,
-		uint32 resizingMode, uint32 flags) :
-		// defaults
-		//		ownership = true
-		//		behavior = B_ONE_STATE_BUTTON
-		//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
-		//		flags = B_WILL_DRAW | B_NAVIGABLE
+                             BBitmap* on, BMessage *message, bool ownership, uint32 behavior,
+                             uint32 resizingMode, uint32 flags) :
+	// defaults
+	//		ownership = true
+	//		behavior = B_ONE_STATE_BUTTON
+	//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
+	//		flags = B_WILL_DRAW | B_NAVIGABLE
 	BPictureButton(bounds, name, new BPicture(), new BPicture(), message,
-			behavior, resizingMode, flags),
+	               behavior, resizingMode, flags),
 	fOnBitmap(on),
 	fOffBitmap(off),
 	fHandlerHadNoLooper(NULL),
@@ -87,8 +87,7 @@ TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
 TBitmapButton::~TBitmapButton()
 {
 	// Free data if we never attached to a window
-	if (fOwnership)
-	{
+	if (fOwnership) {
 		if (fOffBitmap)
 			delete fOffBitmap;
 

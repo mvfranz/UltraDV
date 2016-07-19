@@ -36,9 +36,9 @@
 //
 //
 
-TTimePalette::TTimePalette(BRect bounds):BWindow( bounds, "Locator", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
-									  B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE),
-									  BMediaNode("LocatorNode")
+TTimePalette::TTimePalette(BRect bounds) : BWindow( bounds, "Locator", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
+	                                            B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE),
+	BMediaNode("LocatorNode")
 {
 	Init();
 }
@@ -86,9 +86,9 @@ void TTimePalette::Init()
 	Lock();
 
 	//	Set up member variables
-	fTimeToQuit	= false;
-	fIsPlaying 	= false;
-	fIsStopping	= false;
+	fTimeToQuit     = false;
+	fIsPlaying      = false;
+	fIsStopping     = false;
 
 	// Create MediaCueView and add it to the window
 	fTimeView = new TTimePaletteView(Bounds());
@@ -125,9 +125,9 @@ void TTimePalette::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 }
 
@@ -167,7 +167,7 @@ port_id TTimePalette::ControlPort() const
 //	No an addon.  Return NULL
 //
 
-BMediaAddOn	*TTimePalette::AddOn(int32 * internal_id) const
+BMediaAddOn     *TTimePalette::AddOn(int32 * internal_id) const
 {
 	return NULL;
 }
@@ -200,20 +200,18 @@ status_t TTimePalette::service_routine(void * data)
 
 void TTimePalette::ServiceRoutine()
 {
-	while (!fTimeToQuit)
-	{
+	while (!fTimeToQuit) {
 		//	Read message
-		status_t 		err  = 0;
-		int32 			code = 0;
-		char 			msg[B_MEDIA_MESSAGE_SIZE];
+		status_t err  = 0;
+		int32 code = 0;
+		char msg[B_MEDIA_MESSAGE_SIZE];
 
 		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);
 
 		if (err == B_TIMED_OUT)
 			continue;
 
-		if (err < B_OK)
-		{
+		if (err < B_OK) {
 			printf("TTimePalette::ServiceRoutine: Unexpected error in read_port(): %x\n", err);
 			continue;
 		}
@@ -253,13 +251,11 @@ void TTimePalette::RunRoutine()
 {
 	char text[12];
 
-	while(!fTimeToQuit)
-	{
+	while(!fTimeToQuit) {
 		snooze(50000);
 
 		//	Update media_server
-		if (TimeSource()->IsRunning())
-		{
+		if (TimeSource()->IsRunning()) {
 			//	Update text
 			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
 			Lock();

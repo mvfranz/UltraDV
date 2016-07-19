@@ -8,7 +8,7 @@
 //
 //	Desc:	This view shows the current media list as thumbnails showing
 //			a quick overview of their contents. They are displayed in a
-// 			list. It is a child view to the Media tab in the Browser window.
+//                      list. It is a child view to the Media tab in the Browser window.
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -19,7 +19,7 @@
 
 #include "TThumbnailView.h"
 
-#include <assert.h>		// For assert()
+#include <assert.h>             // For assert()
 
 //---------------------------------------------------------------------
 //	Constructor
@@ -28,7 +28,7 @@
 //
 
 TThumbnailView::TThumbnailView(BRect bounds) :
-		BView(bounds, "IconView", B_FOLLOW_ALL | B_FRAME_EVENTS, B_WILL_DRAW)
+	BView(bounds, "IconView", B_FOLLOW_ALL | B_FRAME_EVENTS, B_WILL_DRAW)
 {
 	// Perform default initialization
 	Init();

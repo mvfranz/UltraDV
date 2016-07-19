@@ -1,12 +1,12 @@
 /*--------------------------------------------------------------------*\
-  File:      Benaphore.cpp
-  Creator:   Matt Bogosian <mattb@columbia.edu>
-  Copyright: (c)1997, Matt Bogosian. All rights reserved.
-  Description: Source file containing the member functions for the
+   File:      Benaphore.cpp
+   Creator:   Matt Bogosian <mattb@columbia.edu>
+   Copyright: (c)1997, Matt Bogosian. All rights reserved.
+   Description: Source file containing the member functions for the
       Benaphore class.
-  ID:        $Id: Benaphore.cpp,v 1.5 1997/08/15 04:24:57 mattb Exp $
-  Conventions:
-      #defines - all uppercase letters with words separated by
+   ID:        $Id: Benaphore.cpp,v 1.5 1997/08/15 04:24:57 mattb Exp $
+   Conventions:
+#defines - all uppercase letters with words separated by
           underscores.
           (E.G., #define MY_DEFINE 5).
       New data types (classes, structs, typedefs, etc.) - begin with
@@ -38,14 +38,14 @@
 
 
 /*--------------------------------------------------------------------*\
-  =-=-=-=-=-=-=-=-=-=-=-=-=- Included Files -=-=-=-=-=-=-=-=-=-=-=-=-=
+   =-=-=-=-=-=-=-=-=-=-=-=-=- Included Files -=-=-=-=-=-=-=-=-=-=-=-=-=
 \*--------------------------------------------------------------------*/
 
 #include "Benaphore.h"
 
 
 /*--------------------------------------------------------------------*\
-  =-=-=-=-=-=-=-=-=-=-=-= Function Definitions =-=-=-=-=-=-=-=-=-=-=-=
+   =-=-=-=-=-=-=-=-=-=-=-= Function Definitions =-=-=-=-=-=-=-=-=-=-=-=
 \*--------------------------------------------------------------------*/
 
 /*====================================================================*/
@@ -70,8 +70,7 @@ status_t Benaphore::Lock(void)
 /*====================================================================*/
 {
 	// Check to see if the Benaphore is valid
-	if (!m_valid)
-	{
+	if (!m_valid) {
 		if (m_sem_id < B_NO_ERROR)
 			return m_sem_id;
 
@@ -90,8 +89,7 @@ status_t Benaphore::Lock(void)
 	// Invalidate on failure. This is only to disallow the Benaphore
 	// from being used by anyone not caught in the crossfire. At this
 	// point there is still a risk of being in a bizarre state.
-	if (err != B_NO_ERROR)
-	{
+	if (err != B_NO_ERROR) {
 		atomic_add(&m_ben_cnt, -1);
 		m_valid = false;
 	}

@@ -37,14 +37,14 @@
 //	Default Contructor
 //
 
-// ABH 
-AVIViewer::AVIViewer() 
-	:	BMediaNode("AVIViewer"), 
-		BBufferConsumer(B_MEDIA_MULTISTREAM)
+// ABH
+AVIViewer::AVIViewer()
+	:       BMediaNode("AVIViewer"),
+	BBufferConsumer(B_MEDIA_MULTISTREAM)
 
 {
 	printf("AVIViewer::AVIViewer\n");
-	
+
 	//	Init variables
 
 	//	Default initialization
@@ -61,5 +61,5 @@ AVIViewer::AVIViewer()
 AVIViewer::~AVIViewer()
 {
 	printf("AVIViewer::~AVIViewer\n");
-	
+
 }

@@ -74,15 +74,15 @@ void TProjectSettings::Init()
 	fParent->fProjectSettings = true;
 
 	// Get dialog items
-	fRealTimeButton 	= (BRadioButton *)FindView("RealTime");
-	f24FPSButton 		= (BRadioButton *)FindView("24FPS");
-	f25FPSButton 		= (BRadioButton *)FindView("25FPS");
-	f2997FPSButton 	= (BRadioButton *)FindView("2997FPS");
-	f30FPSButton 		= (BRadioButton *)FindView("30FPS");
+	fRealTimeButton         = (BRadioButton *)FindView("RealTime");
+	f24FPSButton            = (BRadioButton *)FindView("24FPS");
+	f25FPSButton            = (BRadioButton *)FindView("25FPS");
+	f2997FPSButton  = (BRadioButton *)FindView("2997FPS");
+	f30FPSButton            = (BRadioButton *)FindView("30FPS");
 
 	fStartTime = (BTextControl *)FindView("StartTime");
-	fDuration 	= (BTextControl *)FindView("Duration");
-	fEndTime 	= (BTextControl *)FindView("EndTime");
+	fDuration       = (BTextControl *)FindView("Duration");
+	fEndTime        = (BTextControl *)FindView("EndTime");
 
 	// Set up time values
 	char timeStr[256];
@@ -99,29 +99,29 @@ void TProjectSettings::Init()
 	fTimeFormat = GetCurrentTimeFormat();
 	switch(fTimeFormat)
 	{
-		//case B_TIMECODE_30_DROP_2:
-		//	fRealTimeButton->SetValue(1);
-		//	break;
+	//case B_TIMECODE_30_DROP_2:
+	//	fRealTimeButton->SetValue(1);
+	//	break;
 
-		case B_TIMECODE_24:
-			f24FPSButton->SetValue(1);
-			break;
+	case B_TIMECODE_24:
+		f24FPSButton->SetValue(1);
+		break;
 
-		case B_TIMECODE_25:
-			f25FPSButton->SetValue(1);
-			break;
+	case B_TIMECODE_25:
+		f25FPSButton->SetValue(1);
+		break;
 
-		case B_TIMECODE_30_DROP_2:
-			f2997FPSButton->SetValue(1);
-			break;
+	case B_TIMECODE_30_DROP_2:
+		f2997FPSButton->SetValue(1);
+		break;
 
-		case B_TIMECODE_30:
-			f30FPSButton->SetValue(1);
-			break;
+	case B_TIMECODE_30:
+		f30FPSButton->SetValue(1);
+		break;
 
-		default:
-			fRealTimeButton->SetValue(1);
-			break;
+	default:
+		fRealTimeButton->SetValue(1);
+		break;
 	}
 
 	fStartTime->MakeFocus(true);
@@ -139,41 +139,41 @@ void TProjectSettings::MessageReceived(BMessage* message)
 
 	switch(message->what)
 	{
-		// User pressed OK button.  Update channel name with text in control field
-		case OK_MSG:
-			GetDialogSettings();
-			Lock();
-			Quit();
-			break;
+	// User pressed OK button.  Update channel name with text in control field
+	case OK_MSG:
+		GetDialogSettings();
+		Lock();
+		Quit();
+		break;
 
-		case CANCEL_MSG:
-			Lock();
-			Quit();
-			break;
+	case CANCEL_MSG:
+		Lock();
+		Quit();
+		break;
 
-		case RT_BUTTON_MSG:
-			fTimeFormat = B_TIMECODE_30_DROP_2;
-			break;
+	case RT_BUTTON_MSG:
+		fTimeFormat = B_TIMECODE_30_DROP_2;
+		break;
 
-		case TWOFOUR_BUTTON_MSG:
-			fTimeFormat = B_TIMECODE_24;
-			break;
+	case TWOFOUR_BUTTON_MSG:
+		fTimeFormat = B_TIMECODE_24;
+		break;
 
-		case TWOFIVE_BUTTON_MSG:
-			fTimeFormat = B_TIMECODE_25;
-			break;
+	case TWOFIVE_BUTTON_MSG:
+		fTimeFormat = B_TIMECODE_25;
+		break;
 
-		case TWONINE_BUTTON_MSG:
-			fTimeFormat = B_TIMECODE_30_DROP_2;
-			break;
+	case TWONINE_BUTTON_MSG:
+		fTimeFormat = B_TIMECODE_30_DROP_2;
+		break;
 
-		case THIRTY_BUTTON_MSG:
-			fTimeFormat = B_TIMECODE_30;
-			break;
+	case THIRTY_BUTTON_MSG:
+		fTimeFormat = B_TIMECODE_30;
+		break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 
 }

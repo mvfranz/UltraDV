@@ -63,7 +63,7 @@ void TAudioLevelsView::Init(int8 theStream, int8 theSpeed, int8 oldSpeed)
 	// We handle our own drawing
 	SetViewColor(B_TRANSPARENT_32_BIT);
 
-	fDone 	= false;
+	fDone   = false;
 	fReady = false;
 
 	fLeftBuffer = new float[512];
@@ -73,8 +73,8 @@ void TAudioLevelsView::Init(int8 theStream, int8 theSpeed, int8 oldSpeed)
 
 	fUpdateThread = spawn_thread((thread_entry)update, "update thread", B_LOW_PRIORITY, this);
 
-	this->fStream 	 = theStream;
-	this->fSpeed 	 = theSpeed;
+	this->fStream    = theStream;
+	this->fSpeed     = theSpeed;
 	this->fOldSpeed = oldSpeed;
 
 	//fADCStream = new BADCStream();
@@ -92,8 +92,8 @@ void TAudioLevelsView::Init(int8 theStream, int8 theSpeed, int8 oldSpeed)
 	//	fSubscriber->Subscribe(fDACStream);
 	//else if (fStream == 2)
 	//{
-	//	fSpeed 	= 0;
-	//	fOldSpeed 	= 2;
+	//	fSpeed  = 0;
+	//	fOldSpeed       = 2;
 	//	return;
 	//}
 
@@ -113,113 +113,108 @@ void TAudioLevelsView::UpdateData(int32 code)
 {
 	switch (code)
 	{
-		case 'PASE':
-			// Pause the threads
+	case 'PASE':
+		// Pause the threads
 
-			if (fSpeed == 0)
-				break;
-
-			fBufferLock->Lock();
-			for (int32 i = 0; i < 512; i++)
-			{
-				fLeftBuffer[i] = 0;
-				fRightBuffer[i] = 0;
-			}
-			fBufferLock->Unlock();
-
-			//fSubscriber->ExitStream();
-			//fSubscriber->Unsubscribe();
-
-			//suspend_thread(fUpdateThread);
-			fOldSpeed = fSpeed;
-			fSpeed = 0;
-
-			fStream = 2;
+		if (fSpeed == 0)
 			break;
 
-		case 'ADC ':
-			// Switch to adc
+		fBufferLock->Lock();
+		for (int32 i = 0; i < 512; i++) {
+			fLeftBuffer[i] = 0;
+			fRightBuffer[i] = 0;
+		}
+		fBufferLock->Unlock();
 
-			if (fSpeed == 0)
-			{
-				fSpeed = fOldSpeed;
-				resume_thread(fUpdateThread);
-			}
+		//fSubscriber->ExitStream();
+		//fSubscriber->Unsubscribe();
 
-			fBufferLock->Lock();
-			for (int32 i = 0; i < 512; i++)
-			{
-				fLeftBuffer[i] = 0;
-				fRightBuffer[i] = 0;
-			}
-			fBufferLock->Unlock();
+		//suspend_thread(fUpdateThread);
+		fOldSpeed = fSpeed;
+		fSpeed = 0;
 
-			//fSubscriber->ExitStream();
-			//fSubscriber->Unsubscribe();
+		fStream = 2;
+		break;
 
-			//fSubscriber->Subscribe(fADCStream);
+	case 'ADC ':
+		// Switch to adc
 
-			fStream = 0;
+		if (fSpeed == 0) {
+			fSpeed = fOldSpeed;
+			resume_thread(fUpdateThread);
+		}
 
-			//fSubscriber->EnterStream(NULL, true, (void *)this, (enter_streafhook)streaffunc, NULL, true);
-			break;
+		fBufferLock->Lock();
+		for (int32 i = 0; i < 512; i++) {
+			fLeftBuffer[i] = 0;
+			fRightBuffer[i] = 0;
+		}
+		fBufferLock->Unlock();
 
-		// Switch to dac
-		case 'DAC ':
-			if (fSpeed == 0)
-			{
-				fSpeed = fOldSpeed;
-				resume_thread(fUpdateThread);
-			}
+		//fSubscriber->ExitStream();
+		//fSubscriber->Unsubscribe();
 
-			fBufferLock->Lock();
-			for (int32 i = 0; i < 512; i++)
-			{
-				fLeftBuffer[i] = 0;
-				fRightBuffer[i] = 0;
-			}
-			fBufferLock->Unlock();
+		//fSubscriber->Subscribe(fADCStream);
 
-			//fSubscriber->ExitStream();
-			//fSubscriber->Unsubscribe();
+		fStream = 0;
 
-			//fSubscriber->Subscribe(fDACStream);
+		//fSubscriber->EnterStream(NULL, true, (void *)this, (enter_streafhook)streaffunc, NULL, true);
+		break;
 
-			fStream = 1;
+	// Switch to dac
+	case 'DAC ':
+		if (fSpeed == 0) {
+			fSpeed = fOldSpeed;
+			resume_thread(fUpdateThread);
+		}
 
-			//fSubscriber->EnterStream(NULL, true, (void *)this, (enter_streafhook)streaffunc, NULL, true);
-			break;
+		fBufferLock->Lock();
+		for (int32 i = 0; i < 512; i++) {
+			fLeftBuffer[i] = 0;
+			fRightBuffer[i] = 0;
+		}
+		fBufferLock->Unlock();
 
-		case '1/25':
-			if (fSpeed != 0)
-				fSpeed = 1;
-			else
-				fOldSpeed = 1;
-			break;
+		//fSubscriber->ExitStream();
+		//fSubscriber->Unsubscribe();
 
-		case '1/2 ':
-			if (fSpeed != 0)
-				fSpeed = 2;
-			else
-				fOldSpeed = 2;
-			break;
+		//fSubscriber->Subscribe(fDACStream);
 
-		case '1   ':
-			if (fSpeed != 0)
-				fSpeed = 3;
-			else
-				fOldSpeed = 3;
-			break;
+		fStream = 1;
 
-		case '2   ':
-			if (fSpeed != 0)
-				fSpeed = 4;
-			else
-				fOldSpeed = 4;
-			break;
+		//fSubscriber->EnterStream(NULL, true, (void *)this, (enter_streafhook)streaffunc, NULL, true);
+		break;
 
-		default:
-			break;
+	case '1/25':
+		if (fSpeed != 0)
+			fSpeed = 1;
+		else
+			fOldSpeed = 1;
+		break;
+
+	case '1/2 ':
+		if (fSpeed != 0)
+			fSpeed = 2;
+		else
+			fOldSpeed = 2;
+		break;
+
+	case '1   ':
+		if (fSpeed != 0)
+			fSpeed = 3;
+		else
+			fOldSpeed = 3;
+		break;
+
+	case '2   ':
+		if (fSpeed != 0)
+			fSpeed = 4;
+		else
+			fOldSpeed = 4;
+		break;
+
+	default:
+		break;
 	}
 }
 
@@ -246,39 +241,37 @@ int32 TAudioLevelsView::update(void *data)
 
 void TAudioLevelsView::Update()
 {
-	float			leftHigh 	= 0.0;
-	float			rightHigh 	= 0.0;
+	float leftHigh        = 0.0;
+	float rightHigh       = 0.0;
 
-	int8			leftCount 	= 0;
-	int8			rightCount 	= 0;
+	int8 leftCount       = 0;
+	int8 rightCount      = 0;
 
 	// Set up drawing variables
 	Window()->Lock();
 	BRect bounds = Bounds();
 	Window()->Unlock();
 	bounds.InsetBy(1,1);
-	const int32 width 	= bounds.Width();
-	const int32 height 	= bounds.Height();
-	const int32 bottom 	= bounds.bottom;
-	const int32 right 	= bounds.right;
-	const int32	divNum 	= height/20;
+	const int32 width       = bounds.Width();
+	const int32 height      = bounds.Height();
+	const int32 bottom      = bounds.bottom;
+	const int32 right       = bounds.right;
+	const int32 divNum  = height/20;
 
 
 	BRect fillRect;
-	fillRect.left 	= bounds.left;
+	fillRect.left   = bounds.left;
 	fillRect.right  = fillRect.left + (width/2)-1;
 
-	while (!fReady)
-	{
+	while (!fReady) {
 	}
 
-	while (fDone == false)
-	{
-		leftHigh 	= 0.0;
-		rightHigh 	= 0.0;
+	while (fDone == false) {
+		leftHigh        = 0.0;
+		rightHigh       = 0.0;
 
-		leftCount 	= 0;
-		rightCount 	= 0;
+		leftCount       = 0;
+		rightCount      = 0;
 		fBufferLock->Lock();
 
 		fft_real_to_hermitian(fLeftBuffer, 512);
@@ -292,7 +285,7 @@ void TAudioLevelsView::Update()
 
 		fBufferLock->Unlock();
 
-		leftCount  = leftHigh	/ 5.0;
+		leftCount  = leftHigh   / 5.0;
 		rightCount = rightHigh  / 5.0;
 
 		Window()->Lock();
@@ -303,26 +296,24 @@ void TAudioLevelsView::Update()
 
 		Window()->Lock();
 		// Draw Left Channel
-		for (int32 index = 0; index < leftCount; index++)
-		{
+		for (int32 index = 0; index < leftCount; index++) {
 			SetHighColor(shades_r[index], shades_g[index], 0);
-			fillRect.left 	= bounds.left;
-			fillRect.right 	= (width/2);
+			fillRect.left   = bounds.left;
+			fillRect.right  = (width/2);
 			fillRect.bottom = bottom - (index*divNum);
-			fillRect.top 	= (fillRect.bottom - divNum)+2;
+			fillRect.top    = (fillRect.bottom - divNum)+2;
 			FillRect(fillRect);
 		}
 		Window()->Unlock();
 
 		Window()->Lock();
 		// Draw Right Channel
-		for (int32 index = 0; index < rightCount; index++)
-		{
+		for (int32 index = 0; index < rightCount; index++) {
 			SetHighColor(shades_r[index], shades_g[index], 0);
-			fillRect.left 	= (width/2)+2;
+			fillRect.left   = (width/2)+2;
 			fillRect.right  = right;
 			fillRect.bottom = bottom - (index*divNum);
-			fillRect.top 	= (fillRect.bottom - divNum)+2;
+			fillRect.top    = (fillRect.bottom - divNum)+2;
 			FillRect(fillRect);
 		}
 		Window()->Unlock();
@@ -331,25 +322,25 @@ void TAudioLevelsView::Update()
 
 		switch (fSpeed)
 		{
-			case 0:
-				suspend_thread(find_thread(NULL));
-				break;
+		case 0:
+			suspend_thread(find_thread(NULL));
+			break;
 
-			case 1:
-				snooze(25000);
-				break;
+		case 1:
+			snooze(25000);
+			break;
 
-			case 2:
-				snooze(100000);
-				break;
+		case 2:
+			snooze(100000);
+			break;
 
-			case 3:
-				snooze(250000);
-				break;
+		case 3:
+			snooze(250000);
+			break;
 
-			case 4:
-				snooze(1000000);
-				break;
+		case 4:
+			snooze(1000000);
+			break;
 		}
 	}
 }
@@ -364,21 +355,19 @@ void TAudioLevelsView::Update()
 bool TAudioLevelsView::streaffunc(void *data, char *buf, size_t size, void *header)
 {
 
-	TAudioLevelsView	*amv = (TAudioLevelsView *)data;
+	TAudioLevelsView        *amv = (TAudioLevelsView *)data;
 	int32 count = size / 2;
 
 	amv->fBufferLock->Lock();
 
 	int32 frame_cnt = 0;
-	for (int32 i = 0; i < 512; i++)
-	{
+	for (int32 i = 0; i < 512; i++) {
 		amv->fLeftBuffer[i] = ((int16 *)buf)[frame_cnt] / 32768.0;
 		frame_cnt += 2;
 	}
 
 	frame_cnt = 1;
-	for (int32 i = 0; i < 512; i++)
-	{
+	for (int32 i = 0; i < 512; i++) {
 		amv->fRightBuffer[i] = ((int16 *)buf)[frame_cnt] / 32768.0;
 		frame_cnt += 2;
 	}
@@ -446,22 +435,21 @@ void TAudioLevelsView::DrawGreyBoxesLeft()
 	BRect bounds = Bounds();
 	bounds.InsetBy(1,1);
 
-	const int32 width 	= bounds.Width();
-	const int32 height 	= bounds.Height();
-	const int32 right 	= bounds.right;
-	const int32 bottom 	= bounds.bottom;
-	const int32	divNum 	= height/20;
+	const int32 width       = bounds.Width();
+	const int32 height      = bounds.Height();
+	const int32 right       = bounds.right;
+	const int32 bottom      = bounds.bottom;
+	const int32 divNum  = height/20;
 
 	BRect fillRect;
-	fillRect.left 	= bounds.left;
+	fillRect.left   = bounds.left;
 	fillRect.right  = fillRect.left + (width/2)-1;
 
 	SetHighColor(75, 75, 75);
 
-	for (int32 index = 0; index < 20; index++)
-	{
+	for (int32 index = 0; index < 20; index++) {
 		fillRect.bottom = bottom - (index*divNum);
-		fillRect.top 	= (fillRect.bottom - divNum)+2;
+		fillRect.top    = (fillRect.bottom - divNum)+2;
 
 		FillRect(fillRect);
 	}
@@ -479,23 +467,22 @@ void TAudioLevelsView::DrawGreyBoxesRight()
 	BRect bounds = Bounds();
 	bounds.InsetBy(1,1);
 
-	const int32 width 	= bounds.Width();
-	const int32 height 	= bounds.Height();
-	const int32 right 	= bounds.right;
-	const int32 bottom 	= bounds.bottom;
-	const int32	divNum 	= height/20;
+	const int32 width       = bounds.Width();
+	const int32 height      = bounds.Height();
+	const int32 right       = bounds.right;
+	const int32 bottom      = bounds.bottom;
+	const int32 divNum  = height/20;
 
 	BRect fillRect;
-	fillRect.left 	= (width/2) + 2;
+	fillRect.left   = (width/2) + 2;
 	fillRect.right  = right;
 
 	SetHighColor(75, 75, 75);
 
 	// Right side
-	for (int32 index = 0; index < 20; index++)
-	{
+	for (int32 index = 0; index < 20; index++) {
 		fillRect.bottom = bottom - (index*divNum);
-		fillRect.top 	= (fillRect.bottom - divNum)+2;
+		fillRect.top    = (fillRect.bottom - divNum)+2;
 		FillRect(fillRect);
 	}
 }
@@ -527,8 +514,7 @@ void TAudioLevelsView::AttachedToWindow()
 
 void TAudioLevelsView::DetachedFromWindow()
 {
-	if (fDone == false)
-	{
+	if (fDone == false) {
 		fDone = true;
 
 		kill_thread(fUpdateThread);

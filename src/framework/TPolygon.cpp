@@ -32,8 +32,7 @@ TPolygon::TPolygon(const BPoint *ptArray, int32 numPoints)
 	fPointList = new BList();
 
 	//	Copy data over
-	for (int32 index = 0; index < numPoints; index++)
-	{
+	for (int32 index = 0; index < numPoints; index++) {
 		BPoint tmpPt = ptArray[index];
 		fPointList->AddItem(&tmpPt);
 	}
@@ -92,8 +91,7 @@ TPolygon::TPolygon( TPolygon *polygon )
 	BList *ptList = polygon->GetPointList();
 
 	//	Copy data over
-	for (int32 index = 0; index < ptList->CountItems(); index++)
-	{
+	for (int32 index = 0; index < ptList->CountItems(); index++) {
 		fPointList->AddItem( ptList->ItemAt(index) );
 	}
 }
@@ -108,8 +106,7 @@ TPolygon::TPolygon( TPolygon *polygon )
 TPolygon::~TPolygon()
 {
 	// Clean up point array
-	for (int32 index = 0; index < fPointList->CountItems(); index++)
-	{
+	for (int32 index = 0; index < fPointList->CountItems(); index++) {
 		BPoint *thePt = (BPoint *)fPointList->ItemAt(index);
 		delete thePt;
 	}
@@ -148,8 +145,7 @@ void TPolygon::AddPoint(BPoint thePt)
 
 void TPolygon::AddPoints(BPoint *ptList, int32 numPoints)
 {
-	for( int32 index = 0; index < numPoints; index++)
-	{
+	for( int32 index = 0; index < numPoints; index++) {
 		BPoint tmpPt = ptList[index];
 		fPointList->AddItem(&tmpPt);
 	}
@@ -166,17 +162,16 @@ void TPolygon::AddPoints(BPoint *ptList, int32 numPoints)
 void TPolygon::GetRect(BRect *theRect)
 {
 
-	if ( fPointList->CountItems() >= 4)
-	{
+	if ( fPointList->CountItems() >= 4) {
 		//	Copy data over
-		BPoint topLeft 		= *(BPoint *)fPointList->ItemAt(0);
-		BPoint topRight 	= *(BPoint *)fPointList->ItemAt(1);
-		BPoint bottomRight 	= *(BPoint *)fPointList->ItemAt(2);
-		BPoint bottomLeft 	= *(BPoint *)fPointList->ItemAt(3);
+		BPoint topLeft          = *(BPoint *)fPointList->ItemAt(0);
+		BPoint topRight         = *(BPoint *)fPointList->ItemAt(1);
+		BPoint bottomRight      = *(BPoint *)fPointList->ItemAt(2);
+		BPoint bottomLeft       = *(BPoint *)fPointList->ItemAt(3);
 
-		theRect->left 	= topLeft.x;
-		theRect->top 	= topLeft.y;
-		theRect->right 	= bottomRight.x;
+		theRect->left   = topLeft.x;
+		theRect->top    = topLeft.y;
+		theRect->right  = bottomRight.x;
 		theRect->bottom = bottomLeft.y;
 	}
 }
@@ -196,8 +191,7 @@ BPolygon *TPolygon::GetBPolygon()
 
 	BPoint *tmpPt;
 
-	for (int32 index = 0; index < fPointList->CountItems(); index++)
-	{
+	for (int32 index = 0; index < fPointList->CountItems(); index++) {
 		tmpPt = (BPoint *)fPointList->ItemAt(index);
 		thePolygon->AddPoints(tmpPt, 1);
 	}
@@ -216,7 +210,7 @@ BPolygon *TPolygon::GetBPolygon()
 bool TPolygon::Contains( BPoint mousePt)
 {
 
-// 	Shoot a test ray along +X axis.  The strategy is to compare vertex Y values
+//      Shoot a test ray along +X axis.  The strategy is to compare vertex Y values
 //	to the testing point's Y and quickly discard edges which are entirely to one
 //	side of the test ray.  Note that CONVEX and WINDING code can be added
 //	as for the CrossingsTest() code; it is left out here for clarity.
@@ -225,7 +219,7 @@ bool TPolygon::Contains( BPoint mousePt)
 //	_point_, returns 1 if inside, 0 if outside.
 
 	register int j, yflag0, yflag1, inside_flag;
-	BPoint		 *vertex0, *vertex1;
+	BPoint           *vertex0, *vertex1;
 
 	//	Get number of points in polygon
 	int32 numVerts = fPointList->CountItems();
@@ -234,17 +228,16 @@ bool TPolygon::Contains( BPoint mousePt)
 	vertex1 = (BPoint *)fPointList->ItemAt(0);
 
 	//	Get test bit for above/below X axis
-	yflag0 	= ( vertex0->y >= mousePt.y );
+	yflag0  = (vertex0->y >= mousePt.y);
 
-    inside_flag = 0;
+	inside_flag = 0;
 
-    int32 index = 0;
+	int32 index = 0;
 
-    for (j = numVerts+1; --j; )
-	{
+	for (j = numVerts+1; --j; ) {
 		index++;
 
-		yflag1 = ( vertex1->y >= mousePt.y );
+		yflag1 = (vertex1->y >= mousePt.y);
 
 		//	Check if endpoints straddle (are on opposite sides) of X axis
 		//	(i.e. the Y's differ); if so, +X ray could intersect this edge.
@@ -256,28 +249,26 @@ bool TPolygon::Contains( BPoint mousePt)
 		//	will cross quadrants and so have to have the X intersection computed
 		//	anyway).  I credit Joseph Samosky with inspiring me to try dropping
 		//	the "both left or both right" part of my code.
-        if ( yflag0 != yflag1 )
-		{
+		if ( yflag0 != yflag1 ) {
 			//	Check intersection of pgon segment with +X ray.
 			//	Note if >= point's X; if so, the ray hits it.
 			//	The division operation is avoided for the ">=" test by checking
 			//	the sign of the first vertex wrto the test point; idea inspired
 			//	by Joseph Samosky's and Mark Haigh-Hutchinson's different
 			//	polygon inclusion tests.
-            if ( ( (vertex1->y - mousePt.y) * (vertex0->x - vertex1->x) >= (vertex1->x- mousePt.x ) * (vertex0->y-vertex1->y)) == yflag1 )
-			{
-                inside_flag = !inside_flag ;
-            }
-        }
+			if ( ( (vertex1->y - mousePt.y) * (vertex0->x - vertex1->x) >= (vertex1->x- mousePt.x) * (vertex0->y-vertex1->y)) == yflag1 ) {
+				inside_flag = !inside_flag;
+			}
+		}
 
 		//	Move to the next pair of vertices, retaining info as possible
-		yflag0 	= yflag1;
+		yflag0  = yflag1;
 
 		vertex0 = vertex1;
 		vertex1 = (BPoint *)fPointList->ItemAt(index);
-    }
+	}
 
-	return( inside_flag ) ;
+	return(inside_flag);
 }
 
 #pragma mark -
@@ -293,8 +284,7 @@ bool TPolygon::Contains( BPoint mousePt)
 TPolygon &TPolygon::operator = (TPolygon &from)
 {
 	//	Free assignment polygon of any data
-	if (fPointList->CountItems() > 0)
-	{
+	if (fPointList->CountItems() > 0) {
 		delete fPointList;
 		fPointList = new BList();
 	}
@@ -302,8 +292,7 @@ TPolygon &TPolygon::operator = (TPolygon &from)
 	//	Assign data
 	BList *srcList = from.GetPointList();
 
-	for (int32 index = 0; index < srcList->CountItems(); index++)
-	{
+	for (int32 index = 0; index < srcList->CountItems(); index++) {
 		BPoint *thePt = (BPoint *)srcList->ItemAt(index);
 		fPointList->AddItem(thePt);
 	}

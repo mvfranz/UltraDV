@@ -39,7 +39,7 @@
 const int32 kStatusRectHeight = 14;
 
 // Set the window size
-const BRect kMediaCueBounds(0, 0, ( kCueIconWidth * 2) + (kCueButtonOffset*2), ( kCueIconHeight * 3) + (kCueButtonOffset*4) + kStatusRectHeight);
+const BRect kMediaCueBounds(0, 0, (kCueIconWidth * 2) + (kCueButtonOffset*2), (kCueIconHeight * 3) + (kCueButtonOffset*4) + kStatusRectHeight);
 
 
 
@@ -49,8 +49,8 @@ const BRect kMediaCueBounds(0, 0, ( kCueIconWidth * 2) + (kCueButtonOffset*2), (
 //
 //
 
-TMediaCuePalette::TMediaCuePalette():BWindow( kMediaCueBounds, "Media", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
-									  B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
+TMediaCuePalette::TMediaCuePalette() : BWindow( kMediaCueBounds, "Media", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
+	                                        B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
 {
 	Init();
 }
@@ -109,14 +109,14 @@ void TMediaCuePalette::MessageReceived(BMessage* message)
 
 	switch (message->what)
 	{
-		// Update the status bar to diplay name of media cue
-		case UPDATE_STATUS_TEXT_MSG:
-			fCueStatusView->MessageReceived(message);
-			break;
+	// Update the status bar to diplay name of media cue
+	case UPDATE_STATUS_TEXT_MSG:
+		fCueStatusView->MessageReceived(message);
+		break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 
 }

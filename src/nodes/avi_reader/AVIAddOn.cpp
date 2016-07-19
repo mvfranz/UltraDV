@@ -27,17 +27,17 @@
 //-------------------------------------------------------------------
 //	make_media_addon
 //-------------------------------------------------------------------
-//	
+//
 //	Instantiation function used by media kit
 //
 
 // ABH updated
 /*
-extern "C" _EXPORT BMediaAddOn *make_media_addon(image_id addOnID)
-{
-	return new AVIAddOn(addOnID);
-}
-*/
+   extern "C" _EXPORT BMediaAddOn *make_media_addon(image_id addOnID)
+   {
+        return new AVIAddOn(addOnID);
+   }
+ */
 
 //-------------------------------------------------------------------
 //	Constructor
@@ -100,27 +100,27 @@ status_t AVIAddOn::GetFlavorAt( int32 flavorNum, flavor_info **outInfo)
 	//	Check for flavor violation
 	if ( flavorNum > kNumFlavors)
 		return B_ERROR;
-	
+
 	//	Create flavor_info struct
 	flavor_info *info = new flavor_info;
-	
+
 	//	Fill struct for requested flavor
 	sprintf(info->name, "%s", "AVIAddOn");
 	sprintf(info->info, "%s", "Playback and record AVI data.");
-	info->kinds 			= B_BUFFER_PRODUCER | B_BUFFER_CONSUMER | B_FILE_INTERFACE;
-	info->flavor_flags 		= 0;
-	info->internal_id 		= 0x0EE0;
-	info->possible_count	= 0;
-	info->in_format_count	= 1;
-	info->in_format_flags 	= 0;
-	info->in_formats		= 0;
-	info->out_format_count	= 1;
-	info->out_format_flags 	= 0;
-	info->out_formats		= 0;
-	
+	info->kinds                     = B_BUFFER_PRODUCER | B_BUFFER_CONSUMER | B_FILE_INTERFACE;
+	info->flavor_flags              = 0;
+	info->internal_id               = 0x0EE0;
+	info->possible_count    = 0;
+	info->in_format_count   = 1;
+	info->in_format_flags   = 0;
+	info->in_formats                = 0;
+	info->out_format_count  = 1;
+	info->out_format_flags  = 0;
+	info->out_formats               = 0;
+
 	//	Set outInfo to point to struct
 	outInfo = &info;
-	
+
 	return B_OK;
 }
 
@@ -136,13 +136,13 @@ BMediaNode *AVIAddOn::InstantiateNodeFor( const flavor_info *info, BMessage *con
 {
 	//	Check for special configuration info
 	//	config
-	
+
 	//	Setup return values
-	status_t 	retVal  = B_ERROR;
+	status_t retVal  = B_ERROR;
 	BMediaNode *theNode = NULL;
-	
+
 	//	What type of node to they want?
-	
+
 	//	return results
 	*outError = B_ERROR;
 	return theNode;

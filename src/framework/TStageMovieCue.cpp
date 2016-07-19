@@ -76,8 +76,7 @@ TStageMovieCue::TStageMovieCue(BMessage *theMessage) : TStageCue(theMessage)
 TStageMovieCue::~TStageMovieCue()
 {
 	// Stop and clean up transitions
-	if (fTransition)
-	{
+	if (fTransition) {
 		delete fTransition;
 		fTransition = NULL;
 	}
@@ -136,8 +135,7 @@ status_t TStageMovieCue::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = TStageCue::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add ourselves to the archive
 		data->AddString("class", "TStageMovieCue");
 	}
@@ -158,8 +156,7 @@ status_t TStageMovieCue::Archive(BMessage *data, bool deep) const
 
 void TStageMovieCue::Draw(BRect updateRect)
 {
-	if ( (fBitmap) && IsCueHidden() == true &&!IsHidden() )
-	{
+	if ( (fBitmap) && IsCueHidden() == true &&!IsHidden() ) {
 		rgb_color saveColor = HighColor();
 
 		// Draw bitmap
@@ -186,8 +183,7 @@ void TStageMovieCue::DrawData(BRect updateRect, long theTime)
 	if ( fChannelCue->GetChannel()->GetMute() )
 		return;
 
-	if ( fBitmap && IsCueHidden() == false && IsHidden() == true)
-	{
+	if ( fBitmap && IsCueHidden() == false && IsHidden() == true) {
 		BRect area = fChannelCue->GetCroppedArea();
 
 		// Set up environment
@@ -253,7 +249,7 @@ void TStageMovieCue::CompositeData(BRect updateRect, BView *offscreen)
 void TStageMovieCue::MouseDown(BPoint where)
 {
 	ChunkHeader ckHeader;
-	VideoChunk	vidChunk;
+	VideoChunk vidChunk;
 
 	const int32 frameSize = 320*240*2;
 
@@ -268,8 +264,7 @@ void TStageMovieCue::MouseDown(BPoint where)
 	theFile->Read(&vidChunk, sizeof(VideoChunk));
 
 	// Load frames and display
-	for (int32 frame = 0; frame < vidChunk.numFrames; frame++)
-	{
+	for (int32 frame = 0; frame < vidChunk.numFrames; frame++) {
 		ssize_t numRead = theFile->Read(displayBitmap->Bits(), frameSize);
 		Looper()->Lock();
 		DrawBitmap(displayBitmap);
@@ -278,52 +273,52 @@ void TStageMovieCue::MouseDown(BPoint where)
 	}
 
 	/*
-	// Do nothing if we are playing
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->IsPlaying() )
-		return;
+	   // Do nothing if we are playing
+	   if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->IsPlaying() )
+	        return;
 
-	// Do nothing if view is hidden
-	if (IsHidden())
-		return;
+	   // Do nothing if view is hidden
+	   if (IsHidden())
+	        return;
 
-	// Check for double click
-	TStageCue::MouseDown(where);
+	   // Check for double click
+	   TStageCue::MouseDown(where);
 
-	// Determine which button has been clicked
-	uint32 	buttons = 0;
-	BMessage *message = Window()->CurrentMessage();
-	message->FindInt32("buttons", (long *)&buttons);
+	   // Determine which button has been clicked
+	   uint32       buttons = 0;
+	   BMessage *message = Window()->CurrentMessage();
+	   message->FindInt32("buttons", (long *)&buttons);
 
-	switch(buttons)
-	{
-		case B_PRIMARY_MOUSE_BUTTON:
-			// Wait a short while before dragging
-			snooze(60 * 1000);
+	   switch(buttons)
+	   {
+	        case B_PRIMARY_MOUSE_BUTTON:
+	                // Wait a short while before dragging
+	                snooze(60 * 1000);
 
-			//	Find location of click.  If it is the main body of the picture, they are moving the picture.
-			//	Otherwise, they are resizing or cropping the image
-			if ( PointInResizeZones(where) )
-			{
-				ResizeOrCrop(where);
-			}
-			// They are dragging the picture...
-			else
-			{
-				DragPicture(where);
-			}
+	                //	Find location of click.  If it is the main body of the picture, they are moving the picture.
+	                //	Otherwise, they are resizing or cropping the image
+	                if ( PointInResizeZones(where) )
+	                {
+	                        ResizeOrCrop(where);
+	                }
+	                // They are dragging the picture...
+	                else
+	                {
+	                        DragPicture(where);
+	                }
 
-			// Update the picture rects
-			fChannelCue->SetArea( Frame() );
-			fChannelCue->SetCroppedArea( Frame() );
-			break;
+	                // Update the picture rects
+	                fChannelCue->SetArea( Frame() );
+	                fChannelCue->SetCroppedArea( Frame() );
+	                break;
 
-		// Show stage cue menu
-		case B_SECONDARY_MOUSE_BUTTON:
-			OpenStageCueMenu(where);
-			break;
+	        // Show stage cue menu
+	        case B_SECONDARY_MOUSE_BUTTON:
+	                OpenStageCueMenu(where);
+	                break;
 
-	}
-	*/
+	   }
+	 */
 }
 
 
@@ -458,8 +453,7 @@ void TStageMovieCue::FrameResized(float new_width, float new_height)
 
 void TStageMovieCue::SetBitmap(BBitmap *bitmap)
 {
-	if (bitmap)
-	{
+	if (bitmap) {
 		fBitmap = bitmap;
 
 		// Create offscreen bitmap and view
@@ -491,19 +485,19 @@ void TStageMovieCue::MessageReceived(BMessage *message)
 
 	switch (message->what)
 	{
-		// Get updated bitmap
-		case UPDATE_TIMELINE_MSG:
-			{
-				// Inform channel cue
-				fChannelCue->MessageReceived(message);
-				theTime = message->FindDouble("TheTime");
-				SetVisibility(theTime);
-			}
-			break;
+	// Get updated bitmap
+	case UPDATE_TIMELINE_MSG:
+	{
+		// Inform channel cue
+		fChannelCue->MessageReceived(message);
+		theTime = message->FindDouble("TheTime");
+		SetVisibility(theTime);
+	}
+	break;
 
-		default:
-			TStageCue::MessageReceived(message);
-			break;
+	default:
+		TStageCue::MessageReceived(message);
+		break;
 	}
 }
 
@@ -522,22 +516,18 @@ void TStageMovieCue::MessageReceived(BMessage *message)
 void TStageMovieCue::SetVisibility(double theTime)
 {
 	double cueStartTime = fChannelCue->GetStartTime();
-	double cueEndTime 	= fChannelCue->GetStartTime() + fChannelCue->GetDuration();
+	double cueEndTime       = fChannelCue->GetStartTime() + fChannelCue->GetDuration();
 
 	// Is the current time before the cue's start time or after the cue's end time?
-	if (theTime < cueStartTime || theTime >= cueEndTime )
-	{
-		if ( IsCueHidden() == false)
-		{
+	if (theTime < cueStartTime || theTime >= cueEndTime ) {
+		if ( IsCueHidden() == false) {
 			fIsHidden = true;
 			UpdatePictureCueRegion(theTime);
 		}
 	}
 	// We need to show the cue if it is not already visible
-	else
-	{
-		if ( IsCueHidden() == true)
-		{
+	else{
+		if ( IsCueHidden() == true) {
 			// Set it's hidden flag to false
 			fIsHidden = false;
 			UpdatePictureCueRegion(theTime);
@@ -563,15 +553,14 @@ void TStageMovieCue::UpdatePictureCueRegion(double theTime)
 	// Get total channels
 	int32 totalChannels = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetTotalChannels();
 
-	// 	Determine cue layer.  Iterate through all higher layers and determine
+	//      Determine cue layer.  Iterate through all higher layers and determine
 	//	the area to be invalidated.  Construct a region to do this.  Exlude all
 	//	other area rects in higher channels than us.  We wil then break
 	//	the region down into rects and invalidate them.
 	BRegion invalRegion;
 	invalRegion.Include(fChannelCue->GetArea());
 
-	for(int32 index = cueChannelID+1; index <= totalChannels; index++)
-	{
+	for(int32 index = cueChannelID+1; index <= totalChannels; index++) {
 		TStageCue *stageCue = ((TStageView *)Parent())->GetStageCueAtTimeandChannel(theTime, index);
 
 		if (stageCue)
@@ -579,8 +568,7 @@ void TStageMovieCue::UpdatePictureCueRegion(double theTime)
 	}
 
 	// Now call our custom invalidation routine
-	for(int32 index = 0; index < invalRegion.CountRects(); index++)
-	{
+	for(int32 index = 0; index < invalRegion.CountRects(); index++) {
 		Parent()->Invalidate( invalRegion.RectAt(index));
 		//((TStageView *)Parent())->StageDraw( invalRegion.RectAt(index), theTime);
 	}
@@ -651,7 +639,7 @@ void TStageMovieCue::InvalidateSelectionRect()
 {
 	// Create a region containing selection rect
 	BRegion theRegion;
-	BRect	selectRect;
+	BRect selectRect;
 
 	// Top
 	selectRect.Set(Bounds().left, Bounds().top, Bounds().right, Bounds().top +kBorder);
@@ -670,8 +658,7 @@ void TStageMovieCue::InvalidateSelectionRect()
 	theRegion.Include(selectRect);
 
 	// Now invalidate
-	for(int32 index = 0; index < theRegion.CountRects(); index++)
-	{
+	for(int32 index = 0; index < theRegion.CountRects(); index++) {
 		Invalidate( theRegion.RectAt(index));
 	}
 
@@ -750,22 +737,20 @@ bool TStageMovieCue::PointInResizeZones(BPoint thePoint)
 
 void TStageMovieCue::DragPicture(BPoint thePoint)
 {
-	BPoint 	savePt;
-	uint32	buttons = 0;
+	BPoint savePt;
+	uint32 buttons = 0;
 
 	GetMouse(&thePoint, &buttons, true);
 
 	ConvertToParent(&thePoint);
 	savePt = thePoint;
 
-	while (buttons)
-	{
-		if (thePoint != savePt)
-		{
+	while (buttons) {
+		if (thePoint != savePt) {
 			// Convert to parents coordinate system
 			ConvertToParent(&thePoint);
 
-			MoveBy( ( thePoint.x - savePt.x) , (thePoint.y - savePt.y) );
+			MoveBy( (thePoint.x - savePt.x), (thePoint.y - savePt.y) );
 
 			// Save mouse location for next compare
 			savePt = thePoint;
@@ -790,38 +775,38 @@ void TStageMovieCue::ResizeOrCrop(BPoint thePoint)
 
 	switch(zoneID)
 	{
-		case kTopLeftResize:
-			ResizeTopLeft(thePoint);
-			break;
+	case kTopLeftResize:
+		ResizeTopLeft(thePoint);
+		break;
 
-		case kTopMiddleResize:
-			break;
+	case kTopMiddleResize:
+		break;
 
-		case kTopRightResize:
-			break;
+	case kTopRightResize:
+		break;
 
-		case kRightMiddleResize:
-			ResizeRight(thePoint);
-			break;
+	case kRightMiddleResize:
+		ResizeRight(thePoint);
+		break;
 
-		case kBottomRightResize:
-			ResizeBottomRight(thePoint);
-			break;
+	case kBottomRightResize:
+		ResizeBottomRight(thePoint);
+		break;
 
-		case kBottomMiddleResize:
-			ResizeBottom(thePoint);
-			break;
+	case kBottomMiddleResize:
+		ResizeBottom(thePoint);
+		break;
 
-		case kBottomLeftResize:
-			break;
+	case kBottomLeftResize:
+		break;
 
-		case kLeftMiddleResize:
-			ResizeLeft(thePoint);
-			break;
+	case kLeftMiddleResize:
+		ResizeLeft(thePoint);
+		break;
 
-		// Bad ID value
-		default:
-			break;
+	// Bad ID value
+	default:
+		break;
 	}
 
 	// Update resize zones
@@ -892,22 +877,19 @@ void TStageMovieCue::ResizeTopLeft( BPoint thePoint)
 void TStageMovieCue::ResizeTopRight( BPoint thePoint)
 {
 	// Resize the cue to the right will the mouse button is down
-	BPoint 	savePt;
-	uint32	buttons = 0;
+	BPoint savePt;
+	uint32 buttons = 0;
 
 	GetMouse(&thePoint, &buttons, true);
 	ConvertToParent(&thePoint);
 	savePt = thePoint;
 
-	while (buttons)
-	{
-		if (thePoint.x != savePt.x)
-		{
+	while (buttons) {
+		if (thePoint.x != savePt.x) {
 			float resize = thePoint.x - savePt.x;
 
 			// Don't allow resize past bitmap width
-			if ( ( Bounds().Width() + resize <= fBitmap->Bounds().Width()) || ( Bounds().right - resize >=  kBorder*2 ) )
-			{
+			if ( (Bounds().Width() + resize <= fBitmap->Bounds().Width()) || (Bounds().right - resize >=  kBorder*2) ) {
 				// Redraw the selection rect and resize points
 				InvalidateSelectionRect();
 
@@ -945,22 +927,19 @@ void TStageMovieCue::ResizeTopRight( BPoint thePoint)
 void TStageMovieCue::ResizeRight( BPoint thePoint)
 {
 	// Resize the cue to the right will the mouse button is down
-	BPoint 	savePt;
-	uint32	buttons = 0;
+	BPoint savePt;
+	uint32 buttons = 0;
 
 	GetMouse(&thePoint, &buttons, true);
 	ConvertToParent(&thePoint);
 	savePt = thePoint;
 
-	while (buttons)
-	{
-		if (thePoint.x != savePt.x)
-		{
+	while (buttons) {
+		if (thePoint.x != savePt.x) {
 			float resize = thePoint.x - savePt.x;
 
 			// Don't allow resize past bitmap width
-			if ( ( Bounds().Width() + resize <= fBitmap->Bounds().Width()) || ( Bounds().right - resize >=  kBorder*2 ) )
-			{
+			if ( (Bounds().Width() + resize <= fBitmap->Bounds().Width()) || (Bounds().right - resize >=  kBorder*2) ) {
 				// Redraw the selection rect and resize points
 				InvalidateSelectionRect();
 
@@ -997,26 +976,22 @@ void TStageMovieCue::ResizeRight( BPoint thePoint)
 void TStageMovieCue::ResizeBottomRight( BPoint thePoint)
 {
 	// Resize the cue to the right will the mouse button is down
-	BPoint 	savePt;
-	uint32	buttons = 0;
+	BPoint savePt;
+	uint32 buttons = 0;
 
 	GetMouse(&thePoint, &buttons, true);
 	ConvertToParent(&thePoint);
 	savePt = thePoint;
 
-	while (buttons)
-	{
-		if (thePoint != savePt)
-		{
+	while (buttons) {
+		if (thePoint != savePt) {
 			float resizeX = thePoint.x - savePt.x;
 			float resizeY = thePoint.y - savePt.y;
 
 			// Don't allow resize past bitmap width and height
-			if ( ( Bounds().Width() + resizeX <= fBitmap->Bounds().Width()) || Bounds().Height() + resizeY <= fBitmap->Bounds().Height() )
-			{
+			if ( (Bounds().Width() + resizeX <= fBitmap->Bounds().Width()) || Bounds().Height() + resizeY <= fBitmap->Bounds().Height() ) {
 				// Constrian to minimum bounds
-				if ( ( Bounds().right - resizeX >=  kBorder*2 ) || Bounds().bottom - resizeY >= fBitmap->Bounds().top + kBorder*2 )
-				{
+				if ( (Bounds().right - resizeX >=  kBorder*2) || Bounds().bottom - resizeY >= fBitmap->Bounds().top + kBorder*2 ) {
 					// Redraw the selection rect and resize points
 					InvalidateSelectionRect();
 
@@ -1062,22 +1037,19 @@ void TStageMovieCue::ResizeBottomRight( BPoint thePoint)
 void TStageMovieCue::ResizeBottom( BPoint thePoint)
 {
 	// Resize the cue to the right will the mouse button is down
-	BPoint 	savePt;
-	uint32	buttons = 0;
+	BPoint savePt;
+	uint32 buttons = 0;
 
 	GetMouse(&thePoint, &buttons, true);
 	ConvertToParent(&thePoint);
 	savePt = thePoint;
 
-	while (buttons)
-	{
-		if (thePoint.y != savePt.y)
-		{
+	while (buttons) {
+		if (thePoint.y != savePt.y) {
 			float resize = thePoint.y - savePt.y;
 
 			// Don't allow resize past bitmap height or mimimum height
-			if ( Bounds().Height() + resize <= fBitmap->Bounds().Height() || Bounds().bottom - resize >= fBitmap->Bounds().top + kBorder*2 )
-			{
+			if ( Bounds().Height() + resize <= fBitmap->Bounds().Height() || Bounds().bottom - resize >= fBitmap->Bounds().top + kBorder*2 ) {
 				// Redraw the selection rect and resize points
 				InvalidateSelectionRect();
 
@@ -1116,22 +1088,19 @@ void TStageMovieCue::ResizeBottom( BPoint thePoint)
 void TStageMovieCue::ResizeLeft( BPoint thePoint)
 {
 	// Resize the cue to the right will the mouse button is down
-	BPoint 	savePt;
-	uint32	buttons = 0;
+	BPoint savePt;
+	uint32 buttons = 0;
 
 	GetMouse(&thePoint, &buttons, true);
 	ConvertToParent(&thePoint);
 	savePt = thePoint;
 
-	while (buttons)
-	{
-		if (thePoint != savePt)
-		{
+	while (buttons) {
+		if (thePoint != savePt) {
 			float resize = thePoint.x - savePt.x;
 
 			// Don't allow resize past bitmap width
-			if ( Bounds().Width() <= fBitmap->Bounds().Width() )
-			{
+			if ( Bounds().Width() <= fBitmap->Bounds().Width() ) {
 				// Redraw the selection rect and resize points
 				InvalidateSelectionRect();
 
@@ -1181,8 +1150,7 @@ void TStageMovieCue::ResizeLeft( BPoint thePoint)
 
 void TStageMovieCue::Stop()
 {
-	if (fTransition)
-	{
+	if (fTransition) {
 		delete fTransition;
 		fTransition = NULL;
 	}
@@ -1203,8 +1171,7 @@ void TStageMovieCue::Stop()
 void TStageMovieCue::DoTransition(bool transitionIn)
 {
 	// Clean up last transition if neccessary
-	if (fTransition)
-	{
+	if (fTransition) {
 		delete fTransition;
 		fTransition = NULL;
 	}
@@ -1237,23 +1204,20 @@ void TStageMovieCue::DoTransition(bool transitionIn)
 
 void TStageMovieCue::OpenStageCueMenu(BPoint menuPt)
 {
-	BMenuItem 	*selected;
+	BMenuItem       *selected;
 
 	// Create the menu and mark the current transition
 	TStageCueMenu *theMenu = new TStageCueMenu(this->fChannelCue);
 
-	if (theMenu)
-	{
+	if (theMenu) {
 		// Set menu location point
 		ConvertToScreen(&menuPt);
 		selected = theMenu->Go(menuPt);
 
 		// Check and see if we have a menu message
 		int32 drawingMode;
-		if (selected)
-		{
-			if ( selected->Message()->FindInt32("DrawingMode", &drawingMode) == B_OK)
-			{
+		if (selected) {
+			if ( selected->Message()->FindInt32("DrawingMode", &drawingMode) == B_OK) {
 				// Lock offscreen
 				fOffscreenView->Looper()->Lock();
 
@@ -1261,8 +1225,7 @@ void TStageMovieCue::OpenStageCueMenu(BPoint menuPt)
 				fChannelCue->SetDrawingMode( (drawing_mode)drawingMode );
 
 				// Only redraw if mode has changed
-				if ( fOffscreenView->DrawingMode() != fChannelCue->GetDrawingMode() )
-				{
+				if ( fOffscreenView->DrawingMode() != fChannelCue->GetDrawingMode() ) {
 					//	Draw the bitmap into the offscreen using the new mode.
 					fOffscreenView->SetDrawingMode(fChannelCue->GetDrawingMode());
 					fOffscreenView->DrawBitmap(fBitmap);

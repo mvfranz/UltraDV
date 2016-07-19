@@ -8,9 +8,9 @@
 //
 //	Desc:	Audio editor toolbar.  Contains these tools:
 //			--	Play
-//			-- 	Stop
+//			--      Stop
 //			--	Zoom In
-//			-- 	Zoom Out
+//			--      Zoom Out
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -28,13 +28,13 @@
 
 #include "TAudioEditorToolbar.h"
 #include "TAudioPlayButton.h"
-#include "TAudioZoomInButton.h"	
+#include "TAudioZoomInButton.h"
 #include "TAudioZoomOutButton.h"
 
 
 // Constants
 
-	 
+
 //---------------------------------------------------------------------
 //	Constructor
 //---------------------------------------------------------------------
@@ -45,7 +45,7 @@ TAudioEditorToolbar::TAudioEditorToolbar(TAudioEditor *parent, BRect bounds) : B
 {
 
 	fParent = parent;
-	
+
 	// Default Initialization
 	Init();
 }
@@ -70,36 +70,36 @@ TAudioEditorToolbar::~TAudioEditorToolbar()
 //
 
 void TAudioEditorToolbar::Draw(BRect updateRect)
-{	
+{
 	// Setup environment
 	rgb_color saveColor = HighColor();
-		
+
 	// Fill background
 	SetHighColor(kLightGrey);
 	FillRect(Bounds());
-	
+
 	// Frame it
-	BPoint endPt;	
-	SetHighColor(kWhite);	
+	BPoint endPt;
+	SetHighColor(kWhite);
 	MovePenTo(Bounds().left, Bounds().top+1);
 	endPt.Set( Bounds().right, Bounds().top+1 );
 	StrokeLine(endPt);
-	
+
 	SetHighColor(kMediumGrey);
 	MovePenTo(Bounds().left, Bounds().bottom-1);
 	endPt.Set( Bounds().right, Bounds().bottom-1 );
 	StrokeLine(endPt);
-	
+
 	SetHighColor(kBlack);
 	MovePenTo(Bounds().left, Bounds().top);
 	endPt.Set( Bounds().right, Bounds().top );
-	StrokeLine(endPt);	
+	StrokeLine(endPt);
 	MovePenTo(Bounds().left, Bounds().bottom);
 	endPt.Set( Bounds().right, Bounds().bottom );
 	StrokeLine(endPt);
-				
+
 	// Restore Environment
-	SetHighColor(saveColor);	
+	SetHighColor(saveColor);
 }
 
 
@@ -112,7 +112,7 @@ void TAudioEditorToolbar::Draw(BRect updateRect)
 //
 
 void TAudioEditorToolbar::MouseDown(BPoint where)
-{	
+{
 }
 
 
@@ -212,50 +212,50 @@ void TAudioEditorToolbar::FrameResized(float new_width, float new_height)
 //	Create toolbar buttons
 //
 
-const short kButtonLeftOffset 	= 5;
-const short kButtonTopOffset 	= 4;
-const short kToolButtonWidth	= 16;
-const short kToolButtonHeight	= 16;
+const short kButtonLeftOffset   = 5;
+const short kButtonTopOffset    = 4;
+const short kToolButtonWidth    = 16;
+const short kToolButtonHeight   = 16;
 
 void TAudioEditorToolbar::Init()
 {
 	//
 	// Create the toolbar buttons
 	//
-	
+
 	BRect bounds;
-	
+
 	// Create Play button
 	BBitmap *playUp = GetIcon16FromResource("AudioPlayUp");
-	BBitmap *playDn = GetIcon16FromResource("AudioPlayDn");	
+	BBitmap *playDn = GetIcon16FromResource("AudioPlayDn");
 	bounds = Bounds();
-	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset, 
-				bounds.top + kButtonTopOffset + kToolButtonHeight );
-	fPlayButton= new TAudioPlayButton(this, bounds, "AudioPlayButton", playDn, playUp, Window()); 
+	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset,
+	            bounds.top + kButtonTopOffset + kToolButtonHeight );
+	fPlayButton= new TAudioPlayButton(this, bounds, "AudioPlayButton", playDn, playUp, Window());
 	AddChild(fPlayButton);
 	fPlayButton->Show();
-	
-	
+
+
 	// Create Zoom In Button
 	BBitmap *zoomInUp = GetIcon16FromResource("AudioZoomInUp");
 	BBitmap *zoomInDn = GetIcon16FromResource("AudioZoomInDn");
 	bounds = Bounds();
-	bounds.Set( fPlayButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset, 
-				fPlayButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);
-	fZoomInButton= new TAudioZoomInButton(this, bounds, "AudioZoomInButton", zoomInDn, zoomInUp, this); 
+	bounds.Set( fPlayButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset,
+	            fPlayButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);
+	fZoomInButton= new TAudioZoomInButton(this, bounds, "AudioZoomInButton", zoomInDn, zoomInUp, this);
 	AddChild(fZoomInButton);
 	fZoomInButton->Show();
-	
+
 	// Create Zoom Out Button
 	BBitmap *zoomOutUp = GetIcon16FromResource("AudioZoomOutUp");
 	BBitmap *zoomOutDn = GetIcon16FromResource("AudioZoomOutDn");
 	bounds = Bounds();
-	bounds.Set( fZoomInButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset, 
-				fZoomInButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);
-	fZoomOutButton= new TAudioZoomOutButton(this, bounds, "AudioZoomInButton", zoomOutDn, zoomOutUp, this); 
+	bounds.Set( fZoomInButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset,
+	            fZoomInButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);
+	fZoomOutButton= new TAudioZoomOutButton(this, bounds, "AudioZoomInButton", zoomOutDn, zoomOutUp, this);
 	AddChild(fZoomOutButton);
 	fZoomOutButton->Show();
-			
+
 }
 
 
@@ -269,8 +269,8 @@ void TAudioEditorToolbar::Init()
 //
 
 void TAudioEditorToolbar::MessageReceived(BMessage* message)
-{	
+{
 	switch (message->what)
-	{		
-	}		
-}	
+	{
+	}
+}

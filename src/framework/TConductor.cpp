@@ -20,7 +20,7 @@
 
 /********************************************************************************/
 /*																				*/
-/*		CProducerConductor.c									 				*/
+/*		CProducerConductor.c									                                */
 /*																				*/
 /*		SUPERCLASS:	CConductor													*/
 /*																				*/
@@ -40,12 +40,12 @@
 
 
 /********************************************************************************
-	IProducerConductor
+        IProducerConductor
 
-		Initialize the conductor.
+                Initialize the conductor.
 ********************************************************************************/
 
-void	CProducerConductor::IProducerConductor(CMIDICue *aSupervisor)
+void CProducerConductor::IProducerConductor(CMIDICue *aSupervisor)
 {
 	CConductor::IConductor(aSupervisor);
 
@@ -58,12 +58,12 @@ void	CProducerConductor::IProducerConductor(CMIDICue *aSupervisor)
 
 
 /********************************************************************************
-	Dispose
+        Dispose
 
-		Dispose of the marker array before going.
+                Dispose of the marker array before going.
 ********************************************************************************/
 
-void	CProducerConductor::Dispose(void)
+void CProducerConductor::Dispose(void)
 {
 	ForgetObject(itsMarkers);
 	inherited::Dispose();
@@ -72,16 +72,16 @@ void	CProducerConductor::Dispose(void)
 
 
 /********************************************************************************
-	InsertMarker
+        InsertMarker
 
-		Add the marker to the marker array.
+                Add the marker to the marker array.
 ********************************************************************************/
 
-void	CProducerConductor::InsertMarker(char *str, long time)
+void CProducerConductor::InsertMarker(char *str, long time)
 {
-	MarkerRec		data;
+	MarkerRec data;
 
-	inherited::InsertMarker(str, time);			// inherited updates curLocation
+	inherited::InsertMarker(str, time);                     // inherited updates curLocation
 
 	data.location = curLocation;
 	CtoPstr(str);
@@ -97,15 +97,15 @@ void	CProducerConductor::InsertMarker(char *str, long time)
 
 
 /********************************************************************************
-	CalcMarkerTimes
+        CalcMarkerTimes
 
-		Calculates absolute (millisecond) times for markers.
+                Calculates absolute (millisecond) times for markers.
 ********************************************************************************/
 
-void	CProducerConductor::CalcMarkerTimes(void)
+void CProducerConductor::CalcMarkerTimes(void)
 {
-	MarkerPtr		aMarker;
-	long			i;
+	MarkerPtr aMarker;
+	long i;
 
 	// Directly de-reference the marker item handle for efficiency
 
@@ -121,17 +121,17 @@ void	CProducerConductor::CalcMarkerTimes(void)
 
 
 /********************************************************************************
-	TicksToMSec
+        TicksToMSec
 
-		Returns the millisecond value for given ticks from beginning of song.
+                Returns the millisecond value for given ticks from beginning of song.
 ********************************************************************************/
 
-long	CProducerConductor::TicksToMSec(long location)
+long CProducerConductor::TicksToMSec(long location)
 {
-	long		pos = 0;
-	long		uSecsPerTick = 0, uSecAccum = 0;
-	long		index = 1;
-	CondEvent	e;
+	long pos = 0;
+	long uSecsPerTick = 0, uSecAccum = 0;
+	long index = 1;
+	CondEvent e;
 
 	GetArrayItem(&e, index++);
 
@@ -161,12 +161,12 @@ long	CProducerConductor::TicksToMSec(long location)
 
 
 /********************************************************************************
-	GetTempoRatio
+        GetTempoRatio
 
-		Returns the current tempo ratio (in 1/1000ths).
+                Returns the current tempo ratio (in 1/1000ths).
 ********************************************************************************/
 
-short	CProducerConductor::GetTempoRatio(void)
+short CProducerConductor::GetTempoRatio(void)
 {
 	return itsTempoRatio;
 }
@@ -174,12 +174,12 @@ short	CProducerConductor::GetTempoRatio(void)
 
 
 /********************************************************************************
-	SetTempoRatio
+        SetTempoRatio
 
-		Sets the current tempo ratio.
+                Sets the current tempo ratio.
 ********************************************************************************/
 
-void	CProducerConductor::SetTempoRatio(short aRatio)
+void CProducerConductor::SetTempoRatio(short aRatio)
 {
 	itsTempoRatio = aRatio;
 
@@ -190,16 +190,16 @@ void	CProducerConductor::SetTempoRatio(short aRatio)
 
 
 /********************************************************************************
-	CheckPlay
+        CheckPlay
 
-		Called from TimerProc with the number of ticks that have elapsed since
-		the last time we were called.
-		{OVERRIDE} to adjust tempo using tempoRatio.
+                Called from TimerProc with the number of ticks that have elapsed since
+                the last time we were called.
+                {OVERRIDE} to adjust tempo using tempoRatio.
 ********************************************************************************/
 
-long	CProducerConductor::CheckPlay(long dTime)
+long CProducerConductor::CheckPlay(long dTime)
 {
-	CondEvent	*e;
+	CondEvent       *e;
 
 
 	// First check for tracks total time
@@ -229,20 +229,20 @@ long	CProducerConductor::CheckPlay(long dTime)
 		do {
 
 			switch (e->type) {
-				case meterChange:
-					break;
+			case meterChange:
+				break;
 
-				case tempoChange:
-					itsDoc->itsUsecsPerTick = (long)e->d.tempo *
-											  itsTempoRatio / kTEMPO_DIVISOR;
-					break;
+			case tempoChange:
+				itsDoc->itsUsecsPerTick = (long)e->d.tempo *
+				                          itsTempoRatio / kTEMPO_DIVISOR;
+				break;
 
-				case endOfTrack:
-					curDelta = END_OF_TRACK;
+			case endOfTrack:
+				curDelta = END_OF_TRACK;
 
-					// end of conductor data, set next wake up for end of play
-					return itsPlayTime;
-					break;
+				// end of conductor data, set next wake up for end of play
+				return itsPlayTime;
+				break;
 			}
 
 			e = GetItemPtr(++curEvent);

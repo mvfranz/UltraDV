@@ -33,7 +33,7 @@
 //
 
 TNumberTextView::TNumberTextView(BRect bounds, char *name, uint32 resizing) :
-			  BTextView(bounds, name, bounds, resizing, B_FRAME_EVENTS | B_PULSE_NEEDED)
+	BTextView(bounds, name, bounds, resizing, B_FRAME_EVENTS | B_PULSE_NEEDED)
 {
 	// Perform default initialization
 	//bounds.OffsetTo(0, 0);
@@ -113,8 +113,7 @@ void TNumberTextView::KeyDown(const char *bytes, int32 numBytes)
 	char theChar = *bytes;
 
 	// Accept numbers, delete and arrows
-	if( isdigit(theChar) || IsBackspace(theChar) || IsArrows(theChar) || IsDelete(theChar) )
-	{
+	if( isdigit(theChar) || IsBackspace(theChar) || IsArrows(theChar) || IsDelete(theChar) ) {
 		BTextView::KeyDown(bytes, numBytes);
 	}
 	// Illegal character
@@ -179,7 +178,7 @@ bool TNumberTextView::AcceptsPaste(BClipboard *clipboard)
 //	We only allow the user to enter numbers
 //
 
-void  TNumberTextView::InsertText(const char *text, int32 length, int32 offset, const text_run_array *runs)
+void TNumberTextView::InsertText(const char *text, int32 length, int32 offset, const text_run_array *runs)
 {
 	BTextView::InsertText(text, length, offset, runs);
 }
@@ -193,7 +192,7 @@ void  TNumberTextView::InsertText(const char *text, int32 length, int32 offset, 
 //	Disallow entry of alphabetic characters
 //
 
-void  TNumberTextView::LockOutAlphabet()
+void TNumberTextView::LockOutAlphabet()
 {
 	DisallowChar('A');
 	DisallowChar('B');
@@ -231,15 +230,15 @@ void  TNumberTextView::LockOutAlphabet()
 //	Check to see if character is backspace
 //
 
-bool  TNumberTextView::IsBackspace(char theChar)
+bool TNumberTextView::IsBackspace(char theChar)
 {
 	switch(theChar)
 	{
-		case B_BACKSPACE:
-			return true;
+	case B_BACKSPACE:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -252,18 +251,18 @@ bool  TNumberTextView::IsBackspace(char theChar)
 //	Check to see if character is one of the arrow keys
 //
 
-bool  TNumberTextView::IsArrows(char theChar)
+bool TNumberTextView::IsArrows(char theChar)
 {
 	switch(theChar)
 	{
-		case B_UP_ARROW:
-		case B_LEFT_ARROW:
-		case B_DOWN_ARROW:
-		case B_RIGHT_ARROW:
-			return true;
+	case B_UP_ARROW:
+	case B_LEFT_ARROW:
+	case B_DOWN_ARROW:
+	case B_RIGHT_ARROW:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -275,15 +274,15 @@ bool  TNumberTextView::IsArrows(char theChar)
 //	Check to see if character is the delete key
 //
 
-bool  TNumberTextView::IsDelete(char theChar)
+bool TNumberTextView::IsDelete(char theChar)
 {
 	switch(theChar)
 	{
-		case B_DELETE:
-			return true;
+	case B_DELETE:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -296,15 +295,15 @@ bool  TNumberTextView::IsDelete(char theChar)
 //	Check to see if character is the tab key
 //
 
-bool  TNumberTextView::IsTab(char theChar)
+bool TNumberTextView::IsTab(char theChar)
 {
 	switch(theChar)
 	{
-		case B_TAB:
-			return true;
+	case B_TAB:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }

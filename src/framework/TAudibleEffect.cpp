@@ -17,8 +17,8 @@
 
 #include "TAudibleEffect.h"
 
-#include <support/Debug.h>		// for ASSERT()
-#include "TCueData.h"		// For IsAudible()
+#include <support/Debug.h>              // for ASSERT()
+#include "TCueData.h"           // For IsAudible()
 
 //---------------------------------------------------------------------
 //	Constructor/destructor

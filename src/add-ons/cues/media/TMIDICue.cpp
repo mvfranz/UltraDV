@@ -6,7 +6,7 @@
 //
 //	Date:	01.26.98
 //
-//	Desc:	
+//	Desc:
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -47,14 +47,14 @@
 //
 //
 
-TMIDICue::TMIDICue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime) : 
-			TCueView(id, parent, bounds, startTime, "MIDICue")
-{	
-	// Init member variables 
-	fEditor	= NULL;
+TMIDICue::TMIDICue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime) :
+	TCueView(id, parent, bounds, startTime, "MIDICue")
+{
+	// Init member variables
+	fEditor = NULL;
 
 	fTrackList = new BList();
-	
+
 	// Load MIDI file
 	ShowPanel();
 }
@@ -65,44 +65,41 @@ TMIDICue::TMIDICue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime
 //
 //	Construct from an entry_ref
 
-TMIDICue::TMIDICue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect bounds, uint32 startTime) : 
+TMIDICue::TMIDICue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect bounds, uint32 startTime) :
 	TCueView(id, parent, bounds, startTime, "MIDICue")
-{	
-	// Init member variables 
-	fEditor	= NULL;
-		
+{
+	// Init member variables
+	fEditor = NULL;
+
 	//
 	// Attempt to load data file
 	//
-	
+
 	BNode theNode(&theRef);
 	if (theNode.InitCheck() != B_OK)
 		return;
-		
+
 	BNodeInfo nodeInfo(&theNode);
 	if (nodeInfo.InitCheck() != B_OK)
 		return;
 
 	// First, make sure we have a valid ref
-	if ( IsMIDI(nodeInfo) )
-	{
-		// 	Create a BMessage that includes the entry_ref to send to our open routine
+	if ( IsMIDI(nodeInfo) ) {
+		//      Create a BMessage that includes the entry_ref to send to our open routine
 		BMessage *theMessage = new BMessage(B_REFS_RECEIVED);
 		theMessage->AddRef("refs", &theRef);
-		
+
 		bool retVal = LoadMIDIFile(theMessage);
-		
+
 		// We are succesful.  Init the cue
-		if (retVal)
-		{
+		if (retVal) {
 			Init();
 		}
 		// If we have an error, ask the user to locate a new data file
-		else
-		{
+		else{
 			ShowPanel();
 		}
-	}		
+	}
 }
 
 
@@ -115,42 +112,39 @@ TMIDICue::TMIDICue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect boun
 TMIDICue::~TMIDICue()
 {
 	// Close editor if open...
-	if ( fEditorOpen && fEditor)
-	{
+	if ( fEditorOpen && fEditor) {
 		fEditor->Hide();
 		fEditor->Lock();
 		fEditor->Quit();
 	}
-	
+
 	// Stop playback if neccessary
 	fIsPlaying = false;
-	
-	// Close and delete TMIDIFile	
+
+	// Close and delete TMIDIFile
 	if (fMIDIFile)
-		delete fMIDIFile;	
-		
+		delete fMIDIFile;
+
 	// Close and free TMIDIStore
 	if (fMIDIStore)
 		delete fMIDIStore;
-	
+
 	// Close and free TMIDIEngine
 	if (fMIDIEngine)
 		delete fMIDIEngine;
-			
+
 	// Free track list
-	if (fTrackList)
-	{
+	if (fTrackList) {
 		// Delete tracks in list
-		for (int32 index = 0; index < fTrackList->CountItems(); index++)
-		{
-			TMIDITrack	*theTrack =  (TMIDITrack *)fTrackList->ItemAt(index);
-			
+		for (int32 index = 0; index < fTrackList->CountItems(); index++) {
+			TMIDITrack      *theTrack =  (TMIDITrack *)fTrackList->ItemAt(index);
+
 			if (theTrack)
-				delete theTrack;						
+				delete theTrack;
 		}
-				
-		delete fTrackList;	
-	}		
+
+		delete fTrackList;
+	}
 }
 
 
@@ -161,68 +155,64 @@ TMIDICue::~TMIDICue()
 //	Perform default initialization tasks
 
 void TMIDICue::Init()
-{	
+{
 
 	// Editor is closed
 	fEditorOpen = false;
-	
-	// Set up default settings	
-	fIsLocked 			= false;	
-	fIsSelected 		= false;	
-	fLowColor 			= kWhite;	
-	fHighColor 		= kBlack;	
-	fIsPrepared 		= false;
-	fIsPlaying 		= false;	
-	fIsVisible			= false;	
-	fHasDuration 		= true;					
-	fCanLoop			= true;
-	fCanStretch		= true;		
-	fCanEnvelope		= true;
-	fHasEditor 		= true;		
-	fCanWindow			= true;
-	fCanTransition		= false;
-	fCanPath			= false;
-					
+
+	// Set up default settings
+	fIsLocked                       = false;
+	fIsSelected             = false;
+	fLowColor                       = kWhite;
+	fHighColor              = kBlack;
+	fIsPrepared             = false;
+	fIsPlaying              = false;
+	fIsVisible                      = false;
+	fHasDuration            = true;
+	fCanLoop                        = true;
+	fCanStretch             = true;
+	fCanEnvelope            = true;
+	fHasEditor              = true;
+	fCanWindow                      = true;
+	fCanTransition          = false;
+	fCanPath                        = false;
+
 	// Default initialization
 	TCueView::Init();
-	
+
 	// Create MIDIStore and MIDIEngine
 	fMIDIStore = new BMidiStore();
 	assert(fMIDIStore);
 	fMIDIStore->Import(&fFileRef);
 	fMIDIEngine = new TMIDIEngine(fMIDIStore);
-		
+
 	// Set cues fFile to point to the fMIDIFile
 	fFile = fMIDIFile;
-		
+
 	// Calcaluate duration
-	CalcDuration();	
-	
+	CalcDuration();
+
 	// Adjust bounds based on cue duration
 	int32 newWidth = TimeToPixels(fDuration, GetCurrentTimeFormat(), GetCurrentResolution());
 	ResizeBy( newWidth - Bounds().Width(), 0);
-	
+
 	// Add the cue to the cue channel
-	if ( fChannel->CanInsertCue(this, fInsertTime, true))
-	{
-		fChannel->InsertCue(this, fInsertTime);		
+	if ( fChannel->CanInsertCue(this, fInsertTime, true)) {
+		fChannel->InsertCue(this, fInsertTime);
 		Select();
-		
+
 		// We are now fully instantiated
 		fIsInstantiated = true;
 	}
-	
+
 	// Set expanded status
-	if (fChannel->IsExpanded())
-	{
+	if (fChannel->IsExpanded()) {
 		fIsExpanded = false;
 		Expand();
-	}
-	else
-	{
+	} else   {
 		fIsExpanded = true;
-		Contract();		
-	}		
+		Contract();
+	}
 }
 
 
@@ -236,10 +226,10 @@ void TMIDICue::Draw(BRect updateRect)
 {
 	// Save colors
 	rgb_color saveColor = HighColor();
-			
+
 	// Restore color
 	SetHighColor(saveColor);
-	
+
 	// Pass up to parent
 	TCueView::Draw(updateRect);
 
@@ -255,24 +245,24 @@ void TMIDICue::Draw(BRect updateRect)
 void TMIDICue::MouseDown(BPoint where)
 {
 	// Play midi file
-	uint32 	buttons = 0;				
+	uint32 buttons = 0;
 	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
-	
+
 	// Determine which button has been clicked
 	switch(buttons)
 	{
-		case B_PRIMARY_MOUSE_BUTTON:		
-			//fMIDIEngine->Play();
-			break;
-			
-		case B_SECONDARY_MOUSE_BUTTON:
-			//fMIDIEngine->Stop();
-			break;
-			
-	}	
-		
+	case B_PRIMARY_MOUSE_BUTTON:
+		//fMIDIEngine->Play();
+		break;
+
+	case B_SECONDARY_MOUSE_BUTTON:
+		//fMIDIEngine->Stop();
+		break;
+
+	}
+
 	// Pass up to parent
-	TCueView::MouseDown(where);	
+	TCueView::MouseDown(where);
 }
 
 #pragma mark -
@@ -288,32 +278,32 @@ void TMIDICue::MouseDown(BPoint where)
 void TMIDICue::MessageReceived(BMessage *message)
 {
 	switch(message->what)
-	{		
-		case B_OK:
-		case B_REFS_RECEIVED:
-			{
-				fPanel->Hide();
-				
-				// Attempt to load MIDI file
-				if ( LoadMIDIFile(message) )
-					Init();						
-			}
-			break;
-													
-		case MIDI_PLAYBACK_DONE_MSG:
-			{
-				fSynthFile->Fade();
-				fSynthFile->Stop();
-				fSynthFile->UnloadFile();
-				fIsPlaying = false;
-				kill_thread(fPlaybackThread);
-				fPlaybackThread = NULL;
-			}
-			break;
-			
-		default:
-			TCueView::MessageReceived(message);						
-			break;			
+	{
+	case B_OK:
+	case B_REFS_RECEIVED:
+	{
+		fPanel->Hide();
+
+		// Attempt to load MIDI file
+		if ( LoadMIDIFile(message) )
+			Init();
+	}
+	break;
+
+	case MIDI_PLAYBACK_DONE_MSG:
+	{
+		fSynthFile->Fade();
+		fSynthFile->Stop();
+		fSynthFile->UnloadFile();
+		fIsPlaying = false;
+		kill_thread(fPlaybackThread);
+		fPlaybackThread = NULL;
+	}
+	break;
+
+	default:
+		TCueView::MessageReceived(message);
+		break;
 	}
 }
 
@@ -330,32 +320,32 @@ void TMIDICue::MessageReceived(BMessage *message)
 
 void TMIDICue::ShowPanel()
 {
- 	
+
 	TCueView::ShowPanel();
- 		
- 	// 	Create messenger to send panel messages to our channel.  We cannot send it to 
+
+	//      Create messenger to send panel messages to our channel.  We cannot send it to
 	//  ourself as we are not part of the view heirarchy.
- 	BMessenger *messenger = new BMessenger( fChannel,  ((MuseumApp *)be_app)->GetCueSheet());
- 		
- 	// Create message containing pointer to ourself
+	BMessenger *messenger = new BMessenger( fChannel,  ((MuseumApp *)be_app)->GetCueSheet());
+
+	// Create message containing pointer to ourself
 	BMessage *message = new BMessage();
 	message->AddPointer("TheCue", this);
-	
- 	// Construct a file panel and set it to modal
- 	fPanel = new BFilePanel( B_OPEN_PANEL, messenger, NULL, B_FILE_NODE, false, message, NULL, true, true );
- 
- 	// Set it to application's home directory
- 	app_info appInfo;
- 	be_app->GetAppInfo(&appInfo); 	
- 	BEntry entry(&appInfo.ref);
- 	BDirectory parentDir;
- 	entry.GetParent(&parentDir);
- 	fPanel->SetPanelDirectory(&parentDir);
- 		
+
+	// Construct a file panel and set it to modal
+	fPanel = new BFilePanel( B_OPEN_PANEL, messenger, NULL, B_FILE_NODE, false, message, NULL, true, true );
+
+	// Set it to application's home directory
+	app_info appInfo;
+	be_app->GetAppInfo(&appInfo);
+	BEntry entry(&appInfo.ref);
+	BDirectory parentDir;
+	entry.GetParent(&parentDir);
+	fPanel->SetPanelDirectory(&parentDir);
+
 	// Center Panel
 	CenterWindow(fPanel->Window());
 	fPanel->Show();
-	
+
 	// Clean up
 	delete messenger;
 	delete message;
@@ -373,12 +363,11 @@ void TMIDICue::ShowPanel()
 
 void TMIDICue::HidePanel()
 {
-	if(fPanel)
-	{
+	if(fPanel) {
 		delete fPanel;
 		fPanel = NULL;
 	}
-	
+
 	TCueView::HidePanel();
 }
 
@@ -391,79 +380,74 @@ void TMIDICue::HidePanel()
 
 bool TMIDICue::LoadMIDIFile(BMessage *message)
 {
-	
-	TMIDITrack	*curTrack;
-	int32		time, totalTime;
-	int16		tempoRatio = kTempoDivisor;
-		
+
+	TMIDITrack      *curTrack;
+	int32 time, totalTime;
+	int16 tempoRatio = kTempoDivisor;
+
 	// Load MIDI file
 	message->FindRef("refs", 0, &fFileRef);
-	
+
 	// Resolve possible symlink...
 	BEntry entry(&fFileRef, true);
 	entry.GetRef(&fFileRef);
-		 	
-	// Create and load midi file	
-	if (!fMIDIFile) 
-	{				
+
+	// Create and load midi file
+	if (!fMIDIFile) {
 		//	Load and read MIDI file
-		fMIDIFile = new TMIDIFile(&fFileRef, B_READ_ONLY);			
+		fMIDIFile = new TMIDIFile(&fFileRef, B_READ_ONLY);
 		if (!fMIDIFile)
 			return false;
-			
-		// 	Make sure it is a MIDI file.  If not, alert user and return false
+
+		//      Make sure it is a MIDI file.  If not, alert user and return false
 		//if ( strcmp((char *)&fMIDIFile->fMidiChunkHeader.chunkType), "MThd") != 0)
 		//{
 		//	UnhandledMIDIFormat(&fFileRef);
 		//	return false;
 		//}
-									
-		// Create conductor 
-		fMIDIConductor = new TMIDIConductor(this);		
+
+		// Create conductor
+		fMIDIConductor = new TMIDIConductor(this);
 		if (!fMIDIConductor)
 			return false;
-				
-		if (fMIDIFile->fHeader.format == 0) 
-		{		
+
+		if (fMIDIFile->fHeader.format == 0) {
 			// Allocate data track
 			curTrack = new TMIDITrack(this);
 			totalTime = fMIDIFile->ReadType0(fMIDIConductor, curTrack);
 			curTrack->ExtractInfo();
-			
+
 			// Add to track list
-			fTrackList->AddItem(curTrack);			
-			
-		} 
-		else 
-		{
+			fTrackList->AddItem(curTrack);
+
+		} else   {
 			// Read in conductor
 			totalTime = fMIDIFile->ReadConductor(fMIDIConductor);
-						
+
 			// Now read tracks
-			for (int32 index = 0; index < fMIDIFile->fHeader.numTracks; index++) 
-			{
+			for (int32 index = 0; index < fMIDIFile->fHeader.numTracks; index++) {
 				// Allocate next track
-				curTrack = new TMIDITrack(this);			
+				curTrack = new TMIDITrack(this);
 				time = fMIDIFile->ReadNextTrack(curTrack);
 				curTrack->ExtractInfo();
-				
+
 				// Add to track list
-				fTrackList->AddItem(curTrack);			
-				
+				fTrackList->AddItem(curTrack);
+
 				if (time > totalTime)
 					totalTime = time;
-			}						
+			}
 		}
-		
+
 		// Complete setup of conductor track
 		fMIDIConductor->SetEndTime(totalTime);
 		fMIDIConductor->SetTempoRatio(tempoRatio);
 		fMIDIConductor->CalcMarkerTimes();
 
 		// Close file
-		
-	}	          
-	  
+
+	}
+
 	return true;
 }
 
@@ -481,19 +465,18 @@ bool TMIDICue::LoadMIDIFile(BMessage *message)
 int32 TMIDICue::PlayMidiFile()
 {
 	// Do nothing until we stop playback or file is done playing
-	while( (fIsPlaying == true) )
-	{
+	while( (fIsPlaying == true) ) {
 		// Pause for a while...
 		snooze(1000000);
-		
+
 		// If we are at the end, break out of loop
 		if ( fSynthFile->IsFinished() )
-			fIsPlaying = false;					
+			fIsPlaying = false;
 	}
-	
+
 	// Clean up file
 	delete fSynthFile;
-	
+
 	return true;
 }
 
@@ -506,12 +489,12 @@ int32 TMIDICue::PlayMidiFile()
 //
 
 int32 TMIDICue::play_midi_file(void *arg)
-{			
+{
 	TMIDICue *obj = (TMIDICue *)arg;
 	return(obj->PlayMidiFile() );
 }
 
-	
+
 //---------------------------------------------------------------------
 //	Play
 //---------------------------------------------------------------------
@@ -522,23 +505,23 @@ int32 TMIDICue::play_midi_file(void *arg)
 
 void TMIDICue::PlayCue(uint32 theTime)
 {
-	   		
+
 	// We are playing
 	fIsPlaying = true;
-	
+
 	// Create synth file
 	fSynthFile = new BMidiSynthFile();
-	
+
 	// Load file, set completion hook and start playback
-	status_t myErr = fSynthFile->LoadFile(&fFileRef); 
-	fSynthFile->Start(); 
-	
+	status_t myErr = fSynthFile->LoadFile(&fFileRef);
+	fSynthFile->Start();
+
 	// Create thread and let it do the playback...
-    fPlaybackThread = spawn_thread( play_midi_file, "MIDIPlayer", B_REAL_TIME_DISPLAY_PRIORITY, (void *) this);
-     						 
-    if ( fPlaybackThread == B_NO_ERROR )
-   		resume_thread(fPlaybackThread);
-   		   			
+	fPlaybackThread = spawn_thread( play_midi_file, "MIDIPlayer", B_REAL_TIME_DISPLAY_PRIORITY, (void *) this);
+
+	if ( fPlaybackThread == B_NO_ERROR )
+		resume_thread(fPlaybackThread);
+
 }
 
 
@@ -564,7 +547,7 @@ void TMIDICue::PauseCue()
 
 void TMIDICue::ResumeCue()
 {
-	fSynthFile->Resume(); 	
+	fSynthFile->Resume();
 }
 
 //---------------------------------------------------------------------
@@ -589,7 +572,7 @@ void TMIDICue::StopCue(uint32 theTime)
 //
 
 void TMIDICue::CompletionHook(int32 arg)
-{			
+{
 }
 
 
@@ -617,15 +600,15 @@ void TMIDICue::OpenEditor()
 
 void TMIDICue::CalcDuration()
 {
-//	if (waitingForRecord) 
+//	if (waitingForRecord)
 //	{
 //		itsDuration = itsRecordTask->GetDefaultLength();
 //		itsFileTime = itsDuration;
-//	} 
-//	else 
+//	}
+//	else
 	{
 		fFileTime = fMIDIConductor->GetTotalTimeMSec();
-		
+
 		// Scale time by tempo ratio
 		fFileTime *= fMIDIConductor->GetTempoRatio();
 		fFileTime /= kTempoDivisor;
@@ -648,15 +631,14 @@ void TMIDICue::LoadCueIcon()
 {
 	BBitmap *cueIcon = GetAppIcons()->fMIDIUpIcon;
 
-	if (cueIcon)
-	{
+	if (cueIcon) {
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
-		area.OffsetBy(kResizeZoneWidth+5, 0);		
+		area.OffsetBy(kResizeZoneWidth+5, 0);
 		fCueIcon = new TBitmapView(area, "CueIcon", cueIcon, false);
-		AddChild(fCueIcon);		
-	}	
-	
+		AddChild(fCueIcon);
+	}
+
 	//	Pass up to parent
-	TCueView::LoadCueIcon();	
-	
+	TCueView::LoadCueIcon();
+
 }

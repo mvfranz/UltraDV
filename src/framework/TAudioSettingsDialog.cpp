@@ -82,20 +82,20 @@ void TAudioSettingsDialog::MessageReceived(BMessage* message)
 	switch (message->what)
 	{
 
-		case CANCEL_MSG:
-			Lock();
-			Quit();
-			break;
+	case CANCEL_MSG:
+		Lock();
+		Quit();
+		break;
 
-		case OK_MSG:
-			// Restore Settings
-			Lock();
-			Quit();
-			break;
+	case OK_MSG:
+		// Restore Settings
+		Lock();
+		Quit();
+		break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 }
 

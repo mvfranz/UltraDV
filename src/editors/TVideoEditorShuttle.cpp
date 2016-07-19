@@ -35,9 +35,9 @@
 //
 
 TVideoEditorShuttle::TVideoEditorShuttle(TVideoEditor *editor, BMessage *message) : BView(message)
-{	
+{
 	fEditor = editor;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -63,7 +63,7 @@ TVideoEditorShuttle::~TVideoEditorShuttle()
 void TVideoEditorShuttle::Init()
 {
 	// We don't need a background color
-	SetViewColor(B_TRANSPARENT_32_BIT);	
+	SetViewColor(B_TRANSPARENT_32_BIT);
 }
 
 
@@ -83,63 +83,62 @@ void TVideoEditorShuttle::Init()
 void TVideoEditorShuttle::Draw(BRect updateRect)
 {
 	PushState();
-	
+
 	const BRect bounds = Bounds();
-	
+
 	// Fill Rect
 	SetHighColor(kBeGrey);
 	FillRect(bounds);
-	
+
 	// Draw outline
 	SetHighColor(kTextHilite);
 	BPoint startPt, endPt;
 	startPt.Set(bounds.right, bounds.top);
-	endPt.Set(bounds.right, bounds.bottom);				
+	endPt.Set(bounds.right, bounds.bottom);
 	StrokeLine(startPt, endPt);
 	startPt.Set(bounds.right, bounds.bottom);
-	endPt.Set(bounds.left+1, bounds.bottom);												
+	endPt.Set(bounds.left+1, bounds.bottom);
 	StrokeLine(startPt, endPt);
 	SetHighColor(kTextShadow);
 	startPt.Set(bounds.left, bounds.bottom);
-	endPt.Set(bounds.left, bounds.top);												
+	endPt.Set(bounds.left, bounds.top);
 	StrokeLine(startPt, endPt);
 	startPt.Set(bounds.left, bounds.top);
-	endPt.Set(bounds.right-1, bounds.top);												
+	endPt.Set(bounds.right-1, bounds.top);
 	StrokeLine(startPt, endPt);
-	
+
 	// Draw black rect
 	BRect blackRect = bounds;
 	blackRect.InsetBy(1, 1);
 	SetHighColor(kBlack);
 	StrokeRect(blackRect);
-	
-	// 	Draw nubbies.  A nubbie is a 4 pixel block consisting of a black, white, light grey and 
+
+	//      Draw nubbies.  A nubbie is a 4 pixel block consisting of a black, white, light grey and
 	//	medium grey line.
-	int32 top 	 = bounds.top+2;
+	int32 top        = bounds.top+2;
 	int32 bottom = bounds.bottom-2;
-	for (int32 width = bounds.left+2; width < bounds.right-2; width++)
-	{
+	for (int32 width = bounds.left+2; width < bounds.right-2; width++) {
 		SetHighColor(kBlack);
-		startPt.Set(width, top);	
-		endPt.Set(width, bottom);	
+		startPt.Set(width, top);
+		endPt.Set(width, bottom);
 		StrokeLine(startPt, endPt);
 		width++;
 		SetHighColor(kWhite);
-		startPt.Set(width, top);	
-		endPt.Set(width, bottom);	
+		startPt.Set(width, top);
+		endPt.Set(width, bottom);
 		StrokeLine(startPt, endPt);
 		width++;
 		SetHighColor(kLightGrey);
-		startPt.Set(width, top);	
-		endPt.Set(width, bottom);	
+		startPt.Set(width, top);
+		endPt.Set(width, bottom);
 		StrokeLine(startPt, endPt);
 		width++;
 		SetHighColor(kMediumGrey);
-		startPt.Set(width, top);	
-		endPt.Set(width, bottom);	
+		startPt.Set(width, top);
+		endPt.Set(width, bottom);
 		StrokeLine(startPt, endPt);
 	}
-	
+
 	PopState();
 }
 

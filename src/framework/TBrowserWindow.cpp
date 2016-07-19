@@ -97,19 +97,19 @@ void TBrowserWindow::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
-		case SORTER_SELECT_MSG:
-		case SORTER_INVOKE_MSG:
-			fBrowserTabView->MessageReceived(message);
-			break;
+	case SORTER_SELECT_MSG:
+	case SORTER_INVOKE_MSG:
+		fBrowserTabView->MessageReceived(message);
+		break;
 
-		// Some cue is adding an entry_ref to our browser
-		case ADD_REF_MSG:
-			fBrowserTabView->MessageReceived(message);
-			break;
+	// Some cue is adding an entry_ref to our browser
+	case ADD_REF_MSG:
+		fBrowserTabView->MessageReceived(message);
+		break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 }
 

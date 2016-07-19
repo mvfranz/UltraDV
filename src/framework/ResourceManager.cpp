@@ -44,8 +44,8 @@ BBitmap *GetCicnFromResource(const char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	cicn 		*icon;
+	size_t size;
+	cicn            *icon;
 
 	BResources res;
 	status_t err;
@@ -56,10 +56,9 @@ BBitmap *GetCicnFromResource(const char *theResource)
 	if (!icon)
 		return NULL;
 
-	// 	Swap bytes if needed.  We do this because the resources are currently
-	// 	built on Macintosh BeOS
-	if (B_HOST_IS_LENDIAN)
-	{
+	//      Swap bytes if needed.  We do this because the resources are currently
+	//      built on Macintosh BeOS
+	if (B_HOST_IS_LENDIAN) {
 		status_t retVal;
 		retVal = swap_data(B_INT16_TYPE, &icon->width, sizeof(int16), B_SWAP_BENDIAN_TO_HOST);
 		retVal = swap_data(B_INT16_TYPE, &icon->height, sizeof(int16), B_SWAP_BENDIAN_TO_HOST);
@@ -93,8 +92,8 @@ BBitmap *GetIcon8FromResource(const char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res(&file);
 	data = (BBitmap *)res.FindResource('bits', theResource, &size);
@@ -128,8 +127,8 @@ BBitmap *GetIcon16FromResource(const char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res(&file);
 	data = (BBitmap *)res.FindResource('bits', theResource, &size);
@@ -163,8 +162,8 @@ BBitmap *GetIcon32FromResource(const char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res(&file);
 	data = (BBitmap *)res.FindResource('bits', theResource, &size);
@@ -198,8 +197,8 @@ BBitmap *GetMICNFromResource(const char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res(&file);
 	data = (BBitmap *)res.FindResource('MICN', theResource, &size);
@@ -234,8 +233,8 @@ BBitmap *GetICONFromResource(const char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res(&file);
 	data = (BBitmap *)res.FindResource('ICON', theResource, &size);
@@ -271,14 +270,13 @@ BMessage *GetWindowFromResource(const char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	BMessage 	*message = new BMessage();
-	void 		*windowData = NULL;
+	size_t size;
+	BMessage        *message = new BMessage();
+	void            *windowData = NULL;
 
 	BResources res(&file);
 
-	if( res.HasResource('ARCV', theResource ) )
-	{
+	if( res.HasResource('ARCV', theResource ) ) {
 		windowData = (BMessage *)res.FindResource('ARCV', theResource, &size);
 		if (!windowData)
 			return NULL;
@@ -286,9 +284,7 @@ BMessage *GetWindowFromResource(const char *theResource)
 		message->Unflatten((const char *)windowData);
 
 		return (message);
-	}
-	else
-	{
+	} else   {
 		// We have an error condition
 		return (NULL);
 	}
@@ -314,14 +310,13 @@ BMessage *GetMenuFromResource(const char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	BMessage 	*message = new BMessage();
-	void 		*windowData = NULL;
+	size_t size;
+	BMessage        *message = new BMessage();
+	void            *windowData = NULL;
 
 	BResources res(&file);
 
-	if( res.HasResource('ARCV', theResource ) )
-	{
+	if( res.HasResource('ARCV', theResource ) ) {
 		windowData = (BMessage *)res.FindResource('ARCV', theResource, &size);
 		if (!windowData)
 			return NULL;
@@ -329,9 +324,7 @@ BMessage *GetMenuFromResource(const char *theResource)
 		message->Unflatten((const char *)windowData);
 
 		return (message);
-	}
-	else
-	{
+	} else   {
 		// We have an error condition
 		return (NULL);
 	}
@@ -355,7 +348,7 @@ bool GetCursorFromResource(const char *theResource, Cursor *theCursor)
 	if (file.InitCheck())
 		return false;
 
-	size_t 	size;
+	size_t size;
 	Cursor *data;
 
 	BResources res(&file);
@@ -401,8 +394,8 @@ bool GetString(const char *theResource, int32 id, char *theStr)
 	if (file.InitCheck())
 		return false;
 
-	size_t 	size;
-	void 	*data;
+	size_t size;
+	void    *data;
 
 	BResources res(&file);
 	data = res.FindResource('str#', theResource, &size);
@@ -412,14 +405,13 @@ bool GetString(const char *theResource, int32 id, char *theStr)
 	//
 	//	Locate string within data to return
 
-	char *dataPtr 	= (char *)data;
-	char *destPtr 	= theStr;
+	char *dataPtr   = (char *)data;
+	char *destPtr   = theStr;
 
-	int32 index 	= 0;
+	int32 index     = 0;
 
 	//	Increment data pointer until we inset to correct amount
-	while( index < (id-1) )
-	{
+	while( index < (id-1) ) {
 		if ( dataPtr[0] == kSeperator)
 			index++;
 
@@ -427,8 +419,7 @@ bool GetString(const char *theResource, int32 id, char *theStr)
 	}
 
 	//	Now copy string data over
-	while( dataPtr[0] != kSeperator)
-	{
+	while( dataPtr[0] != kSeperator) {
 		destPtr[0] = dataPtr[0];
 
 		//	Increment

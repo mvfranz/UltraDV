@@ -12,7 +12,8 @@
 // constructor
 //
 
-BaseCueChunk::BaseCueChunk(){
+BaseCueChunk::BaseCueChunk()
+{
 	printf("BaseCueChunk: call to incomplete constructor - fix me\n");
 	CueID = 0; // fix this
 	// should set fCueID ??
@@ -25,7 +26,8 @@ BaseCueChunk::BaseCueChunk(){
 // destructor
 //
 
-BaseCueChunk::~BaseCueChunk(){
+BaseCueChunk::~BaseCueChunk()
+{
 
 }
 

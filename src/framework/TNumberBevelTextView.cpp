@@ -96,13 +96,10 @@ void TNumberBevelTextView::Draw(BRect inRect)
 	bounds.InsetBy(1, 1);
 
 	// Draw blue outline is text view has focus
-	if (fTextView->IsFocus())
-	{
+	if (fTextView->IsFocus()) {
 		SetHighColor(kBeFocusBlue);
 		StrokeRect(bounds);
-	}
-	else
-	{
+	} else   {
 		SetHighColor(kBeShadow);
 		startPt.Set(bounds.left, bounds.bottom);
 		endPt.Set(bounds.left, bounds.top);
@@ -225,9 +222,9 @@ void TNumberBevelTextView::MessageReceived(BMessage *message)
 	switch(message->what)
 	{
 
-		default:
-			BView::MessageReceived(message);
-			break;
+	default:
+		BView::MessageReceived(message);
+		break;
 	}
 
 }

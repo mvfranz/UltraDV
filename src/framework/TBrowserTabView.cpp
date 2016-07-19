@@ -25,7 +25,7 @@
 #include "TMediaTabView.h"
 #include "TSettingsTabView.h"
 #include "TTransitionsTabView.h"
-#include "TSorterContainer.h"		// For SORTER MSG decls
+#include "TSorterContainer.h"           // For SORTER MSG decls
 
 #include "TBrowserTabView.h"
 
@@ -38,7 +38,7 @@
 
 TBrowserTabView::TBrowserTabView( BRect frame, const char *name) :
 //				BTabView(frame, name, B_WIDTH_AS_USUAL, B_FOLLOW_ALL, B_WILL_DRAW|B_FULL_UPDATE_ON_RESIZE|B_NAVIGABLE_JUMP|B_FRAME_EVENTS|B_NAVIGABLE)
-				BTabView(frame, name)
+	BTabView(frame, name)
 {
 	Init();
 }
@@ -129,8 +129,7 @@ status_t TBrowserTabView::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BTabView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 
 	}
 
@@ -152,27 +151,27 @@ void TBrowserTabView::MessageReceived(BMessage *message)
 {
 	switch (message->what)
 	{
-		case SORTER_SELECT_MSG:
-		case SORTER_INVOKE_MSG:
-		{
-			BTab* tab = TabAt(Selection());
-			BView* tabView = tab->View();
-			tabView->MessageReceived(message);
-			break;
-		}
+	case SORTER_SELECT_MSG:
+	case SORTER_INVOKE_MSG:
+	{
+		BTab* tab = TabAt(Selection());
+		BView* tabView = tab->View();
+		tabView->MessageReceived(message);
+		break;
+	}
 
-		// Some cue is adding an entry_ref to our browser
-		case ADD_REF_MSG:
-		{
-			BTab* tab = TabAt(Selection());
-			BView* tabView = tab->View();
-			tabView->MessageReceived(message);
-			break;
-		}
+	// Some cue is adding an entry_ref to our browser
+	case ADD_REF_MSG:
+	{
+		BTab* tab = TabAt(Selection());
+		BView* tabView = tab->View();
+		tabView->MessageReceived(message);
+		break;
+	}
 
-		default:
-			BTabView::MessageReceived(message);
-			break;
+	default:
+		BTabView::MessageReceived(message);
+		break;
 	}
 }
 
@@ -274,17 +273,17 @@ void TBrowserTabView::MouseMoved( BPoint where, uint32 code, const BMessage *mes
 	switch(code)
 	{
 
-		case B_ENTERED_VIEW:
-			break;
+	case B_ENTERED_VIEW:
+		break;
 
-		case B_INSIDE_VIEW:
-			break;
+	case B_INSIDE_VIEW:
+		break;
 
-		case B_EXITED_VIEW:
-			break;
+	case B_EXITED_VIEW:
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	BTabView::MouseMoved(where, code, message);

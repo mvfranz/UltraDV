@@ -65,8 +65,8 @@ TExportZone::TExportZone(BMessage *data) : BView(data)
 	fCueSheetWindow = NULL;
 
 	//	Load left and right slider tabs
-	fInMarker	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderLeft;
-	fOutMarker	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderRight;
+	fInMarker       = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderLeft;
+	fOutMarker      = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderRight;
 
 	//	Initialize drag type to non
 	fDragType = kNoDrag;
@@ -116,8 +116,8 @@ void TExportZone::Init()
 	fExportChannel.Set(fInRect.right, fInRect.top, fOutRect.left, fInRect.bottom-1);
 
 	//	Load left and right slider tabs
-	fInMarker	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderLeft;
-	fOutMarker	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderRight;
+	fInMarker       = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderLeft;
+	fOutMarker      = static_cast<MuseumApp *>(be_app)->fMuseumIcons->fExportSliderRight;
 
 	//	Initialize drag type to non
 	fDragType = kNoDrag;
@@ -159,8 +159,7 @@ status_t TExportZone::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TExportZone");
 
@@ -170,8 +169,7 @@ status_t TExportZone::Archive(BMessage *data, bool deep) const
 		data->AddRect("OutRect", fOutRect);
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -207,35 +205,32 @@ void TExportZone::MouseDown(BPoint where)
 	fDragType = kNoDrag;
 
 	// Check to see which button is down
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	Window()->CurrentMessage()->FindInt32("buttons", (int32 *)&buttons);
 
-	uint32 	type;
-	int32	count = 0;
+	uint32 type;
+	int32 count = 0;
 	BMessage *message = Window()->CurrentMessage();
 
 	// Determine which button has been clicked
 	switch(buttons)
 	{
-		case B_PRIMARY_MOUSE_BUTTON:
-			if (B_OK == message->GetInfo("clicks", &type, &count) )
-			{
-				int32 clickCount = message->FindInt32("clicks", count-1);
-				//	Handle double click
-				if ( (clickCount == 2) )
-				{
-					HandleDoubleClick(where);
-				}
-				//	Determine where mouse click occured
-				else
-				{
-					HandleClick(where);
-				}
+	case B_PRIMARY_MOUSE_BUTTON:
+		if (B_OK == message->GetInfo("clicks", &type, &count) ) {
+			int32 clickCount = message->FindInt32("clicks", count-1);
+			//	Handle double click
+			if ( (clickCount == 2) ) {
+				HandleDoubleClick(where);
 			}
-			break;
+			//	Determine where mouse click occured
+			else{
+				HandleClick(where);
+			}
+		}
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -281,28 +276,28 @@ void TExportZone::MouseMoved( BPoint where, uint32 code, const BMessage *message
 	// Determine type of movement
 	switch(code)
 	{
-		case B_ENTERED_VIEW:
-			break;
+	case B_ENTERED_VIEW:
+		break;
 
-		//	Determie tpye of tracking to handle
-		case B_INSIDE_VIEW:
-			{
+	//	Determie tpye of tracking to handle
+	case B_INSIDE_VIEW:
+	{
 
 
-			}
-			break;
+	}
+	break;
 
-		case B_EXITED_VIEW:
-			// Send tick off the screen
-			where.x = 0;
-			break;
+	case B_EXITED_VIEW:
+		// Send tick off the screen
+		where.x = 0;
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	// Only update the tick if we aren't tracking position indicator
-	//uint32 	buttons = 0;
+	//uint32        buttons = 0;
 
 	//Window()->CurrentMessage()->FindInt32("buttons", (int32 *)&buttons);
 	//if (!buttons)
@@ -326,18 +321,15 @@ void TExportZone::HandleClick(BPoint where)
 	//
 
 	//	In InRect?
-	if (fInRect.Contains(where))
-	{
+	if (fInRect.Contains(where)) {
 		fDragType = kInDrag;
 	}
 	//	fOutRect?
-	else if (fOutRect.Contains(where))
-	{
+	else if (fOutRect.Contains(where)) {
 		fDragType = kOutDrag;
 	}
 	//	fExportChannel?
-	else if (fExportChannel.Contains(where) )
-	{
+	else if (fExportChannel.Contains(where) ) {
 		//	Handle zone drag special
 		TrackZone(where);
 	}
@@ -368,16 +360,16 @@ void TExportZone::HandleDoubleClick(BPoint where)
 	int32 pixelWidth = TimeToPixels( Duration(), GetCurrentTimeFormat(), GetCurrentResolution() );
 
 	//	Update tracking rects
-	fInRect.left 	= bounds.left;
-	fInRect.right 	= fInRect.left + kExportSliderWidth;
+	fInRect.left    = bounds.left;
+	fInRect.right   = fInRect.left + kExportSliderWidth;
 
 	//	Set up out rect.  Check for right side length bounds violation
 	int32 outRight = (bounds.left + winBounds.Width()) - kHeaderWidth;
 	if (outRight > pixelWidth)
 		outRight = pixelWidth;
 
-	fOutRect.right	 = outRight;
-	fOutRect.left 	 = fOutRect.right - kExportSliderWidth;
+	fOutRect.right   = outRight;
+	fOutRect.left    = fOutRect.right - kExportSliderWidth;
 
 	//	Update fExportChannel
 	fExportChannel.left  = fInRect.right;
@@ -408,35 +400,35 @@ void TExportZone::HandleDoubleClick(BPoint where)
 
 void TExportZone::MessageReceived(BMessage *message)
 {
-		switch(message->what)
+	switch(message->what)
+	{
+
+	// Mouse Tracking Messages
+	case MW_MOUSE_MOVED:
+	{
+		BPoint mousePt;
+		message->FindPoint("where", &mousePt);
+
+		switch(fDragType)
 		{
+		case kInDrag:
+			TrackInMarker(mousePt);
+			break;
 
-			// Mouse Tracking Messages
-			case MW_MOUSE_MOVED:
-				{
-					BPoint mousePt;
-					message->FindPoint("where", &mousePt);
+		case kOutDrag:
+			TrackOutMarker(mousePt);
+			break;
 
-					switch(fDragType)
-					{
-						case kInDrag:
-							TrackInMarker(mousePt);
-							break;
-
-						case kOutDrag:
-							TrackOutMarker(mousePt);
-							break;
-
-						default:
-							break;
-					}
-				}
-				break;
-
-			default:
-				BView::MessageReceived(message);
-				break;
+		default:
+			break;
 		}
+	}
+	break;
+
+	default:
+		BView::MessageReceived(message);
+		break;
+	}
 }
 
 
@@ -496,8 +488,7 @@ void TExportZone::Draw(BRect updateRect)
 	channelRect.bottom--;
 
 	// Draw export channel
-	if (updateRect.Intersects(channelRect) )
-	{
+	if (updateRect.Intersects(channelRect) ) {
 		BRect fillRect = updateRect & channelRect;
 
 		//	Fill
@@ -542,16 +533,14 @@ void TExportZone::DrawInMarker(BRect updateRect)
 	BPoint drawPt;
 
 	// Draw left marker
-	if (updateRect.Intersects(fInRect) )
-	{
+	if (updateRect.Intersects(fInRect) ) {
 		// Draw indicator in new location
 		drawPt.Set(fInRect.left, fInRect.top);
 		DrawBitmap(fInMarker, drawPt);
 	}
 
 	// Draw right marker
-	if (updateRect.Intersects(fOutRect) )
-	{
+	if (updateRect.Intersects(fOutRect) ) {
 		// Draw indicator in new location
 		drawPt.Set(fOutRect.left, fOutRect.top);
 		DrawBitmap(fOutMarker, drawPt);
@@ -577,8 +566,7 @@ void TExportZone::DrawOutMarker(BRect updateRect)
 	BPoint drawPt;
 
 	// Draw right marker
-	if (updateRect.Intersects(fOutRect) )
-	{
+	if (updateRect.Intersects(fOutRect) ) {
 		// Draw indicator in new location
 		drawPt.Set(fOutRect.left, fOutRect.top);
 		DrawBitmap(fOutMarker, drawPt);
@@ -607,15 +595,15 @@ void TExportZone::ResolutionChanged(int32 resizePixels)
 	uint32 startTime = fCueSheetWindow->GetCueSheetView()->GetExportStartTime();
 	uint32 stopTime  = fCueSheetWindow->GetCueSheetView()->GetExportStopTime();
 
-	uint32 inPixels 	= TimeToPixels( startTime, GetCurrentTimeFormat(), GetCurrentResolution());
+	uint32 inPixels         = TimeToPixels( startTime, GetCurrentTimeFormat(), GetCurrentResolution());
 	uint32 outPixels = TimeToPixels( stopTime, GetCurrentTimeFormat(), GetCurrentResolution());
 
 	//	Update slider zones
-	fInRect.left 	= inPixels;
-	fInRect.right 	= fInRect.left + kExportSliderWidth;
+	fInRect.left    = inPixels;
+	fInRect.right   = fInRect.left + kExportSliderWidth;
 
-	fOutRect.right	 = outPixels;
-	fOutRect.left 	 = fOutRect.right - kExportSliderWidth;
+	fOutRect.right   = outPixels;
+	fOutRect.left    = fOutRect.right - kExportSliderWidth;
 
 	// Update channel zone
 	fExportChannel.left  = fInRect.right;
@@ -664,12 +652,9 @@ void TExportZone::TrackInMarker(BPoint mousePt)
 	//	Clean up old position
 	BRect updateRect = oldRect;
 
-	if (oldRect.left <= fInRect.left)
-	{
+	if (oldRect.left <= fInRect.left) {
 		updateRect.right = fInRect.right;
-	}
-	else
-	{
+	} else   {
 		updateRect.left  = fInRect.left;
 	}
 
@@ -704,7 +689,7 @@ void TExportZone::TrackOutMarker(BPoint mousePt)
 		mousePt.x = fInRect.right + kExportSliderWidth;
 
 	// Save oldRect for redraw
-	BRect oldRect 	= fOutRect;
+	BRect oldRect   = fOutRect;
 	fOutRect.right = mousePt.x;
 	fOutRect.left = fOutRect.right - kExportSliderWidth;
 
@@ -719,12 +704,9 @@ void TExportZone::TrackOutMarker(BPoint mousePt)
 	//	Clean up old position
 	BRect updateRect = oldRect;
 
-	if (fOutRect.left <= oldRect.left)
-	{
+	if (fOutRect.left <= oldRect.left) {
 		updateRect.left = fOutRect.left;
-	}
-	else
-	{
+	} else   {
 		updateRect.right  = fOutRect.right;
 	}
 
@@ -750,21 +732,19 @@ void TExportZone::TrackOutMarker(BPoint mousePt)
 void TExportZone::TrackZone(BPoint mousePt)
 {
 	//	Set up variables
-	const float width 	= fExportChannel.Width();
-	const int32 delta 	= mousePt.x - fExportChannel.left;
+	const float width       = fExportChannel.Width();
+	const int32 delta       = mousePt.x - fExportChannel.left;
 
 	//	Save mousePt
 	BPoint oldPt = mousePt;
 
 	// Check to see if button is down
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	GetMouse(&mousePt, &buttons, true);
 
 	//	Track while mouse is down
-	while(buttons)
-	{
-		if (mousePt.x != oldPt.x)
-		{
+	while(buttons) {
+		if (mousePt.x != oldPt.x) {
 			// Save oldRect for redraw
 			BRect oldRect = fExportChannel;
 			oldRect.left  -= kExportSliderWidth;
@@ -775,26 +755,24 @@ void TExportZone::TrackZone(BPoint mousePt)
 			fExportChannel.right = fExportChannel.left + width;
 
 			//	Correct left side bounds violation
-			if ( fExportChannel.left - kExportSliderWidth < 0)
-			{
+			if ( fExportChannel.left - kExportSliderWidth < 0) {
 				fExportChannel.left = 0 + kExportSliderWidth;
 				fExportChannel.right = fExportChannel.left + width;
 			}
 
 			//	Correct right side bounds violation
 			uint32 outPixels = TimeToPixels( Duration() - StartTime(), GetCurrentTimeFormat(), GetCurrentResolution());
-			if ( fExportChannel.right + kExportSliderWidth > outPixels)
-			{
+			if ( fExportChannel.right + kExportSliderWidth > outPixels) {
 				fExportChannel.right = outPixels - kExportSliderWidth;
 				fExportChannel.left  = fExportChannel.right - width;
 			}
 
 			//	Update fInRect and fInRect
-			fInRect.left 	= fExportChannel.left - kExportSliderWidth;
-			fInRect.right 	= fInRect.left + kExportSliderWidth;
+			fInRect.left    = fExportChannel.left - kExportSliderWidth;
+			fInRect.right   = fInRect.left + kExportSliderWidth;
 
-			fOutRect.left 	 = fExportChannel.right;
-			fOutRect.right	 = fOutRect.left + kExportSliderWidth;
+			fOutRect.left    = fExportChannel.right;
+			fOutRect.right   = fOutRect.left + kExportSliderWidth;
 
 			//	Update CueSheet variables
 			uint32 newInTime  = StartTime() + PixelsToTime(fInRect.left, GetCurrentTimeFormat(), GetCurrentResolution());
@@ -806,13 +784,11 @@ void TExportZone::TrackZone(BPoint mousePt)
 			BRect updateRect = oldRect;
 
 			//	Did we move forward
-			if (updateRect.left < fInRect.left)
-			{
+			if (updateRect.left < fInRect.left) {
 				updateRect.right = fOutRect.right;
 			}
 			//	We moved back
-			else
-			{
+			else{
 				updateRect.left = fInRect.left;
 			}
 
@@ -858,8 +834,7 @@ void TExportZone::TrackZone(BPoint mousePt)
 
 void TExportZone::AttachedToWindow()
 {
-	if(fCueSheetWindow == NULL)
-	{
+	if(fCueSheetWindow == NULL) {
 		fCueSheetWindow = (TCueSheetWindow *)Window();
 	}
 
@@ -878,5 +853,5 @@ void TExportZone::AttachedToWindow()
 //
 void TExportZone::SetParent(TCueSheetWindow *parent)
 {
- 	fCueSheetWindow = parent;
+	fCueSheetWindow = parent;
 }

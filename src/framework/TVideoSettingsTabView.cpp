@@ -38,7 +38,7 @@
 
 TVideoSettingsTabView::TVideoSettingsTabView(TVideoSettingsView *parent, BRect frame, const char *name) :
 //				BTabView(frame, name, B_WIDTH_AS_USUAL, B_FOLLOW_ALL, B_WILL_DRAW|B_FULL_UPDATE_ON_RESIZE|B_NAVIGABLE_JUMP|B_FRAME_EVENTS|B_NAVIGABLE)
-				BTabView(frame, name)
+	BTabView(frame, name)
 {
 	fParent = parent,
 
@@ -132,8 +132,7 @@ status_t TVideoSettingsTabView::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BTabView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 
 	}
 

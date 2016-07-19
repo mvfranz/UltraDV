@@ -52,27 +52,21 @@ TPlaybackList::~TPlaybackList()
 {
 
 	int32 totalItems = CountItems();
-	for ( int32 index = 0; index < totalItems; index++)
-	{
+	for ( int32 index = 0; index < totalItems; index++) {
 		TPlaybackEvent *playbackEvent = (TPlaybackEvent *)ItemAt(index);
 
 		// We have an event.  Clean up all items in it.
-		if (playbackEvent)
-		{
+		if (playbackEvent) {
 			int32 totalCueEvents = playbackEvent->fCueEvents.CountItems();
-			for ( int32 cueIndex = 0; cueIndex < totalCueEvents; cueIndex++)
-			{
+			for ( int32 cueIndex = 0; cueIndex < totalCueEvents; cueIndex++) {
 				TCueEvent *cueEvent = (TCueEvent *)playbackEvent->fCueEvents.ItemAt(cueIndex);
 
 				// Clean up cue events
-				if (cueEvent)
-				{
+				if (cueEvent) {
 					int32 totalEvents = cueEvent->fEvents.CountItems();
-					for ( int32 eventIndex = 0; eventIndex < totalEvents; eventIndex++)
-					{
+					for ( int32 eventIndex = 0; eventIndex < totalEvents; eventIndex++) {
 						BMessage *message = (BMessage *)cueEvent->fEvents.ItemAt(eventIndex);
-						if (message)
-						{
+						if (message) {
 							delete message;
 							message = NULL;
 						}

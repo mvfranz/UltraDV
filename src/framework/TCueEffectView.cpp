@@ -95,12 +95,9 @@ void TCueEffectView::MouseDown(BPoint where, bool doubleClick)
 		return;
 
 	//	Double click?
-	if (doubleClick)
-	{
+	if (doubleClick) {
 		//	Display effect dialog
-	}
-	else
-	{
+	} else   {
 		//	Deselect everyone
 		if (fIsSelected == false)
 			fCue->DeselectAllEffects();
@@ -110,98 +107,98 @@ void TCueEffectView::MouseDown(BPoint where, bool doubleClick)
 	}
 
 	/*
-	// Make sure point falls within our bounds or resize zones
-	if ( fChannelCue->CuePosition()->Contains(where) || PointInResizeZones(where) )
-	{
+	   // Make sure point falls within our bounds or resize zones
+	   if ( fChannelCue->CuePosition()->Contains(where) || PointInResizeZones(where) )
+	   {
 
-		uint32 	type;
-		int32	count = 0;
-		BMessage *message = fStage->Window()->CurrentMessage();
-		if (B_OK == message->GetInfo("clicks", &type, &count) )
-		{
-			int32 clickCount = message->FindInt32("clicks", count-1);
+	        uint32  type;
+	        int32	count = 0;
+	        BMessage *message = fStage->Window()->CurrentMessage();
+	        if (B_OK == message->GetInfo("clicks", &type, &count) )
+	        {
+	                int32 clickCount = message->FindInt32("clicks", count-1);
 
-			// Is this a double click?  If so, open editor
-			if (clickCount == 2)
-			{
-				//if(fChannelCue->HasEditor())
-				//	fChannelCue->OpenEditor();
-			}
-			//	Open transform dialog for current tool
-			else if ( IsOptionKeyDown() )
-			{
-				OpenCurrentToolDialog();
-			}
-			// else, begin MouseDown handling of StageCue
-			else
-			{
-				// Wait a short while before dragging
-				snooze(60 * 1000);
+	                // Is this a double click?  If so, open editor
+	                if (clickCount == 2)
+	                {
+	                        //if(fChannelCue->HasEditor())
+	                        //	fChannelCue->OpenEditor();
+	                }
+	                //	Open transform dialog for current tool
+	                else if ( IsOptionKeyDown() )
+	                {
+	                        OpenCurrentToolDialog();
+	                }
+	                // else, begin MouseDown handling of StageCue
+	                else
+	                {
+	                        // Wait a short while before dragging
+	                        snooze(60 * 1000);
 
-				// Determine which button has been clicked
-				uint32 	buttons = 0;
-				BMessage *message = fStage->Window()->CurrentMessage();
-				message->FindInt32("buttons", (long *)&buttons);
+	                        // Determine which button has been clicked
+	                        uint32  buttons = 0;
+	                        BMessage *message = fStage->Window()->CurrentMessage();
+	                        message->FindInt32("buttons", (long *)&buttons);
 
-				switch(buttons)
-				{
-					case B_PRIMARY_MOUSE_BUTTON:
-						{
-							//	Find location of click.  If it is the main body of the picture, they are moving the picture.
-							//	Otherwise, they are using a stage tool
-							if ( PointInResizeZones(where) )
-							{
-								switch(fStage->GetToolMode())
-								{
-									case kMoveMode:
-										DragPicture(where);
-										break;
+	                        switch(buttons)
+	                        {
+	                                case B_PRIMARY_MOUSE_BUTTON:
+	                                        {
+	                                                //	Find location of click.  If it is the main body of the picture, they are moving the picture.
+	                                                //	Otherwise, they are using a stage tool
+	                                                if ( PointInResizeZones(where) )
+	                                                {
+	                                                        switch(fStage->GetToolMode())
+	                                                        {
+	                                                                case kMoveMode:
+	                                                                        DragPicture(where);
+	                                                                        break;
 
-									case kRotateMode:
-										//Rotate(where);
-										break;
+	                                                                case kRotateMode:
+	                                                                        //Rotate(where);
+	                                                                        break;
 
-									case kCropMode:
-										//Crop(where);
-										break;
+	                                                                case kCropMode:
+	                                                                        //Crop(where);
+	                                                                        break;
 
-									case kScaleMode:
-										//Scale(where);
-										break;
+	                                                                case kScaleMode:
+	                                                                        //Scale(where);
+	                                                                        break;
 
-									case kShearMode:
-										break;
+	                                                                case kShearMode:
+	                                                                        break;
 
-									case kSkewMode:
-										break;
+	                                                                case kSkewMode:
+	                                                                        break;
 
-									case kPerspectiveMode:
-										break;
+	                                                                case kPerspectiveMode:
+	                                                                        break;
 
-									case kMirrorMode:
-										//Mirror(where);
-										break;
+	                                                                case kMirrorMode:
+	                                                                        //Mirror(where);
+	                                                                        break;
 
-									default:
-										break;
-								}
-							}
-							// They are dragging the picture...
-							else
-							{
-								DragPicture(where);
-							}
-						}
-						break;
+	                                                                default:
+	                                                                        break;
+	                                                        }
+	                                                }
+	                                                // They are dragging the picture...
+	                                                else
+	                                                {
+	                                                        DragPicture(where);
+	                                                }
+	                                        }
+	                                        break;
 
-					// Show stage cue menu
-					case B_SECONDARY_MOUSE_BUTTON:
-						OpenStageCueMenu(where);
-						break;
-				}
-			}
-		}
-	}*/
+	                                // Show stage cue menu
+	                                case B_SECONDARY_MOUSE_BUTTON:
+	                                        OpenStageCueMenu(where);
+	                                        break;
+	                        }
+	                }
+	        }
+	   }*/
 }
 
 //---------------------------------------------------------------------
@@ -214,49 +211,49 @@ void TCueEffectView::MouseDown(BPoint where, bool doubleClick)
 void TCueEffectView::MouseMoved( BPoint where)
 {
 	/*
-	//	Do nothing if window is not active
-	if (fStage->Window()->IsActive() == false)
-		return;
+	   //	Do nothing if window is not active
+	   if (fStage->Window()->IsActive() == false)
+	        return;
 
-	//	Determine tool mode and set proper cursor
-	switch(fStage->GetToolMode())
-	{
-		case kMoveMode:
-			SetMoveCursor(where);
-			break;
+	   //	Determine tool mode and set proper cursor
+	   switch(fStage->GetToolMode())
+	   {
+	        case kMoveMode:
+	                SetMoveCursor(where);
+	                break;
 
-		case kRotateMode:
-			SetRotateCursor(where);
-			break;
+	        case kRotateMode:
+	                SetRotateCursor(where);
+	                break;
 
-		case kCropMode:
-			SetCropCursor(where);
-			break;
+	        case kCropMode:
+	                SetCropCursor(where);
+	                break;
 
-		case kScaleMode:
-			SetScaleCursor(where);
-			break;
+	        case kScaleMode:
+	                SetScaleCursor(where);
+	                break;
 
-		case kShearMode:
-			SetShearCursor(where);
-			break;
+	        case kShearMode:
+	                SetShearCursor(where);
+	                break;
 
-		case kSkewMode:
-			SetSkewCursor(where);
-			break;
+	        case kSkewMode:
+	                SetSkewCursor(where);
+	                break;
 
-		case kPerspectiveMode:
-			SetPerspectiveCursor(where);
-			break;
+	        case kPerspectiveMode:
+	                SetPerspectiveCursor(where);
+	                break;
 
-		case kMirrorMode:
-			SetMirrorCursor(where);
-			break;
+	        case kMirrorMode:
+	                SetMirrorCursor(where);
+	                break;
 
-		default:
-			be_app->SetCursor(B_HAND_CURSOR);
-			break;
-	}*/
+	        default:
+	                be_app->SetCursor(B_HAND_CURSOR);
+	                break;
+	   }*/
 }
 
 
@@ -315,8 +312,7 @@ void TCueEffectView::Draw(BRect updateRect)
 void TCueEffectView::DrawSelectionRect()
 {
 	//	Draw Selection in red
-	if (fCue->LockLooper())
-	{
+	if (fCue->LockLooper()) {
 		fCue->PushState();
 		fCue->SetHighColor(kRed);
 		fCue->StrokeRect(fBounds);
@@ -335,8 +331,7 @@ void TCueEffectView::DrawSelectionRect()
 void TCueEffectView::InvalidateSelectionRect()
 {
 	//	Return to normal framed state
-	if (fCue->LockLooper())
-	{
+	if (fCue->LockLooper()) {
 		BPoint startPt, endPt;
 
 		fCue->PushState();
@@ -372,64 +367,64 @@ void TCueEffectView::InvalidateSelectionRect()
 
 void TCueEffectView::DragPicture(BPoint thePoint)
 {
-	/*BRect 	outline;
-	BPoint 	savePt;
-	uint32	buttons = 0;
+	/*BRect         outline;
+	   BPoint       savePt;
+	   uint32	buttons = 0;
 
-	fStage->GetMouse(&thePoint, &buttons, true);
+	   fStage->GetMouse(&thePoint, &buttons, true);
 
-	// Save point for future compare
-	savePt = thePoint;
+	   // Save point for future compare
+	   savePt = thePoint;
 
-	while (buttons)
-	{
-		if (thePoint != savePt)
-		{
-			// Move the stage cue
-			//
+	   while (buttons)
+	   {
+	        if (thePoint != savePt)
+	        {
+	                // Move the stage cue
+	                //
 
-			// Offset mousePt
-			float diffX = thePoint.x - savePt.x;
-			float diffY = thePoint.y - savePt.y;
+	                // Offset mousePt
+	                float diffX = thePoint.x - savePt.x;
+	                float diffY = thePoint.y - savePt.y;
 
-			//	Clean up old selection rect
-			DrawSelectionRect(false);
+	                //	Clean up old selection rect
+	                DrawSelectionRect(false);
 
-			// Adjust cue's stage location
-			outline = fChannelCue->CuePosition()->Enclosure();
-			outline.left 	+= diffX;
-			outline.top  	+= diffY;
-			outline.right 	+= diffX;
-			outline.bottom  += diffY;
-			fChannelCue->CuePosition()->Outline(outline);
+	                // Adjust cue's stage location
+	                outline = fChannelCue->CuePosition()->Enclosure();
+	                outline.left    += diffX;
+	                outline.top     += diffY;
+	                outline.right   += diffX;
+	                outline.bottom  += diffY;
+	                fChannelCue->CuePosition()->Outline(outline);
 
-			// Update resize zones
-			SetResizeZones();
+	                // Update resize zones
+	                SetResizeZones();
 
-			// Save mouse location for next compare
-			savePt = thePoint;
+	                // Save mouse location for next compare
+	                savePt = thePoint;
 
-			//	Draw new selection rect
-			DrawSelectionRect(false);
-		}
-		fStage->GetMouse(&thePoint, &buttons, true);
-	}
+	                //	Draw new selection rect
+	                DrawSelectionRect(false);
+	        }
+	        fStage->GetMouse(&thePoint, &buttons, true);
+	   }
 
-	//	Draw new position
-	if ( fStage->LockLooper())
-	{
-		//fStage->StageDraw(fChannelCue->GetCroppedArea(), GetCurrentTime());
-		fStage->StageDraw(fChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
-		fStage->Draw(fStage->Bounds());
-		fStage->UnlockLooper();
-	}*/
+	   //	Draw new position
+	   if ( fStage->LockLooper())
+	   {
+	        //fStage->StageDraw(fChannelCue->GetCroppedArea(), GetCurrentTime());
+	        fStage->StageDraw(fChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
+	        fStage->Draw(fStage->Bounds());
+	        fStage->UnlockLooper();
+	   }*/
 }
 
 //---------------------------------------------------------------------
 //	UpdateResizeZones
 //---------------------------------------------------------------------
 //
-// 	The effect view has been resized.  Update the mouse over zones that
+//      The effect view has been resized.  Update the mouse over zones that
 //	allow horizontal resizing
 //
 
@@ -453,8 +448,7 @@ void TCueEffectView::UpdateResizeZones()
 
 void TCueEffectView::Select()
 {
-	if (fIsSelected == false)
-	{
+	if (fIsSelected == false) {
 		//	Deselect all other cue effects
 
 		//	We are now selected
@@ -473,8 +467,7 @@ void TCueEffectView::Select()
 
 void TCueEffectView::Deselect()
 {
-	if (fIsSelected)
-	{
+	if (fIsSelected) {
 		fIsSelected = false;
 
 		//	Invalidate selection rect

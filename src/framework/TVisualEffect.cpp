@@ -15,13 +15,13 @@
 
 #include "BuildApp.h"
 
-#include <support/Debug.h>		// for ASSERT()
+#include <support/Debug.h>              // for ASSERT()
 
 #include "AppTypes.h"
 #include "TCueEffect.h"
 
-#include "TCueData.h"			// For IsVisual()
-#include "TCuePosition.h"		// For class decl
+#include "TCueData.h"                   // For IsVisual()
+#include "TCuePosition.h"               // For class decl
 
 #include "TVisualEffect.h"
 
@@ -90,7 +90,7 @@ bool TVisualEffect::WorksWith(const TCueData* cue) const
 //
 
 BBitmap* TVisualEffect::TransformBitmap(uint32 time, const BBitmap* source,
-			const TCuePosition& registration, DisplayQuality quality)
+                                        const TCuePosition& registration, DisplayQuality quality)
 {
 	// Default: do nothing
 	return 0;
@@ -106,52 +106,52 @@ int32 TVisualEffect::GetBitmapPixelSize(color_space colorSpace) const
 {
 	switch(colorSpace)
 	{
-		// Unused and non-values
-		case B_NO_COLOR_SPACE:
-		case B_RGB24:
-		case B_RGB24_BIG:
-		case B_YUV422:
-		case B_YUV411:
-		case B_YUV420:
-		case B_YUV444:
-		case B_YUV9:
-		case B_YUV12:
-			return(-1);
-			break;
+	// Unused and non-values
+	case B_NO_COLOR_SPACE:
+	case B_RGB24:
+	case B_RGB24_BIG:
+	case B_YUV422:
+	case B_YUV411:
+	case B_YUV420:
+	case B_YUV444:
+	case B_YUV9:
+	case B_YUV12:
+		return(-1);
+		break;
 
-		// 32-bit
-		case B_RGB32:
-		case B_RGBA32:
-		case B_RGB32_BIG:
-		case B_RGBA32_BIG:
-			return sizeof(uint32);
-			break;
+	// 32-bit
+	case B_RGB32:
+	case B_RGBA32:
+	case B_RGB32_BIG:
+	case B_RGBA32_BIG:
+		return sizeof(uint32);
+		break;
 
-		// 16-bit
-		case B_RGB16:
-		case B_RGB15:
-		case B_RGBA15:
-		case B_RGB16_BIG:
-		case B_RGB15_BIG:
-		case B_RGBA15_BIG:
-			return sizeof(uint16);
-			break;
+	// 16-bit
+	case B_RGB16:
+	case B_RGB15:
+	case B_RGBA15:
+	case B_RGB16_BIG:
+	case B_RGB15_BIG:
+	case B_RGBA15_BIG:
+		return sizeof(uint16);
+		break;
 
 
-		// 8-bit
-		case B_CMAP8:
-		case B_GRAY8:
-			return sizeof(uchar);
-			break;
+	// 8-bit
+	case B_CMAP8:
+	case B_GRAY8:
+		return sizeof(uchar);
+		break;
 
-		// Monochrome
-		case B_GRAY1:
-			return sizeof(uchar);
-			break;
+	// Monochrome
+	case B_GRAY1:
+		return sizeof(uchar);
+		break;
 
-		default:
-			return(-1);
-			break;
+	default:
+		return(-1);
+		break;
 
 	}
 }

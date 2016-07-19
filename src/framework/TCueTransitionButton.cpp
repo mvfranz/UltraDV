@@ -39,7 +39,7 @@
 //
 
 TCueTransitionButton::TCueTransitionButton( TCueView *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler, uint32 flags, bool transitionIn) :
-											 TChannelCueButton(parent, bounds, name, offBitmap, onBitmap, handler, flags)
+	TChannelCueButton(parent, bounds, name, offBitmap, onBitmap, handler, flags)
 {
 
 	fTransitionIn = transitionIn;
@@ -115,8 +115,7 @@ status_t TCueTransitionButton::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = TChannelCueButton::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TCueTransitionButton");
 
@@ -144,18 +143,14 @@ status_t TCueTransitionButton::Archive(BMessage *data, bool deep) const
 
 void TCueTransitionButton::AttachedToWindow()
 {
-	if (fCue == NULL)
-	{
-		fCue 		= (TCueView *)Parent();
-		fHandler 	= fCue;
+	if (fCue == NULL) {
+		fCue            = (TCueView *)Parent();
+		fHandler        = fCue;
 
-		if (fTransitionIn)
-		{
+		if (fTransitionIn) {
 			fOffBitmap = GetAppIcons()->fTransitionIn;
 			fOnBitmap  = GetAppIcons()->fTransitionIn;
-		}
-		else
-		{
+		} else   {
 			fOffBitmap = GetAppIcons()->fTransitionOut;
 			fOnBitmap  = GetAppIcons()->fTransitionOut;
 		}
@@ -180,29 +175,28 @@ void TCueTransitionButton::MessageReceived(BMessage *message)
 {
 	switch (message->what)
 	{
-		// Set icon button to new transition
-		case CHANGE_ICON_MSG:
-			{
-				const char *namePtr;
-				message->FindString("TransitionName", &namePtr);
-				BBitmap *offBitmap= GetAppIcons()->GetIconByName(namePtr);
-				BBitmap *onBitmap = GetAppIcons()->GetIconByName(namePtr);
-				if (offBitmap)
-				{
-					fOffBitmap = offBitmap;
-					fOnBitmap  = onBitmap;
-					Invalidate();
-				}
+	// Set icon button to new transition
+	case CHANGE_ICON_MSG:
+	{
+		const char *namePtr;
+		message->FindString("TransitionName", &namePtr);
+		BBitmap *offBitmap= GetAppIcons()->GetIconByName(namePtr);
+		BBitmap *onBitmap = GetAppIcons()->GetIconByName(namePtr);
+		if (offBitmap) {
+			fOffBitmap = offBitmap;
+			fOnBitmap  = onBitmap;
+			Invalidate();
+		}
 
-				// Tell cue view
-				Parent()->Window()->PostMessage(message, Parent());
-			}
-			break;
+		// Tell cue view
+		Parent()->Window()->PostMessage(message, Parent());
+	}
+	break;
 
 
-		default:
-			TChannelCueButton::MessageReceived(message);
-			break;
+	default:
+		TChannelCueButton::MessageReceived(message);
+		break;
 	}
 }
 

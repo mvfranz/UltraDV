@@ -38,7 +38,7 @@
 
 TAudioSettingsTabView::TAudioSettingsTabView(TAudioSettingsView *parent, BRect frame, const char *name) :
 //				BTabView(frame, name, B_WIDTH_AS_USUAL, B_FOLLOW_ALL, B_WILL_DRAW|B_FULL_UPDATE_ON_RESIZE|B_NAVIGABLE_JUMP|B_FRAME_EVENTS|B_NAVIGABLE)
-				BTabView(frame, name)
+	BTabView(frame, name)
 {
 	fParent = parent,
 
@@ -143,8 +143,7 @@ status_t TAudioSettingsTabView::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BTabView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 
 	}
 
@@ -165,9 +164,9 @@ void TAudioSettingsTabView::MessageReceived(BMessage *message)
 	switch (message->what)
 	{
 
-		default:
-			BTabView::MessageReceived(message);
-			break;
+	default:
+		BTabView::MessageReceived(message);
+		break;
 	}
 }
 
@@ -263,17 +262,17 @@ void TAudioSettingsTabView::MouseMoved( BPoint where, uint32 code, const BMessag
 	switch(code)
 	{
 
-		case B_ENTERED_VIEW:
-			break;
+	case B_ENTERED_VIEW:
+		break;
 
-		case B_INSIDE_VIEW:
-			break;
+	case B_INSIDE_VIEW:
+		break;
 
-		case B_EXITED_VIEW:
-			break;
+	case B_EXITED_VIEW:
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	BTabView::MouseMoved(where, code, message);

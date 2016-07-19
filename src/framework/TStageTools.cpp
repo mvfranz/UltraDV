@@ -38,7 +38,7 @@
 const int32 kStatusRectHeight = 14;
 
 // Set the window size
-const BRect kMediaCueBounds(0, 0, ( kStageToolWidth * 2) - 2, (kStageToolHeight * 4) - 4 + kStatusRectHeight);
+const BRect kMediaCueBounds(0, 0, (kStageToolWidth * 2) - 2, (kStageToolHeight * 4) - 4 + kStatusRectHeight);
 
 
 
@@ -48,8 +48,8 @@ const BRect kMediaCueBounds(0, 0, ( kStageToolWidth * 2) - 2, (kStageToolHeight 
 //
 //
 
-TStageTools::TStageTools():BWindow( kMediaCueBounds, "Tools", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
-									  B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
+TStageTools::TStageTools() : BWindow( kMediaCueBounds, "Tools", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
+	                              B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
 {
 	Init();
 }
@@ -105,16 +105,16 @@ void TStageTools::MessageReceived(BMessage* message)
 
 	switch (message->what)
 	{
-		// 	Update the status bar to diplay name of media cue
-		//	Inform stage that current tool has been changed
-		case UPDATE_STATUS_TEXT_MSG:
-			fToolsStatusView->MessageReceived(message);
-			static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->PostMessage(message, static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->GetStageView());
-			break;
+	//      Update the status bar to diplay name of media cue
+	//	Inform stage that current tool has been changed
+	case UPDATE_STATUS_TEXT_MSG:
+		fToolsStatusView->MessageReceived(message);
+		static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->PostMessage(message, static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->GetStageView());
+		break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 
 }

@@ -8,13 +8,13 @@ void mul_hermitian(float *a, float *b, int n)
 {
 	int k, half = n>>1;
 	register float c, d, e, f;
-	
+
 	b[0] *= a[0];
 	b[half] *= a[half];
-	for(k=1;k<half;k++) {
-		c = a[k]; 
-		d = b[k]; 
-		e = a[n-k]; 
+	for(k=1; k<half; k++) {
+		c = a[k];
+		d = b[k];
+		e = a[n-k];
 		f = b[n-k];
 		b[n-k] = c*f + d*e;
 		b[k] = c*d - e*f;
@@ -22,38 +22,39 @@ void mul_hermitian(float *a, float *b, int n)
 }
 
 void scramble_real(float *x, int n)
-{	
+{
 	register int i,j,k;
 	float tmp;
-	
-	for(i=0,j=0;i<n-1;i++) {
+
+	for(i=0,j=0; i<n-1; i++) {
 		if(i<j) {
 			tmp = x[j];
 			x[j]=x[i];
 			x[i]=tmp;
-	  	}
+		}
 		k = n/2;
 		while(k<=j) {
 			j -= k;
 			k >>= 1;
 		}
-  		j += k;
- 	}
+		j += k;
+	}
 }
 
 void fft_real_to_hermitian(float *z, int n)
-{	float *x, e, a, a3, sqrthalf = 1/(float)sqrt(2.0);
+{
+	float *x, e, a, a3, sqrthalf = 1/(float)sqrt(2.0);
 	float cc1, ss1, cc3, ss3;
 	int nn = n>>1, is, id, i0, i1, i2, i3, i4, i5, i6, i7, i8;
 	float t1, t2, t3, t4, t5, t6;
 	int n2, n4, n8, i, j;
-	
+
 	scramble_real(z, n);
-	x = z-1;  
+	x = z-1;
 	is = 1;
 	id = 4;
-	do{
-		for(i0=is;i0<=n;i0+=id) {
+	do {
+		for(i0=is; i0<=n; i0+=id) {
 			i1 = i0+1;
 			e = x[i0];
 			x[i0] = e + x[i1];
@@ -71,7 +72,7 @@ void fft_real_to_hermitian(float *z, int n)
 		is = 0;
 		id = n2<<1;
 		do {
-			for(i=is;i<n;i+=id) {
+			for(i=is; i<n; i+=id) {
 				i1 = i+1;
 				i2 = i1 + n4;
 				i3 = i2 + n4;
@@ -96,7 +97,7 @@ void fft_real_to_hermitian(float *z, int n)
 			id <<= 2;
 		} while(is<n);
 		a = e;
-		for(j=2;j<=n8;j++) {
+		for(j=2; j<=n8; j++) {
 			a3 = 3*a;
 			cc1 = (float)cos(a);
 			ss1 = (float)sin(a);
@@ -106,7 +107,7 @@ void fft_real_to_hermitian(float *z, int n)
 			is = 0;
 			id = n2<<1;
 			do {
-				for(i=is;i<n;i+=id) {
+				for(i=is; i<n; i+=id) {
 					i1 = i+j;
 					i2 = i1 + n4;
 					i3 = i2 + n4;
@@ -144,13 +145,14 @@ void fft_real_to_hermitian(float *z, int n)
 }
 
 void fftinv_hermitian_to_real(float *z, int n)
-{	float *x, e, a, a3, sqrthalf = 1/(float)sqrt(2.0);
+{
+	float *x, e, a, a3, sqrthalf = 1/(float)sqrt(2.0);
 	float cc1, ss1, cc3, ss3;
 	int nn = n>>1, is, id, i0, i1, i2, i3, i4, i5, i6, i7, i8;
 	float t1, t2, t3, t4, t5;
 	int n2, n4, n8, i, j;
-	
-	x = z-1; 
+
+	x = z-1;
 	n2 = n<<1;
 	while(nn >>= 1) {
 		is = 0;
@@ -160,7 +162,7 @@ void fftinv_hermitian_to_real(float *z, int n)
 		n8 = n4>>1;
 		e = TWOPI/n2;
 		do {
-			for(i=is;i<n;i+=id) {
+			for(i=is; i<n; i+=id) {
 				i1 = i+1;
 				i2 = i1 + n4;
 				i3 = i2 + n4;
@@ -186,7 +188,7 @@ void fftinv_hermitian_to_real(float *z, int n)
 			id <<= 2;
 		} while(is<n-1);
 		a = e;
-		for(j=2;j<=n8;j++) {
+		for(j=2; j<=n8; j++) {
 			a3 = 3*a;
 			cc1 = (float)cos(a);
 			ss1 = (float)sin(a);
@@ -196,7 +198,7 @@ void fftinv_hermitian_to_real(float *z, int n)
 			is = 0;
 			id = n2<<1;
 			do {
-				for(i=is;i<n;i+=id) {
+				for(i=is; i<n; i+=id) {
 					i1 = i+j;
 					i2 = i1+n4;
 					i3 = i2+n4;
@@ -230,7 +232,7 @@ void fftinv_hermitian_to_real(float *z, int n)
 	is = 1;
 	id = 4;
 	do {
-		for(i0=is;i0<=n;i0+=id){
+		for(i0=is; i0<=n; i0+=id) {
 			i1 = i0+1;
 			e = x[i0];
 			x[i0] = e + x[i1];
@@ -241,7 +243,7 @@ void fftinv_hermitian_to_real(float *z, int n)
 	} while(is<n);
 	scramble_real(z, n);
 	e = 1/(float)n;
-	for(i=0;i<n;i++) z[i] *= e;				
+	for(i=0; i<n; i++) z[i] *= e;
 }
 
 

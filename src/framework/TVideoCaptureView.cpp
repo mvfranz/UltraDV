@@ -19,9 +19,9 @@
 
 #define M1 ((double)1000000.0)
 
-#define	FUNCTION	printf
-#define ERROR		printf
-#define PROGRESS	printf
+#define FUNCTION        printf
+#define ERROR           printf
+#define PROGRESS        printf
 #define LOOP
 
 media_raw_video_format vid_format = { 29.97,1,0,239,B_VIDEO_TOP_LEFT_RIGHT,1,1,{B_RGB32,320,240,320*4,0,0}};
@@ -29,9 +29,9 @@ media_raw_video_format vid_format = { 29.97,1,0,239,B_VIDEO_TOP_LEFT_RIGHT,1,1,{
 //---------------------------------------------------------------
 
 TVideoCaptureView::TVideoCaptureView(BRect bounds, TVideoCaptureWindow *parent) :
-					BView(bounds, "VideoPreviewView", B_FOLLOW_ALL, B_WILL_DRAW),
-					BMediaNode("VideoPreviewConsumer"),
-					BBufferConsumer(B_MEDIA_RAW_VIDEO)
+	BView(bounds, "VideoPreviewView", B_FOLLOW_ALL, B_WILL_DRAW),
+	BMediaNode("VideoPreviewConsumer"),
+	BBufferConsumer(B_MEDIA_RAW_VIDEO)
 {
 
 	FUNCTION("TVideoCaptureView::TVideoCaptureView()\n");
@@ -43,8 +43,7 @@ TVideoCaptureView::TVideoCaptureView(BRect bounds, TVideoCaptureWindow *parent) 
 	mRunMode = B_DROP_DATA;
 
 	mConnectionCount = 0;
-	for (int i = 0; i < MAX_CONNECTIONS; i++)
-	{
+	for (int i = 0; i < MAX_CONNECTIONS; i++) {
 		mConnectionActive[i] = false;
 		mFormat[i] = vid_format;
 		mBitmap[i] = NULL;
@@ -61,8 +60,8 @@ TVideoCaptureView::TVideoCaptureView(BRect bounds, TVideoCaptureWindow *parent) 
 	mStopping = false;
 	mSeeking = false;
 
-	mStartTime = 0;		/* when to start in performance time */
-	mStopTime = 0;		/* when to stop in performance time */
+	mStartTime = 0;         /* when to start in performance time */
+	mStopTime = 0;          /* when to stop in performance time */
 	mSeekTime = 0;
 	mMediaTime = 0;
 	mDeltaTime = 0;
@@ -73,15 +72,13 @@ TVideoCaptureView::TVideoCaptureView(BRect bounds, TVideoCaptureWindow *parent) 
 	// create a buffer queue and buffer available semaphore
 	mBufferQueue = new BTimedBufferQueue();
 	mBufferAvailable = create_sem (0, "Video buffer available");
-	if (mBufferAvailable < B_NO_ERROR)
-	{
+	if (mBufferAvailable < B_NO_ERROR) {
 		ERROR("TVideoCaptureView: couldn't create semaphore\n");
 	}
 
 	// create a service thread locking semaphore
 	mServiceLock = create_sem (1, "Video Consumer Service Lock");
-	if (mServiceLock < B_NO_ERROR)
-	{
+	if (mServiceLock < B_NO_ERROR) {
 		ERROR("TVideoCaptureView: couldn't create ServiceLock semaphore\n");
 	}
 
@@ -117,13 +114,11 @@ TVideoCaptureView::~TVideoCaptureView()
 	mDisplayThread = 0;
 	mServiceThread = 0;
 
-	for (int i = 0; i < MAX_CONNECTIONS; i++)
-	{
+	for (int i = 0; i < MAX_CONNECTIONS; i++) {
 		delete mBitmap[i];
 	}
 
-	while (mBufferQueue->HasBuffers())
-	{
+	while (mBufferQueue->HasBuffers()) {
 		mBufferQueue->PopFirstBuffer(0)->Recycle();
 	}
 
@@ -134,7 +129,7 @@ TVideoCaptureView::~TVideoCaptureView()
 }
 
 /********************************
-	From BMediaNode
+        From BMediaNode
 ********************************/
 
 //---------------------------------------------------------------
@@ -161,12 +156,10 @@ TVideoCaptureView::Start(
 	bigtime_t performance_time)
 {
 	FUNCTION("TVideoCaptureView::Start() @ %.4f, now: %.4f\n",
-		(double)performance_time/M1, (double)TimeSource()->Now()/M1);
+	         (double)performance_time/M1, (double)TimeSource()->Now()/M1);
 
-	if (!mStopping || performance_time > mStopTime)
-	{
-		if (!mRunning || mStopping)
-		{
+	if (!mStopping || performance_time > mStopTime) {
+		if (!mRunning || mStopping) {
 			mStarting = true;
 			mStartTime = performance_time;
 		}
@@ -182,19 +175,16 @@ TVideoCaptureView::Stop(
 	bool immediate)
 {
 	FUNCTION("TVideoCaptureView::Stop() @ %.4f, now: %.4f\n",
-		(double)performance_time/M1, (double)TimeSource()->Now()/M1);
+	         (double)performance_time/M1, (double)TimeSource()->Now()/M1);
 
-	if (!mStarting || performance_time > mStartTime)
-	{
-		if (mRunning || mStarting)
-		{
+	if (!mStarting || performance_time > mStartTime) {
+		if (mRunning || mStarting) {
 			mStopping = true;
 			mStopTime = performance_time;
-			}
+		}
 	}
 
-	if (immediate)
-	{
+	if (immediate) {
 		mRunning = false;
 		mStopping = true;
 		mStopTime = TimeSource()->Now();
@@ -241,10 +231,10 @@ TVideoCaptureView::SetRunMode(
 
 void
 TVideoCaptureView::TimeWarp(bigtime_t at_real_time,
-	bigtime_t performance_time)
+                            bigtime_t performance_time)
 {
 	FUNCTION("TVideoCaptureView::TimeWarp perf time %.4f @ %.4f\n",
-		(double)performance_time/M1, (double)at_real_time/M1);
+	         (double)performance_time/M1, (double)at_real_time/M1);
 
 }
 
@@ -261,8 +251,7 @@ TVideoCaptureView::BufferReceived(BBuffer * buffer)
 
 	if (mBufferQueue->PushBuffer(buffer, buffer->Header()->start_time) == B_OK)
 		release_sem(mBufferAvailable);
-	else
-	{
+	else{
 		ERROR("TVideoCaptureView::BufferReceived - ERROR PUSHING BUFFER ONTO QUEUE\n");
 		buffer->Recycle();
 	}
@@ -279,8 +268,7 @@ TVideoCaptureView::ProducerDataStatus(
 {
 	FUNCTION("TVideoCaptureView::ProducerDataStatus()\n");
 
-	if (status==B_DATA_NOT_AVAILABLE)
-	{
+	if (status==B_DATA_NOT_AVAILABLE) {
 		BMessage m('TRDN');
 		m.AddPointer("Consumer",this);
 		be_app->PostMessage(&m);
@@ -302,8 +290,7 @@ TVideoCaptureView::Connected(
 
 	// find an unused connection
 	for (i = 0; i < MAX_CONNECTIONS; i++)
-		if (!mConnectionActive[i])
-		{
+		if (!mConnectionActive[i]) {
 			mConnectionActive[i] = true;
 			break;
 		}
@@ -361,18 +348,15 @@ TVideoCaptureView::AcceptFormat(
 	media_format * format)
 {
 	FUNCTION("TVideoCaptureView::AcceptFormat()\n");
-	if (format->type != B_MEDIA_NO_TYPE)
-	{
-		if (format->type != B_MEDIA_RAW_VIDEO)
-		{
+	if (format->type != B_MEDIA_NO_TYPE) {
+		if (format->type != B_MEDIA_RAW_VIDEO) {
 			ERROR("AcceptFormat - not B_MEDIA_RAW_VIDEO\n");
 			return B_MEDIA_BAD_FORMAT;
 		}
 		if (format->u.raw_video.display.format != B_RGB32 &&
-			format->u.raw_video.display.format != B_RGB16 &&
-			format->u.raw_video.display.format != B_RGB15 &&
-			format->u.raw_video.display.format != media_raw_video_format::wildcard.display.format)
-		{
+		    format->u.raw_video.display.format != B_RGB16 &&
+		    format->u.raw_video.display.format != B_RGB15 &&
+		    format->u.raw_video.display.format != media_raw_video_format::wildcard.display.format) {
 			ERROR("AcceptFormat - not a format we know about!\n");
 			return B_MEDIA_BAD_FORMAT;
 		}
@@ -398,8 +382,7 @@ TVideoCaptureView::GetNextInput(
 	mDestination[mConnectionCount].port = mPort;
 	mDestination[mConnectionCount].id = mConnectionCount;
 
-	if (*cookie == 0)
-	{
+	if (*cookie == 0) {
 		out_input->destination = mDestination[mConnectionCount];
 		out_input->source = media_source::null;
 		out_input->node = Node();
@@ -438,10 +421,10 @@ TVideoCaptureView::GetLatencyFor(
 
 status_t
 TVideoCaptureView::FormatChanged(
-				const media_source & producer,
-				const media_destination & consumer,
-				int32 from_change_count,
-				const media_format &format)
+	const media_source & producer,
+	const media_destination & consumer,
+	int32 from_change_count,
+	const media_format &format)
 {
 	FUNCTION("TVideoCaptureView::FormatChanged()\n");
 
@@ -478,8 +461,7 @@ TVideoCaptureView::sRun(void * data)
 //---------------------------------------------------------------
 
 struct
-media_message
-{
+media_message {
 	char whatever[B_MEDIA_MESSAGE_SIZE];
 };
 
@@ -488,29 +470,25 @@ TVideoCaptureView::ServiceThread()
 {
 	FUNCTION("TVideoCaptureView::ServiceThread()\n");
 
-	while (!mControlQuit)
-	{
+	while (!mControlQuit) {
 		status_t err=0;
 		int32 code=0;
 		media_message msg;
 		err = read_port_etc(mPort, &code, &msg, sizeof(msg), B_TIMEOUT, 250000);
 		if (err == B_TIMED_OUT) continue;
-		if (err < B_OK)
-		{
+		if (err < B_OK) {
 			ERROR("TVideoCaptureView::Run: Unexpected error in read_port(): %x\n", err);
 			continue;
 		}
 
-		if (acquire_sem(mServiceLock) == B_NO_ERROR)
-		{
+		if (acquire_sem(mServiceLock) == B_NO_ERROR) {
 			if (BMediaNode::HandleMessage(code, &msg, err) &&
-				BBufferConsumer::HandleMessage(code, &msg, err))
-			{
+			    BBufferConsumer::HandleMessage(code, &msg, err)) {
 				BMediaNode::HandleBadMessage(code, &msg, err);
 			}
 			release_sem(mServiceLock);
 
-			if (code == 0x60000000)	/* quit! */
+			if (code == 0x60000000) /* quit! */
 				break;
 		}
 	}
@@ -535,16 +513,14 @@ TVideoCaptureView::DisplayThread()
 {
 	FUNCTION("TVideoCaptureView::DisplayThread\n");
 
-	bigtime_t	timeout = 5000;
-	bigtime_t	realTimeNow = 0;
-	bigtime_t	perfTimeNow = 0;
-	bigtime_t	halfPeriod = (bigtime_t) (500000./29.97);
-	bool 		timeSourceRunning = false;
+	bigtime_t timeout = 5000;
+	bigtime_t realTimeNow = 0;
+	bigtime_t perfTimeNow = 0;
+	bigtime_t halfPeriod = (bigtime_t) (500000./29.97);
+	bool timeSourceRunning = false;
 
-	while (!mDisplayQuit)
-	{
-		if (acquire_sem(mServiceLock) == B_NO_ERROR)
-		{
+	while (!mDisplayQuit) {
+		if (acquire_sem(mServiceLock) == B_NO_ERROR) {
 			timeSourceRunning = TimeSource()->IsRunning();
 			realTimeNow = BTimeSource::RealTime();
 			perfTimeNow = TimeSource()->Now();
@@ -553,15 +529,12 @@ TVideoCaptureView::DisplayThread()
 
 		snooze(timeout);
 
-		if (timeSourceRunning)
-		{
+		if (timeSourceRunning) {
 
 			// if we received a Stop, deal with it
-			if (mStopping)
-			{
+			if (mStopping) {
 				PROGRESS("VidConsumer::DisplayThread - STOP\n");
-				if (perfTimeNow >= mStopTime)
-				{
+				if (perfTimeNow >= mStopTime) {
 					mRunning = false;
 					mStopping = false;
 
@@ -574,11 +547,9 @@ TVideoCaptureView::DisplayThread()
 			}
 
 			// if we received a Seek, deal with it
-			if (mSeeking)
-			{
+			if (mSeeking) {
 				PROGRESS("VidConsumer::DisplayThread - SEEK\n");
-				if (perfTimeNow >= mSeekTime)
-				{
+				if (perfTimeNow >= mSeekTime) {
 					PROGRESS("VidConsumer::DisplayThread - DO SEEK\n");
 					mSeeking = false;
 					mDeltaTime = mMediaTime;
@@ -587,11 +558,9 @@ TVideoCaptureView::DisplayThread()
 			}
 
 			// if we received a Start, deal with it
-			if (mStarting)
-			{
+			if (mStarting) {
 				PROGRESS("VidConsumer::DisplayThread mStartTime = %.4f TimeNow = %.4f\n", (double)mStartTime/M1, (double)perfTimeNow/M1);
-				if (perfTimeNow >= mStartTime)
-				{
+				if (perfTimeNow >= mStartTime) {
 					mRunning = true;
 					mStarting = false;
 					mDeltaTime = mStartTime;
@@ -599,13 +568,11 @@ TVideoCaptureView::DisplayThread()
 				}
 			}
 
-			if (mRunning)
-			{
+			if (mRunning) {
 				// check for buffer available.
 				status_t err = acquire_sem_etc(mBufferAvailable, 1, B_TIMEOUT, halfPeriod * 2);
 
-				if (err == B_TIMED_OUT)
-				{
+				if (err == B_TIMED_OUT) {
 					ERROR("VidConsumer::DisplayThread - Error from acquire_sem_etc: 0x%x\n", err);
 					continue;
 				}
@@ -614,25 +581,23 @@ TVideoCaptureView::DisplayThread()
 				uint32 connection = buffer->Header()->destination;
 
 				LOOP("Popped buffer for connection %d, Start time: %.4f, system time: %.4f diff: %.4f\n",
-					connection,
-					(double) buffer->Header()->start_time/M1,
-					(double) perfTimeNow/M1,
-					(double) (buffer->Header()->start_time - perfTimeNow)/M1);
+				     connection,
+				     (double) buffer->Header()->start_time/M1,
+				     (double) perfTimeNow/M1,
+				     (double) (buffer->Header()->start_time - perfTimeNow)/M1);
 
 				// Display frame if we're in B_OFFLINE mode or
 				// within +/- a half frame time of start time
 				if ( (mRunMode == B_OFFLINE) ||
-					 ((perfTimeNow > (buffer->Header()->start_time - halfPeriod)) &&
-					  (perfTimeNow < (buffer->Header()->start_time + halfPeriod))) )
-				{
+				     ((perfTimeNow > (buffer->Header()->start_time - halfPeriod)) &&
+				      (perfTimeNow < (buffer->Header()->start_time + halfPeriod))) ) {
 					memcpy(mBitmap[connection]->Bits(), buffer->Data(), mBitmap[connection]->BitsLength());
 					buffer->Header()->start_time = system_time();
 					buffer->Recycle();
 					bigtime_t t1 = system_time();
 					printf("DrawBitmap01\n");
-					if (LockLooperWithTimeout(B_TIMEOUT) == B_OK)
-					//if (LockLooper())
-					{
+					if (LockLooperWithTimeout(B_TIMEOUT) == B_OK) {
+						//if (LockLooper())
 						DrawBitmap(mBitmap[connection], Bounds());
 						UnlockLooper();
 					}
@@ -640,41 +605,32 @@ TVideoCaptureView::DisplayThread()
 					if (t1/M1 > .030)
 						printf("Draw time = %.4f\n",t1/M1);
 					continue;
-				}
-				else
-				{
+				} else   {
 					// If we're too early, push frame back on stack
-					if (perfTimeNow < buffer->Header()->start_time)
-					{
+					if (perfTimeNow < buffer->Header()->start_time) {
 						LOOP("push buffer back on stack!\n");
 						mBufferQueue->PushBuffer(buffer, buffer->Header()->start_time);
 						release_sem(mBufferAvailable);
 						continue;
-					}
-					else
-					{
+					} else   {
 						// if we've already passed a half frame time past the buffer start time
 						// and RunMode = INCREASE_LATENCY, increase latency and display the frame
 						if ( (perfTimeNow > buffer->Header()->start_time) &&
-							 (mRunMode == B_INCREASE_LATENCY))
-						{
+						     (mRunMode == B_INCREASE_LATENCY)) {
 							mMyLatency += halfPeriod;
 							ERROR("VidConsumer::DisplayThread - Increased latency to: %.4f\n", mMyLatency);
 							ERROR("	 Performance time: %.4f @ %.4f\n", (double)buffer->Header()->start_time/M1, (double)perfTimeNow/M1);
 							memcpy(mBitmap[connection]->Bits(), buffer->Data(), mBitmap[connection]->BitsLength());
 							buffer->Recycle();
 							printf("DrawBitmap02\n");
-							if ( LockLooperWithTimeout(B_TIMEOUT) == B_OK)
-							//if (LockLooper())
-							{
+							if ( LockLooperWithTimeout(B_TIMEOUT) == B_OK) {
+								//if (LockLooper())
 								DrawBitmap(mBitmap[connection], Bounds());
 								UnlockLooper();
 							}
 
 							continue;
-						}
-						else
-						{
+						} else   {
 							// we're more than a half frame time past the buffer start time
 							// drop the frame
 							ERROR("VidConsumer::DisplayThread - dropped late frame: %.4f @ %.4f\n", (double)buffer->Header()->start_time/M1, (double)perfTimeNow/M1);

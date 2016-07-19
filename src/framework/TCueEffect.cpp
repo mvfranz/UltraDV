@@ -25,14 +25,14 @@
 
 #include "BuildApp.h"
 
-#include <support/Debug.h>		// for ASSERT()
+#include <support/Debug.h>              // for ASSERT()
 
 #include "TCueEffect.h"
 
 using namespace std;
 
 // Constants
-	// Names used in a message
+// Names used in a message
 const char* TCueEffect::kStartLabel = "startTime";
 const char* TCueEffect::kDurationLabel = "duration";
 const char* TCueEffect::kKeyFrameCountLabel = "keyFrameCount";
@@ -146,7 +146,7 @@ status_t TCueEffect::Archive(BMessage* data, bool deep) const
 		return err;
 
 	for (TKeyFrameIterator k = fkeyFrames.begin(); k != fkeyFrames.end();
-			k++) {
+	     k++) {
 //		err = data->AddFloat(kKeyFrameTimeLabel, k->ftime); DOESN'T STL SUPPORT THIS?
 		err = data->AddFloat(kKeyFrameTimeLabel, (*k).ftime);
 		if (err != B_OK)
@@ -226,7 +226,7 @@ void TCueEffect::Duration(uint32 time)
 
 	// check for key frames which must be removed
 	for (TKeyFrameIterator_vol later = fkeyFrames.begin();
-			later != last; later++) {
+	     later != last; later++) {
 		// Frames from this point on to the final one are now invalid
 //		if (later->ftime >= time) {
 		if ((*later).ftime >= time) {
@@ -295,7 +295,7 @@ TKeyFrameIterator TCueEffect::MarkKeyFrame(uint32 time)
 	// Find the key frame after or at 'time'
 	TKeyFrameIterator_vol before = fkeyFrames.begin();
 	TKeyFrameIterator_vol later = before;
-	for ( ; later != fkeyFrames.end(); later++) {
+	for (; later != fkeyFrames.end(); later++) {
 		if ((*later).ftime >= time)
 			break;
 		before++;
@@ -311,11 +311,11 @@ TKeyFrameIterator TCueEffect::MarkKeyFrame(uint32 time)
 	TKeyFrameIterator_vol kf;
 // ABH!
 //	kf  = fkeyFrames.insert(later);
-	kf = later; 		// dirty hack to get a compile
+	kf = later;             // dirty hack to get a compile
 
 //	(*kf).ftime = time;
 //	(*kf).fstate = NewEffectState();
-printf("TCueEffect::MarkKeyFrame - Needs to be implemented!\n");
+	printf("TCueEffect::MarkKeyFrame - Needs to be implemented!\n");
 
 	// Interpolate a reasonable value
 	Interpolate(kf);
@@ -400,7 +400,7 @@ TKeyFrameIterator_vol TCueEffect::VolatileIterator(
 
 //		TCueEffect::TKeyFrameIterator kf) const
 
-		TKeyFrameIterator kf) const
+	TKeyFrameIterator kf) const
 {
 	// TODO: isn't there a way to just cast one of these puppies?
 
@@ -429,7 +429,7 @@ TKeyFrameIterator_vol TCueEffect::VolatileIterator(
 //bool TCueEffect::KeyFrameState(TCueEffect::TKeyFrameIterator kf,
 
 bool TCueEffect::KeyFrameState(TKeyFrameIterator kf,
-		const TEffectState* state) const
+                               const TEffectState* state) const
 {
 	TKeyFrameIterator_vol v = VolatileIterator(kf);
 //	if (v->fstate)

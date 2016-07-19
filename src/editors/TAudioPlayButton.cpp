@@ -37,17 +37,17 @@ TAudioPlayButton::TAudioPlayButton(TAudioEditorToolbar *parent, BRect bounds, co
 {
 	// Save parent view
 	fParent = parent;
-	
+
 	// Save handler
 	fHandler = handler;
-	
+
 	// button state flag
 	fButtonState = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap = onBitmap;
-			
+
 	// Perform default initialization
 	Init();
 }
@@ -74,7 +74,7 @@ TAudioPlayButton::~TAudioPlayButton()
 //	Perform default initialization tasks
 
 void TAudioPlayButton::Init()
-{        	
+{
 }
 
 
@@ -91,7 +91,7 @@ void TAudioPlayButton::Draw(BRect updateRect)
 {
 	// Draw proper bitmap state, if fState is true, draw on bitmap
 	if (fButtonState)
-		DrawBitmap(fOffBitmap, B_ORIGIN);		
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 	else
 		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
@@ -107,28 +107,25 @@ void TAudioPlayButton::Draw(BRect updateRect)
 
 void TAudioPlayButton::MouseDown(BPoint where)
 {
-	
+
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	if (fButtonState)
-	{
+	if (fButtonState) {
 		// Tell sound to stop
 		BMessage *message = new BMessage(AUDIO_STOP_BUTTON_MSG);
 		//fParent->Window()->PostMessage(message, fHandler);
 		fParent->Window()->PostMessage(message, NULL);
-		delete message;				
-		fButtonState = false; 
-	}
-	else
-	{	
+		delete message;
+		fButtonState = false;
+	} else   {
 		// Tell sound to play
 		BMessage *message = new BMessage(AUDIO_PLAY_BUTTON_MSG);
 		//fParent->Window()->PostMessage(message, fHandler);
 		fParent->Window()->PostMessage(message, NULL);
 		delete message;
-		fButtonState = true; 
+		fButtonState = true;
 	}
-		
+
 	// Force redraw to reflect new state
-	Invalidate(); 
+	Invalidate();
 }

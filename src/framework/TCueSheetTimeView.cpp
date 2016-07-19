@@ -127,16 +127,14 @@ status_t TCueSheetTimeView::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TCueSheetTimeView");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -198,13 +196,13 @@ void TCueSheetTimeView::Draw(BRect updateRect)
 
 	// Draw cue sheet start time
 	BFont font;
-   	GetFont(&font);
+	GetFont(&font);
 	SetFont(be_bold_font);
-   	SetHighColor(kBlack);
+	SetHighColor(kBlack);
 
-	BPoint 	textPt;
-	char 	timeStr[256];
-	int32 	startTime = fCueSheetWindow->GetCueSheetView()->StartTime();
+	BPoint textPt;
+	char timeStr[256];
+	int32 startTime = fCueSheetWindow->GetCueSheetView()->StartTime();
 	textPt.Set(bounds.left + 9, bounds.top + 16);
 	TimeToString(startTime, fCueSheetWindow->GetCueSheetView()->GetTimeFormat(), timeStr, FALSE);
 	DrawString(timeStr, textPt);
@@ -243,17 +241,14 @@ void TCueSheetTimeView::ShowProjectSettingDialog(BPoint where)
 {
 
 	// If we have created the dialog bring it to the front and show it
-	if( fProjectSettings)
-	{
-		if (fProjectWindow)
-		{
+	if( fProjectSettings) {
+		if (fProjectWindow) {
 			fProjectWindow->Show();
 			fProjectWindow->Activate(true);
 		}
 	}
 	// Create the Project Settings dialog from a resource archive
-	else
-	{
+	else{
 		BMessage *theMessage = GetWindowFromResource("ProjectSettingsWindow");
 		fProjectWindow = new TProjectSettings(this, fCueSheetWindow->GetCueSheetView(), theMessage);
 
@@ -282,8 +277,7 @@ void TCueSheetTimeView::ShowProjectSettingDialog(BPoint where)
 
 void TCueSheetTimeView::AttachedToWindow()
 {
-	if(fCueSheetWindow == NULL)
-	{
+	if(fCueSheetWindow == NULL) {
 		fCueSheetWindow = (TCueSheetWindow *)Window();
 	}
 
@@ -303,5 +297,5 @@ void TCueSheetTimeView::AttachedToWindow()
 
 void TCueSheetTimeView::SetParent(TCueSheetWindow *parent)
 {
- 	fCueSheetWindow = parent;
+	fCueSheetWindow = parent;
 }

@@ -74,18 +74,18 @@ void TVideoSourceView::Init()
 	SetViewColor(kBeGrey);
 
 	// Locate view items
-	fDigitizerMenuField 	= (BMenuField *)FindView("DigitizerMenuField");
-	fInputMenuField 		= (BMenuField *)FindView("InputMenuField");
-	fFormatMenuField 		= (BMenuField *)FindView("FormatMenuField");
+	fDigitizerMenuField     = (BMenuField *)FindView("DigitizerMenuField");
+	fInputMenuField                 = (BMenuField *)FindView("InputMenuField");
+	fFormatMenuField                = (BMenuField *)FindView("FormatMenuField");
 
-	fGammaCorrectionCheckBox 	= (BCheckBox *)FindView("GammaCorrectionCheckBox");
-	fLumaCoringCheckBox 		= (BCheckBox *)FindView("LumaCoringCheckBox");
-	fErrorDiffusionCheckBox 	= (BCheckBox *)FindView("ErrorDiffusionCheckBox");
-	fLumaCombCheckBox 			= (BCheckBox *)FindView("LumaCombCheckBox");
-	fChromaCombCheckBox 		= (BCheckBox *)FindView("ChromaCombCheckBox");
+	fGammaCorrectionCheckBox        = (BCheckBox *)FindView("GammaCorrectionCheckBox");
+	fLumaCoringCheckBox             = (BCheckBox *)FindView("LumaCoringCheckBox");
+	fErrorDiffusionCheckBox         = (BCheckBox *)FindView("ErrorDiffusionCheckBox");
+	fLumaCombCheckBox                       = (BCheckBox *)FindView("LumaCombCheckBox");
+	fChromaCombCheckBox             = (BCheckBox *)FindView("ChromaCombCheckBox");
 
 	//	Set up  preview view bounds.  Use attached view in BBox to set up size
-	BView *previewView	= (BView *)FindView("PreviewView");
+	BView *previewView      = (BView *)FindView("PreviewView");
 	fPreviewRect = previewView->Frame();
 	RemoveChild(previewView);
 	delete previewView;
@@ -125,8 +125,7 @@ void TVideoSourceView::Init()
 
 	// Setup Digitizer menu
 	theMenu = fDigitizerMenuField->Menu();
-	if (theMenu)
-	{
+	if (theMenu) {
 		//theMenu->AddItem(new BMenuItem("Autodetect",new BMessage(msg_auto_brand)));
 		theMenu->AddItem(new BMenuItem("Hauppauge (Philips)",new BMessage(msg_hauppauge_philips)));
 		theMenu->AddItem(new BMenuItem("Hauppauge (Temic)",new BMessage(msg_hauppauge_temic)));
@@ -159,8 +158,7 @@ void TVideoSourceView::Init()
 
 	// Setup Input menu
 	theMenu = fInputMenuField->Menu();
-	if (theMenu)
-	{
+	if (theMenu) {
 		theMenu->AddItem(new BMenuItem("Composite",new BMessage(msg_composite)));
 		theMenu->AddItem(new BMenuItem("Tuner",new BMessage(msg_tuner)));
 		theMenu->AddItem(new BMenuItem("S-Video",new BMessage(msg_svideo)));
@@ -177,8 +175,7 @@ void TVideoSourceView::Init()
 
 	// Setup Format menu
 	theMenu = fFormatMenuField->Menu();
-	if (theMenu)
-	{
+	if (theMenu) {
 		theMenu->AddItem(new BMenuItem("NTSC-M",new BMessage(msg_ntsc_m)));
 		theMenu->AddItem(new BMenuItem("NTSC-J",new BMessage(msg_ntsc_j)));
 		theMenu->AddItem(new BMenuItem("PAL-BG",new BMessage(msg_pal_bg)));
@@ -213,8 +210,7 @@ void TVideoSourceView::AttachedToWindow()
 	//	Get pointer to previewView and attach to BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");
 	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
-	if (previewView)
-	{
+	if (previewView) {
 		previewBox->AddChild(previewView);
 		previewView->MoveTo(fPreviewRect.left, fPreviewRect.top);
 		previewView->ResizeTo(fPreviewRect.Width(), fPreviewRect.Height());
@@ -238,8 +234,7 @@ void TVideoSourceView::DetachedFromWindow()
 	//	Get pointer to previewView and detach from BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");
 	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
-	if (previewView)
-	{
+	if (previewView) {
 		previewView->Hide();
 		previewBox->RemoveChild(previewView);
 	}
@@ -296,93 +291,93 @@ void TVideoSourceView::SetDigitizerMenuItem(BMenu *theMenu)
 	// Switch based on
 	switch( fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer)
 	{
-		case kHauppaugePhilips:
-			theMenu->FindItem(msg_turbotv_philips)->SetMarked(true);
-			break;
+	case kHauppaugePhilips:
+		theMenu->FindItem(msg_turbotv_philips)->SetMarked(true);
+		break;
 
-		case kHauppaugeTemic:
-			theMenu->FindItem(msg_hauppauge_temic)->SetMarked(true);
-			break;
+	case kHauppaugeTemic:
+		theMenu->FindItem(msg_hauppauge_temic)->SetMarked(true);
+		break;
 
-		case kHauppauge400Philips:
-			theMenu->FindItem(msg_hauppauge_400_philips)->SetMarked(true);
-			break;
+	case kHauppauge400Philips:
+		theMenu->FindItem(msg_hauppauge_400_philips)->SetMarked(true);
+		break;
 
-		case kHauppauge400Temic:
-			theMenu->FindItem(msg_hauppauge_400_temic)->SetMarked(true);
-			break;
+	case kHauppauge400Temic:
+		theMenu->FindItem(msg_hauppauge_400_temic)->SetMarked(true);
+		break;
 
-		case kHauppauge401Philips:
-			theMenu->FindItem(msg_hauppauge_401_philips)->SetMarked(true);
-			break;
+	case kHauppauge401Philips:
+		theMenu->FindItem(msg_hauppauge_401_philips)->SetMarked(true);
+		break;
 
-		case kHauppauge401Temic:
-			theMenu->FindItem(msg_hauppauge_401_temic)->SetMarked(true);
-			break;
+	case kHauppauge401Temic:
+		theMenu->FindItem(msg_hauppauge_401_temic)->SetMarked(true);
+		break;
 
-		case kHauppauge405Philips:
-			theMenu->FindItem(msg_hauppauge_405_philips)->SetMarked(true);
-			break;
+	case kHauppauge405Philips:
+		theMenu->FindItem(msg_hauppauge_405_philips)->SetMarked(true);
+		break;
 
-		case kHauppauge405Temic:
-			theMenu->FindItem(msg_hauppauge_405_temic)->SetMarked(true);
-			break;
+	case kHauppauge405Temic:
+		theMenu->FindItem(msg_hauppauge_405_temic)->SetMarked(true);
+		break;
 
-		case kHauppauge406Philips:
-			theMenu->FindItem(msg_hauppauge_406_philips)->SetMarked(true);
-			break;
+	case kHauppauge406Philips:
+		theMenu->FindItem(msg_hauppauge_406_philips)->SetMarked(true);
+		break;
 
-		case kHauppauge406Temic:
-			theMenu->FindItem(msg_hauppauge_406_temic)->SetMarked(true);
-			break;
+	case kHauppauge406Temic:
+		theMenu->FindItem(msg_hauppauge_406_temic)->SetMarked(true);
+		break;
 
-		case kHauppauge418Philips:
-			theMenu->FindItem(msg_hauppauge_418_philips)->SetMarked(true);
-			break;
+	case kHauppauge418Philips:
+		theMenu->FindItem(msg_hauppauge_418_philips)->SetMarked(true);
+		break;
 
-		case kHauppauge452Philips:
-			theMenu->FindItem(msg_hauppauge_452_philips)->SetMarked(true);
-			break;
+	case kHauppauge452Philips:
+		theMenu->FindItem(msg_hauppauge_452_philips)->SetMarked(true);
+		break;
 
-		case kAvermediaPhilips:
-			theMenu->FindItem(msg_avermedia_philips)->SetMarked(true);
-			break;
+	case kAvermediaPhilips:
+		theMenu->FindItem(msg_avermedia_philips)->SetMarked(true);
+		break;
 
-		case kIntelSVRIII:
-			theMenu->FindItem(msg_intel_svriii)->SetMarked(true);
-			break;
+	case kIntelSVRIII:
+		theMenu->FindItem(msg_intel_svriii)->SetMarked(true);
+		break;
 
-		case kTurboTVPhilips:
-			theMenu->FindItem(msg_turbotv_philips)->SetMarked(true);
-			break;
+	case kTurboTVPhilips:
+		theMenu->FindItem(msg_turbotv_philips)->SetMarked(true);
+		break;
 
-		case kTurboTVTemic:
-			theMenu->FindItem(msg_turbotv_temic)->SetMarked(true);
-			break;
+	case kTurboTVTemic:
+		theMenu->FindItem(msg_turbotv_temic)->SetMarked(true);
+		break;
 
-		case kMiroPhilips:
-			theMenu->FindItem(msg_miro_temic)->SetMarked(true);
-			break;
+	case kMiroPhilips:
+		theMenu->FindItem(msg_miro_temic)->SetMarked(true);
+		break;
 
-		case kMiroTemic:
-			theMenu->FindItem(msg_turbotv_temic)->SetMarked(true);
-			break;
+	case kMiroTemic:
+		theMenu->FindItem(msg_turbotv_temic)->SetMarked(true);
+		break;
 
-		case kDiamondPhilips:
-			theMenu->FindItem(msg_diamond_philips)->SetMarked(true);
-			break;
+	case kDiamondPhilips:
+		theMenu->FindItem(msg_diamond_philips)->SetMarked(true);
+		break;
 
-		case kDiamondTemic:
-			theMenu->FindItem(msg_diamond_temic)->SetMarked(true);
-			break;
+	case kDiamondTemic:
+		theMenu->FindItem(msg_diamond_temic)->SetMarked(true);
+		break;
 
-		case kOsprey100:
-			theMenu->FindItem(msg_osprey_100)->SetMarked(true);
-			break;
+	case kOsprey100:
+		theMenu->FindItem(msg_osprey_100)->SetMarked(true);
+		break;
 
-		default:
-			theMenu->FindItem(msg_turbotv_philips)->SetMarked(true);
-			break;
+	default:
+		theMenu->FindItem(msg_turbotv_philips)->SetMarked(true);
+		break;
 	}
 }
 
@@ -399,28 +394,28 @@ void TVideoSourceView::SetInputMenuItem(BMenu *theMenu)
 	// Switch based on
 	switch( fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoSourceSettings.fInput)
 	{
-		case kComposite:
-			theMenu->FindItem(msg_composite)->SetMarked(true);
-			break;
+	case kComposite:
+		theMenu->FindItem(msg_composite)->SetMarked(true);
+		break;
 
-		case kTuner:
-			theMenu->FindItem(msg_tuner)->SetMarked(true);
-			break;
+	case kTuner:
+		theMenu->FindItem(msg_tuner)->SetMarked(true);
+		break;
 
-		case kSVideo:
-			theMenu->FindItem(msg_svideo)->SetMarked(true);
-			break;
+	case kSVideo:
+		theMenu->FindItem(msg_svideo)->SetMarked(true);
+		break;
 
-		case kColorBars:
-			theMenu->FindItem(msg_color_bars)->SetMarked(true);
-			break;
+	case kColorBars:
+		theMenu->FindItem(msg_color_bars)->SetMarked(true);
+		break;
 
-		case kCamera:
-			theMenu->FindItem(msg_camera)->SetMarked(true);
-			break;
+	case kCamera:
+		theMenu->FindItem(msg_camera)->SetMarked(true);
+		break;
 
-		default:
-			theMenu->FindItem(msg_composite)->SetMarked(true);
-			break;
+	default:
+		theMenu->FindItem(msg_composite)->SetMarked(true);
+		break;
 	}
 }

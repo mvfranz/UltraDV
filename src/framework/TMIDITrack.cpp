@@ -59,8 +59,7 @@ TMIDITrack::TMIDITrack(TMIDICue *theCue)
 TMIDITrack::~TMIDITrack()
 {
 	// Dispose of extended data list/buffers
-	if (fExternalData)
-	{
+	if (fExternalData) {
 		//fExternalData->DoForEach(DoDisposeHandle);
 		delete fExternalData;
 	}
@@ -79,78 +78,63 @@ TMIDITrack::~TMIDITrack()
 
 void TMIDITrack::ExtractInfo()
 {
-	Event	*theEvent;
-	int32	index = 1;
-	int32	dTime, totalTime = 0;
+	Event   *theEvent;
+	int32 index = 1;
+	int32 dTime, totalTime = 0;
 	//char	bankStr[256];
 
 
 	// First, set all values to default
-	fMuted 		= false;
-	fDrumTrack 	= false;
-	fDevice 		= 2;				// Default to general midi
-	fBank 			= -1;
-	fProgram 		= -1;
-	fChannel 		= -1;
-	fOctave 		= 0;
-	fVolume 		= 127;
-	fPan 			= -1;
-	fReverb 		= -1;
-	fChorus 		= -1;
-	fSrcPBRange	= 2;
-	fDstPBRange 	= 2;
-	fSrcDrumMap 	= 0;
-	fDstDrumMap 	= 0;
+	fMuted          = false;
+	fDrumTrack      = false;
+	fDevice                 = 2;                            // Default to general midi
+	fBank                   = -1;
+	fProgram                = -1;
+	fChannel                = -1;
+	fOctave                 = 0;
+	fVolume                 = 127;
+	fPan                    = -1;
+	fReverb                 = -1;
+	fChorus                 = -1;
+	fSrcPBRange     = 2;
+	fDstPBRange     = 2;
+	fSrcDrumMap     = 0;
+	fDstDrumMap     = 0;
 
 	// Next, get initial track info
 	theEvent = (Event *)ItemAt(index++);
 	if (theEvent)
 		fChannel = theEvent->d.bytes[0] & 0x0F;
 
-	while (theEvent && theEvent->time == 0)
-	{
+	while (theEvent && theEvent->time == 0) {
 
 		// Channel
 		if ((fChannel != -1) && ((theEvent->d.bytes[0] & 0x0F) != fChannel))
 			fChannel = -1;
 
 		// Program
-		if ((theEvent->d.bytes[0] & STATUS_MASK) == PROG_CHANGE)
-		{
+		if ((theEvent->d.bytes[0] & STATUS_MASK) == PROG_CHANGE) {
 			fProgram = theEvent->d.bytes[1];
 			RemoveItem(--index);
 		}
-
 		// Controllers
-		else if ((theEvent->d.bytes[0] & STATUS_MASK) == CTRL_CHANGE)
-		{
-			if (theEvent->d.bytes[1] == VOLUME)
-			{
+		else if ((theEvent->d.bytes[0] & STATUS_MASK) == CTRL_CHANGE) {
+			if (theEvent->d.bytes[1] == VOLUME) {
 				fVolume = theEvent->d.bytes[2];
 				RemoveItem(--index);
-			}
-			else if (theEvent->d.bytes[1] == PAN && (fPan == -1))
-			{
+			} else if (theEvent->d.bytes[1] == PAN && (fPan == -1))   {
 				fPan = theEvent->d.bytes[2];
 				RemoveItem(--index);
-			}
-			else if (theEvent->d.bytes[1] == BANK_CHANGE_MSB && fBank == -1)
-			{
+			} else if (theEvent->d.bytes[1] == BANK_CHANGE_MSB && fBank == -1)   {
 				fBank = theEvent->d.bytes[2] << 7;
 				RemoveItem(--index);
-			}
-			else if (theEvent->d.bytes[1] == BANK_CHANGE_LSB && fBank != -1)
-			{
+			} else if (theEvent->d.bytes[1] == BANK_CHANGE_LSB && fBank != -1)   {
 				fBank |= theEvent->d.bytes[2];
 				RemoveItem(--index);
-			}
-			else if (theEvent->d.bytes[1] == REVERB && (fReverb == -1))
-			{
+			} else if (theEvent->d.bytes[1] == REVERB && (fReverb == -1))   {
 				fReverb = theEvent->d.bytes[2];
 				RemoveItem(--index);
-			}
-			else if (theEvent->d.bytes[1] == CHORUS && (fChorus == -1))
-			{
+			} else if (theEvent->d.bytes[1] == CHORUS && (fChorus == -1))   {
 				fChorus = theEvent->d.bytes[2];
 				RemoveItem(--index);
 			}
@@ -159,18 +143,15 @@ void TMIDITrack::ExtractInfo()
 		theEvent = (Event *)ItemAt(index++);
 	}
 
-	while (theEvent && theEvent->time != END_OF_TRACK)
-	{
+	while (theEvent && theEvent->time != END_OF_TRACK) {
 		totalTime += theEvent->time;
 
-		if ((theEvent->d.bytes[0] & 0x0F) != fChannel)
-		{
+		if ((theEvent->d.bytes[0] & 0x0F) != fChannel) {
 			fChannel = -1;
 			break;
 		}
 
-		if (((theEvent->d.bytes[0] & STATUS_MASK) == CTRL_CHANGE) && theEvent->d.bytes[1] == PAN && (fPan == -1))
-		{
+		if (((theEvent->d.bytes[0] & STATUS_MASK) == CTRL_CHANGE) && theEvent->d.bytes[1] == PAN && (fPan == -1)) {
 			fPan = theEvent->d.bytes[2];
 			dTime = theEvent->time;
 			RemoveItem(--index);
@@ -188,8 +169,7 @@ void TMIDITrack::ExtractInfo()
 
 	fLastVol = fVolume;
 
-	if (fBank == -1)
-	{
+	if (fBank == -1) {
 		//GetIndString(bankStr, kDEVICE_STR + device, kBANK_NUMBER_STR);
 		//StringToNum(bankStr, &dTime);
 		//bank = dTime - 1;
@@ -231,15 +211,15 @@ void TMIDITrack::GetTrackName(char *name)
 
 void TMIDITrack::InsertExtended(short type, long time, ExtDataBuffer data)
 {
-	Event	e;
+	Event e;
 
 	if (fExternalData == NULL)
 		fExternalData = new BList();
 
-	e.time 		= time;
-	e.d.data 	= data;
-	e.flags 	= 0;
-	e.extType 	= type;
+	e.time          = time;
+	e.d.data        = data;
+	e.flags         = 0;
+	e.extType       = type;
 
 	AddItem(&e);
 
@@ -264,8 +244,7 @@ void TMIDITrack::SetPosition(long where)
 	theEvent = (Event *)ItemAt(++fCurrentEvent);
 	fCurrentDelta = theEvent->time;
 
-	while (where > theEvent->time && theEvent->time != END_OF_TRACK)
-	{
+	while (where > theEvent->time && theEvent->time != END_OF_TRACK) {
 		where -= theEvent->time;
 		theEvent = (Event *)ItemAt(++fCurrentEvent);
 		fCurrentDelta = theEvent->time;
@@ -286,7 +265,7 @@ void TMIDITrack::SetPosition(long where)
 //	Sets track pointers to beginning.  (same as SetPosition(0)).
 //
 
-void  TMIDITrack::Reset()
+void TMIDITrack::Reset()
 {
 	Event *theEvent;
 

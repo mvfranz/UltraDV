@@ -33,17 +33,16 @@ int32 Timer(void* data);
 
 TTimer::TTimer(BHandler *theTarget, BMessage *theMessage, uint32 theInterval)
 {
-	fTarget 	= theTarget;
-	fMessage 	= theMessage;
-	fInterval 	= theInterval;
+	fTarget         = theTarget;
+	fMessage        = theMessage;
+	fInterval       = theInterval;
 
 	fMessenger = new BMessenger(fTarget);
 
 	// Spawn timer thread
 	fTimerThread = spawn_thread( start_timer, "GenericTimer", B_NORMAL_PRIORITY, (void *)this);
 
-	if( fTimerThread != B_NO_MORE_THREADS && fTimerThread != B_NO_MEMORY)
-	{
+	if( fTimerThread != B_NO_MORE_THREADS && fTimerThread != B_NO_MEMORY) {
 		resume_thread(fTimerThread);
 	}
 
@@ -78,21 +77,17 @@ TTimer::~TTimer()
 
 int32 TTimer::Timer()
 {
-	while( true )
-	{
+	while( true ) {
 		snooze(fInterval);
 
 		// Is window still alive?  If not, exit.
-		if (fMessenger->LockTarget())
-		{
-       		BLooper *myLooper;
-       		BHandler *myHandler = fMessenger->Target(&myLooper);
-       		myLooper->Unlock();
+		if (fMessenger->LockTarget()) {
+			BLooper *myLooper;
+			BHandler *myHandler = fMessenger->Target(&myLooper);
+			myLooper->Unlock();
 
-       		fMessenger->SendMessage(fMessage);
-   		}
-		else
-		{
+			fMessenger->SendMessage(fMessage);
+		} else   {
 			printf("LockTarget failure...\n");
 			return 0;
 		}

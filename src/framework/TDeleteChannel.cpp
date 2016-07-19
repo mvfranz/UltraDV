@@ -39,7 +39,7 @@
 //
 
 TDeleteChannel::TDeleteChannel(BRect bounds, TCueSheetView *theCueSheet) : BWindow( bounds, "Delete Channel", B_TITLED_WINDOW,
-																			  B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE, 0)
+	                                                                            B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE, 0)
 
 {
 
@@ -139,78 +139,77 @@ void TDeleteChannel::MessageReceived(BMessage* message)
 	switch(message->what)
 	{
 
-		// User pressed OK button.
-		case OK_MSG:
-			{
-				// Get total number of channels
-				int32 numChannels = fCueSheet->GetTotalChannels();
-				char numStr[10];
-				sprintf(numStr, "%d", numChannels);
+	// User pressed OK button.
+	case OK_MSG:
+	{
+		// Get total number of channels
+		int32 numChannels = fCueSheet->GetTotalChannels();
+		char numStr[10];
+		sprintf(numStr, "%d", numChannels);
 
-				// Get total number of channels the user wants to delete
-				int32 deleteChannels = atoi(fDeleteChannelText->Text());
+		// Get total number of channels the user wants to delete
+		int32 deleteChannels = atoi(fDeleteChannelText->Text());
 
-				// Get the channel after which the insertion should occur
-				int32 afterChannel = atoi(fAfterChannelText->Text());
+		// Get the channel after which the insertion should occur
+		int32 afterChannel = atoi(fAfterChannelText->Text());
 
-				// Send message to cue sheet view
-				if (afterChannel > 0 && afterChannel <= numChannels)
-				{
-					BMessage *theMessage = new BMessage(DELETE_CHANNEL_MSG);
-					theMessage->AddInt32("NumChannels", deleteChannels);
-					theMessage->AddInt32("AfterChannel", afterChannel);
-					(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(theMessage, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
-					delete theMessage;
-				}
+		// Send message to cue sheet view
+		if (afterChannel > 0 && afterChannel <= numChannels) {
+			BMessage *theMessage = new BMessage(DELETE_CHANNEL_MSG);
+			theMessage->AddInt32("NumChannels", deleteChannels);
+			theMessage->AddInt32("AfterChannel", afterChannel);
+			(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(theMessage, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
+			delete theMessage;
+		}
 
-				Lock();
-				Quit();
-			}
-			break;
+		Lock();
+		Quit();
+	}
+	break;
 
-		case CANCEL_MSG:
-			Lock();
-			Quit();
-			break;
+	case CANCEL_MSG:
+		Lock();
+		Quit();
+		break;
 
-		// The user can't delete more channles than exist
-		case DELETE_THECHANNEL_MSG:
-			{
-     			// Get total number of channels
-				int32 numChannels = fCueSheet->GetTotalChannels();
-				char numStr[10];
-				sprintf(numStr, "%d", numChannels);
+	// The user can't delete more channles than exist
+	case DELETE_THECHANNEL_MSG:
+	{
+		// Get total number of channels
+		int32 numChannels = fCueSheet->GetTotalChannels();
+		char numStr[10];
+		sprintf(numStr, "%d", numChannels);
 
-     			// 	If the after channel is greater than total channels,
-     			//	correct the user input
-				int32 theNum = atoi( fAfterChannelText->Text());
+		//      If the after channel is greater than total channels,
+		//	correct the user input
+		int32 theNum = atoi( fAfterChannelText->Text());
 
-				if (theNum > numChannels)
-     				fAfterChannelText->SetText(numStr);
-     		}
-			break;
+		if (theNum > numChannels)
+			fAfterChannelText->SetText(numStr);
+	}
+	break;
 
-		// The text has been changed in the after channel text box
-		// Contrain the number to the total number of channels
-		case DELETE_AFTER_CHANNEL_MSG:
-			{
-     			// Get total number of channels
-				int32 numChannels = fCueSheet->GetTotalChannels();
-				char numStr[10];
-				sprintf(numStr, "%d", numChannels);
+	// The text has been changed in the after channel text box
+	// Contrain the number to the total number of channels
+	case DELETE_AFTER_CHANNEL_MSG:
+	{
+		// Get total number of channels
+		int32 numChannels = fCueSheet->GetTotalChannels();
+		char numStr[10];
+		sprintf(numStr, "%d", numChannels);
 
-     			// 	If the after channel is greater than total channels,
-     			//	correct the user input
-				int32 theNum = atoi( fAfterChannelText->Text());
+		//      If the after channel is greater than total channels,
+		//	correct the user input
+		int32 theNum = atoi( fAfterChannelText->Text());
 
-				if (theNum > numChannels)
-     				fAfterChannelText->SetText(numStr);
-     		}
-			break;
+		if (theNum > numChannels)
+			fAfterChannelText->SetText(numStr);
+	}
+	break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 
 	}
 

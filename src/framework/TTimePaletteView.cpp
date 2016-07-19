@@ -86,8 +86,8 @@ void TTimePaletteView::Init()
 	if (file.InitCheck())
 		return;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res(&file);
 	data = (BBitmap *)res.FindResource('bits', "Locator", &size);
@@ -258,18 +258,18 @@ void TTimePaletteView::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
-		// Pass this down to time text
-		case NEW_TIME_MSG:
-			fTimeText->MessageReceived(message);
-			break;
+	// Pass this down to time text
+	case NEW_TIME_MSG:
+		fTimeText->MessageReceived(message);
+		break;
 
-		// The time is being update due to a mouse move over the cue sheet
-		case UPDATE_TIMELINE_MSG:
-			fTimeText->MessageReceived(message);
-			break;
+	// The time is being update due to a mouse move over the cue sheet
+	case UPDATE_TIMELINE_MSG:
+		fTimeText->MessageReceived(message);
+		break;
 
-		default:
-			BView::MessageReceived(message);
-			break;
+	default:
+		BView::MessageReceived(message);
+		break;
 	}
 }

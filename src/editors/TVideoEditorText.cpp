@@ -36,13 +36,13 @@
 //
 //
 
-TVideoEditorText::TVideoEditorText(BHandler *target, int32 messageID, BRect bounds, char *name, uint32 resizing) : 
-			  BView(bounds, name, resizing, B_WILL_DRAW)
-{	
+TVideoEditorText::TVideoEditorText(BHandler *target, int32 messageID, BRect bounds, char *name, uint32 resizing) :
+	BView(bounds, name, resizing, B_WILL_DRAW)
+{
 
-	fTarget 		= target;
-	fMessageID  	= messageID;	
-	
+	fTarget                 = target;
+	fMessageID      = messageID;
+
 	Init();
 }
 
@@ -55,13 +55,13 @@ TVideoEditorText::TVideoEditorText(BHandler *target, int32 messageID, BRect boun
 //
 
 
-TVideoEditorText::TVideoEditorText(const TVideoEditorText *theText) : 
-			  BView(theText->Bounds(), theText->Name(), theText->ResizingMode(), B_WILL_DRAW)
-{	
+TVideoEditorText::TVideoEditorText(const TVideoEditorText *theText) :
+	BView(theText->Bounds(), theText->Name(), theText->ResizingMode(), B_WILL_DRAW)
+{
 
-	fTarget 		= theText->fTarget;
-	fMessageID  	= theText->fMessageID;	
-	
+	fTarget                 = theText->fTarget;
+	fMessageID      = theText->fMessageID;
+
 	Init();
 }
 
@@ -75,34 +75,34 @@ TVideoEditorText::TVideoEditorText(const TVideoEditorText *theText) :
 
 
 TVideoEditorText::TVideoEditorText(BMessage *data) : BView(data)
-{	
+{
 	// Get our member variables from the BMessage
-	ssize_t 	numBytes;
-	rgb_color	*color;
-	BFont 		*font;
+	ssize_t numBytes;
+	rgb_color       *color;
+	BFont           *font;
 
-	data->FindInt32("MessageID", &fMessageID);		
-	data->FindFloat("TextSize", &fTextSize);		
+	data->FindInt32("MessageID", &fMessageID);
+	data->FindFloat("TextSize", &fTextSize);
 
 	data->FindData("Font", B_ANY_TYPE, (const void **)&font, &numBytes);
 	fFont = *font;
-	
+
 	data->FindData("Color", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes);
 	fColor = *color;
-	
+
 	// Set up our key stroke counter
 	fKeyCount = 0;
-	
+
 	// Set up font
-   	SetFont(&fFont);
-   	
-   	// Perform default initialization
+	SetFont(&fFont);
+
+	// Perform default initialization
 	sprintf(fText, "00:00:00:00");
-	
-	// 	Set up time rects.  We divide the area up into four areas
+
+	//      Set up time rects.  We divide the area up into four areas
 	//	for hour, minutes, seconds and frames
-	float 	numberWidth;
-	float 	spaceWidth;
+	float numberWidth;
+	float spaceWidth;
 
 	// Get bound and adjust for border type
 	BRect bounds = Bounds();
@@ -110,37 +110,37 @@ TVideoEditorText::TVideoEditorText(BMessage *data) : BView(data)
 	bounds.right--;
 	bounds.top++;
 	bounds.bottom--;
-				
+
 	// Get text drawing location
 	float startX;
 	float width = fFont.StringWidth(fText);
 	font_height fh;
-	fFont.GetHeight(&fh);	
+	fFont.GetHeight(&fh);
 	startX = (bounds.right - width)/2;
-	
+
 	numberWidth = StringWidth("00");
-	spaceWidth 	= StringWidth(":");
-	
-	fHoursRect.left 		= bounds.left;
-	fHoursRect.top 		= bounds.top;
-	fHoursRect.right 		= fHoursRect.left + startX + numberWidth;
-	fHoursRect.bottom 		= bounds.bottom;
-	
-	fMinutesRect.left 		= fHoursRect.right + spaceWidth;
-	fMinutesRect.top 		= bounds.top;
-	fMinutesRect.right 	= fMinutesRect.left + numberWidth;
-	fMinutesRect.bottom 	= bounds.bottom;
-	
-	fSecondsRect.left 		= fMinutesRect.right + spaceWidth;
-	fSecondsRect.top 		= bounds.top;
-	fSecondsRect.right 	= fSecondsRect.left + numberWidth;
-	fSecondsRect.bottom 	= bounds.bottom;
-	
-	fFramesRect.left 		= fSecondsRect.right + spaceWidth;
-	fFramesRect.top 		= bounds.top;
-	fFramesRect.right 		= bounds.right;
-	fFramesRect.bottom 	= bounds.bottom;
-	
+	spaceWidth      = StringWidth(":");
+
+	fHoursRect.left                 = bounds.left;
+	fHoursRect.top          = bounds.top;
+	fHoursRect.right                = fHoursRect.left + startX + numberWidth;
+	fHoursRect.bottom               = bounds.bottom;
+
+	fMinutesRect.left               = fHoursRect.right + spaceWidth;
+	fMinutesRect.top                = bounds.top;
+	fMinutesRect.right      = fMinutesRect.left + numberWidth;
+	fMinutesRect.bottom     = bounds.bottom;
+
+	fSecondsRect.left               = fMinutesRect.right + spaceWidth;
+	fSecondsRect.top                = bounds.top;
+	fSecondsRect.right      = fSecondsRect.left + numberWidth;
+	fSecondsRect.bottom     = bounds.bottom;
+
+	fFramesRect.left                = fSecondsRect.right + spaceWidth;
+	fFramesRect.top                 = bounds.top;
+	fFramesRect.right               = bounds.right;
+	fFramesRect.bottom      = bounds.bottom;
+
 	// Set cell to none
 	fCurrentCell = 0;
 }
@@ -153,7 +153,7 @@ TVideoEditorText::TVideoEditorText(BMessage *data) : BView(data)
 //
 
 TVideoEditorText::~TVideoEditorText()
-{	
+{
 }
 
 
@@ -168,19 +168,19 @@ void TVideoEditorText::Init()
 {
 	// Set up our key stroke counter
 	fKeyCount = 0;
-	
+
 	// Set up font
-   	SetFont(&fFont);
-			
+	SetFont(&fFont);
+
 	// Perform default initialization
 	SetViewColor(kBlack);
 	SetLowColor(ViewColor());
 	sprintf(fText, "00:00:00:00");
-	
-	// 	Set up time rects.  We divide the area up into four areas
+
+	//      Set up time rects.  We divide the area up into four areas
 	//	for hour, minutes, seconds and frames
-	float 	numberWidth;
-	float 	spaceWidth;
+	float numberWidth;
+	float spaceWidth;
 
 	// Get text drawing location
 	BRect bounds = Bounds();
@@ -190,30 +190,30 @@ void TVideoEditorText::Init()
 	//fDrawPt.x = bounds.left + 2;
 	fDrawPt.x = startX;
 	fDrawPt.y = (bounds.Height() / 2) + 4;
-	
+
 	numberWidth = StringWidth("00");
-	spaceWidth 	= StringWidth(":");
-	
-	fHoursRect.left 		= bounds.left;
-	fHoursRect.top 		= bounds.top;
-	fHoursRect.right 		= fHoursRect.left + startX + numberWidth;
-	fHoursRect.bottom 		= bounds.bottom;
-	
-	fMinutesRect.left 		= fHoursRect.right + spaceWidth;
-	fMinutesRect.top 		= bounds.top;
-	fMinutesRect.right 	= fMinutesRect.left + numberWidth;
-	fMinutesRect.bottom 	= bounds.bottom;
-	
-	fSecondsRect.left 		= fMinutesRect.right + spaceWidth;
-	fSecondsRect.top 		= bounds.top;
-	fSecondsRect.right 	= fSecondsRect.left + numberWidth;
-	fSecondsRect.bottom 	= bounds.bottom;
-	
-	fFramesRect.left 		= fSecondsRect.right + spaceWidth;
-	fFramesRect.top 		= bounds.top;
-	fFramesRect.right 		= bounds.right;
-	fFramesRect.bottom 	= bounds.bottom;
-	
+	spaceWidth      = StringWidth(":");
+
+	fHoursRect.left                 = bounds.left;
+	fHoursRect.top          = bounds.top;
+	fHoursRect.right                = fHoursRect.left + startX + numberWidth;
+	fHoursRect.bottom               = bounds.bottom;
+
+	fMinutesRect.left               = fHoursRect.right + spaceWidth;
+	fMinutesRect.top                = bounds.top;
+	fMinutesRect.right      = fMinutesRect.left + numberWidth;
+	fMinutesRect.bottom     = bounds.bottom;
+
+	fSecondsRect.left               = fMinutesRect.right + spaceWidth;
+	fSecondsRect.top                = bounds.top;
+	fSecondsRect.right      = fSecondsRect.left + numberWidth;
+	fSecondsRect.bottom     = bounds.bottom;
+
+	fFramesRect.left                = fSecondsRect.right + spaceWidth;
+	fFramesRect.top                 = bounds.top;
+	fFramesRect.right               = bounds.right;
+	fFramesRect.bottom      = bounds.bottom;
+
 	// Set cell to none
 	fCurrentCell = 0;
 }
@@ -228,14 +228,14 @@ void TVideoEditorText::Init()
 //
 //
 
-BArchivable *TVideoEditorText::Instantiate(BMessage *archive) 
-{ 
-	if ( validate_instantiation(archive, "TVideoEditorText") ) 
-		return new TVideoEditorText(archive); 
-		
-	return NULL; 
+BArchivable *TVideoEditorText::Instantiate(BMessage *archive)
+{
+	if ( validate_instantiation(archive, "TVideoEditorText") )
+		return new TVideoEditorText(archive);
+
+	return NULL;
 }
-   
+
 //---------------------------------------------------------------------
 //	Archive
 //---------------------------------------------------------------------
@@ -244,28 +244,27 @@ BArchivable *TVideoEditorText::Instantiate(BMessage *archive)
 
 status_t TVideoEditorText::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
-						
-	if (myErr == B_OK)
-	{				
+
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TVideoEditorText");
-		
+
 		// Add our member variables to the BMessage
-		data->AddInt32("MessageID", fMessageID);		
-		data->AddFloat("TextSize", fTextSize);		
+		data->AddInt32("MessageID", fMessageID);
+		data->AddFloat("TextSize", fTextSize);
 		data->AddData("Font", B_ANY_TYPE, &fFont, sizeof(BFont) );
 		data->AddData("Color", B_RGB_COLOR_TYPE, &fColor, sizeof(rgb_color) );
 	}
-	
+
 	Looper()->Unlock();
-		
+
 	return myErr;
 }
 
@@ -284,37 +283,37 @@ void TVideoEditorText::Draw(BRect updateRect)
 {
 	// Save state
 	PushState();
-												
+
 	const BRect bounds = Bounds();
-		
+
 	// Clear out old text
 	SetHighColor(ViewColor());
 	FillRect(bounds);
-	
+
 	// Draw Text
-	SetHighColor(fColor);	
+	SetHighColor(fColor);
 	DrawString(fText, fDrawPt);
-	
+
 	// Draw outline
 	SetHighColor(kTextHilite);
 	BPoint startPt, endPt;
 	startPt.Set(bounds.right, bounds.top);
-	endPt.Set(bounds.right, bounds.bottom);				
+	endPt.Set(bounds.right, bounds.bottom);
 	StrokeLine(startPt, endPt);
 	startPt.Set(bounds.right, bounds.bottom);
-	endPt.Set(bounds.left+1, bounds.bottom);												
+	endPt.Set(bounds.left+1, bounds.bottom);
 	StrokeLine(startPt, endPt);
 	SetHighColor(kTextShadow);
 	startPt.Set(bounds.left, bounds.bottom);
-	endPt.Set(bounds.left, bounds.top);												
+	endPt.Set(bounds.left, bounds.top);
 	StrokeLine(startPt, endPt);
 	startPt.Set(bounds.left, bounds.top);
-	endPt.Set(bounds.right-1, bounds.top);												
+	endPt.Set(bounds.right-1, bounds.top);
 	StrokeLine(startPt, endPt);
-	
+
 	// Invert selected cell
 	//InvertCurrentCell();
-	
+
 	// Restore
 	PopState();
 }
@@ -331,64 +330,64 @@ void TVideoEditorText::Draw(BRect updateRect)
 void TVideoEditorText::MouseDown(BPoint where)
 {
 	/*
-	// We now have focus
-	if ( IsFocus() == false)
-		MakeFocus(true);
-	
-	// Reset key counter
-	fKeyCount = 0;
-	
-	// Verify last entry
-	CheckLastEdit();
+	   // We now have focus
+	   if ( IsFocus() == false)
+	        MakeFocus(true);
 
-	// Determine where the click is
-	if ( fHoursRect.Contains(where) ) 
-	{
-		if (fCurrentCell != 1)
-		{
-			InvertCurrentCell();
-			InvertRect(fHoursRect);
-			fCurrentCell = 1;
-		}
-	}
-	else if ( fMinutesRect.Contains(where) ) 
-	{
-		if (fCurrentCell != 2)
-		{
-			InvertCurrentCell();
-			InvertRect(fMinutesRect);
-			fCurrentCell = 2;
-		}
-	}
+	   // Reset key counter
+	   fKeyCount = 0;
 
-	else if ( fSecondsRect.Contains(where) ) 
-	{
-		if (fCurrentCell != 3)
-		{
-			InvertCurrentCell();
-			InvertRect(fSecondsRect);
-			fCurrentCell = 3;
-		}
-	}
+	   // Verify last entry
+	   CheckLastEdit();
 
-	else if ( fFramesRect.Contains(where) ) 
-	{
-		if (fCurrentCell != 4)
-		{
-			InvertCurrentCell();
-			InvertRect(fFramesRect);
-			fCurrentCell = 4;
-		}
-	}
-	// Default to first cell if all else fails
-	else
-	{
-		InvertCurrentCell();
-		InvertRect(fHoursRect);
-		fCurrentCell = 1;
-	}
-	*/		
-	BView::MouseDown(where);	
+	   // Determine where the click is
+	   if ( fHoursRect.Contains(where) )
+	   {
+	        if (fCurrentCell != 1)
+	        {
+	                InvertCurrentCell();
+	                InvertRect(fHoursRect);
+	                fCurrentCell = 1;
+	        }
+	   }
+	   else if ( fMinutesRect.Contains(where) )
+	   {
+	        if (fCurrentCell != 2)
+	        {
+	                InvertCurrentCell();
+	                InvertRect(fMinutesRect);
+	                fCurrentCell = 2;
+	        }
+	   }
+
+	   else if ( fSecondsRect.Contains(where) )
+	   {
+	        if (fCurrentCell != 3)
+	        {
+	                InvertCurrentCell();
+	                InvertRect(fSecondsRect);
+	                fCurrentCell = 3;
+	        }
+	   }
+
+	   else if ( fFramesRect.Contains(where) )
+	   {
+	        if (fCurrentCell != 4)
+	        {
+	                InvertCurrentCell();
+	                InvertRect(fFramesRect);
+	                fCurrentCell = 4;
+	        }
+	   }
+	   // Default to first cell if all else fails
+	   else
+	   {
+	        InvertCurrentCell();
+	        InvertRect(fHoursRect);
+	        fCurrentCell = 1;
+	   }
+	 */
+	BView::MouseDown(where);
 }
 
 
@@ -399,7 +398,7 @@ void TVideoEditorText::MouseDown(BPoint where)
 //
 
 void TVideoEditorText::MouseUp(BPoint where)
-{	
+{
 }
 
 
@@ -423,62 +422,56 @@ void TVideoEditorText::MouseMoved(BPoint where, uint32 code, const BMessage *mes
 void TVideoEditorText::KeyDown(const char *bytes, int32 numBytes)
 {
 	char theChar = *bytes;
-			
+
 	// Increment our counter
 	fKeyCount++;
 	if (fKeyCount > 2)
 		fKeyCount = 1;
-		
-	//	Check for a return or enter 
-	if (theChar == B_ENTER || theChar == B_RETURN || theChar == 'r')
-	{
+
+	//	Check for a return or enter
+	if (theChar == B_ENTER || theChar == B_RETURN || theChar == 'r') {
 		MakeFocus(false);
-	}		
+	}
 	// We have a number.  Update the cell...
-	else if ( isdigit(theChar) )
-	{
-		UpdateCurrentCell(theChar);	
+	else if ( isdigit(theChar) ) {
+		UpdateCurrentCell(theChar);
 	}
 	// Reset selected cell to zero
-	else if ( IsDelete(theChar) || IsBackspace(theChar) )
-	{
+	else if ( IsDelete(theChar) || IsBackspace(theChar) ) {
 		//ClearCell();
 	}
 	// Tab key or period '.' moves us through the time elements
-	else if( IsTab(theChar) || theChar == '.' )
-	{	
+	else if( IsTab(theChar) || theChar == '.' ) {
 		// Check for shift key.  This move us back through the elements
-		if ( IsShiftKeyDown() )		
+		if ( IsShiftKeyDown() )
 			DecrementCell();
 		else
 			IncrementCell();
-	}
-	else if ( IsArrows(theChar) )
-	{
+	} else if ( IsArrows(theChar) )   {
 		switch(theChar)
 		{
-			// Increment value
-			case B_UP_ARROW:
-				break;
-				
-			// Decrement value
-			case B_DOWN_ARROW:
-				break;
-				
-			// Select next cell
-			case B_LEFT_ARROW:
-				DecrementCell();
-				break;
-				
-			// Select previous cell
-			case B_RIGHT_ARROW:
-				IncrementCell();
-				break;
+		// Increment value
+		case B_UP_ARROW:
+			break;
+
+		// Decrement value
+		case B_DOWN_ARROW:
+			break;
+
+		// Select next cell
+		case B_LEFT_ARROW:
+			DecrementCell();
+			break;
+
+		// Select previous cell
+		case B_RIGHT_ARROW:
+			IncrementCell();
+			break;
 		}
 	}
 	// Illegal character
 	else
-		;//beep();
+		; //beep();
 }
 
 
@@ -488,42 +481,42 @@ void TVideoEditorText::KeyDown(const char *bytes, int32 numBytes)
 //
 //
 
-	
+
 void TVideoEditorText::MakeFocus(bool focusState)
 {
 	/*
-	// If we are out of focus, deselect cells
-	if (focusState == false)
-	{		
-		if (fTarget)
-		{
-			BLooper *looper = fTarget->Looper();
-			
-			if ( looper->Lock() )
-			{
-				// Check integrity of last edited value
-				CheckLastEdit();
-				
-				for (int16 index = kHoursCell; index < kTotalCells; index++)
-					ConvertToTime(index);
-				
-				BMessage *message = new BMessage(fMessageID);
-				message->AddInt32("TheTime", fTime);
-				fTarget->MessageReceived( message);
-				looper->Unlock();
-				delete message;
-			}			
-		}
-		
-		InvertCurrentCell();
-		fCurrentCell = 0;
-		
-	}
-	// We are getting focus	
-	else
-	{
-	}
-	*/	
+	   // If we are out of focus, deselect cells
+	   if (focusState == false)
+	   {
+	        if (fTarget)
+	        {
+	                BLooper *looper = fTarget->Looper();
+
+	                if ( looper->Lock() )
+	                {
+	                        // Check integrity of last edited value
+	                        CheckLastEdit();
+
+	                        for (int16 index = kHoursCell; index < kTotalCells; index++)
+	                                ConvertToTime(index);
+
+	                        BMessage *message = new BMessage(fMessageID);
+	                        message->AddInt32("TheTime", fTime);
+	                        fTarget->MessageReceived( message);
+	                        looper->Unlock();
+	                        delete message;
+	                }
+	        }
+
+	        InvertCurrentCell();
+	        fCurrentCell = 0;
+
+	   }
+	   // We are getting focus
+	   else
+	   {
+	   }
+	 */
 	BView::MakeFocus(focusState);
 }
 
@@ -541,28 +534,26 @@ void TVideoEditorText::MessageReceived(BMessage *theMessage)
 {
 	switch( theMessage->what)
 	{
-		// 	Time is inferred from point.  This is used during a mouse over the cue sheet
-		case UPDATE_TIMELINE_MSG:
-			{ 
-				int64 theTime;			
-				
-				if ( theMessage->FindInt64("TheTime", &theTime) == B_OK)
-				{		
-				
-					// Don't allow negative times to slip through
-					if (theTime >= 0)
-					{
-						TimeToString(theTime, GetCurrentTimeFormat(), fText, false);				
-						Draw(Bounds());
-					}
-				}
+	//      Time is inferred from point.  This is used during a mouse over the cue sheet
+	case UPDATE_TIMELINE_MSG:
+	{
+		int64 theTime;
+
+		if ( theMessage->FindInt64("TheTime", &theTime) == B_OK) {
+
+			// Don't allow negative times to slip through
+			if (theTime >= 0) {
+				TimeToString(theTime, GetCurrentTimeFormat(), fText, false);
+				Draw(Bounds());
 			}
-			break;
-			
-		default:
-			break;
-		
-	}						
+		}
+	}
+	break;
+
+	default:
+		break;
+
+	}
 }
 
 
@@ -575,17 +566,17 @@ void TVideoEditorText::MessageReceived(BMessage *theMessage)
 //
 //	Set the view BFont and Font Color
 //
-		
+
 void TVideoEditorText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_color theColor)
 {
 	// Update our member variables
-	fFont 	= theFont;
+	fFont   = theFont;
 	fColor = theColor;
-	
-   	SetFont(&fFont);
-   	SetHighColor(fColor);
-   	
-   	// Reinit text drawing variables
+
+	SetFont(&fFont);
+	SetHighColor(fColor);
+
+	// Reinit text drawing variables
 	BRect bounds = Bounds();
 	float startX;
 	float width = fFont.StringWidth(fText);
@@ -620,76 +611,76 @@ void TVideoEditorText::SetText(char *theText)
 
 void TVideoEditorText::UpdateCurrentCell(char theChar)
 {
-		
+
 	BRect updateRect;
-	updateRect.left 	= fHoursRect.left;
-	updateRect.top 		= fHoursRect.top;
-	updateRect.right 	= fFramesRect.right;
-	updateRect.bottom 	= fFramesRect.bottom;
-	
-	
+	updateRect.left         = fHoursRect.left;
+	updateRect.top          = fHoursRect.top;
+	updateRect.right        = fFramesRect.right;
+	updateRect.bottom       = fFramesRect.bottom;
+
+
 	switch(fCurrentCell)
 	{
-		case kHoursCell:
-			{
-				if (fKeyCount == 1)
-					strcpy( &fText[0], "0");
-				else
-					fText[0] 	= fText[1];
-					
-				fText[1] 	= theChar;
-			
-				//Invalidate(fHoursRect);
-				Invalidate(updateRect);
-			}
-			break;
-			
-		case kMinutesCell:
-			{
-				if (fKeyCount == 1)
-					strcpy( &fText[3], "0");
-				else
-					fText[3] 	= fText[4];
-					
-				fText[4] 	= theChar;
-			
-				//Invalidate(fMinutesRect);
-				Invalidate(updateRect);
-			}
-			break;
-			
-		case kSecondsCell:
-			{
-				if (fKeyCount == 1)
-					strcpy( &fText[6], "0");
-				else
-					fText[6] 	= fText[7];
-					
-				fText[7] 	= theChar;
-			
-				//Invalidate(fSecondsRect);
-				Invalidate(updateRect);
-			}
-			break;
-			
-		// Set the frames to the entered value
-		case kFramesCell:
-			{				
-				if (fKeyCount == 1)
-					strcpy( &fText[9], "0");
-				else
-					fText[9] 	= fText[10];
-					
-				fText[10] 	= theChar;
-					
-				//Invalidate(fFramesRect);
-				Invalidate(updateRect);
-			}
-			break;
-			
-		default:
-			break;		
-	}		
+	case kHoursCell:
+	{
+		if (fKeyCount == 1)
+			strcpy( &fText[0], "0");
+		else
+			fText[0]        = fText[1];
+
+		fText[1]        = theChar;
+
+		//Invalidate(fHoursRect);
+		Invalidate(updateRect);
+	}
+	break;
+
+	case kMinutesCell:
+	{
+		if (fKeyCount == 1)
+			strcpy( &fText[3], "0");
+		else
+			fText[3]        = fText[4];
+
+		fText[4]        = theChar;
+
+		//Invalidate(fMinutesRect);
+		Invalidate(updateRect);
+	}
+	break;
+
+	case kSecondsCell:
+	{
+		if (fKeyCount == 1)
+			strcpy( &fText[6], "0");
+		else
+			fText[6]        = fText[7];
+
+		fText[7]        = theChar;
+
+		//Invalidate(fSecondsRect);
+		Invalidate(updateRect);
+	}
+	break;
+
+	// Set the frames to the entered value
+	case kFramesCell:
+	{
+		if (fKeyCount == 1)
+			strcpy( &fText[9], "0");
+		else
+			fText[9]        = fText[10];
+
+		fText[10]       = theChar;
+
+		//Invalidate(fFramesRect);
+		Invalidate(updateRect);
+	}
+	break;
+
+	default:
+		break;
+	}
 }
 
 
@@ -702,79 +693,79 @@ void TVideoEditorText::UpdateCurrentCell(char theChar)
 
 void TVideoEditorText::CheckLastEdit()
 {
-	char 	textBuf[2];
-	int32	tmpNum;
-	
+	char textBuf[2];
+	int32 tmpNum;
+
 	// Check for bad characters and number overflow
 	switch(fCurrentCell)
 	{
-		case kHoursCell:
-			strncpy(textBuf, &fText[0], 2);
-			break;
-			
-		case kMinutesCell:
-			{
-				strncpy(textBuf, &fText[3], 2);
+	case kHoursCell:
+		strncpy(textBuf, &fText[0], 2);
+		break;
 
-				tmpNum = atoi(textBuf);
-				
-				if (tmpNum > 59)
-					strncpy(&fText[3], "59", 2);
-			
-				Invalidate(fMinutesRect);
-			}
-			break;
-			
-		case kSecondsCell:
-			{
-				strncpy(textBuf, &fText[6], 2);
-				
-				tmpNum = atoi(textBuf);
-				
-				if (tmpNum > 59)
-					strncpy(&fText[6], "59", 2);
+	case kMinutesCell:
+	{
+		strncpy(textBuf, &fText[3], 2);
 
-				Invalidate(fSecondsRect);
-			}			
-			break;
-					
-		case kFramesCell:
-			{
-				strncpy(textBuf, &fText[9], 2);
-				
-				tmpNum = atoi(textBuf);
+		tmpNum = atoi(textBuf);
 
-				switch (GetCurrentTimeFormat())
-				{
-					case B_TIMECODE_DEFAULT:
-						if (tmpNum > 100)
-							strncpy(&fText[9], "99", 2);
-						break;
-					
-					case B_TIMECODE_24:
-						if (tmpNum > 24)
-							strncpy(&fText[9], "24", 2);
-						break;
-						
-					case B_TIMECODE_25:
-						if (tmpNum > 25)
-							strncpy(&fText[9], "25", 2);
-						break;
-						
-					case B_TIMECODE_30_DROP_2:
-					case B_TIMECODE_30:						
-						if (tmpNum > 30)
-							strncpy(&fText[9], "30", 2);
-						break;																
-				}					
-				Invalidate(fFramesRect);							
-			}
-			break;
-			
-		default:
-			break;
+		if (tmpNum > 59)
+			strncpy(&fText[3], "59", 2);
+
+		Invalidate(fMinutesRect);
 	}
-		
+	break;
+
+	case kSecondsCell:
+	{
+		strncpy(textBuf, &fText[6], 2);
+
+		tmpNum = atoi(textBuf);
+
+		if (tmpNum > 59)
+			strncpy(&fText[6], "59", 2);
+
+		Invalidate(fSecondsRect);
+	}
+	break;
+
+	case kFramesCell:
+	{
+		strncpy(textBuf, &fText[9], 2);
+
+		tmpNum = atoi(textBuf);
+
+		switch (GetCurrentTimeFormat())
+		{
+		case B_TIMECODE_DEFAULT:
+			if (tmpNum > 100)
+				strncpy(&fText[9], "99", 2);
+			break;
+
+		case B_TIMECODE_24:
+			if (tmpNum > 24)
+				strncpy(&fText[9], "24", 2);
+			break;
+
+		case B_TIMECODE_25:
+			if (tmpNum > 25)
+				strncpy(&fText[9], "25", 2);
+			break;
+
+		case B_TIMECODE_30_DROP_2:
+		case B_TIMECODE_30:
+			if (tmpNum > 30)
+				strncpy(&fText[9], "30", 2);
+			break;
+		}
+		Invalidate(fFramesRect);
+	}
+	break;
+
+	default:
+		break;
+	}
+
 	ConvertToTime(fCurrentCell);
 }
 
@@ -790,16 +781,16 @@ void TVideoEditorText::CheckLastEdit()
 //	Check to see if character is backspace
 //
 
-bool  TVideoEditorText::IsBackspace(char theChar)
+bool TVideoEditorText::IsBackspace(char theChar)
 {
 	switch(theChar)
 	{
-		case B_BACKSPACE:
-			return true;
-			
-		default:
-			return false;
-	
+	case B_BACKSPACE:
+		return true;
+
+	default:
+		return false;
+
 	}
 }
 
@@ -811,19 +802,19 @@ bool  TVideoEditorText::IsBackspace(char theChar)
 //	Check to see if character is one of the arrow keys
 //
 
-bool  TVideoEditorText::IsArrows(char theChar)
+bool TVideoEditorText::IsArrows(char theChar)
 {
 	switch(theChar)
 	{
-		case B_UP_ARROW:
-		case B_LEFT_ARROW:
-		case B_DOWN_ARROW:
-		case B_RIGHT_ARROW:
-			return true;
-			
-		default:
-			return false;
-	
+	case B_UP_ARROW:
+	case B_LEFT_ARROW:
+	case B_DOWN_ARROW:
+	case B_RIGHT_ARROW:
+		return true;
+
+	default:
+		return false;
+
 	}
 }
 
@@ -834,16 +825,16 @@ bool  TVideoEditorText::IsArrows(char theChar)
 //	Check to see if character is the delete key
 //
 
-bool  TVideoEditorText::IsDelete(char theChar)
+bool TVideoEditorText::IsDelete(char theChar)
 {
 	switch(theChar)
 	{
-		case B_DELETE:
-			return true;
-			
-		default:
-			return false;
-	
+	case B_DELETE:
+		return true;
+
+	default:
+		return false;
+
 	}
 }
 
@@ -855,19 +846,19 @@ bool  TVideoEditorText::IsDelete(char theChar)
 //	Check to see if character is the tab key
 //
 
-bool  TVideoEditorText::IsTab(char theChar)
+bool TVideoEditorText::IsTab(char theChar)
 {
 	switch(theChar)
 	{
-		case B_TAB:
-			return true;
-			
-		default:
-			return false;
-	
+	case B_TAB:
+		return true;
+
+	default:
+		return false;
+
 	}
 }
-	
+
 #pragma mark -
 #pragma mark === Utility Routines ===
 
@@ -895,7 +886,7 @@ void TVideoEditorText::LockText()
 
 void TVideoEditorText::UnlockText()
 {
-	fIsLocked = false;	
+	fIsLocked = false;
 }
 
 
@@ -910,24 +901,24 @@ void TVideoEditorText::InvertCurrentCell()
 {
 	switch(fCurrentCell)
 	{
-		case 1:
-			InvertRect(fHoursRect);
-			break;
+	case 1:
+		InvertRect(fHoursRect);
+		break;
 
-		case 2:
-			InvertRect(fMinutesRect);
-			break;
+	case 2:
+		InvertRect(fMinutesRect);
+		break;
 
-		case 3:
-			InvertRect(fSecondsRect);
-			break;
+	case 3:
+		InvertRect(fSecondsRect);
+		break;
 
-		case 4:
-			InvertRect(fFramesRect);
-			break;
-			
-		default:
-			break;	
+	case 4:
+		InvertRect(fFramesRect);
+		break;
+
+	default:
+		break;
 	}
 }
 
@@ -943,23 +934,23 @@ void TVideoEditorText::DecrementCell()
 {
 	// Reset key counter
 	fKeyCount = 0;
-	
+
 	// Verify last text entry as valid
 	CheckLastEdit();
-	
+
 	// Clean up old cell
 	InvertCurrentCell();
 
-	// Select the previous cell			
+	// Select the previous cell
 	fCurrentCell--;
-			
+
 	// Check for overflow
 	if (fCurrentCell <= 0)
-		fCurrentCell = 4;			
+		fCurrentCell = 4;
 
 	// Select new cell
 	InvertCurrentCell();
-	
+
 }
 
 
@@ -986,8 +977,8 @@ void TVideoEditorText::IncrementCell()
 
 	// Check for overflow
 	if (fCurrentCell > 4)
-		fCurrentCell = 1;						
-	
+		fCurrentCell = 1;
+
 	// Clean up old cell
 	InvertCurrentCell();
 }
@@ -1004,195 +995,192 @@ void TVideoEditorText::IncrementCell()
 
 void TVideoEditorText::ConvertToTime(int16 theCell)
 {
-	int32 	oldVal, delta;	
-	char 	textBuf[12];
-	char	tmpStr[3];
-	int16 	tmpNum;
-	
+	int32 oldVal, delta;
+	char textBuf[12];
+	char tmpStr[3];
+	int16 tmpNum;
+
 	// Fill buffer with current text
 	strncpy(textBuf, fText, 12);
 	tmpStr[2] = '\n';
-			
-	/*
-	// Determine current time format and convert text to time
-	if ( GetCurrentTimeFormat() == kSMPTE30) 
-	{
-		char	text[256];
-		bool	changed = false;
-		int16	hours, minutes, seconds, frames;
-				
-		TimeToString(fTime, GetCurrentTimeFormat(), text, false);
-		
-		// Stick the new value (if it changed) into the string and reverse calc the time
-		switch (theCell) 
-		{
-			// Hours
-			case 1:			
-				oldVal = ((text[1] - '0') * 10) + (text[2] - '0');
-				if (textBuf[0] != oldVal) 
-				{
-					text[1] = textBuf[0] / 10 + '0';
-					textBuf[0] %= 10;
-					text[2] = textBuf[0] + '0'; 
-					changed = true;
-				}
-				break;
-				
-			// Minutes
-			case 2:			
-				oldVal = ((text[4] - '0') * 10) + (text[5] - '0');
-				if (textBuf[1] != oldVal) 
-				{
-					text[4] = textBuf[1] / 10 + '0';
-					textBuf[1] %= 10;
-					text[5] = textBuf[1] + '0'; 
-					changed = true;
-				}
-				break;
-				
-			// Seconds
-			case 3:			
-				oldVal = ((text[7] - '0') * 10) + (text[8] - '0');
-				if (textBuf[2] != oldVal) 
-				{
-					text[7] = textBuf[2] / 10 + '0';
-					textBuf[2] %= 10;
-					text[8] = textBuf[2] + '0'; 
-					changed = true;
-				}
-				break;
-				
-			// Frames
-			case 4:			
-				oldVal = ((text[10] - '0') * 10) + (text[11] - '0');
-				
-				if (textBuf[3] < 2 && text[7] == '0' && text[8] == '0' && text[5] != '0') 
-					textBuf[3] = 2;
-					
-				if (textBuf[3] != oldVal) 
-				{
-					text[10] = textBuf[3] / 10 + '0';
-					textBuf[3] %= 10;
-					text[11] = textBuf[3] + '0'; 
-					changed = true;
-				}
-				break;
-		}
-		
-		if (changed) 
-		{
-			hours = ((text[1] - '0') * 10) + (text[2] - '0');
-			minutes = ((text[4] - '0') * 10) + (text[5] - '0');
-			seconds = ((text[7] - '0') * 10) + (text[8] - '0');
-			frames = ((text[10] - '0') * 10) + (text[11] - '0');
-			
-			fTime = (long)hours * 3600000L;				// Hours
-			fTime += (long)(minutes / 10) * 600000;		// Ten minutes
-			minutes %= 10;
-			
-			if (minutes) 
-			{
-				// First minute
-				fTime += 60060.066;			
-				fTime += ((double)(minutes - 1) * 59993.326);
-			}
-			
-			if (seconds) 
-			{
-				// First second
-				if (minutes)
-					fTime += 934;					
-				else
-					fTime += 1001;
-				fTime += (long)(seconds - 1) * 1001;
-			}
-			
-			if (frames >= 2 && !seconds && minutes)
-				frames -= 2;
-				
-			fTime += ((double)(frames + 0.5) * 33.3667);
-		}
-		
-	} 
-	else switch (theCell) 
-	*/
-	switch (theCell) 
-	{
-		// Hours
-		case 1:				
-			oldVal = fTime / 3600000;			
-			
-			strncpy(tmpStr, &textBuf[0], 2);		
-			tmpNum = atoi(tmpStr);
-			
-			if (tmpNum != oldVal) 
-			{
-				delta = tmpNum - oldVal;
-				fTime += (delta * 3600000);
-			}
-			break;
-			
-		// Minutes
-		case 2:				
-			// Convert time to minutes
-			oldVal = fTime % 3600000;			
-			oldVal /= 60000;
-									
-			strncpy(tmpStr, &textBuf[3], 2);		
-			tmpNum = atoi(tmpStr);
 
-			if (tmpNum != oldVal) 
-			{
-				delta = tmpNum - oldVal;
-				fTime += (delta * 60000);
-			}
+	/*
+	   // Determine current time format and convert text to time
+	   if ( GetCurrentTimeFormat() == kSMPTE30)
+	   {
+	        char	text[256];
+	        bool	changed = false;
+	        int16	hours, minutes, seconds, frames;
+
+	        TimeToString(fTime, GetCurrentTimeFormat(), text, false);
+
+	        // Stick the new value (if it changed) into the string and reverse calc the time
+	        switch (theCell)
+	        {
+	                // Hours
+	                case 1:
+	                        oldVal = ((text[1] - '0') * 10) + (text[2] - '0');
+	                        if (textBuf[0] != oldVal)
+	                        {
+	                                text[1] = textBuf[0] / 10 + '0';
+	                                textBuf[0] %= 10;
+	                                text[2] = textBuf[0] + '0';
+	                                changed = true;
+	                        }
+	                        break;
+
+	                // Minutes
+	                case 2:
+	                        oldVal = ((text[4] - '0') * 10) + (text[5] - '0');
+	                        if (textBuf[1] != oldVal)
+	                        {
+	                                text[4] = textBuf[1] / 10 + '0';
+	                                textBuf[1] %= 10;
+	                                text[5] = textBuf[1] + '0';
+	                                changed = true;
+	                        }
+	                        break;
+
+	                // Seconds
+	                case 3:
+	                        oldVal = ((text[7] - '0') * 10) + (text[8] - '0');
+	                        if (textBuf[2] != oldVal)
+	                        {
+	                                text[7] = textBuf[2] / 10 + '0';
+	                                textBuf[2] %= 10;
+	                                text[8] = textBuf[2] + '0';
+	                                changed = true;
+	                        }
+	                        break;
+
+	                // Frames
+	                case 4:
+	                        oldVal = ((text[10] - '0') * 10) + (text[11] - '0');
+
+	                        if (textBuf[3] < 2 && text[7] == '0' && text[8] == '0' && text[5] != '0')
+	                                textBuf[3] = 2;
+
+	                        if (textBuf[3] != oldVal)
+	                        {
+	                                text[10] = textBuf[3] / 10 + '0';
+	                                textBuf[3] %= 10;
+	                                text[11] = textBuf[3] + '0';
+	                                changed = true;
+	                        }
+	                        break;
+	        }
+
+	        if (changed)
+	        {
+	                hours = ((text[1] - '0') * 10) + (text[2] - '0');
+	                minutes = ((text[4] - '0') * 10) + (text[5] - '0');
+	                seconds = ((text[7] - '0') * 10) + (text[8] - '0');
+	                frames = ((text[10] - '0') * 10) + (text[11] - '0');
+
+	                fTime = (long)hours * 3600000L;				// Hours
+	                fTime += (long)(minutes / 10) * 600000;		// Ten minutes
+	                minutes %= 10;
+
+	                if (minutes)
+	                {
+	                        // First minute
+	                        fTime += 60060.066;
+	                        fTime += ((double)(minutes - 1) * 59993.326);
+	                }
+
+	                if (seconds)
+	                {
+	                        // First second
+	                        if (minutes)
+	                                fTime += 934;
+	                        else
+	                                fTime += 1001;
+	                        fTime += (long)(seconds - 1) * 1001;
+	                }
+
+	                if (frames >= 2 && !seconds && minutes)
+	                        frames -= 2;
+
+	                fTime += ((double)(frames + 0.5) * 33.3667);
+	        }
+
+	   }
+	   else switch (theCell)
+	 */
+	switch (theCell)
+	{
+	// Hours
+	case 1:
+		oldVal = fTime / 3600000;
+
+		strncpy(tmpStr, &textBuf[0], 2);
+		tmpNum = atoi(tmpStr);
+
+		if (tmpNum != oldVal) {
+			delta = tmpNum - oldVal;
+			fTime += (delta * 3600000);
+		}
+		break;
+
+	// Minutes
+	case 2:
+		// Convert time to minutes
+		oldVal = fTime % 3600000;
+		oldVal /= 60000;
+
+		strncpy(tmpStr, &textBuf[3], 2);
+		tmpNum = atoi(tmpStr);
+
+		if (tmpNum != oldVal) {
+			delta = tmpNum - oldVal;
+			fTime += (delta * 60000);
+		}
+		break;
+
+	// Seconds
+	case 3:
+		oldVal = fTime % 3600000;
+		oldVal %= 60000;
+		oldVal /= 1000;
+
+		strncpy(tmpStr, &textBuf[6], 2);
+		tmpNum = atoi(tmpStr);
+
+		if (tmpNum != oldVal) {
+			delta = tmpNum - oldVal;
+			fTime += (delta * 1000);
+		}
+		break;
+
+	// Frames/100ths
+	case 4:
+		fTime /= 1000;
+		fTime *= 1000;
+
+		strncpy(tmpStr, &textBuf[9], 2);
+		tmpNum = atoi(tmpStr);
+
+		switch (GetCurrentTimeFormat())
+		{
+
+		case B_TIMECODE_DEFAULT:
+			fTime += (tmpNum * 10);
 			break;
-			
-		// Seconds
-		case 3:				
-			oldVal = fTime % 3600000;
-			oldVal %= 60000;
-			oldVal /= 1000;
-			
-			strncpy(tmpStr, &textBuf[6], 2);		
-			tmpNum = atoi(tmpStr);
-			
-			if (tmpNum != oldVal) 
-			{
-				delta = tmpNum - oldVal;
-				fTime += (delta * 1000);
-			}
+
+		case B_TIMECODE_24:
+			fTime += ((tmpNum * 1000 + 12) / 24);
 			break;
-			
-		// Frames/100ths
-		case 4:				
-			fTime /= 1000;
-			fTime *= 1000;
-			
-			strncpy(tmpStr, &textBuf[9], 2);		
-			tmpNum = atoi(tmpStr);
-			
-			switch (GetCurrentTimeFormat()) 
-			{
-			
-				case B_TIMECODE_DEFAULT:
-					fTime += (tmpNum * 10);
-					break;
-					
-				case B_TIMECODE_24:
-					fTime += ((tmpNum * 1000 + 12) / 24);
-					break;
-					
-				case B_TIMECODE_25:
-					fTime += ((tmpNum * 1000 + 13) / 25);
-					break;
-					
-				case B_TIMECODE_30_DROP_2:					
-				case B_TIMECODE_30:
-					fTime += ((tmpNum * 1000 + 15) / 30);
-					break;
-			}
+
+		case B_TIMECODE_25:
+			fTime += ((tmpNum * 1000 + 13) / 25);
 			break;
+
+		case B_TIMECODE_30_DROP_2:
+		case B_TIMECODE_30:
+			fTime += ((tmpNum * 1000 + 15) / 30);
+			break;
+		}
+		break;
 	}
 }
 
@@ -1207,10 +1195,9 @@ void TVideoEditorText::ConvertToTime(int16 theCell)
 int32 TVideoEditorText::GetTime()
 {
 	// Convert all cells
-	for (int16 index = kHoursCell; index < kTotalCells; index++)
-	{
+	for (int16 index = kHoursCell; index < kTotalCells; index++) {
 		ConvertToTime(index);
 	}
-		
+
 	return fTime;
 }

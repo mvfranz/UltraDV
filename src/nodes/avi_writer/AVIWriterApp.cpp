@@ -32,13 +32,11 @@ static void list_nodes()
 {
 	int nnodes = 50;
 	live_node_info * lni = new live_node_info[nnodes];
-	while (1) 
-	{
+	while (1) {
 		int32 cnt = nnodes;
 		status_t err = BMediaRoster::Roster()->GetLiveNodes(
 			lni, &cnt, NULL, NULL, NULL, 0);
-		if (err < B_OK) 
-		{
+		if (err < B_OK) {
 			fprintf(stderr, "can't get list of nodes: %s [%x]\n", strerror(err), err);
 			delete[] lni;
 			return;
@@ -56,11 +54,11 @@ static void list_nodes()
 	fprintf(stderr, "%d nodes:\n", nnodes);
 	for (int ix=0; ix < nnodes; ix++) {
 		fprintf(stderr, "%5d %30s%s%s%s%s\n", lni[ix].node.node, lni[ix].name,
-			(lni[ix].node.kind & B_BUFFER_CONSUMER) ? " CONSUMER" : "",
-			(lni[ix].node.kind & B_BUFFER_PRODUCER) ? " PRODUCER" : "",
-			(lni[ix].node.kind & B_TIME_SOURCE) ? " TIME_SOURCE" : "",
-			(lni[ix].node.kind & ~(B_BUFFER_CONSUMER|B_BUFFER_PRODUCER|B_TIME_SOURCE)) ?
-				" {other}" : "");
+		        (lni[ix].node.kind & B_BUFFER_CONSUMER) ? " CONSUMER" : "",
+		        (lni[ix].node.kind & B_BUFFER_PRODUCER) ? " PRODUCER" : "",
+		        (lni[ix].node.kind & B_TIME_SOURCE) ? " TIME_SOURCE" : "",
+		        (lni[ix].node.kind & ~(B_BUFFER_CONSUMER|B_BUFFER_PRODUCER|B_TIME_SOURCE)) ?
+		        " {other}" : "");
 	}
 }
 
@@ -79,14 +77,13 @@ AVIWriterApp::AVIWriterApp() : BApplication("application/x-vnd.AVIWriterApp")
 	//	Connect to the media server
 	m_Window = NULL;
 	m_Roster = BMediaRoster::Roster();
-	
-	if (!m_Roster) 
-	{
+
+	if (!m_Roster) {
 		(new BAlert("", "Cannot connect to the media server!", "Quit"))->Go();
 		PostMessage(B_QUIT_REQUESTED);
 		return;
 	}
-	
+
 	//	Find TimeSource
 	status_t err = m_Roster->GetTimeSource(&timesourceNode);
 	if (err < B_OK) {
@@ -94,15 +91,14 @@ AVIWriterApp::AVIWriterApp() : BApplication("application/x-vnd.AVIWriterApp")
 		return;
 	}
 	printf("TimeSource found: %d (%x)\n", timesourceNode.node, timesourceNode.port);
-		
+
 	//	Create our AVIWriter node and register it
 	m_AVIWriter = new AVIConsumer("AVIConsumer");
 	m_Roster->RegisterNode(m_AVIWriter);
-	
+
 	//	Find video source
 	err = m_Roster->GetVideoInput(&producerNode);
-	if (err < B_OK) 
-	{
+	if (err < B_OK) {
 		error("Can't find the video input!", err);
 		return;
 	}
@@ -111,36 +107,31 @@ AVIWriterApp::AVIWriterApp() : BApplication("application/x-vnd.AVIWriterApp")
 	//	Find output from video source
 	int32 cnt = 0;
 	err = m_Roster->GetFreeOutputsFor(producerNode, &m_From, 1, &cnt, B_MEDIA_RAW_VIDEO);
-	if (err < 0 || cnt < 1) 
-	{
+	if (err < 0 || cnt < 1) {
 		error("The video input is busy!", err);
 		return;
 	}
 
 	// create control panel
-	BParameterWeb 	*web  = NULL;
-	BView 			*view = NULL;
+	BParameterWeb   *web  = NULL;
+	BView                   *view = NULL;
 	err = m_Roster->GetParameterWebFor(producerNode, &web);
-	if (err >= B_OK && web != NULL) 
-	{
+	if (err >= B_OK && web != NULL) {
 		view = BMediaTheme::ViewFor(web);
 		//	Create control window
 		m_Window = new ControlWindow(view, producerNode);
 		BMediaRoster::Roster()->StartWatching(BMessenger(NULL, m_Window));
-	}
-	else 
-	{
+	} else   {
 		//	Create an empty window
 		m_Window = new ControlWindow(BRect(64,64,364,164));
 	}
 	m_Window->Show();
-	
-	
+
+
 	//	Find free input
 	cnt = 0;
 	err = m_Roster->GetFreeInputsFor(m_AVIWriter->Node(), &m_To, 1, &cnt, B_MEDIA_RAW_VIDEO);
-	if (err < 0 || cnt < 1) 
-	{
+	if (err < 0 || cnt < 1) {
 		error("The video output is busy!", err);
 		return;
 	}
@@ -150,24 +141,21 @@ AVIWriterApp::AVIWriterApp() : BApplication("application/x-vnd.AVIWriterApp")
 	format.type = B_MEDIA_RAW_VIDEO;
 	format.u.raw_video = media_raw_video_format::wildcard;
 	err = m_Roster->Connect(m_From.source, m_To.destination, &format, &m_From, &m_To);
-	if (err < B_OK) 
-	{
+	if (err < B_OK) {
 		error("Couldn't connect video input to video display!", err);
 		return;
 	}
 
 	//	Set time source for output node
 	err = m_Roster->SetTimeSourceFor( m_AVIWriter->Node().node, timesourceNode.node);
-	if (err < B_OK) 
-	{
+	if (err < B_OK) {
 		error("Couldn't set TimeSource for video display!", err);
 		return;
 	}
 
 	//	Set time source for video input
 	err = m_Roster->SetTimeSourceFor( producerNode.node, timesourceNode.node);
-	if (err < B_OK) 
-	{
+	if (err < B_OK) {
 		error("Couldn't set TimeSource for video input!", err);
 		return;
 	}
@@ -186,24 +174,21 @@ AVIWriterApp::AVIWriterApp() : BApplication("application/x-vnd.AVIWriterApp")
 	source->Release();
 
 	printf("perf = %.4f real = %.4f\n", (double)perf/1000000., (double)real/1000000.);
-	
+
 	err = m_Roster->StartNode(m_To.node, perf);
-	if (err < B_OK) 
-	{
+	if (err < B_OK) {
 		error("Couldn't start video displayer!", err);
 		return;
 	}
-	
+
 	err = m_Roster->StartNode(m_From.node, perf);
-	if (err < B_OK) 
-	{
+	if (err < B_OK) {
 		error("Couldn't start video input!", err);
 		return;
 	}
-	
+
 	err = m_Roster->StartNode(timesourceNode, real);
-	if (err < B_OK) 
-	{
+	if (err < B_OK) {
 		error("Couldn't start TimeSource!", err);
 		return;
 	}
@@ -211,14 +196,12 @@ AVIWriterApp::AVIWriterApp() : BApplication("application/x-vnd.AVIWriterApp")
 
 bool AVIWriterApp::QuitRequested()
 {
-	if (!m_Roster) 
-	{
+	if (!m_Roster) {
 		return true;
 	}
-	
+
 	//	Close window (if necessary)
-	if (m_Window->Lock()) 
-	{
+	if (m_Window->Lock()) {
 		m_Window->Quit();
 	}
 	m_Window = NULL;
@@ -243,7 +226,7 @@ static BRect offset_rect(BRect r, float x, float y)
 
 ControlWindow::ControlWindow(BView * controls, media_node node) :
 	BWindow(offset_rect(controls->Bounds(), 64, 64), "TV Controls",
-		B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS)
+	        B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS)
 {
 	m_view = controls;
 	m_node = node;
@@ -256,31 +239,31 @@ ControlWindow::ControlWindow(const BRect & frame) :
 }
 
 void
-ControlWindow::MessageReceived(BMessage * message) 
+ControlWindow::MessageReceived(BMessage * message)
 {
 	BParameterWeb * web = NULL;
 	BView * panel = NULL;
 	status_t err;
 	int32 cnt;
-	
+
 	switch (message->what) {
-		case B_MEDIA_WEB_CHANGED:
-			printf("Number children: %d\n", CountChildren());
-			cnt = CountChildren();
-			for (int i = 0; i < cnt; i++)
-				printf("   Child view: %08x\n", ChildAt(i));
-			printf("REMOVING VIEW \n");
-			RemoveChild(m_view);
-			printf("DELETING VIEW \n");
-			delete m_view;
-			printf("GETTING PARAMETER WEB\n");
-			err = BMediaRoster::Roster()->GetParameterWebFor(m_node, &web);
-			if (err >= B_OK && web != NULL) {
-				printf("GETTING NEW VIEW\n");
-				m_view = BMediaTheme::ViewFor(web);
-				AddChild(m_view);
-			}
-			break;
+	case B_MEDIA_WEB_CHANGED:
+		printf("Number children: %d\n", CountChildren());
+		cnt = CountChildren();
+		for (int i = 0; i < cnt; i++)
+			printf("   Child view: %08x\n", ChildAt(i));
+		printf("REMOVING VIEW \n");
+		RemoveChild(m_view);
+		printf("DELETING VIEW \n");
+		delete m_view;
+		printf("GETTING PARAMETER WEB\n");
+		err = BMediaRoster::Roster()->GetParameterWebFor(m_node, &web);
+		if (err >= B_OK && web != NULL) {
+			printf("GETTING NEW VIEW\n");
+			m_view = BMediaTheme::ViewFor(web);
+			AddChild(m_view);
+		}
+		break;
 	default:
 		BWindow::MessageReceived(message);
 	}

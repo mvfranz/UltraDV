@@ -6,7 +6,7 @@
 //
 //	Date:	01.26.98
 //
-//	Desc:	
+//	Desc:
 //
 //	Copyright ©1998 mediapede Software
 //
@@ -37,10 +37,10 @@
 //
 //
 
-TMarkerCue::TMarkerCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) : 
-			TCueView(id, parent, bounds, point, startTime, "MarkerCue")
-{	
-	
+TMarkerCue::TMarkerCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point,  long startTime) :
+	TCueView(id, parent, bounds, point, startTime, "MarkerCue")
+{
+
 	// Perform default initialization
 	Init();
 }
@@ -52,9 +52,9 @@ TMarkerCue::TMarkerCue(int16 id, TCueChannel *parent, BRect bounds, BPoint point
 //
 //	Construct from a CueChunk
 
-TMarkerCue::TMarkerCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) : 
-				TCueView(theChunk, parent, bounds, "MarkerCue")
-{	
+TMarkerCue::TMarkerCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds) :
+	TCueView(theChunk, parent, bounds, "MarkerCue")
+{
 	// Perform default initialization
 	Init(theChunk);
 }
@@ -68,9 +68,9 @@ TMarkerCue::TMarkerCue(BaseCueChunk *theChunk, TCueChannel *parent, BRect bounds
 //
 
 TMarkerCue::TMarkerCue(BMessage *theMessage) : TCueView(theMessage)
-{	
+{
 	// Load cue icon
-	LoadCueIcon();	
+	LoadCueIcon();
 }
 
 
@@ -92,43 +92,42 @@ TMarkerCue::~TMarkerCue()
 //	Perform default initialization tasks
 
 void TMarkerCue::Init()
-{	
-		
+{
+
 	// Set up default duration
 	fDuration = 1000;
-	
+
 	// Set up default settings
-	fIsSelected	= false;
-	fIsLocked 		= false;	
-	fLowColor 		= kWhite;	
-	fHighColor 	= kBlack;	
-	fIsPrepared 	= false;
-	fIsPlaying 	= false;
-	
+	fIsSelected     = false;
+	fIsLocked               = false;
+	fLowColor               = kWhite;
+	fHighColor      = kBlack;
+	fIsPrepared     = false;
+	fIsPlaying      = false;
+
 	// Marker cues have no duration
-	fHasDuration 		= false;
-	
-	fCanStretch 		= true;		// true if cue is stretchable
-	fCanWindow 		= false;	// true if cue can window into file
-	fCanLoop 			= false;	// true if cue can loop
-	fCanEnvelope 		= false;	// true if cue can volume envelope
-	fIsVisible 		= false;	// true if cue is visual
-	fCanCrop 			= false;	// true if cue can visual crop
-	fCanTransition 	= false;	// true if cue can transition
-	fCanPath 			= false;	// true if cue can path
-	fHasEditor 		= false;	// true if cue has internal editor
-			
+	fHasDuration            = false;
+
+	fCanStretch             = true;         // true if cue is stretchable
+	fCanWindow              = false;        // true if cue can window into file
+	fCanLoop                        = false;        // true if cue can loop
+	fCanEnvelope            = false;        // true if cue can volume envelope
+	fIsVisible              = false;        // true if cue is visual
+	fCanCrop                        = false;        // true if cue can visual crop
+	fCanTransition  = false;        // true if cue can transition
+	fCanPath                        = false;        // true if cue can path
+	fHasEditor              = false;        // true if cue has internal editor
+
 	// Default initialization
 	TCueView::Init();
-			
+
 	// Add the cue to the cue channel
-	if ( fChannel->CanInsertCue(this, fInsertPoint, true))
-	{
+	if ( fChannel->CanInsertCue(this, fInsertPoint, true)) {
 		fChannel->AddChild(this);
-		fChannel->InsertCue(this, fInsertPoint, fInsertTime);		
-		Select();								
+		fChannel->InsertCue(this, fInsertPoint, fInsertTime);
+		Select();
 	}
-	
+
 	// We are now fully instantiated
 	fIsInstantiated = true;
 
@@ -140,12 +139,12 @@ void TMarkerCue::Init()
 //	Init
 //---------------------------------------------------------------------
 //
-//	Init from BaseCueChunk	
+//	Init from BaseCueChunk
 //
 
 void TMarkerCue::Init(BaseCueChunk *theChunk)
 {
-	TCueView::Init(theChunk);	
+	TCueView::Init(theChunk);
 }
 
 
@@ -159,14 +158,14 @@ void TMarkerCue::Init(BaseCueChunk *theChunk)
 //
 //
 
-BArchivable *TMarkerCue::Instantiate(BMessage *archive) 
-{ 	
-	if ( validate_instantiation(archive, "TMarkerCue") ) 
-		return new TMarkerCue(archive); 
-		
-	return NULL; 
+BArchivable *TMarkerCue::Instantiate(BMessage *archive)
+{
+	if ( validate_instantiation(archive, "TMarkerCue") )
+		return new TMarkerCue(archive);
+
+	return NULL;
 }
-  
+
 
 //---------------------------------------------------------------------
 //	Archive
@@ -176,22 +175,21 @@ BArchivable *TMarkerCue::Instantiate(BMessage *archive)
 
 status_t TMarkerCue::Archive(BMessage *data, bool deep) const
 {
-		
+
 	status_t myErr;
-	
+
 	Looper()->Lock();
-	
+
 	// Start by calling inherited archive
 	myErr = TCueView::Archive(data, deep);
-	
-	if (myErr == B_OK)
-	{				
+
+	if (myErr == B_OK) {
 		// Add ourselves to the archive
-		data->AddString("class", "TMarkerCue");						
+		data->AddString("class", "TMarkerCue");
 	}
-	
+
 	Looper()->Unlock();
-		
+
 	return myErr;
 }
 
@@ -208,13 +206,13 @@ void TMarkerCue::Draw(BRect updateRect)
 {
 	// Save colors
 	rgb_color saveColor = HighColor();
-	
+
 	// Restore color
 	SetHighColor(saveColor);
 
 	// Pass up to parent
 	TCueView::Draw(updateRect);
-	
+
 }
 
 //---------------------------------------------------------------------
@@ -305,9 +303,9 @@ void TMarkerCue::MessageReceived(BMessage *message)
 {
 	switch(message->what)
 	{
-		default:
-			TCueView::MessageReceived(message);						
-			break;
+	default:
+		TCueView::MessageReceived(message);
+		break;
 	}
 }
 
@@ -337,14 +335,13 @@ void TMarkerCue::OpenEditor()
 void TMarkerCue::LoadCueIcon()
 {
 	BBitmap *cueIcon = NULL;
-	
+
 	cueIcon = GetCicnFromResource("MarkerCue");
 
-	if (cueIcon)
-	{
+	if (cueIcon) {
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
-		area.OffsetBy(kResizeZoneWidth+5, 0);		
+		area.OffsetBy(kResizeZoneWidth+5, 0);
 		fCueIcon = new TBitmapView(area, "MarkerCue",cueIcon, false);
-		AddChild(fCueIcon);		
-	}	
+		AddChild(fCueIcon);
+	}
 }

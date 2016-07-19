@@ -79,19 +79,18 @@ void TRecordPrefsDialog::Init()
 	//
 
 	// Get list of mounted BeOS disks
-	BVolumeRoster 	volRoster;
-	BVolume		  	bootVolume;
+	BVolumeRoster volRoster;
+	BVolume bootVolume;
 
 	// Locate boot volume
 	volRoster.GetBootVolume(&bootVolume);
 	char bootStr[256];
 	bootVolume.GetName(bootStr);
 
-	fSwapDiskMenu	= (BMenuField *)FindView("SwapDiskMenu");
+	fSwapDiskMenu   = (BMenuField *)FindView("SwapDiskMenu");
 
 	BMenu *theMenu = fSwapDiskMenu->Menu();
-	if (theMenu)
-	{
+	if (theMenu) {
 		// Boot Volume
 		BMenuItem *swapItem01 = new BMenuItem( bootStr, new BMessage(SWAP_BOOT_MSG) );
 		swapItem01->SetTarget(this);
@@ -121,23 +120,23 @@ void TRecordPrefsDialog::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
-		case OK_MSG:
-		case CANCEL_MSG:
-			Lock();
-			Quit();
-			break;
+	case OK_MSG:
+	case CANCEL_MSG:
+		Lock();
+		Quit();
+		break;
 
-		case SWAP_BOOT_MSG:
-			beep();
-			break;
+	case SWAP_BOOT_MSG:
+		beep();
+		break;
 
-		case RECORD_DISK_MSG:
-		case RECORD_RAM_MSG:
-		case RECORD_POST_MSG:
-			break;
+	case RECORD_DISK_MSG:
+	case RECORD_RAM_MSG:
+	case RECORD_POST_MSG:
+		break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 }

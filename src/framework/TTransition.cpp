@@ -36,7 +36,7 @@
 
 //const int16 kNumTransitions = 49;		// Number of transitions
 
-TransitionCallback	transitionInTable[] =
+TransitionCallback transitionInTable[] =
 {
 	// In Transitions
 	NULL, WipeRightIn, WipeLeftIn, WipeDownIn, WipeUpIn, WipeTopLeftToBottomRightIn,
@@ -53,21 +53,21 @@ TransitionCallback	transitionInTable[] =
 	CurtainsInOut, CurtainsOutOut,
 
 	/* IrisCircle, IrisOval, IrisSquare, IrisRectangle,
-	BlindsRight, BlindsDown, BlindsLeft, BlindsUp,
-	IrisCircleIn, IrisOvalIn, IrisSquareIn, IrisRectangleIn,
-	IrisDiamond, IrisDiamondIn, WipeClockwise, WipeCounterClockwise,
-	CourseDissolve4, FineDissolve,
-	ZoomRight, ZoomDown, ZoomLeft, ZoomUp, ZoomOut,
-	NarrowHStrips, WideHStrips, NarrowVStrips, WideVStrips,
-	FadeBlack, FadeWhite, CourseDissolve1, CourseDissolve2,
-	CourseDissolve3, CourseDissolve4, CourseDissolve5,
-	CourseDissolve6, CourseDissolve7, CourseDissolve8,
-	CourseDissolve9,*/ NULL
+	   BlindsRight, BlindsDown, BlindsLeft, BlindsUp,
+	   IrisCircleIn, IrisOvalIn, IrisSquareIn, IrisRectangleIn,
+	   IrisDiamond, IrisDiamondIn, WipeClockwise, WipeCounterClockwise,
+	   CourseDissolve4, FineDissolve,
+	   ZoomRight, ZoomDown, ZoomLeft, ZoomUp, ZoomOut,
+	   NarrowHStrips, WideHStrips, NarrowVStrips, WideVStrips,
+	   FadeBlack, FadeWhite, CourseDissolve1, CourseDissolve2,
+	   CourseDissolve3, CourseDissolve4, CourseDissolve5,
+	   CourseDissolve6, CourseDissolve7, CourseDissolve8,
+	   CourseDissolve9,*/NULL
 };
 
 
 // Constants
-#define UPDATE_TRANSITION_MSG	'UpTr'
+#define UPDATE_TRANSITION_MSG   'UpTr'
 
 //---------------------------------------------------------------------
 //	Constructor
@@ -85,14 +85,14 @@ TTransition::TTransition( TVisualCue *srcView, BView *dstView, TStageView *theSt
 	ASSERT(dstView);
 
 	// Set up class variables
-	fSrcView 			= srcView;
-	fDstView 			= dstView;
-	fStage				= theStage;
-	fID				= transitionID;
-	fDuration 			= duration;
-	fStartTime			= 0;
-	fSrcBitmap 		= srcView->GetBitmap();
-	fIsTransitionIn	= transitionIn;
+	fSrcView                        = srcView;
+	fDstView                        = dstView;
+	fStage                          = theStage;
+	fID                             = transitionID;
+	fDuration                       = duration;
+	fStartTime                      = 0;
+	fSrcBitmap              = srcView->GetBitmap();
+	fIsTransitionIn = transitionIn;
 
 	// Clear region
 	fTransitionRegion.MakeEmpty();
@@ -115,8 +115,7 @@ TTransition::~TTransition()
 	Stop();
 
 	// Free composite
-	if (fDstBitmap)
-	{
+	if (fDstBitmap) {
 		delete fDstBitmap;
 		fDstBitmap = NULL;
 	}
@@ -124,11 +123,13 @@ TTransition::~TTransition()
 
 // ABH missing functions
 #ifdef ABH
-bool TTransition::HasTransitionIn(){
-	return fIsTransitionIn;	// ABH is this right???
+bool TTransition::HasTransitionIn()
+{
+	return fIsTransitionIn; // ABH is this right???
 }
 
-bool TTransition::HasTransitionOut(){
+bool TTransition::HasTransitionOut()
+{
 	return fIsTransitionOut;
 }
 
@@ -143,8 +144,8 @@ bool TTransition::HasTransitionOut(){
 void TTransition::Init()
 {
 
-	BRect	r1 = fSrcRect;
-	BRect 	r2 = fDstRect;
+	BRect r1 = fSrcRect;
+	BRect r2 = fDstRect;
 
 	fIsDone = false;
 }
@@ -197,7 +198,7 @@ void TTransition::SetTransitionID(int32 theID)
 
 void TTransition::Stop()
 {
-	fIsDone 	= true;
+	fIsDone         = true;
 	fStartTime = 0;
 }
 
@@ -211,7 +212,7 @@ void TTransition::Stop()
 
 void TTransition::Reset()
 {
-	fIsDone 	= false;
+	fIsDone         = false;
 	fStartTime = 0;
 }
 
@@ -229,13 +230,13 @@ void TTransition::TransitionTask()
 	if (fIsDone == true)
 		return;
 
-	uint32 startTime 	= fStartTime;
-	uint32 currentTime 	= GetCurrentTime();
-	uint32 taskTime 	= currentTime - startTime;
-	uint32 endTime 		= fStartTime + fDuration;
+	uint32 startTime        = fStartTime;
+	uint32 currentTime      = GetCurrentTime();
+	uint32 taskTime         = currentTime - startTime;
+	uint32 endTime          = fStartTime + fDuration;
 
 	// percentDone is on a scale of 0 to 1000.  Check for overflow...
-	int32  percentDone;
+	int32 percentDone;
 
 	if ( currentTime < endTime)
 		percentDone = taskTime * 1000L / fDuration;
@@ -246,8 +247,7 @@ void TTransition::TransitionTask()
 		percentDone = 1000;
 
 	// Sanity check. Make sure negative values do not get through...
-	if (percentDone < 0)
-	{
+	if (percentDone < 0) {
 		fIsDone = true;
 		Reset();
 		return;
@@ -256,22 +256,19 @@ void TTransition::TransitionTask()
 	// Create composite for transition out
 	//if (fIsTransitionIn == false)
 	//{
-		//if (fDstBitmap)
-		//	delete fDstBitmap;
+	//if (fDstBitmap)
+	//	delete fDstBitmap;
 
-		//fDstBitmap = fStage->CreateComposite(1, fSrcView->GetChannel()->GetID(), currentTime, fSrcView->GetCroppedArea());
-		//ASSERT(fDstBitmap);
+	//fDstBitmap = fStage->CreateComposite(1, fSrcView->GetChannel()->GetID(), currentTime, fSrcView->GetCroppedArea());
+	//ASSERT(fDstBitmap);
 	//}
 
 	// Check for completions
-	if (percentDone == 1000)
-	{
+	if (percentDone == 1000) {
 		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, END_TRANSITION);
 		fIsDone = true;
 		Reset();
-	}
-	else
-	{
+	} else   {
 		// Do the transition
 		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, RUN_TRANSITION);
 	}
@@ -293,10 +290,10 @@ void TTransition::DrawData(uint32 theTime, BView *offView)
 
 	uint32 startTime = fStartTime;
 	uint32 taskTime  = theTime - startTime;
-	uint32 endTime 	 = fStartTime + fDuration;
+	uint32 endTime   = fStartTime + fDuration;
 
 	// percentDone is on a scale of 0 to 1000.  Check for overflow...
-	int32  percentDone;
+	int32 percentDone;
 
 	if ( theTime < endTime)
 		percentDone = taskTime * 1000L / fDuration;
@@ -307,16 +304,14 @@ void TTransition::DrawData(uint32 theTime, BView *offView)
 		percentDone = 1000;
 
 	// Sanity check. Make sure negative values do not get through...
-	if (percentDone < 0)
-	{
+	if (percentDone < 0) {
 		fIsDone = true;
 		Reset();
 		return;
 	}
 
 	// Create composite for transition out
-	if (fIsTransitionIn == false)
-	{
+	if (fIsTransitionIn == false) {
 		//if (fDstBitmap)
 		//	delete fDstBitmap;
 
@@ -325,14 +320,11 @@ void TTransition::DrawData(uint32 theTime, BView *offView)
 	}
 
 	// Check for completions
-	if (percentDone == 1000)
-	{
+	if (percentDone == 1000) {
 		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, END_TRANSITION);
 		fIsDone = true;
 		Reset();
-	}
-	else
-	{
+	} else   {
 		// Do the transition
 		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, RUN_TRANSITION);
 	}
@@ -352,8 +344,7 @@ void TTransition::DrawData(uint32 theTime, BView *offView)
 void TransitionDrawBitmap(BBitmap *bitmap, TVisualCue *srcView, BView *dstView, BRect srcRect, BRect dstRect)
 {
 	// Determine if we need to do a straight blit or use transparency
-	if ( static_cast<TVisualCue *>(srcView)->GetTransparency() == 1.0)
-	{
+	if ( static_cast<TVisualCue *>(srcView)->GetTransparency() == 1.0) {
 		// Draw bitmap
 		dstView->Looper()->Lock();
 		dstView->PushState();
@@ -363,9 +354,7 @@ void TransitionDrawBitmap(BBitmap *bitmap, TVisualCue *srcView, BView *dstView, 
 
 		dstView->PopState();
 		dstView->Looper()->Unlock();
-	}
-	else
-	{
+	} else   {
 
 
 	}
@@ -381,7 +370,7 @@ void TransitionDrawBitmap(BBitmap *bitmap, TVisualCue *srcView, BView *dstView, 
 //	Wipe the transition in from the right side of the stage cue to the left
 //
 
-void	WipeRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
+void    WipeRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *dstBitmap, BRegion *theRegion, int16 percentDone, int16 selector )
 {
 
 	// Lock Views
@@ -390,32 +379,32 @@ void	WipeRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitma
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	= srcRect.left + srcRect.Width() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   = srcRect.left + srcRect.Width() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	= dstRect.left+srcRect.Width();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   = dstRect.left+srcRect.Width();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	// Unlock everyone
@@ -439,32 +428,32 @@ void WipeDownIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.bottom 	= srcRect.top + srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.bottom  = srcRect.top + srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.bottom 	= dstRect.top + srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.bottom  = dstRect.top + srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -489,33 +478,33 @@ void WipeLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
+	case RUN_TRANSITION:
+	{
 
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	= srcRect.right - srcRect.Width() * percentDone / 1000;
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    = srcRect.right - srcRect.Width() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	= dstRect.right - srcRect.Width();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    = dstRect.right - srcRect.Width();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -534,32 +523,32 @@ void WipeUpIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap *
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.top 	= srcRect.bottom - srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.top     = srcRect.bottom - srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.top 	= dstRect.bottom - srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.top     = dstRect.bottom - srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -585,34 +574,34 @@ void WipeTopLeftToBottomRightIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	= srcRect.left + srcRect.Width() * percentDone / 1000;
-				srcRect.bottom 	= srcRect.top + srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   = srcRect.left + srcRect.Width() * percentDone / 1000;
+		srcRect.bottom  = srcRect.top + srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	= dstRect.left+srcRect.Width();
-				dstRect.bottom 	= dstRect.top+srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   = dstRect.left+srcRect.Width();
+		dstRect.bottom  = dstRect.top+srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -637,34 +626,34 @@ void WipeTopRightToBottomLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	= srcRect.right - srcRect.Width() * percentDone / 1000;
-				srcRect.bottom 	= srcRect.top + srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    = srcRect.right - srcRect.Width() * percentDone / 1000;
+		srcRect.bottom  = srcRect.top + srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	= dstRect.right-srcRect.Width();
-				dstRect.bottom 	= dstRect.top+srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    = dstRect.right-srcRect.Width();
+		dstRect.bottom  = dstRect.top+srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -688,34 +677,34 @@ void WipeBottomLeftToTopRightIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	= srcRect.left + srcRect.Width() * percentDone / 1000;
-				srcRect.top 	= srcRect.bottom - srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   = srcRect.left + srcRect.Width() * percentDone / 1000;
+		srcRect.top     = srcRect.bottom - srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	= dstRect.left + srcRect.Width();
-				dstRect.top 	= dstRect.bottom - srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   = dstRect.left + srcRect.Width();
+		dstRect.top     = dstRect.bottom - srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -740,34 +729,34 @@ void WipeBottomRightToTopLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	= srcRect.right - srcRect.Width() * percentDone / 1000;
-				srcRect.top 	= srcRect.bottom - srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    = srcRect.right - srcRect.Width() * percentDone / 1000;
+		srcRect.top     = srcRect.bottom - srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	= dstRect.right - srcRect.Width();
-				dstRect.top 	= dstRect.bottom - srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    = dstRect.right - srcRect.Width();
+		dstRect.top     = dstRect.bottom - srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -792,32 +781,32 @@ void RevealRightIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBit
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	= srcRect.right - srcRect.Width() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    = srcRect.right - srcRect.Width() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	= dstRect.left+srcRect.Width();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   = dstRect.left+srcRect.Width();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	// Unlock everyone
@@ -840,33 +829,33 @@ void RevealDownIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitm
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.top 	= srcRect.bottom - srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.top     = srcRect.bottom - srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.bottom 	= dstRect.top+srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.bottom  = dstRect.top+srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
 
-			}
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -889,32 +878,32 @@ void RevealLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitm
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	= srcRect.left + srcRect.Width() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   = srcRect.left + srcRect.Width() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	= dstRect.right - srcRect.Width();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    = dstRect.right - srcRect.Width();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-		}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	// Unlock everyone
@@ -936,32 +925,32 @@ void RevealUpIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.bottom 	= srcRect.top + srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.bottom  = srcRect.top + srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.top 	= dstRect.bottom - srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.top     = dstRect.bottom - srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -985,34 +974,34 @@ void RevealTopLeftBottomRightIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	= srcRect.right - srcRect.Width() * percentDone / 1000;
-				srcRect.top 	= srcRect.bottom - srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    = srcRect.right - srcRect.Width() * percentDone / 1000;
+		srcRect.top     = srcRect.bottom - srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 		= srcView->GetDrawArea();
-				dstRect.right 		= dstRect.left + srcRect.Width();
-				dstRect.bottom 		= dstRect.top + srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect           = srcView->GetDrawArea();
+		dstRect.right           = dstRect.left + srcRect.Width();
+		dstRect.bottom          = dstRect.top + srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1036,34 +1025,34 @@ void RevealTopRightBottomLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	= srcRect.left + srcRect.Width() * percentDone / 1000;
-				srcRect.top 	= srcRect.bottom - srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   = srcRect.left + srcRect.Width() * percentDone / 1000;
+		srcRect.top     = srcRect.bottom - srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	= dstRect.right - srcRect.Width();
-				dstRect.bottom 	= dstRect.top + srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    = dstRect.right - srcRect.Width();
+		dstRect.bottom  = dstRect.top + srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1087,34 +1076,34 @@ void RevealBottomLeftTopRightIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	= srcRect.right - srcRect.Width() * percentDone / 1000;
-				srcRect.bottom 	= srcRect.top + srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    = srcRect.right - srcRect.Width() * percentDone / 1000;
+		srcRect.bottom  = srcRect.top + srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	= dstRect.left + srcRect.Width();
-				dstRect.top 	= dstRect.bottom - srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   = dstRect.left + srcRect.Width();
+		dstRect.top     = dstRect.bottom - srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1137,34 +1126,34 @@ void RevealBottomRightTopLeftIn(TVisualCue *srcView, BView *dstView, BBitmap *sr
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	= srcRect.left + srcRect.Width() * percentDone / 1000;
-				srcRect.bottom 	= srcRect.top + srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   = srcRect.left + srcRect.Width() * percentDone / 1000;
+		srcRect.bottom  = srcRect.top + srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 		= srcView->GetDrawArea();
-				dstRect.left 		= dstRect.right - srcRect.Width();
-				dstRect.top 		= dstRect.bottom - srcRect.Height();
+		// Set up destination rectangle
+		BRect dstRect           = srcView->GetDrawArea();
+		dstRect.left            = dstRect.right - srcRect.Width();
+		dstRect.top             = dstRect.bottom - srcRect.Height();
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1199,39 +1188,39 @@ void CurtainsOutIn(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBit
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			{
-				// Draw entire bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
-			}
-			break;
+	case END_TRANSITION:
+	{
+		// Draw entire bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcView->GetCroppedArea(), srcView->GetDrawArea());
+	}
+	break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
 
-				int32 midPt 	= srcRect.Width() / 2;
-				srcRect.left 	= midPt - (srcRect.Width() / 2) * percentDone / 1000;
-				srcRect.right 	= midPt + (srcRect.Width() / 2) * percentDone / 1000;
-				srcRect.bottom 	= srcRect.top + srcRect.Height();
+		int32 midPt     = srcRect.Width() / 2;
+		srcRect.left    = midPt - (srcRect.Width() / 2) * percentDone / 1000;
+		srcRect.right   = midPt + (srcRect.Width() / 2) * percentDone / 1000;
+		srcRect.bottom  = srcRect.top + srcRect.Height();
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	= midPt - (srcRect.Width() / 2);
-				dstRect.right 	= midPt + (srcRect.Width() / 2);
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    = midPt - (srcRect.Width() / 2);
+		dstRect.right   = midPt + (srcRect.Width() / 2);
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
 
-			}
-			break;
+	}
+	break;
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1260,28 +1249,28 @@ void WipeRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitm
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	+=  srcRect.Width() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    +=  srcRect.Width() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	+= dstRect.Width() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    += dstRect.Width() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	// Unlock everyone
@@ -1305,28 +1294,28 @@ void WipeDownOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitma
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.top 	+=  srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.top     +=  srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.top 	+= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.top     += dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1351,29 +1340,29 @@ void WipeLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitma
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
+	case RUN_TRANSITION:
+	{
 
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	-=  srcRect.Width() * percentDone / 1000;
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   -=  srcRect.Width() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	-= dstRect.Width() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   -= dstRect.Width() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1398,28 +1387,28 @@ void WipeUpOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitmap 
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.bottom 	-= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.bottom  -= srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.bottom 	-= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.bottom  -= dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1445,31 +1434,31 @@ void WipeTopLeftToBottomRightOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	+= srcRect.Width() * percentDone / 1000;
-				srcRect.top 	+= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    += srcRect.Width() * percentDone / 1000;
+		srcRect.top     += srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	+= dstRect.Width() * percentDone / 1000;
-				dstRect.top 	+= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    += dstRect.Width() * percentDone / 1000;
+		dstRect.top     += dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
 
-			}
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1494,30 +1483,30 @@ void WipeTopRightToBottomLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	-= srcRect.Width() * percentDone / 1000;
-				srcRect.top 	+= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   -= srcRect.Width() * percentDone / 1000;
+		srcRect.top     += srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	-= dstRect.Width() * percentDone / 1000;
-				dstRect.top 	+= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   -= dstRect.Width() * percentDone / 1000;
+		dstRect.top     += dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1541,31 +1530,31 @@ void WipeBottomLeftToTopRightOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	+= srcRect.Width() * percentDone / 1000;
-				srcRect.bottom 	-= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    += srcRect.Width() * percentDone / 1000;
+		srcRect.bottom  -= srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	+= dstRect.Width() * percentDone / 1000;
-				dstRect.bottom 	-= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    += dstRect.Width() * percentDone / 1000;
+		dstRect.bottom  -= dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
-			break;
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
+	break;
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1590,30 +1579,30 @@ void WipeBottomRightToTopLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	-= srcRect.Width() * percentDone / 1000;
-				srcRect.bottom 	-= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   -= srcRect.Width() * percentDone / 1000;
+		srcRect.bottom  -= srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	 = srcView->GetDrawArea();
-				dstRect.right 	-= dstRect.Width() * percentDone / 1000;
-				dstRect.bottom 	-= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect    = srcView->GetDrawArea();
+		dstRect.right   -= dstRect.Width() * percentDone / 1000;
+		dstRect.bottom  -= dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1638,28 +1627,28 @@ void RevealRightOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBi
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	-= srcRect.Width() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   -= srcRect.Width() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	+= dstRect.Width() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    += dstRect.Width() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	// Unlock everyone
@@ -1682,28 +1671,28 @@ void RevealDownOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBit
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.bottom 	-= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.bottom  -= srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.top 	+= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.top     += dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1726,28 +1715,28 @@ void RevealLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBit
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	+= srcRect.Width() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    += srcRect.Width() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	-= dstRect.Width() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   -= dstRect.Width() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	// Unlock everyone
@@ -1770,29 +1759,29 @@ void RevealUpOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBitma
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.top 	+= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.top     += srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.bottom 	-= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.bottom  -= dstRect.Height() * percentDone / 1000;
 
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1815,30 +1804,30 @@ void RevealTopLeftBottomRightOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	-= srcRect.Width() * percentDone / 1000;
-				srcRect.bottom 	-= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   -= srcRect.Width() * percentDone / 1000;
+		srcRect.bottom  -= srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	+= dstRect.Width() * percentDone / 1000;
-				dstRect.top 	+= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    += dstRect.Width() * percentDone / 1000;
+		dstRect.top     += dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1862,30 +1851,30 @@ void RevealTopRightBottomLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	+= srcRect.Width() * percentDone / 1000;
-				srcRect.bottom 	-= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    += srcRect.Width() * percentDone / 1000;
+		srcRect.bottom  -= srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	-= dstRect.Width() * percentDone / 1000;
-				dstRect.top 	+= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   -= dstRect.Width() * percentDone / 1000;
+		dstRect.top     += dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1909,31 +1898,31 @@ void RevealBottomLeftTopRightOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.right 	-= srcRect.Width() * percentDone / 1000;
-				srcRect.top 	+= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.right   -= srcRect.Width() * percentDone / 1000;
+		srcRect.top     += srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.left 	+= dstRect.Width() * percentDone / 1000;
-				dstRect.bottom 	-= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.left    += dstRect.Width() * percentDone / 1000;
+		dstRect.bottom  -= dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
 
-			}
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -1957,30 +1946,30 @@ void RevealBottomRightTopLeftOut(TVisualCue *srcView, BView *dstView, BBitmap *s
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
-				srcRect.left 	+= srcRect.Height() * percentDone / 1000;
-				srcRect.top 	+= srcRect.Height() * percentDone / 1000;
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
+		srcRect.left    += srcRect.Height() * percentDone / 1000;
+		srcRect.top     += srcRect.Height() * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				dstRect.right 	-= dstRect.Height() * percentDone / 1000;
-				dstRect.bottom 	-= dstRect.Height() * percentDone / 1000;
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		dstRect.right   -= dstRect.Height() * percentDone / 1000;
+		dstRect.bottom  -= dstRect.Height() * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 
@@ -2016,39 +2005,39 @@ void CurtainsOutOut(TVisualCue *srcView, BView *dstView, BBitmap *srcBitmap, BBi
 
 	switch(selector)
 	{
-		case START_TRANSITION:
-			break;
+	case START_TRANSITION:
+		break;
 
-		case END_TRANSITION:
-			break;
+	case END_TRANSITION:
+		break;
 
-		case RUN_TRANSITION:
-			{
-				// Set up source rectangle
-				BRect srcRect 	= srcView->GetCroppedArea();
+	case RUN_TRANSITION:
+	{
+		// Set up source rectangle
+		BRect srcRect   = srcView->GetCroppedArea();
 
-				int32 midPt 	= srcRect.Width() / 2;
-				srcRect.left 	= midPt - (srcRect.Width() / 2);
-				srcRect.right 	= midPt + (srcRect.Width() / 2);
+		int32 midPt     = srcRect.Width() / 2;
+		srcRect.left    = midPt - (srcRect.Width() / 2);
+		srcRect.right   = midPt + (srcRect.Width() / 2);
 
-				srcRect.left 	+= midPt - (srcRect.Width() / 2) * percentDone / 1000;
-				srcRect.right 	-= midPt + (srcRect.Width() / 2) * percentDone / 1000;
+		srcRect.left    += midPt - (srcRect.Width() / 2) * percentDone / 1000;
+		srcRect.right   -= midPt + (srcRect.Width() / 2) * percentDone / 1000;
 
-				// Set up destination rectangle
-				BRect dstRect 	= srcView->GetDrawArea();
-				//dstRect.left 	= midPt - (srcRect.Width() / 2);
-				//dstRect.right 	= midPt + (srcRect.Width() / 2);
+		// Set up destination rectangle
+		BRect dstRect   = srcView->GetDrawArea();
+		//dstRect.left  = midPt - (srcRect.Width() / 2);
+		//dstRect.right         = midPt + (srcRect.Width() / 2);
 
-				dstRect.left 	+= midPt - (dstRect.Width() / 2) * percentDone / 1000;
-				dstRect.right 	-= midPt + (dstRect.Width() / 2) * percentDone / 1000;
+		dstRect.left    += midPt - (dstRect.Width() / 2) * percentDone / 1000;
+		dstRect.right   -= midPt + (dstRect.Width() / 2) * percentDone / 1000;
 
-				// Draw bitmap
-				TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
-			}
-			break;
+		// Draw bitmap
+		TransitionDrawBitmap(srcView->GetBitmap(), srcView, dstView, srcRect, dstRect);
+	}
+	break;
 
-		default:
-			break;
+	default:
+		break;
 
 	}
 

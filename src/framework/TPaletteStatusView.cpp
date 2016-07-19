@@ -33,7 +33,7 @@
 //
 //
 
-TPaletteStatusView::TPaletteStatusView(BRect bounds) : BView(bounds, "StatusView", B_FOLLOW_LEFT|B_FOLLOW_BOTTOM , B_WILL_DRAW)
+TPaletteStatusView::TPaletteStatusView(BRect bounds) : BView(bounds, "StatusView", B_FOLLOW_LEFT|B_FOLLOW_BOTTOM, B_WILL_DRAW)
 {
 	// Perform default initialization
 	Init();
@@ -84,17 +84,17 @@ void TPaletteStatusView::MessageReceived(BMessage* message)
 
 	switch (message->what)
 	{
-		// Update the status bar to display name of media cue
-		case UPDATE_STATUS_TEXT_MSG:
-			char *theStr;
-			message->FindString((const char *)"CueName",(const char**) &theStr);
-			strcpy(fText, theStr);
-			Invalidate();
-			break;
+	// Update the status bar to display name of media cue
+	case UPDATE_STATUS_TEXT_MSG:
+		char *theStr;
+		message->FindString((const char *)"CueName",(const char**) &theStr);
+		strcpy(fText, theStr);
+		Invalidate();
+		break;
 
-		default:
-			BView::MessageReceived(message);
-			break;
+	default:
+		BView::MessageReceived(message);
+		break;
 	}
 
 }

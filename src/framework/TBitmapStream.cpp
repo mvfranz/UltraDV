@@ -22,19 +22,18 @@
 
 TBitmapStream::TBitmapStream( BBitmap *bitmap)
 {
-	fMap 		= bitmap;
-	fDetached 	= false;
-	fPosition 	= 0;
-	fSize 		= 0;
+	fMap            = bitmap;
+	fDetached       = false;
+	fPosition       = 0;
+	fSize           = 0;
 
 	//	Extract header if needed
-	if (fMap)
-	{
-		fHeader.magic 		= DATA_BITMAP;
-		fHeader.bounds 		= fMap->Bounds();
-		fHeader.rowBytes 	= fMap->BytesPerRow();
-		fHeader.colors 		= fMap->ColorSpace();
-		fHeader.dataSize 	= (fHeader.bounds.Height()+1)*fHeader.rowBytes;
+	if (fMap) {
+		fHeader.magic           = DATA_BITMAP;
+		fHeader.bounds          = fMap->Bounds();
+		fHeader.rowBytes        = fMap->BytesPerRow();
+		fHeader.colors          = fMap->ColorSpace();
+		fHeader.dataSize        = (fHeader.bounds.Height()+1)*fHeader.rowBytes;
 		fSize = sizeof(DATABitmap)+fHeader.dataSize;
 	}
 }
@@ -61,13 +60,10 @@ status_t TBitmapStream::ReadAt( off_t pos, void *buffer, size_t size)
 	long toRead;
 	void *source;
 
-	if ( fPosition < sizeof(DATABitmap) )
-	{
+	if ( fPosition < sizeof(DATABitmap) ) {
 		toRead = sizeof(DATABitmap)-pos;
 		source = ((char *)&fHeader)+pos;
-	}
-	else
-	{
+	} else   {
 		toRead = fSize-pos;
 		source = ((char *)fMap->Bits())+fPosition-sizeof(DATABitmap);
 	}
@@ -80,25 +76,21 @@ status_t TBitmapStream::ReadAt( off_t pos, void *buffer, size_t size)
 }
 
 
-status_t TBitmapStream::WriteAt( off_t pos, const void *	data, size_t size)
+status_t TBitmapStream::WriteAt( off_t pos, const void *        data, size_t size)
 {
 	if (!size)
 		return B_NO_ERROR;
 
 	ssize_t written = 0;
-	while (size > 0)
-	{
-		long 	toWrite;
-		void 	*dest;
+	while (size > 0) {
+		long toWrite;
+		void    *dest;
 
 		//	We depend on writing the header separately in detecting changes to it
-		if (pos < sizeof(DATABitmap))
-		{
+		if (pos < sizeof(DATABitmap)) {
 			toWrite = sizeof(DATABitmap)-pos;
 			dest = ((char *)&fHeader)+pos;
-		}
-		else
-		{
+		} else   {
 			toWrite = fHeader.dataSize-pos+sizeof(DATABitmap);
 			dest = ((char *)fMap->Bits())+pos-sizeof(DATABitmap);
 		}
@@ -119,12 +111,10 @@ status_t TBitmapStream::WriteAt( off_t pos, const void *	data, size_t size)
 			fSize = pos;
 
 		//	If we change the header, the rest goes
-		if (pos == sizeof(DATABitmap))
-		{
+		if (pos == sizeof(DATABitmap)) {
 			if (fMap && ((fMap->Bounds() != fHeader.bounds) ||
-					(fMap->ColorSpace() != fHeader.colors) ||
-					(fMap->BytesPerRow() != fHeader.rowBytes)))
-			{
+			             (fMap->ColorSpace() != fHeader.colors) ||
+			             (fMap->BytesPerRow() != fHeader.rowBytes))) {
 
 				//	if someone detached, we don't delete
 				if (!fDetached)
@@ -133,21 +123,18 @@ status_t TBitmapStream::WriteAt( off_t pos, const void *	data, size_t size)
 				fMap = NULL;
 			}
 
-			if (!fMap)
-			{
+			if (!fMap) {
 				fHeader.bounds.PrintToStream();
 
 				if ((fHeader.bounds.left > 0.0) || (fHeader.bounds.top > 0.0))
 					DEBUGGER("non-origin bounds!");
 
 				fMap = new BBitmap(fHeader.bounds, fHeader.colors);
-				if (fMap->BytesPerRow() != fHeader.rowBytes)
-				{
+				if (fMap->BytesPerRow() != fHeader.rowBytes) {
 					return B_MISMATCHED_VALUES;
 				}
 			}
-			if (fMap)
-			{
+			if (fMap) {
 				fSize = sizeof(DATABitmap)+fMap->BitsLength();
 			}
 		}

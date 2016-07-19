@@ -37,7 +37,7 @@
 //
 
 TExportText::TExportText( TExportTimeView *parent, BRect bounds, const char *name, const char *text, uint32 resizeFlags, uint32 flags) :
-							BStringView(bounds, name, text, resizeFlags, flags)
+	BStringView(bounds, name, text, resizeFlags, flags)
 {
 	fParent = parent;
 
@@ -104,32 +104,32 @@ void TExportText::MessageReceived(BMessage *message)
 void TExportText::MouseDown(BPoint pt)
 {
 	/*
-	// Do nothing if we are playing
-	if ( ((TCueSheetWindow *)fChannel->Window())->IsPlaying() )
-		return;
+	   // Do nothing if we are playing
+	   if ( ((TCueSheetWindow *)fChannel->Window())->IsPlaying() )
+	        return;
 
-	// If the option key is down, allow user to change the text
-	if ( IsOptionKeyDown() )
-	{
-		// Create the channel name dialog from a resource archive
-		BMessage *theMessage = GetWindowFromResource("ChannelNameWindow");
-		TChannelName *theDialog = new TChannelName(theMessage, fChannel);
-		ASSERT(theDialog);
+	   // If the option key is down, allow user to change the text
+	   if ( IsOptionKeyDown() )
+	   {
+	        // Create the channel name dialog from a resource archive
+	        BMessage *theMessage = GetWindowFromResource("ChannelNameWindow");
+	        TChannelName *theDialog = new TChannelName(theMessage, fChannel);
+	        ASSERT(theDialog);
 
-		// Move it under the mouse
-		ConvertToScreen(&pt);
-		theDialog->MoveTo(pt.x, pt.y);
+	        // Move it under the mouse
+	        ConvertToScreen(&pt);
+	        theDialog->MoveTo(pt.x, pt.y);
 
-		// Show the dialog
-		theDialog->Show();
-	}
-	// Otherwise, select all the cues in the channel
-	else
-	{
-		if ( IsShiftKeyDown() == false )
-			fChannel->GetCueSheet()->DeselectAllCues();
+	        // Show the dialog
+	        theDialog->Show();
+	   }
+	   // Otherwise, select all the cues in the channel
+	   else
+	   {
+	        if ( IsShiftKeyDown() == false )
+	                fChannel->GetCueSheet()->DeselectAllCues();
 
-		fChannel->SelectAllCues();
-	}
-	*/
+	        fChannel->SelectAllCues();
+	   }
+	 */
 }

@@ -131,16 +131,14 @@ status_t TContractAllButton::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TContractAllButton");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -197,10 +195,9 @@ void TContractAllButton::MouseDown(BPoint where)
 
 void TContractAllButton::AttachedToWindow()
 {
-	if(fParent == NULL)
-	{
-		fParent 	= (TToolbar *)Parent();
-		fHandler 	= (TToolbar *)Parent();
+	if(fParent == NULL) {
+		fParent         = (TToolbar *)Parent();
+		fHandler        = (TToolbar *)Parent();
 	}
 
 	//	Pass up to parent
@@ -229,7 +226,7 @@ void TContractAllButton::DoClick()
 	// Create and send message to channel and header
 	BMessage *message = new BMessage(CONTRACT_ALL_BUTTON_MSG);
 	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
-		(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet(), NULL );
+	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet(), NULL );
 	delete message;
 
 	// Wait a short while before restoring to up position

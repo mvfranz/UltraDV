@@ -31,8 +31,8 @@
 //
 
 TMuseumSlider::TMuseumSlider( BRect frame, const char *name, const char *label, BMessage *message, int32 minValue,
-							  int32 maxValue, thumb_style thumbType, uint32 resizingMode, uint32 flags) :
-				BSlider(frame, name, label, message, minValue, maxValue, thumbType, resizingMode, flags)
+                              int32 maxValue, thumb_style thumbType, uint32 resizingMode, uint32 flags) :
+	BSlider(frame, name, label, message, minValue, maxValue, thumbType, resizingMode, flags)
 {
 }
 
@@ -72,8 +72,7 @@ TMuseumSlider::~TMuseumSlider()
 
 void TMuseumSlider::DrawText()
 {
-	if (Looper()->Lock() )
-	{
+	if (Looper()->Lock() ) {
 		Looper()->Unlock();
 	}
 }

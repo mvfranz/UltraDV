@@ -41,20 +41,20 @@ TAudioZoomInButton::TAudioZoomInButton(TAudioEditorToolbar *parent, BRect bounds
 {
 	// Save parent view
 	fParent = parent;
-	
+
 	// Save handler
 	fHandler = handler;
 
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap = onBitmap;
-		
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -81,7 +81,7 @@ TAudioZoomInButton::~TAudioZoomInButton()
 //	Perform default initialization tasks
 
 void TAudioZoomInButton::Init()
-{        	
+{
 }
 
 
@@ -95,7 +95,7 @@ void TAudioZoomInButton::Draw(BRect updateRect)
 {
 	// Draw proper bitmap state, if fState is true, draw on bitmap
 	if (fMouseDown)
-		DrawBitmap(fOffBitmap, B_ORIGIN);		
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 	else
 		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
@@ -110,9 +110,9 @@ void TAudioZoomInButton::Draw(BRect updateRect)
 //
 
 void TAudioZoomInButton::MouseDown(BPoint where)
-{				
+{
 	// Handle button click
-	DoClick();		
+	DoClick();
 }
 
 
@@ -125,10 +125,10 @@ void TAudioZoomInButton::MouseDown(BPoint where)
 
 void TAudioZoomInButton::MouseUp(BPoint where)
 {
-	
+
 	// Set flag that we have been clicked. When the MouseUp method
-	// is implimented we can remove this		
-	//fMouseDown = false; 
+	// is implimented we can remove this
+	//fMouseDown = false;
 }
 
 
@@ -219,21 +219,21 @@ void TAudioZoomInButton::FrameResized(float new_width, float new_height)
 
 void TAudioZoomInButton::DoClick()
 {
-	
+
 	// We will always be in the up osition when we start.
 	// First, set the button state to down and force a redraw...
-	fMouseDown = true; 
-	Draw(Bounds()); 
-		
+	fMouseDown = true;
+	Draw(Bounds());
+
 	// Now send message to the view that the user is zooming in...
 	BMessage *message = new BMessage(AUDIO_ZOOMIN_BUTTON_MSG);
 	fParent->Window()->PostMessage(message, (( TAudioEditor *)fParent->Window())->GetEditorView() );
 	delete message;
-	
+
 	// Wait a short while before restoring to up position
 	snooze(100 * 1000);
-	
+
 	// Restore and invalidate
-	fMouseDown = false; 
-	Draw(Bounds()); 
+	fMouseDown = false;
+	Draw(Bounds());
 }

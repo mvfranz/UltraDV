@@ -26,7 +26,7 @@
 
 TTransitionsTabView::TTransitionsTabView(BRect bounds) :
 	BView(bounds, "Transitions", B_FOLLOW_ALL | B_FRAME_EVENTS,
-			B_WILL_DRAW)
+	      B_WILL_DRAW)
 {
 	// TODO: for internationalization, pull the title from the resource
 }

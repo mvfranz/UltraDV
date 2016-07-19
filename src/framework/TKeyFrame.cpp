@@ -28,7 +28,8 @@
 TKeyFrame::TKeyFrame() :
 	ftime(0),
 	fstate(0)
-{}
+{
+}
 
 TKeyFrame::~TKeyFrame()
 {

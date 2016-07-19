@@ -37,7 +37,7 @@
 //
 
 TNumberTextControl::TNumberTextControl( BRect bounds, const char *label, const char *name,  const char *text, BMessage *message) :
-					BTextControl(bounds, name, label, text, NULL)
+	BTextControl(bounds, name, label, text, NULL)
 {
 	// Set up modification message
 	SetModificationMessage(message);
@@ -80,19 +80,16 @@ void TNumberTextControl::Init()
 	// Disallow all characters except numbers
 	BTextView *theView = TextView();
 
-	if (theView)
-	{
+	if (theView) {
 		// All characters up to "1"
 		int32 index;
 
-		for (index = 0;	index < 48; index++)
-		{
+		for (index = 0; index < 48; index++) {
 			theView->DisallowChar(index);
 		}
 
 		// Skip over numbers
-		for (index = 58; index < 2000; index++)
-		{
+		for (index = 58; index < 2000; index++) {
 			theView->DisallowChar(index);
 		}
 	}
@@ -123,13 +120,11 @@ void TNumberTextControl::KeyDown(const char *bytes, int32 numBytes)
 	char theChar = *bytes;
 
 	// Accept numbers, delete and arrows
-	if( isdigit(theChar) || IsBackspace(theChar) || IsArrows(theChar) || IsDelete(theChar) )
-	{
+	if( isdigit(theChar) || IsBackspace(theChar) || IsArrows(theChar) || IsDelete(theChar) ) {
 		BTextControl::KeyDown(bytes, numBytes);
 	}
 	// Tab key moves us through the time elements
-	else if( IsTab(theChar) )
-	{
+	else if( IsTab(theChar) ) {
 		beep();
 	}
 	// Illegal character
@@ -173,15 +168,15 @@ bool TNumberTextControl::AcceptsPaste(BClipboard *clipboard)
 //	Check to see if character is backspace
 //
 
-bool  TNumberTextControl::IsBackspace(char theChar)
+bool TNumberTextControl::IsBackspace(char theChar)
 {
 	switch(theChar)
 	{
-		case B_BACKSPACE:
-			return true;
+	case B_BACKSPACE:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -194,18 +189,18 @@ bool  TNumberTextControl::IsBackspace(char theChar)
 //	Check to see if character is one of the arrow keys
 //
 
-bool  TNumberTextControl::IsArrows(char theChar)
+bool TNumberTextControl::IsArrows(char theChar)
 {
 	switch(theChar)
 	{
-		case B_UP_ARROW:
-		case B_LEFT_ARROW:
-		case B_DOWN_ARROW:
-		case B_RIGHT_ARROW:
-			return true;
+	case B_UP_ARROW:
+	case B_LEFT_ARROW:
+	case B_DOWN_ARROW:
+	case B_RIGHT_ARROW:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -217,15 +212,15 @@ bool  TNumberTextControl::IsArrows(char theChar)
 //	Check to see if character is the delete key
 //
 
-bool  TNumberTextControl::IsDelete(char theChar)
+bool TNumberTextControl::IsDelete(char theChar)
 {
 	switch(theChar)
 	{
-		case B_DELETE:
-			return true;
+	case B_DELETE:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -238,15 +233,15 @@ bool  TNumberTextControl::IsDelete(char theChar)
 //	Check to see if character is the tab key
 //
 
-bool  TNumberTextControl::IsTab(char theChar)
+bool TNumberTextControl::IsTab(char theChar)
 {
 	switch(theChar)
 	{
-		case B_TAB:
-			return true;
+	case B_TAB:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }

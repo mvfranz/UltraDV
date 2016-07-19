@@ -28,7 +28,7 @@
 
 
 // static
-HeaderChunk		sgHdr;			// Copy of header chunk
+HeaderChunk sgHdr;                              // Copy of header chunk
 
 
 //---------------------------------------------------------------------
@@ -70,7 +70,7 @@ TMIDIFile::~TMIDIFile()
 
 void TMIDIFile::ReadHeader(HeaderChunk *header)
 {
-	char	buf[100];
+	char buf[100];
 
 	// Read from beginning of file
 	Seek(0, SEEK_SET);
@@ -99,23 +99,23 @@ void TMIDIFile::ReadHeader(HeaderChunk *header)
 
 int32 TMIDIFile::ReadConductor(TMIDIConductor *condTrack)
 {
-	int16	lastStatus,				// Last MIDI status byte read
-			status,					// First byte read
-			type,					// META_EVENT type
-			dataByte1,				// Second byte read
-			dataByte2;				// Third byte read, if any
+	int16 lastStatus,                               // Last MIDI status byte read
+	      status,                                           // First byte read
+	      type,                                             // META_EVENT type
+	      dataByte1,                                        // Second byte read
+	      dataByte2;                                        // Third byte read, if any
 
-	int16	done, 					// Flag for loop
-			i;
+	int16 done,                                     // Flag for loop
+	      i;
 
-	int32	time,					// Time of event
-			tempo,					// Tempo event
-			num,					// Numerator of time signature
-			den,					// Denominator of time signature
-			length,					// Length of event
-			totalTime;				// Total time of conductor track
+	int32 time,                                     // Time of event
+	      tempo,                                            // Tempo event
+	      num,                                              // Numerator of time signature
+	      den,                                              // Denominator of time signature
+	      length,                                           // Length of event
+	      totalTime;                                        // Total time of conductor track
 
-	char	cBuf[C_BUFF_SIZE];		// Buffer for reading text events
+	char cBuf[C_BUFF_SIZE];                 // Buffer for reading text events
 
 	// Load in header
 	ReadMidiChunkHeader();
@@ -138,98 +138,86 @@ int32 TMIDIFile::ReadConductor(TMIDIConductor *condTrack)
 	done = false;
 	totalTime = time = 0;
 
-	while (!done)
-	{
-		time 		+= ReadVariableLength();
-		totalTime 	+= time;
-		status 		= ReadByte();
+	while (!done) {
+		time            += ReadVariableLength();
+		totalTime       += time;
+		status          = ReadByte();
 
-		if (status == META_EVENT)
-		{
-			type 	= ReadByte();
-			length 	= ReadVariableLength();
+		if (status == META_EVENT) {
+			type    = ReadByte();
+			length  = ReadVariableLength();
 
 			switch (type)
 			{
-				case MF_TEXT:
-				case MF_MARKER:
-				case MF_CUE_POINT:
-					for (i = 0; i < length; i++)
-					{
+			case MF_TEXT:
+			case MF_MARKER:
+			case MF_CUE_POINT:
+				for (i = 0; i < length; i++) {
+					cBuf[i] = ReadByte();
+					if (i >= C_BUFF_SIZE)
+						break;
+				}
+				cBuf[i] = '\0';                         // Terminate string
+
+				condTrack->InsertMarker(cBuf, time);
+				break;
+
+			case MF_TEMPO:
+				tempo = ReadByte();
+				tempo <<= 8;
+				tempo += ReadByte();
+				tempo <<= 8;
+				tempo += ReadByte();
+
+				tempo /= sgHdr.division;
+
+				condTrack->InsertTempo(tempo, time);
+				break;
+
+			case MF_SMPTE:
+				if (length == 5) {
+					for (i = 0; i < 5; i++)
 						cBuf[i] = ReadByte();
-						if (i >= C_BUFF_SIZE)
-							break;
-					}
-					cBuf[i] = '\0';			// Terminate string
-
-					condTrack->InsertMarker(cBuf, time);
-					break;
-
-				case MF_TEMPO:
-					tempo = ReadByte();
-					tempo <<= 8;
-					tempo += ReadByte();
-					tempo <<= 8;
-					tempo += ReadByte();
-
-					tempo /= sgHdr.division;
-
-					condTrack->InsertTempo(tempo, time);
-					break;
-
-				case MF_SMPTE:
-					if (length == 5)
-					{
-						for (i = 0; i < 5; i++)
-							cBuf[i] = ReadByte();
-						condTrack->SetStartTime(*(int32*)cBuf, time);
-					}
-					else
-						SkipNBytes(length);
-					break;
-
-				case MF_METER:
-					num = ReadByte();
-					den = (1 << ReadByte());
-					dataByte1 = ReadByte();			// Click
-					dataByte2 = ReadByte();			// 32nd notes per 1/4 note
-
-					condTrack->InsertMeter(num, den, time);
-					break;
-
-				case MF_END_TRK:
-					done = true;
-					break;
-
-				// All others are ignored by conductor tracks
-				default:
+					condTrack->SetStartTime(*(int32*)cBuf, time);
+				} else
 					SkipNBytes(length);
-					break;
+				break;
+
+			case MF_METER:
+				num = ReadByte();
+				den = (1 << ReadByte());
+				dataByte1 = ReadByte();                         // Click
+				dataByte2 = ReadByte();                         // 32nd notes per 1/4 note
+
+				condTrack->InsertMeter(num, den, time);
+				break;
+
+			case MF_END_TRK:
+				done = true;
+				break;
+
+			// All others are ignored by conductor tracks
+			default:
+				SkipNBytes(length);
+				break;
 			}
 
 			time = 0;
-		}
-		else if (status == SYS_EXCL || status == END_SYS_EXCL)
-		{
+		} else if (status == SYS_EXCL || status == END_SYS_EXCL)   {
 			length = ReadVariableLength();
 			// Ignore sys-ex messages
 			SkipNBytes(length);
-		}
-		else
-		{
+		} else   {
 			// running status
-			if (status < 0x80)
-			{
+			if (status < 0x80) {
 				dataByte1 = status;
 				status = lastStatus;
-			}
-			else
-			{
+			} else   {
 				dataByte1 = ReadByte();
 				lastStatus = status;
 			}
 
-			if ((status & 0xE0) != 0xC0) 	// 3-byte message
+			if ((status & 0xE0) != 0xC0)    // 3-byte message
 				dataByte2 = ReadByte();
 			else
 				dataByte2 = 0;
@@ -257,19 +245,19 @@ int32 TMIDIFile::ReadConductor(TMIDIConductor *condTrack)
 
 int32 TMIDIFile::ReadType0(TMIDIConductor *condTrack, TMIDITrack *dataTrack)
 {
-	HeaderChunk		hdr;
-	int32			totalTime;
+	HeaderChunk hdr;
+	int32 totalTime;
 
-	ReadHeader(&hdr);						// ReadHeader sets file mark to top
+	ReadHeader(&hdr);                                               // ReadHeader sets file mark to top
 
-	totalTime = ReadConductor(condTrack);	// Pass through once reading conductor data
+	totalTime = ReadConductor(condTrack);   // Pass through once reading conductor data
 
 	if (totalTime == -1)
 		return -1;
 
-	ReadHeader(&hdr);						// Back to the top
+	ReadHeader(&hdr);                                               // Back to the top
 
-	totalTime = ReadNextTrack(dataTrack);	// Pass through again reading MIDI data
+	totalTime = ReadNextTrack(dataTrack);   // Pass through again reading MIDI data
 
 	return totalTime;
 
@@ -285,8 +273,8 @@ int32 TMIDIFile::ReadType0(TMIDIConductor *condTrack, TMIDITrack *dataTrack)
 
 int32 TMIDIFile::ReadVariableLength()
 {
-	register int32	value;
-	register int16	c;
+	register int32 value;
+	register int16 c;
 
 	value = 0;
 
@@ -313,10 +301,9 @@ int32 TMIDIFile::ReadVariableLength()
 
 int16 TMIDIFile::ReadByte()
 {
-	int16 	value;
+	int16 value;
 
-	if (fDiskBuffer)
-	{
+	if (fDiskBuffer) {
 		// Index into disk buffer
 		value = *((unsigned char *)fDiskBuffer + fBufferLocation);
 
@@ -324,8 +311,7 @@ int16 TMIDIFile::ReadByte()
 			FillBuffer();
 
 		return (value);
-	}
-	else
+	} else
 		return -1;
 
 }
@@ -338,14 +324,14 @@ int16 TMIDIFile::ReadByte()
 //	Fills the disk buffer.
 //
 
-void	TMIDIFile::FillBuffer()
+void TMIDIFile::FillBuffer()
 {
-	int32	howMuch;
+	int32 howMuch;
 
 	//if (fDiskBuffer)
 	//{
-		//free(fDiskBuffer);
-		//fDiskBuffer = NULL;
+	//free(fDiskBuffer);
+	//fDiskBuffer = NULL;
 	//}
 
 	// Allocate a new disk buffer
@@ -358,9 +344,9 @@ void	TMIDIFile::FillBuffer()
 
 	Read(fDiskBuffer, howMuch);
 
-	fBufferRemainder 	-= howMuch;
-	fBufferSize 		= howMuch;
-	fBufferLocation 	= 0;			// Reset index
+	fBufferRemainder        -= howMuch;
+	fBufferSize             = howMuch;
+	fBufferLocation         = 0;                    // Reset index
 }
 
 
@@ -372,15 +358,14 @@ void	TMIDIFile::FillBuffer()
 //	Refills the buffer if neccesary.
 //
 
-void	TMIDIFile::SkipNBytes(int32 nBytes)
+void TMIDIFile::SkipNBytes(int32 nBytes)
 {
-	int32 	remainder;
+	int32 remainder;
 
 	// Just bump index
 	fBufferLocation += nBytes;
 
-	if (fBufferLocation > fBufferSize)
-	{
+	if (fBufferLocation > fBufferSize) {
 		remainder = fBufferLocation - fBufferSize;
 		FillBuffer();
 		fBufferLocation = remainder;
@@ -413,27 +398,27 @@ void TMIDIFile::ReadMidiChunkHeader()
 
 int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 {
-	int16			lastStatus,				// Last MIDI status byte read
-					status,					// First byte read
-					type,					// META_EVENT type
-					dataByte1,				// Second byte read
-					dataByte2;				// Third byte read, if any
+	int16 lastStatus,                                               // Last MIDI status byte read
+	      status,                                                           // First byte read
+	      type,                                                             // META_EVENT type
+	      dataByte1,                                                        // Second byte read
+	      dataByte2;                                                        // Third byte read, if any
 
-	int16			done, 					// Flag for loop
-					i;
+	int16 done,                                                     // Flag for loop
+	      i;
 
-	int32			time,					// Time of event
-					length,					// Length of event
-					totalTime;				// Total time of track
+	int32 time,                                                     // Time of event
+	      length,                                                           // Length of event
+	      totalTime;                                                        // Total time of track
 
-	char			cBuf[C_BUFF_SIZE];		// Buffer for reading text events
+	char cBuf[C_BUFF_SIZE];                                 // Buffer for reading text events
 
-	ExtDataBuffer	dataHandle = NULL;		// Used to load in sysex events
-	unsigned char	*tempPtr;
+	ExtDataBuffer dataHandle = NULL;                // Used to load in sysex events
+	unsigned char   *tempPtr;
 
-	Event			*theEvent;				// Event buffer
-	int32			numItems = 0;			// total number of events in track
-	void			*itemBuffer;			// Buffer of items
+	Event                   *theEvent;                              // Event buffer
+	int32 numItems = 0;                                     // total number of events in track
+	void                    *itemBuffer;                    // Buffer of items
 
 	// Read in header info
 	ReadMidiChunkHeader();
@@ -458,60 +443,55 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 	done = false;
 
 	// Make a buffer big enough for 50,000 events
-	size_t theSize = sizeof(Event) * 5000 ;
+	size_t theSize = sizeof(Event) * 5000;
 	itemBuffer = malloc( theSize);
 	theEvent = (Event *)itemBuffer;
 	ASSERT(theEvent);
 
 	try
 	{
-		while (!done)
-		{
+		while (!done) {
 			time += ReadVariableLength();
 			totalTime += time;
 			status = ReadByte();
 
-			if (status == META_EVENT)
-			{
+			if (status == META_EVENT) {
 				type = ReadByte();
 				length = ReadVariableLength();
 
 				switch (type)
 				{
-					case MF_TEXT:
-					case MF_TRK_NAME:
-					case MF_INST_NAME:
-						for (i = 0; i < length; i++)
-						{
-							if (i < C_BUFF_SIZE)
-								cBuf[i] = ReadByte();
-							else
-								ReadByte();		// discard byte
-						}
-						if (i > C_BUFF_SIZE)
-							i = C_BUFF_SIZE - 1;
+				case MF_TEXT:
+				case MF_TRK_NAME:
+				case MF_INST_NAME:
+					for (i = 0; i < length; i++) {
+						if (i < C_BUFF_SIZE)
+							cBuf[i] = ReadByte();
+						else
+							ReadByte();                     // discard byte
+					}
+					if (i > C_BUFF_SIZE)
+						i = C_BUFF_SIZE - 1;
 
-						cBuf[i] = '\0';			// Terminate string
+					cBuf[i] = '\0';                         // Terminate string
 
-						dataTrack->SetTrackName(cBuf);
-						time = 0;
-						break;
+					dataTrack->SetTrackName(cBuf);
+					time = 0;
+					break;
 
-					case MF_END_TRK:
-						done = true;
-						break;
+				case MF_END_TRK:
+					done = true;
+					break;
 
-					default:					// All others are ignored by data tracks
-						SkipNBytes(length);
-						break;
+				default:                                                // All others are ignored by data tracks
+					SkipNBytes(length);
+					break;
 
-				}		// switch (type)
+				}               // switch (type)
 
 				// time = 0;
 
-			}
-			else if (status == SYS_EXCL || status == END_SYS_EXCL)
-			{
+			} else if (status == SYS_EXCL || status == END_SYS_EXCL)   {
 
 				length = ReadVariableLength();
 				// length doesn't include 0xF0
@@ -525,21 +505,19 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 				tempPtr = (*dataHandle)->data;
 
 				tempPtr[0] = status;
-				for (i = 1; i < length; i++)			// Read the message
+				for (i = 1; i < length; i++)                    // Read the message
 					tempPtr[i] = ReadByte();
 
-				theEvent->time 		= time;
-				theEvent->d.data 	= dataHandle;
-				theEvent->flags 	= 0;
-				theEvent->extType 	= kSysexType;
+				theEvent->time          = time;
+				theEvent->d.data        = dataHandle;
+				theEvent->flags         = 0;
+				theEvent->extType       = kSysexType;
 
 				theEvent++;
 				numItems++;
 
-				if (numItems >= 5000)
-				{
-					if (!(numItems % 1000))
-					{
+				if (numItems >= 5000) {
+					if (!(numItems % 1000)) {
 						// Reallocate buffer
 						realloc( itemBuffer, (sizeof(Event) * 5000)  + 10000);
 
@@ -548,17 +526,12 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 					}
 				}
 				time = 0;
-			}
-			else
-			{
+			} else   {
 				// running status
-				if (status < 0x80)
-				{
+				if (status < 0x80) {
 					dataByte1 = status;
 					status = lastStatus;
-				}
-				else
-				{
+				} else   {
 					dataByte1 = ReadByte();
 					lastStatus = status;
 				}
@@ -571,21 +544,19 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 
 				// Stuff the packet
 				theEvent->time = time;
-				theEvent->d.bytes[0] 	= status;
-				theEvent->d.bytes[1] 	= dataByte1;
-				theEvent->d.bytes[2] 	= dataByte2;
-				theEvent->d.bytes[3] 	= 0;
-				theEvent->flags 		= 0;
-				theEvent->extType 		= kNotExtended;
+				theEvent->d.bytes[0]    = status;
+				theEvent->d.bytes[1]    = dataByte1;
+				theEvent->d.bytes[2]    = dataByte2;
+				theEvent->d.bytes[3]    = 0;
+				theEvent->flags                 = 0;
+				theEvent->extType               = kNotExtended;
 
 				theEvent++;
 				numItems++;
 
-				if (numItems >= 5000)
-				{
+				if (numItems >= 5000) {
 					// allocate enough for 1000 more events
-					if (!(numItems % 1000))
-					{
+					if (!(numItems % 1000)) {
 						// Reallocate buffer
 						realloc( itemBuffer, (sizeof(Event) * 5000)  + 10000);
 

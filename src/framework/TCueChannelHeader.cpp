@@ -65,11 +65,11 @@ TCueChannelHeader::TCueChannelHeader(BMessage *message) : BView(message)
 	fChannel = NULL;
 
 	//	Find child views
-	fName			= (TChannelNameView *)FindView("ChannelName");
-	fSoloButton	= (TSoloButton *)FindView("SoloButton");
-	fMuteButton	= (TMuteButton *)FindView("MuteButton");
-	fExpandButton	= (TExpandButton *)FindView("ExpandButton");
-	fLockButton	= (TLockButton *)FindView("LockButton");
+	fName                   = (TChannelNameView *)FindView("ChannelName");
+	fSoloButton     = (TSoloButton *)FindView("SoloButton");
+	fMuteButton     = (TMuteButton *)FindView("MuteButton");
+	fExpandButton   = (TExpandButton *)FindView("ExpandButton");
+	fLockButton     = (TLockButton *)FindView("LockButton");
 }
 
 //---------------------------------------------------------------------
@@ -137,7 +137,7 @@ void TCueChannelHeader::Init()
 	BBitmap *soloDn = GetAppIcons()->fSoloDown;
 	BRect buttonBounds = fMuteButton->Frame();
 	bounds.Set( buttonBounds.right + kButtonLeftOffset, textBounds.bottom + kButtonTopOffset,
-				kButtonWidth+kButtonLeftOffset+buttonBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
+	            kButtonWidth+kButtonLeftOffset+buttonBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
 	fSoloButton = new TSoloButton(fChannel, bounds, "SoloButton", soloUp, soloDn, theTarget);
 	AddChild(fSoloButton);
 	fSoloButton->Show();
@@ -148,7 +148,7 @@ void TCueChannelHeader::Init()
 	BBitmap *contract = GetAppIcons()->fContract;
 	BRect expandBounds = fSoloButton->Frame();
 	bounds.Set( expandBounds.right + kButtonLeftOffset, textBounds.bottom + kButtonTopOffset,
-				kButtonWidth+kButtonLeftOffset+expandBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
+	            kButtonWidth+kButtonLeftOffset+expandBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
 	fExpandButton = new TExpandButton(fChannel, bounds, "ExpandButton", expand, contract, theTarget);
 	AddChild(fExpandButton);
 	fExpandButton->Show();
@@ -156,10 +156,10 @@ void TCueChannelHeader::Init()
 	// Create Lock button
 	// Place it to the right of the Expand button
 	BBitmap *unlock = GetAppIcons()->fUnlockDark;
-	BBitmap *lock 	= GetAppIcons()->fLockDark;
+	BBitmap *lock   = GetAppIcons()->fLockDark;
 	BRect lockBounds = fExpandButton->Frame();
 	bounds.Set( lockBounds.right + kButtonLeftOffset, textBounds.bottom + kButtonTopOffset,
-				kButtonWidth+kButtonLeftOffset+lockBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
+	            kButtonWidth+kButtonLeftOffset+lockBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
 	fLockButton = new TLockButton(fChannel, bounds, "LockButton", unlock, lock, theTarget);
 	AddChild(fLockButton);
 	fLockButton->Show();
@@ -201,16 +201,14 @@ status_t TCueChannelHeader::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TCueChannelHeader");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -288,19 +286,18 @@ void TCueChannelHeader::MouseDown(BPoint where)
 	if (IsPlaying() )
 		return;
 
-	// 	While the mouse is down, create an outline of the cue channel
+	//      While the mouse is down, create an outline of the cue channel
 	//	to be displayed while dragging
 	uint32 buttons = 0;
 	BPoint point, oldPt;
 
-	const BRect	bounds = fChannel->Bounds();
+	const BRect bounds = fChannel->Bounds();
 
 	// Check for mouse down
 	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
 	GetMouse(&point, &buttons, true);
 
-	if (buttons)
-	{
+	if (buttons) {
 		// They must be moving the channel...
 		BMessage message(CHANNEL_DRAG_MSG);
 		message.AddPointer("ChannelView", fChannel);
@@ -324,73 +321,68 @@ void TCueChannelHeader::MessageReceived(BMessage *message)
 	switch(message->what)
 	{
 		// Check for dropped messages
-		if ( message->WasDropped() )
+		if ( message->WasDropped() ) {
+		// Someone has dragged a cue into the header.  Check and see if the cue can be inserted
+		// at time 00:00:00:00 in the channel
+		case CUE_DRAG_MSG:
 		{
-			// Someone has dragged a cue into the header.  Check and see if the cue can be inserted
-			// at time 00:00:00:00 in the channel
-			case CUE_DRAG_MSG:
-				{
-					BPoint where = message->DropPoint();
-					ConvertFromScreen(&where);
-					where.x = Bounds().right+1;
+			BPoint where = message->DropPoint();
+			ConvertFromScreen(&where);
+			where.x = Bounds().right+1;
 
-					// Find out which cue was moved.  Was it one from this channel
-					// or is it being moved in from another?
-					TCueView *cueView;
-					message->FindPointer("CueView", (void **)&cueView);
-					if (&cueView)
-					{
-						uint32 insertTime = PixelsToTime( where.x, GetCurrentTimeFormat(), GetCurrentResolution());
+			// Find out which cue was moved.  Was it one from this channel
+			// or is it being moved in from another?
+			TCueView *cueView;
+			message->FindPointer("CueView", (void **)&cueView);
+			if (&cueView) {
+				uint32 insertTime = PixelsToTime( where.x, GetCurrentTimeFormat(), GetCurrentResolution());
 
-						// Check for collisions with other cues
-						if ( fChannel->CanInsertCue( cueView, insertTime, true) )
-						{
-							// Remove cue from old location
-							fChannel->RemoveCue(cueView);
+				// Check for collisions with other cues
+				if ( fChannel->CanInsertCue( cueView, insertTime, true) ) {
+					// Remove cue from old location
+					fChannel->RemoveCue(cueView);
 
-							// Insert cue into channel at new location
-							fChannel->InsertCue(cueView, insertTime);
-						}
-					}
+					// Insert cue into channel at new location
+					fChannel->InsertCue(cueView, insertTime);
 				}
-				break;
+			}
+		}
+		break;
 
-			case CHANNEL_DRAG_MSG:
-				{
-					BPoint where = message->DropPoint();
-					ConvertFromScreen(&where);
+		case CHANNEL_DRAG_MSG:
+		{
+			BPoint where = message->DropPoint();
+			ConvertFromScreen(&where);
 
-					// Unpack message
-					TCueChannel *insertChannel;
-					message->FindPointer("ChannelView", (void **)&insertChannel);
-					if (&insertChannel)
-					{
-						// Make sure we aren't dragging the channel back into itself
-						if (insertChannel != fChannel)
-						{
-							// Now insert it into the CueSheets list of channels at the right spot
-							fChannel->GetCueSheet()->DragInsertChannel(insertChannel, fChannel);
-						}
-					}
+			// Unpack message
+			TCueChannel *insertChannel;
+			message->FindPointer("ChannelView", (void **)&insertChannel);
+			if (&insertChannel) {
+				// Make sure we aren't dragging the channel back into itself
+				if (insertChannel != fChannel) {
+					// Now insert it into the CueSheets list of channels at the right spot
+					fChannel->GetCueSheet()->DragInsertChannel(insertChannel, fChannel);
 				}
-				break;
+			}
+		}
+		break;
 		}
 
-		// Highlight header to indicate cue icon entering channel
-		case CUE_ICON_DRAG_IN_MSG:
-			fIsHighlighted = true;
-			Invalidate();
-			break;
+	// Highlight header to indicate cue icon entering channel
+	case CUE_ICON_DRAG_IN_MSG:
+		fIsHighlighted = true;
+		Invalidate();
+		break;
 
-		// Unhighlight header to indicate cue icon leaving channel
-		case CUE_ICON_DRAG_OUT_MSG:
-			fIsHighlighted = false;
-			Invalidate();
-			break;
+	// Unhighlight header to indicate cue icon leaving channel
+	case CUE_ICON_DRAG_OUT_MSG:
+		fIsHighlighted = false;
+		Invalidate();
+		break;
 
-		default:
-			BView::MessageReceived(message);
-			break;
+	default:
+		BView::MessageReceived(message);
+		break;
 	}
 }
 
@@ -409,8 +401,7 @@ void TCueChannelHeader::MessageReceived(BMessage *message)
 
 void TCueChannelHeader::AttachedToWindow()
 {
-	if(fChannel == NULL)
-	{
+	if(fChannel == NULL) {
 		//fChannel = (TCueChannel *)Parent();
 	}
 

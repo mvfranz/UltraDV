@@ -18,12 +18,12 @@
 //
 //---------------------------------------------------------------------
 
-#include <support/Debug.h>		// for ASSERT()
+#include <support/Debug.h>              // for ASSERT()
 
 #include "AppTypes.h"
 
-#include "TCueEffect.h"		// For class decl
-#include "TCuePosition.h"		// For class decl
+#include "TCueEffect.h"         // For class decl
+#include "TCuePosition.h"               // For class decl
 
 #include "TTransformEffect.h"
 

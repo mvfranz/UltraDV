@@ -44,12 +44,12 @@ TStageCueMenu::TStageCueMenu(TVisualCue *target) : BPopUpMenu("StageCueMenu")
 
 	// Create "Lock/Unlock"
 	menuMessage = new BMessage(STAGE_CUE_LOCK_MSG);
-	BMenuItem	*lockItem = new BMenuItem("Lock", menuMessage);
+	BMenuItem       *lockItem = new BMenuItem("Lock", menuMessage);
 	AddItem(lockItem);
 
 	// Create "Show/Hide"
 	menuMessage = new BMessage(STAGE_CUE_HIDE_MSG);
-	BMenuItem	*hideItem = new BMenuItem("Hide", menuMessage);
+	BMenuItem       *hideItem = new BMenuItem("Hide", menuMessage);
 	AddItem(hideItem);
 
 	// Seperator01
@@ -66,46 +66,46 @@ TStageCueMenu::TStageCueMenu(TVisualCue *target) : BPopUpMenu("StageCueMenu")
 
 	// Create "Wireframe"
 	menuMessage = new BMessage(STAGE_CUE_WIREFRAME_MSG);
-	BMenuItem	*wireItem = new BMenuItem("Wireframe", menuMessage);
+	BMenuItem       *wireItem = new BMenuItem("Wireframe", menuMessage);
 	qualitySubMenu->AddItem(wireItem);
 
 	// Create "Preview"
 	menuMessage = new BMessage(STAGE_CUE_PREVIEW_MSG);
-	BMenuItem	*previewItem = new BMenuItem("Preview", menuMessage);
+	BMenuItem       *previewItem = new BMenuItem("Preview", menuMessage);
 	qualitySubMenu->AddItem(previewItem);
 
 	// Create "Better"
 	menuMessage = new BMessage(STAGE_CUE_BETTER_MSG);
-	BMenuItem	*betterItem = new BMenuItem("Better", menuMessage);
+	BMenuItem       *betterItem = new BMenuItem("Better", menuMessage);
 	qualitySubMenu->AddItem(betterItem);
 
 	// Create "Best"
 	menuMessage = new BMessage(STAGE_CUE_BEST_MSG);
-	BMenuItem	*bestItem = new BMenuItem("Best", menuMessage);
+	BMenuItem       *bestItem = new BMenuItem("Best", menuMessage);
 	qualitySubMenu->AddItem(bestItem);
 
 	//	Check current display quality setting
 	switch (target->GetDisplayQuality() )
 	{
-		case kWireframeQuality:
-			wireItem->SetMarked(true);
-			break;
+	case kWireframeQuality:
+		wireItem->SetMarked(true);
+		break;
 
-		case kPreviewQuality:
-			previewItem->SetMarked(true);
-			break;
+	case kPreviewQuality:
+		previewItem->SetMarked(true);
+		break;
 
-		case kBetterQuality:
-			betterItem->SetMarked(true);
-			break;
+	case kBetterQuality:
+		betterItem->SetMarked(true);
+		break;
 
-		case kBestQuality:
-			bestItem->SetMarked(true);
-			break;
+	case kBestQuality:
+		bestItem->SetMarked(true);
+		break;
 
-		default:
-			wireItem->SetMarked(true);
-			break;
+	default:
+		wireItem->SetMarked(true);
+		break;
 	}
 
 	//	Create Transform submenu
@@ -117,43 +117,43 @@ TStageCueMenu::TStageCueMenu(TVisualCue *target) : BPopUpMenu("StageCueMenu")
 
 	// Create "Rotate..."
 	menuMessage = new BMessage(STAGE_CUE_ROTATE_MSG);
-	BMenuItem	*rotateItem = new BMenuItem("Rotation...", menuMessage);
+	BMenuItem       *rotateItem = new BMenuItem("Rotation...", menuMessage);
 	transformSubMenu->AddItem(rotateItem);
 
 	// Create "Crop..."
 	menuMessage = new BMessage(STAGE_CUE_CROP_MSG);
-	BMenuItem	*cropItem = new BMenuItem("Crop...", menuMessage);
+	BMenuItem       *cropItem = new BMenuItem("Crop...", menuMessage);
 	transformSubMenu->AddItem(cropItem);
 
 	// Create "Scale..."
 	menuMessage = new BMessage(STAGE_CUE_SCALE_MSG);
-	BMenuItem	*scaleItem = new BMenuItem("Scale...", menuMessage);
+	BMenuItem       *scaleItem = new BMenuItem("Scale...", menuMessage);
 	transformSubMenu->AddItem(scaleItem);
 
 	// Create "Shear..."
 	menuMessage = new BMessage(STAGE_CUE_SHEAR_MSG);
-	BMenuItem	*shearItem = new BMenuItem("Shear...", menuMessage);
+	BMenuItem       *shearItem = new BMenuItem("Shear...", menuMessage);
 	transformSubMenu->AddItem(shearItem);
 
 	// Create "Skew..."
 	menuMessage = new BMessage(STAGE_CUE_SKEW_MSG);
-	BMenuItem	*skewItem = new BMenuItem("Skew...", menuMessage);
+	BMenuItem       *skewItem = new BMenuItem("Skew...", menuMessage);
 	transformSubMenu->AddItem(skewItem);
 
 	// Create "Perspective..."
 	menuMessage = new BMessage(STAGE_CUE_PERSP_MSG);
-	BMenuItem	*perspItem = new BMenuItem("Perspective...", menuMessage);
+	BMenuItem       *perspItem = new BMenuItem("Perspective...", menuMessage);
 	transformSubMenu->AddItem(perspItem);
 
 	// Create "Mirror..."
 	menuMessage = new BMessage(STAGE_CUE_MIRROR_MSG);
-	BMenuItem	*mirrorItem = new BMenuItem("Mirror...", menuMessage);
+	BMenuItem       *mirrorItem = new BMenuItem("Mirror...", menuMessage);
 	transformSubMenu->AddItem(mirrorItem);
 
 
 	// Create "Opacity..."
 	menuMessage = new BMessage(STAGE_CUE_OPACITY_MSG);
-	BMenuItem	*opacityItem = new BMenuItem("Opacity...", menuMessage);
+	BMenuItem       *opacityItem = new BMenuItem("Opacity...", menuMessage);
 	AddItem(opacityItem);
 
 	// Seperator03
@@ -253,60 +253,60 @@ void TStageCueMenu::UpdateMenu()
 	// Set drawing mode check
 	switch( fCue->GetDrawingMode())
 	{
-		case B_OP_COPY:
-			theItem = subMenu->FindItem(STAGE_CUE_COPY_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_COPY:
+		theItem = subMenu->FindItem(STAGE_CUE_COPY_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		case B_OP_OVER:
-			theItem = subMenu->FindItem(STAGE_CUE_OVER_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_OVER:
+		theItem = subMenu->FindItem(STAGE_CUE_OVER_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		case B_OP_ERASE:
-			theItem = subMenu->FindItem(STAGE_CUE_ERASE_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_ERASE:
+		theItem = subMenu->FindItem(STAGE_CUE_ERASE_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		case B_OP_INVERT:
-			theItem = subMenu->FindItem(STAGE_CUE_INVERT_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_INVERT:
+		theItem = subMenu->FindItem(STAGE_CUE_INVERT_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		case B_OP_SELECT:
-			theItem = subMenu->FindItem(STAGE_CUE_SELECT_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_SELECT:
+		theItem = subMenu->FindItem(STAGE_CUE_SELECT_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		case B_OP_MIN:
-			theItem = subMenu->FindItem(STAGE_CUE_MIN_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_MIN:
+		theItem = subMenu->FindItem(STAGE_CUE_MIN_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		case B_OP_MAX:
-			theItem = subMenu->FindItem(STAGE_CUE_MAX_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_MAX:
+		theItem = subMenu->FindItem(STAGE_CUE_MAX_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		case B_OP_ADD:
-			theItem = subMenu->FindItem(STAGE_CUE_ADD_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_ADD:
+		theItem = subMenu->FindItem(STAGE_CUE_ADD_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		case B_OP_SUBTRACT:
-			theItem = subMenu->FindItem(STAGE_CUE_SUBTRACT_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_SUBTRACT:
+		theItem = subMenu->FindItem(STAGE_CUE_SUBTRACT_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		case B_OP_BLEND:
-			theItem = subMenu->FindItem(STAGE_CUE_BLEND_MSG);
-			theItem->SetMarked(true);
-			break;
+	case B_OP_BLEND:
+		theItem = subMenu->FindItem(STAGE_CUE_BLEND_MSG);
+		theItem->SetMarked(true);
+		break;
 
-		default:
-			theItem = subMenu->FindItem(STAGE_CUE_COPY_MSG);
-			theItem->SetMarked(true);
-			break;
+	default:
+		theItem = subMenu->FindItem(STAGE_CUE_COPY_MSG);
+		theItem->SetMarked(true);
+		break;
 
 	}
 }

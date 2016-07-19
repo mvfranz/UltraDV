@@ -109,16 +109,14 @@ status_t THeaderContainerView::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "THeaderContainerView");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -144,7 +142,7 @@ void THeaderContainerView::Draw(BRect updateRect)
 	rgb_color saveColor = HighColor();
 
 	pattern squares = { 0xF0, 0xF0, 0xF0, 0xF0,
-						0x0F, 0x0F, 0x0F, 0x0F };
+		            0x0F, 0x0F, 0x0F, 0x0F };
 
 	// Fill Area behind first header black
 	BRect headerFill = Bounds();

@@ -27,7 +27,7 @@
 
 // Constants
 
-	 
+
 //---------------------------------------------------------------------
 //	Constructor
 //---------------------------------------------------------------------
@@ -36,10 +36,10 @@
 
 TMIDIEditorView::TMIDIEditorView(TMIDIEditor *parent, BRect bounds) : BView(bounds, "MIDIEditorView", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
 {
-	fEditor = parent;	
-	
+	fEditor = parent;
+
 	// Default initialization
-	Init();	
+	Init();
 }
 
 
@@ -50,7 +50,7 @@ TMIDIEditorView::TMIDIEditorView(TMIDIEditor *parent, BRect bounds) : BView(boun
 //
 
 TMIDIEditorView::~TMIDIEditorView()
-{			
+{
 }
 
 
@@ -62,7 +62,7 @@ TMIDIEditorView::~TMIDIEditorView()
 //
 
 void TMIDIEditorView::MouseDown(BPoint where)
-{	
+{
 }
 
 
@@ -152,7 +152,7 @@ void TMIDIEditorView::FrameMoved(BPoint new_position)
 
 void TMIDIEditorView::FrameResized(float new_width, float new_height)
 {
-	// For now, invalidate the whole screen and get a redraw filled to the 
+	// For now, invalidate the whole screen and get a redraw filled to the
 	// current frame size
 	//Invalidate();
 }
@@ -185,12 +185,12 @@ void TMIDIEditorView::Init()
 //
 
 void TMIDIEditorView::MessageReceived(BMessage* message)
-{	
+{
 	switch (message->what)
 	{
-						
-	}		
-}	
+
+	}
+}
 
 
 #pragma mark -
@@ -203,24 +203,24 @@ void TMIDIEditorView::MessageReceived(BMessage* message)
 //
 
 void TMIDIEditorView::Draw(BRect updateRect)
-{	
-	
+{
+
 	BPoint startPt, endPt;
-	
+
 	// Set up environment
 	rgb_color saveColor = HighColor();
-	drawing_mode saveMode = DrawingMode();	
+	drawing_mode saveMode = DrawingMode();
 	float savePen = PenSize();
 	SetPenSize(0.0);
 	SetDrawingMode(B_OP_COPY);
-			
+
 	// Fill backgound
 	SetHighColor(kLightGrey);
 	FillRect( Bounds() );
-	
+
 	// Set pen color
 	SetHighColor(kDarkGrey);
-							
+
 	// Restore environment
 	SetPenSize(savePen);
 	SetDrawingMode(saveMode);

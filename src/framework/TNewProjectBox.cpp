@@ -70,22 +70,19 @@ void TNewProjectBox::Draw(BRect bounds)
 	// Get TNewProject window
 	TNewProject *theWindow = static_cast<TNewProject *>(Window());
 
-	if (theWindow)
-	{
+	if (theWindow) {
 		// Get selected item
 		int32 theItem = theWindow->GetSelectedItem();
 
 		// Get preset list from parent Window
 		BList *presetList = theWindow->GetPresetsList();
-		if (presetList)
-		{
+		if (presetList) {
 			// Draw our text items
 			SetHighColor(kBlack);
 			SetFont(be_plain_font);
 
 			TPreset *preset =  static_cast<TPreset *>(presetList->ItemAt(theItem));
-			if (preset)
-			{
+			if (preset) {
 				// Description Header
 				BPoint textPt(Bounds().left + 10, Bounds().top + 30 );
 				SetFontSize(12);

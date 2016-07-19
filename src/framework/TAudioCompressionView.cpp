@@ -57,8 +57,8 @@ void TAudioCompressionView::Init()
 	SetViewColor(kBeGrey);
 
 	// Find view items
-	fCompressorMenuField 	= (BMenuField *)FindView("CompressorMenuField");
-	fVolumeBox				= (BBox *)FindView("VolumeBox");
+	fCompressorMenuField    = (BMenuField *)FindView("CompressorMenuField");
+	fVolumeBox                              = (BBox *)FindView("VolumeBox");
 
 	// Set up Input Slider
 	BView *inputView = (BView *)FindView("InputView");
@@ -77,8 +77,8 @@ void TAudioCompressionView::Init()
 	fOutputSlider->Show();
 
 	// Set up level indicator
-	BView 	*levelsView = (BMenuField *)FindView("LevelsView");
-	fAudioLevelsView 	= new TAudioLevelsView(levelsView->Frame());
+	BView   *levelsView = (BMenuField *)FindView("LevelsView");
+	fAudioLevelsView        = new TAudioLevelsView(levelsView->Frame());
 	fVolumeBox->RemoveChild(levelsView);
 	delete levelsView;
 	fVolumeBox->AddChild(fAudioLevelsView);
@@ -91,8 +91,7 @@ void TAudioCompressionView::Init()
 
 	// Setup compressors menu
 	theMenu = fCompressorMenuField->Menu();
-	if (theMenu)
-	{
+	if (theMenu) {
 		// None
 		BMenuItem *noneItem = new BMenuItem("None", new BMessage(AUDIO_NONE_MSG) );
 		//rawItem->SetTarget(be_app);

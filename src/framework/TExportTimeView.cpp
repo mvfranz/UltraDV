@@ -120,16 +120,14 @@ status_t TExportTimeView::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TExportTimeView");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -210,10 +208,10 @@ void TExportTimeView::DrawInText()
 	const BRect bounds = Bounds();
 
 	BRect updateRect = Bounds();
-	updateRect.left  	+= 25;
-	updateRect.top 	 	+= 3;
-	updateRect.right 	-= 3;
-	updateRect.bottom 	= updateRect.top +10;
+	updateRect.left         += 25;
+	updateRect.top          += 3;
+	updateRect.right        -= 3;
+	updateRect.bottom       = updateRect.top +10;
 
 	//	Clean up backgrounds
 	SetHighColor(kKhaki);
@@ -245,10 +243,10 @@ void TExportTimeView::DrawOutText()
 	const BRect bounds = Bounds();
 
 	BRect updateRect = Bounds();
-	updateRect.left  	+= 25;
-	updateRect.top 	 	+= 13;
-	updateRect.right 	-= 3;
-	updateRect.bottom 	= updateRect.top +10;
+	updateRect.left         += 25;
+	updateRect.top          += 13;
+	updateRect.right        -= 3;
+	updateRect.bottom       = updateRect.top +10;
 
 	//	Clean up backgrounds
 	SetHighColor(kKhaki);
@@ -317,35 +315,35 @@ void TExportTimeView::MouseMoved( BPoint where, uint32 code, const BMessage *a_m
 //	time resolution, the start, duration and end times.
 //
 /*
-void TExportTimeView::ShowProjectSettingDialog(BPoint where)
-{
+   void TExportTimeView::ShowProjectSettingDialog(BPoint where)
+   {
 
-	// If we have created the dialog bring it to the front and show it
-	if( fProjectSettings)
-	{
-		if (fProjectWindow)
-		{
-			fProjectWindow->Show();
-			fProjectWindow->Activate(true);
-		}
-	}
-	// Create the Project Settings dialog from a resource archive
-	else
-	{
-		BMessage *theMessage = GetWindowFromResource("ProjectSettingsWindow");
-		fProjectWindow = new TProjectSettings(this, fCueSheetWindow->GetCueSheetView(), theMessage);
+        // If we have created the dialog bring it to the front and show it
+        if( fProjectSettings)
+        {
+                if (fProjectWindow)
+                {
+                        fProjectWindow->Show();
+                        fProjectWindow->Activate(true);
+                }
+        }
+        // Create the Project Settings dialog from a resource archive
+        else
+        {
+                BMessage *theMessage = GetWindowFromResource("ProjectSettingsWindow");
+                fProjectWindow = new TProjectSettings(this, fCueSheetWindow->GetCueSheetView(), theMessage);
 
-		// Move it under the mouse
-		//ConvertToScreen(&where);
-		//fProjectWindow->MoveTo(where.x, where.y);
-		CenterWindow(fProjectWindow);
+                // Move it under the mouse
+                //ConvertToScreen(&where);
+                //fProjectWindow->MoveTo(where.x, where.y);
+                CenterWindow(fProjectWindow);
 
-		// Show the dialog
-		fProjectWindow->Show();
-	}
-	return;
-}
-*/
+                // Show the dialog
+                fProjectWindow->Show();
+        }
+        return;
+   }
+ */
 
 #pragma mark -
 #pragma mark === Visibility Routines ===
@@ -361,8 +359,7 @@ void TExportTimeView::ShowProjectSettingDialog(BPoint where)
 
 void TExportTimeView::AttachedToWindow()
 {
-	if(fCueSheetWindow == NULL)
-	{
+	if(fCueSheetWindow == NULL) {
 		fCueSheetWindow = (TCueSheetWindow *)Window();
 	}
 
@@ -380,5 +377,5 @@ void TExportTimeView::AttachedToWindow()
 //
 void TExportTimeView::SetParent(TCueSheetWindow *parent)
 {
- 	fCueSheetWindow = parent;
+	fCueSheetWindow = parent;
 }

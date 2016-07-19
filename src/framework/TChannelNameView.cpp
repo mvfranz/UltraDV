@@ -41,7 +41,7 @@
 //
 
 TChannelNameView::TChannelNameView( TCueChannel *channel, BRect bounds, const char *name, const char *text, uint32 resizeFlags, uint32 flags) :
-							BStringView(bounds, name, text, resizeFlags, flags)
+	BStringView(bounds, name, text, resizeFlags, flags)
 {
 	fChannel = channel;
 
@@ -106,16 +106,14 @@ status_t TChannelNameView::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BStringView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TChannelNameView");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -180,8 +178,7 @@ void TChannelNameView::MouseDown(BPoint pt)
 		return;
 
 	// If the option key is down, allow user to change the text
-	if ( IsOptionKeyDown() )
-	{
+	if ( IsOptionKeyDown() ) {
 		// Create the channel name dialog from a resource archive
 		BMessage *theMessage = GetWindowFromResource("ChannelNameWindow");
 		TChannelName *theDialog = new TChannelName(theMessage, fChannel);
@@ -195,8 +192,7 @@ void TChannelNameView::MouseDown(BPoint pt)
 		theDialog->Show();
 	}
 	// Otherwise, select all the cues in the channel
-	else
-	{
+	else{
 		if ( IsShiftKeyDown() == false )
 			fChannel->GetCueSheet()->DeselectAllCues();
 

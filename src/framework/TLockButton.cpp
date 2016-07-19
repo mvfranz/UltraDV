@@ -74,8 +74,8 @@ TLockButton::TLockButton(BMessage *data) : BView(data)
 	fMouseDown = false;
 
 	// Set bitmaps
-	fOffBitmap	= GetAppIcons()->fUnlockDark;
-	fOnBitmap 	= GetAppIcons()->fLockDark;
+	fOffBitmap      = GetAppIcons()->fUnlockDark;
+	fOnBitmap       = GetAppIcons()->fLockDark;
 }
 
 
@@ -137,16 +137,14 @@ status_t TLockButton::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TLockButton");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -230,8 +228,7 @@ void TLockButton::MouseUp(BPoint where)
 
 void TLockButton::AttachedToWindow()
 {
-	if (fHandler == NULL)
-	{
+	if (fHandler == NULL) {
 		// Set target
 		fHandler = (TCueSheetWindow *)Window();
 

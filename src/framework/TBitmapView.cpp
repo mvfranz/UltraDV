@@ -30,7 +30,7 @@
 
 TBitmapView::TBitmapView(BRect area, char *name, BBitmap *bitmap, bool own,  uint32 resizeFlags) : BView(area, name, resizeFlags, B_WILL_DRAW)
 {
-	fBitmap 	= bitmap;
+	fBitmap         = bitmap;
 	fOwnership = own;
 
 	// We don't need a background color
@@ -45,8 +45,7 @@ TBitmapView::TBitmapView(BRect area, char *name, BBitmap *bitmap, bool own,  uin
 
 TBitmapView::~TBitmapView()
 {
-	if (fBitmap)
-	{
+	if (fBitmap) {
 		if (fOwnership)
 			delete fBitmap;
 	}
@@ -62,7 +61,7 @@ TBitmapView::~TBitmapView()
 //
 //
 
-void	TBitmapView::Draw( BRect area)
+void TBitmapView::Draw( BRect area)
 {
 	if (fBitmap)
 		DrawBitmap(fBitmap, fBitmap->Bounds(), Bounds());

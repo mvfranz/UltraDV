@@ -54,7 +54,7 @@ TMSRLECodec::~TMSRLECodec()
 
 void TMSRLECodec::Init()
 {
-	
+
 }
 
 //-------------------------------------------------------------------
@@ -65,7 +65,7 @@ void TMSRLECodec::Init()
 //
 
 bool TMSRLECodec::GetDescription(char *descText)
-{		
+{
 	return false;
 }
 
@@ -78,7 +78,7 @@ bool TMSRLECodec::GetDescription(char *descText)
 //
 
 bool TMSRLECodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 dstDepth)
-{	
+{
 	//	Get file and save position
 	BFile *theFile = m_Reader->GetFile();
 	off_t position = theFile->Position();
@@ -88,17 +88,17 @@ bool TMSRLECodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 d
 	const int32 bufSize = theFrame->Length;
 	void *srcBuffer = malloc(bufSize);
 	ASSERT(srcBuffer);
-	
-	//	Load bits from current frame		
+
+	//	Load bits from current frame
 	theFile->Seek(theFrame->Offset, SEEK_SET);
 	theFile->Read(srcBuffer, bufSize);
-	
+
 	//	Restore file position
 	theFile->Seek(position, SEEK_SET);
-	
-	//	Decode the frame		
+
+	//	Decode the frame
 	bool retVal = DecodeMicrosoftRLE(m_Reader->Width(), m_Reader->Height(), srcBuffer, bufSize, dstBuffer);
-		
+
 	return retVal;
 }
 
@@ -111,188 +111,172 @@ bool TMSRLECodec::DecodeFrame(AVIVideoFrame *theFrame, void *dstBuffer, uint16 d
 //
 
 bool TMSRLECodec::DecodeMicrosoftRLE(uint32 width, uint32 height, void *buffer, int32 bufSize, void *dstBuffer)
-{ 
+{
 	uint32 opcode, mod;
 	int32 x, y, minX, maxX, minY, maxY;
-	
+
 	int32 dataSize = bufSize;
-	
-	maxX 	= 0;
-	maxY 	= 0; 
-	minX 	= width; 
-	minY 	= height;
-	x 		= 0;  
-	y 		= height - 1;
-		
+
+	maxX    = 0;
+	maxY    = 0;
+	minX    = width;
+	minY    = height;
+	x               = 0;
+	y               = height - 1;
+
 	//	Setup pointers
 	uchar *bufPtr = (uchar *)buffer;
-	uchar *bits = (uchar *)dstBuffer; 	
+	uchar *bits = (uchar *)dstBuffer;
 
-	while( (y >= 0) && (dataSize > 0) )
-	{
-		mod 	 = *bufPtr++;
-		opcode 	 = *bufPtr++;  
+	while( (y >= 0) && (dataSize > 0) ) {
+		mod      = *bufPtr++;
+		opcode   = *bufPtr++;
 		dataSize -= 2;
-	
+
 		#ifdef DEBUG
-			printf("MOD %x OPCODE %x <%d,%d>\n", mod, opcode, x, y);
+		printf("MOD %x OPCODE %x <%d,%d>\n", mod, opcode, x, y);
 		#endif
-		
+
 		//	End of line
-		if (mod == 0x00)				
-		{
-			if (opcode==0x00)
-			{
-				while( x > width) 
-				{ 
-					x -= width; 
-					y--; 
+		if (mod == 0x00) {
+			if (opcode==0x00) {
+				while( x > width) {
+					x -= width;
+					y--;
 				}
-				
-				x = 0; 
+
+				x = 0;
 				y--;
-				
+
 				#ifdef DEBUG
-					printf("EOL <%d,%d>\n",x,y);
+				printf("EOL <%d,%d>\n",x,y);
 				#endif
 			}
 			//	End of image
-			else if (opcode==0x01)
-			{
+			else if (opcode==0x01) {
 				y = -1;
-				
+
 				#ifdef DEBUG
-					printf("EOI <%d,%d>\n",x,y);
+				printf("EOI <%d,%d>\n",x,y);
 				#endif
 			}
 			//	Skip
-			else if (opcode==0x02)
-			{
+			else if (opcode==0x02) {
 				uint32 yskip,xskip;
-				xskip = *bufPtr++; 
+				xskip = *bufPtr++;
 				yskip = *bufPtr++;  dataSize-=2;
 				x += xskip;
 				y -= yskip;
-				
+
 				#ifdef DEBUG
-					printf("SKIP <%d,%d>\n",x,y);
+				printf("SKIP <%d,%d>\n",x,y);
 				#endif
 			}
 			//	Absolute
-			else					
-			{
+			else{
 				int cnt = opcode;
-	
+
 				dataSize-=cnt;
-				while(x >= width) 
-				{ 
-					x -= width; 
-					y--; 
+				while(x >= width) {
+					x -= width;
+					y--;
 				}
-				
-				if (y > maxY) 
-					maxY = y; 
-				
-				if (x < minX) 
+
+				if (y > maxY)
+					maxY = y;
+
+				if (x < minX)
 					minX = x;
-					
+
 				uchar *iptr = (uchar *)(bits + (y * width + x) );
-					
-				while(cnt--) 
-				{ 
-					if (x >= width)  
-					{ 
-						maxX = width; 
+
+				while(cnt--) {
+					if (x >= width) {
+						maxX = width;
 						minX = 0;
-						x -= width; 
-						y--; 
-						iptr = (uchar *)(bits + y * width + x); 
+						x -= width;
+						y--;
+						iptr = (uchar *)(bits + y * width + x);
 					}
-					
-					*iptr++ = (uchar)(*bufPtr++); 
+
+					*iptr++ = (uchar)(*bufPtr++);
 					x++;
 				}
-	
+
 				#ifdef DEBUG
-					printf("Absolute <%d,%d>\n",x,y);
+				printf("Absolute <%d,%d>\n",x,y);
 				#endif
-	
+
 				//	Pad to int16
-				if (opcode & 0x01) 
-				{ 
-					bufPtr++; 
-					dataSize--; 
+				if (opcode & 0x01) {
+					bufPtr++;
+					dataSize--;
 				}
-				
-				if (y < minY) 
-					minY = y; 
-				
-				if (x > maxX) 
+
+				if (y < minY)
+					minY = y;
+
+				if (x > maxX)
 					maxX = x;
 			}
 		}
 		//	Encoded
-		else					
-		{
+		else{
 			int color,cnt;
-			
-			while(x >= width) 
-			{ 
-				x -= width; 
-				y--; 
+
+			while(x >= width) {
+				x -= width;
+				y--;
 			}
-			
-			if (y > maxY) 
-				maxY = y; 
-			
-			if (x < minX) 
+
+			if (y > maxY)
+				maxY = y;
+
+			if (x < minX)
 				minX = x;
-				
+
 			cnt   = mod;
 			color = opcode;
-			
-			
+
+
 			uint32 *iptr = (uint32 *)(bits + ((y * width + x)<<2) );
 			uint32 clr = (uint32)color;
-		
-			while(cnt--) 
-			{ 
-				if (x >= width)  
-				{ 
-					maxX = width; 
+
+			while(cnt--) {
+				if (x >= width) {
+					maxX = width;
 					minX = 0;
-					x -= width; 
-					y--; 
-					iptr = (uint32 *)(bits + y * width + x); 
+					x -= width;
+					y--;
+					iptr = (uint32 *)(bits + y * width + x);
 				}
-				*iptr++ = clr; 
+				*iptr++ = clr;
 				x++;
 			}
-			
-			if (y < minY) 
-				minY = y; 
-			
-			if (x > maxX) 
+
+			if (y < minY)
+				minY = y;
+
+			if (x > maxX)
 				maxX = x;
-				
+
 			#ifdef DEBUG
-				printf("Encoded <%d,%d>\n",x,y);
+			printf("Encoded <%d,%d>\n",x,y);
 			#endif
 		}
 	}
-	
+
 	#ifdef DEBUG
 	{
 		printf("dataSize %d\n  ",dataSize);
-		while(dataSize)  
-		{ 
-			int d = *bufPtr++;  
-			printf("<%02x> ",d); 
-			dataSize--; 
+		while(dataSize) {
+			int d = *bufPtr++;
+			printf("<%02x> ",d);
+			dataSize--;
 		}
 		printf("\n");
 	}
 	#endif
-	
+
 	return true;
 }

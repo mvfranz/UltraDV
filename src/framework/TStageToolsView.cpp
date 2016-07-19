@@ -63,8 +63,8 @@ TStageToolsView::~TStageToolsView()
 
 void TStageToolsView::Init()
 {
-	BBitmap 	*offBitmap;
-	BBitmap		*onBitmap;
+	BBitmap         *offBitmap;
+	BBitmap         *onBitmap;
 
 	// Set view background color
 	SetViewColor(kBlueGrey);
@@ -95,142 +95,142 @@ void TStageToolsView::Init()
 	//	Move Tool
 
 	// Set button location
-	toolRect.right 	=  toolRect.left + (kStageToolWidth-1);
-	toolRect.bottom =  toolRect.top 	+ (kStageToolHeight-1);
+	toolRect.right  =  toolRect.left + (kStageToolWidth-1);
+	toolRect.bottom =  toolRect.top         + (kStageToolHeight-1);
 
 	// Load bitmaps
-	offBitmap 	= GetStageToolIcon("StageMoveDown");
-	onBitmap 	= GetStageToolIcon("StageMoveUp");
+	offBitmap       = GetStageToolIcon("StageMoveDown");
+	onBitmap        = GetStageToolIcon("StageMoveUp");
 
 	// Create button
 	fMoveTool = new TStageToolButton(this, toolRect, "Move Tool", offBitmap, onBitmap, new BMessage(MOVE_TOOL_MSG) );
 	AddChild(fMoveTool);
 
-    //
-    //	Rotate Tool
+	//
+	//	Rotate Tool
 
-    // Set button location
-	toolRect.left 	= toolRect.right;
-	toolRect.right 	= toolRect.left + (kStageToolWidth-1);
+	// Set button location
+	toolRect.left   = toolRect.right;
+	toolRect.right  = toolRect.left + (kStageToolWidth-1);
 
-    // Load bitmaps
-	offBitmap 	= GetStageToolIcon("StageRotateDown");
-	onBitmap 	= GetStageToolIcon("StageRotateUp");
+	// Load bitmaps
+	offBitmap       = GetStageToolIcon("StageRotateDown");
+	onBitmap        = GetStageToolIcon("StageRotateUp");
 
 	// Create button
 	fRotateTool = new TStageToolButton( this, toolRect, "Rotate Tool", offBitmap, onBitmap, new BMessage(ROTATE_TOOL_MSG));
 	AddChild(fRotateTool);
 
 
-    //
-    //	Row Two
-    //
+	//
+	//	Row Two
+	//
 
-    //
-    //	Crop Tool
+	//
+	//	Crop Tool
 
-    // Set button location
-	toolRect.left 	= bounds.left;
-	toolRect.right 	= toolRect.left + (kStageToolWidth-1);
-	toolRect.top 	= toolRect.bottom;
+	// Set button location
+	toolRect.left   = bounds.left;
+	toolRect.right  = toolRect.left + (kStageToolWidth-1);
+	toolRect.top    = toolRect.bottom;
 	toolRect.bottom = toolRect.top + (kStageToolHeight-1);
 
-    // Load bitmaps
-	offBitmap 	= GetStageToolIcon("StageCropDown");
-	onBitmap 	= GetStageToolIcon("StageCropUp");
+	// Load bitmaps
+	offBitmap       = GetStageToolIcon("StageCropDown");
+	onBitmap        = GetStageToolIcon("StageCropUp");
 
 	// Create button
 	fCropTool = new TStageToolButton( this, toolRect, "Crop Tool", offBitmap, onBitmap, new BMessage(CROP_TOOL_MSG));
 	AddChild(fCropTool);
 
 
-    //
-    //	Scale Tool
+	//
+	//	Scale Tool
 
- 	// Set button location
-	toolRect.left 	= toolRect.right;
-	toolRect.right 	= toolRect.left + (kStageToolWidth-1);
+	// Set button location
+	toolRect.left   = toolRect.right;
+	toolRect.right  = toolRect.left + (kStageToolWidth-1);
 
-    // Load bitmaps
-	offBitmap 	= GetStageToolIcon("StageScaleDown");
-	onBitmap 	= GetStageToolIcon("StageScaleUp");
+	// Load bitmaps
+	offBitmap       = GetStageToolIcon("StageScaleDown");
+	onBitmap        = GetStageToolIcon("StageScaleUp");
 
 	// Create button
 	fScaleTool = new TStageToolButton( this, toolRect, "Scale Tool", offBitmap, onBitmap, new BMessage(SCALE_TOOL_MSG));
 	AddChild(fScaleTool);
 
 
-    //
-    //	Row Three
-    //
+	//
+	//	Row Three
+	//
 
-    //
-    //	Shear Tool
+	//
+	//	Shear Tool
 
-    // Set button location
-    toolRect.left 	= bounds.left;
-	toolRect.right 	= toolRect.left + (kStageToolWidth-1);
-	toolRect.top 	= toolRect.bottom;
+	// Set button location
+	toolRect.left       = bounds.left;
+	toolRect.right  = toolRect.left + (kStageToolWidth-1);
+	toolRect.top    = toolRect.bottom;
 	toolRect.bottom = toolRect.top + (kStageToolHeight-1);
 
 
-    // Load bitmaps
-	offBitmap 	= GetStageToolIcon("StageShearDown");
-	onBitmap 	= GetStageToolIcon("StageShearUp");
+	// Load bitmaps
+	offBitmap       = GetStageToolIcon("StageShearDown");
+	onBitmap        = GetStageToolIcon("StageShearUp");
 
 	// Create button
 	fShearTool = new TStageToolButton(this, toolRect, "Shear Tool", offBitmap, onBitmap, new BMessage(SHEAR_TOOL_MSG));
 	AddChild(fShearTool);
 
 
-    //
-    //	Skew Tool
+	//
+	//	Skew Tool
 
 	// Set button location
-	toolRect.left 	= toolRect.right;
-	toolRect.right 	= toolRect.left + (kStageToolWidth-1);
+	toolRect.left   = toolRect.right;
+	toolRect.right  = toolRect.left + (kStageToolWidth-1);
 
 	// Load bitmaps
-	offBitmap 	= GetStageToolIcon("StageSkewDown");
-	onBitmap 	= GetStageToolIcon("StageSkewUp");
+	offBitmap       = GetStageToolIcon("StageSkewDown");
+	onBitmap        = GetStageToolIcon("StageSkewUp");
 
 	// Create button
 	fSkewTool = new TStageToolButton(this, toolRect, "Skew Tool", offBitmap, onBitmap, new BMessage(SKEW_TOOL_MSG));
 	AddChild(fSkewTool);
 
 	//
-    //	Row Four
-    //
+	//	Row Four
+	//
 
-    //
-    //	PerspectiveTool Tool
+	//
+	//	PerspectiveTool Tool
 
-    // Set button location
-    toolRect.left 	= bounds.left;
-	toolRect.right 	= toolRect.left + (kStageToolWidth-1);
-	toolRect.top 	= toolRect.bottom;
+	// Set button location
+	toolRect.left       = bounds.left;
+	toolRect.right  = toolRect.left + (kStageToolWidth-1);
+	toolRect.top    = toolRect.bottom;
 	toolRect.bottom = toolRect.top + (kStageToolHeight-1);
 
 
-    // Load bitmaps
-	offBitmap 	= GetStageToolIcon("StagePerspectiveDown");
-	onBitmap 	= GetStageToolIcon("StagePerspectiveUp");
+	// Load bitmaps
+	offBitmap       = GetStageToolIcon("StagePerspectiveDown");
+	onBitmap        = GetStageToolIcon("StagePerspectiveUp");
 
 	// Create button
 	fPerspectiveTool = new TStageToolButton(this, toolRect, "Perspective Tool", offBitmap, onBitmap, new BMessage(PERSPECTIVE_TOOL_MSG));
 	AddChild(fPerspectiveTool);
 
 
-    //
-    //	Mirror Tool
+	//
+	//	Mirror Tool
 
 	// Set button location
-	toolRect.left 	= toolRect.right;
-	toolRect.right 	= toolRect.left + (kStageToolWidth-1);
+	toolRect.left   = toolRect.right;
+	toolRect.right  = toolRect.left + (kStageToolWidth-1);
 
 	// Load bitmaps
-	offBitmap 	= GetStageToolIcon("StageMirrorDown");
-	onBitmap 	= GetStageToolIcon("StageMirrorUp");
+	offBitmap       = GetStageToolIcon("StageMirrorDown");
+	onBitmap        = GetStageToolIcon("StageMirrorUp");
 
 	// Create button
 	fMirrorTool = new TStageToolButton(this, toolRect, "Mirror Tool", offBitmap, onBitmap, new BMessage(MIRROR_TOOL_MSG));
@@ -271,21 +271,21 @@ void TStageToolsView::MessageReceived(BMessage* message)
 {
 	switch (message->what)
 	{
-		case MOVE_TOOL_MSG:
-		case ROTATE_TOOL_MSG:
-		case CROP_TOOL_MSG:
-		case SCALE_TOOL_MSG:
-		case SHEAR_TOOL_MSG:
-		case SKEW_TOOL_MSG:
-		case PERSPECTIVE_TOOL_MSG:
-		case MIRROR_TOOL_MSG:
-			UpdateStatusText(message->what);
-			DeactivateAllTools(message->what);
-			break;
+	case MOVE_TOOL_MSG:
+	case ROTATE_TOOL_MSG:
+	case CROP_TOOL_MSG:
+	case SCALE_TOOL_MSG:
+	case SHEAR_TOOL_MSG:
+	case SKEW_TOOL_MSG:
+	case PERSPECTIVE_TOOL_MSG:
+	case MIRROR_TOOL_MSG:
+		UpdateStatusText(message->what);
+		DeactivateAllTools(message->what);
+		break;
 
-		default:
-			BView::MessageReceived(message);
-			break;
+	default:
+		BView::MessageReceived(message);
+		break;
 	}
 }
 
@@ -305,96 +305,96 @@ void TStageToolsView::DeactivateAllTools(uint32 theTool)
 {
 	switch(theTool)
 	{
-		case MOVE_TOOL_MSG:
-			fRotateTool->Activate(false);
-			fCropTool->Activate(false);
-			fScaleTool->Activate(false);
-			fShearTool->Activate(false);
-			fSkewTool->Activate(false);
-			fPerspectiveTool->Activate(false);
-			fMirrorTool->Activate(false);
-			break;
+	case MOVE_TOOL_MSG:
+		fRotateTool->Activate(false);
+		fCropTool->Activate(false);
+		fScaleTool->Activate(false);
+		fShearTool->Activate(false);
+		fSkewTool->Activate(false);
+		fPerspectiveTool->Activate(false);
+		fMirrorTool->Activate(false);
+		break;
 
-		case ROTATE_TOOL_MSG:
-			fMoveTool->Activate(false);
-			fCropTool->Activate(false);
-			fScaleTool->Activate(false);
-			fShearTool->Activate(false);
-			fSkewTool->Activate(false);
-			fPerspectiveTool->Activate(false);
-			fMirrorTool->Activate(false);
-			break;
+	case ROTATE_TOOL_MSG:
+		fMoveTool->Activate(false);
+		fCropTool->Activate(false);
+		fScaleTool->Activate(false);
+		fShearTool->Activate(false);
+		fSkewTool->Activate(false);
+		fPerspectiveTool->Activate(false);
+		fMirrorTool->Activate(false);
+		break;
 
-		case CROP_TOOL_MSG:
-			fMoveTool->Activate(false);
-			fRotateTool->Activate(false);
-			fScaleTool->Activate(false);
-			fShearTool->Activate(false);
-			fSkewTool->Activate(false);
-			fPerspectiveTool->Activate(false);
-			fMirrorTool->Activate(false);
-			break;
+	case CROP_TOOL_MSG:
+		fMoveTool->Activate(false);
+		fRotateTool->Activate(false);
+		fScaleTool->Activate(false);
+		fShearTool->Activate(false);
+		fSkewTool->Activate(false);
+		fPerspectiveTool->Activate(false);
+		fMirrorTool->Activate(false);
+		break;
 
-		case SCALE_TOOL_MSG:
-			fMoveTool->Activate(false);
-			fRotateTool->Activate(false);
-			fCropTool->Activate(false);
-			fShearTool->Activate(false);
-			fSkewTool->Activate(false);
-			fPerspectiveTool->Activate(false);
-			fMirrorTool->Activate(false);
-			break;
+	case SCALE_TOOL_MSG:
+		fMoveTool->Activate(false);
+		fRotateTool->Activate(false);
+		fCropTool->Activate(false);
+		fShearTool->Activate(false);
+		fSkewTool->Activate(false);
+		fPerspectiveTool->Activate(false);
+		fMirrorTool->Activate(false);
+		break;
 
-		case SHEAR_TOOL_MSG:
-			fMoveTool->Activate(false);
-			fRotateTool->Activate(false);
-			fCropTool->Activate(false);
-			fScaleTool->Activate(false);
-			fSkewTool->Activate(false);
-			fPerspectiveTool->Activate(false);
-			fMirrorTool->Activate(false);
-			break;
+	case SHEAR_TOOL_MSG:
+		fMoveTool->Activate(false);
+		fRotateTool->Activate(false);
+		fCropTool->Activate(false);
+		fScaleTool->Activate(false);
+		fSkewTool->Activate(false);
+		fPerspectiveTool->Activate(false);
+		fMirrorTool->Activate(false);
+		break;
 
-		case SKEW_TOOL_MSG:
-			fMoveTool->Activate(false);
-			fRotateTool->Activate(false);
-			fCropTool->Activate(false);
-			fScaleTool->Activate(false);
-			fShearTool->Activate(false);
-			fPerspectiveTool->Activate(false);
-			fMirrorTool->Activate(false);
-			break;
+	case SKEW_TOOL_MSG:
+		fMoveTool->Activate(false);
+		fRotateTool->Activate(false);
+		fCropTool->Activate(false);
+		fScaleTool->Activate(false);
+		fShearTool->Activate(false);
+		fPerspectiveTool->Activate(false);
+		fMirrorTool->Activate(false);
+		break;
 
-		case PERSPECTIVE_TOOL_MSG:
-			fMoveTool->Activate(false);
-			fRotateTool->Activate(false);
-			fCropTool->Activate(false);
-			fScaleTool->Activate(false);
-			fShearTool->Activate(false);
-			fSkewTool->Activate(false);
-			fMirrorTool->Activate(false);
-			break;
+	case PERSPECTIVE_TOOL_MSG:
+		fMoveTool->Activate(false);
+		fRotateTool->Activate(false);
+		fCropTool->Activate(false);
+		fScaleTool->Activate(false);
+		fShearTool->Activate(false);
+		fSkewTool->Activate(false);
+		fMirrorTool->Activate(false);
+		break;
 
-		case MIRROR_TOOL_MSG:
-			fMoveTool->Activate(false);
-			fRotateTool->Activate(false);
-			fCropTool->Activate(false);
-			fScaleTool->Activate(false);
-			fShearTool->Activate(false);
-			fSkewTool->Activate(false);
-			fPerspectiveTool->Activate(false);
-			break;
+	case MIRROR_TOOL_MSG:
+		fMoveTool->Activate(false);
+		fRotateTool->Activate(false);
+		fCropTool->Activate(false);
+		fScaleTool->Activate(false);
+		fShearTool->Activate(false);
+		fSkewTool->Activate(false);
+		fPerspectiveTool->Activate(false);
+		break;
 
-		default:
-			fMoveTool->Activate(false);
-			fRotateTool->Activate(false);
-			fCropTool->Activate(false);
-			fScaleTool->Activate(false);
-			fShearTool->Activate(false);
-			fSkewTool->Activate(false);
-			fPerspectiveTool->Activate(false);
-			fMirrorTool->Activate(false);
-			break;
+	default:
+		fMoveTool->Activate(false);
+		fRotateTool->Activate(false);
+		fCropTool->Activate(false);
+		fScaleTool->Activate(false);
+		fShearTool->Activate(false);
+		fSkewTool->Activate(false);
+		fPerspectiveTool->Activate(false);
+		fMirrorTool->Activate(false);
+		break;
 
 	}
 }
@@ -414,41 +414,41 @@ void TStageToolsView::UpdateStatusText(uint32 theTool)
 
 	switch(theTool)
 	{
-		case MOVE_TOOL_MSG:
-			theMessage->AddString("StatusText", "Move");
-			break;
+	case MOVE_TOOL_MSG:
+		theMessage->AddString("StatusText", "Move");
+		break;
 
-		case ROTATE_TOOL_MSG:
-			theMessage->AddString("StatusText", "Rotate");
-			break;
+	case ROTATE_TOOL_MSG:
+		theMessage->AddString("StatusText", "Rotate");
+		break;
 
-		case CROP_TOOL_MSG:
-			theMessage->AddString("StatusText", "Crop");
-			break;
+	case CROP_TOOL_MSG:
+		theMessage->AddString("StatusText", "Crop");
+		break;
 
-		case SCALE_TOOL_MSG:
-			theMessage->AddString("StatusText", "Scale");
-			break;
+	case SCALE_TOOL_MSG:
+		theMessage->AddString("StatusText", "Scale");
+		break;
 
-		case SHEAR_TOOL_MSG:
-			theMessage->AddString("StatusText", "Shear");
-			break;
+	case SHEAR_TOOL_MSG:
+		theMessage->AddString("StatusText", "Shear");
+		break;
 
-		case SKEW_TOOL_MSG:
-			theMessage->AddString("StatusText", "Skew");
-			break;
+	case SKEW_TOOL_MSG:
+		theMessage->AddString("StatusText", "Skew");
+		break;
 
-		case PERSPECTIVE_TOOL_MSG:
-			theMessage->AddString("StatusText", "Perspective");
-			break;
+	case PERSPECTIVE_TOOL_MSG:
+		theMessage->AddString("StatusText", "Perspective");
+		break;
 
-		case MIRROR_TOOL_MSG:
-			theMessage->AddString("StatusText", "Mirror");
-			break;
+	case MIRROR_TOOL_MSG:
+		theMessage->AddString("StatusText", "Mirror");
+		break;
 
-		default:
-			theMessage->AddString("StatusText", "");
-			break;
+	default:
+		theMessage->AddString("StatusText", "");
+		break;
 
 	}
 
@@ -476,8 +476,8 @@ BBitmap *GetStageToolIcon(const char *theResource)
 	if (file.InitCheck())
 		return NULL;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res;
 	status_t err;

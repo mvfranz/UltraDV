@@ -39,29 +39,33 @@ typedef multimap<bigtime_t, BBuffer *> buffer_map;
 class _buffer_queue_imp {
 public:
 
-	buffer_map fbuffers;
-	int32 flock_count;
-	int32 flock_sem;
+buffer_map fbuffers;
+int32 flock_count;
+int32 flock_sem;
 
-	_buffer_queue_imp() {
-		flock_count = 1;
-		flock_sem = create_sem(0, "_buffer_queue_imp");
+_buffer_queue_imp()
+{
+	flock_count = 1;
+	flock_sem = create_sem(0, "_buffer_queue_imp");
+}
+~_buffer_queue_imp()
+{
+	delete_sem(flock_sem);
+}
+bool lock()
+{
+	if (atomic_add(&flock_count, -1) < 1) {
+		status_t err = acquire_sem(flock_sem);
+		if (err < B_OK) return false;
 	}
-	~_buffer_queue_imp() {
-		delete_sem(flock_sem);
+	return true;
+}
+void unlock()
+{
+	if (atomic_add(&flock_count, 1) < 0) {
+		release_sem(flock_sem);
 	}
-	bool lock() {
-		if (atomic_add(&flock_count, -1) < 1) {
-			status_t err = acquire_sem(flock_sem);
-			if (err < B_OK) return false;
-		}
-		return true;
-	}
-	void unlock() {
-		if (atomic_add(&flock_count, 1) < 0) {
-			release_sem(flock_sem);
-		}
-	}
+}
 };
 
 

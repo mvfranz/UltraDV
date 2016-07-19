@@ -36,10 +36,10 @@
 //
 
 TPictureDurationDialog::TPictureDurationDialog(BMessage *theMessage, TCueView *theCue) : BWindow(theMessage)
-{	
+{
 	// Save transition rate
 	fCue = theCue;
-	
+
 	// Default initialization
 	Init();
 }
@@ -65,38 +65,38 @@ TPictureDurationDialog::~TPictureDurationDialog()
 void TPictureDurationDialog::Init()
 {
 	/*// Get main view
-	fTextParent = FindView("PictureDurationView");
-	
-	// Find text view and swap it out for our own TNumberBevelTextView
-	BTextView *theView = (BTextView *)fTextParent->FindView("PictureDurationText");
-	BRect frame = theView->Frame();
-	frame.InsetBy(-1, -1);
-	fTextView = new TCueTimeText(this, START_TIME_TEXT_FOCUS_MSG, frame, "PictureDurationText", 
-										 theView->ResizingMode(), kTextBevel );		
+	   fTextParent = FindView("PictureDurationView");
 
-	// Set up time values
-	char timeStr[64];
-	
-	TimeToString(fCue->Duration(), GetCurrentTimeFormat(), timeStr, false);
-	fTextView->fTime = fCue->Duration();
-	
-	fTextView->SetText(timeStr);
-	fTextParent->AddChild(fTextView);
-	
-	// Free original text control
-	fTextParent->RemoveChild(theView);
-	delete theView;
-			
-	// Make the text active focus
-	fTextView->MakeFocus(true);*/	
+	   // Find text view and swap it out for our own TNumberBevelTextView
+	   BTextView *theView = (BTextView *)fTextParent->FindView("PictureDurationText");
+	   BRect frame = theView->Frame();
+	   frame.InsetBy(-1, -1);
+	   fTextView = new TCueTimeText(this, START_TIME_TEXT_FOCUS_MSG, frame, "PictureDurationText",
+	                                                                         theView->ResizingMode(), kTextBevel );
+
+	   // Set up time values
+	   char timeStr[64];
+
+	   TimeToString(fCue->Duration(), GetCurrentTimeFormat(), timeStr, false);
+	   fTextView->fTime = fCue->Duration();
+
+	   fTextView->SetText(timeStr);
+	   fTextParent->AddChild(fTextView);
+
+	   // Free original text control
+	   fTextParent->RemoveChild(theView);
+	   delete theView;
+
+	   // Make the text active focus
+	   fTextView->MakeFocus(true);*/
 }
 
-		
+
 //-------------------------------------------------------------------
 //
 //	Function:	MessageReceived
 //
-//	Desc:		
+//	Desc:
 //
 //-------------------------------------------------------------------
 //
@@ -107,28 +107,28 @@ void TPictureDurationDialog::MessageReceived(BMessage* message)
 
 	switch(message->what)
 	{
-		// User pressed OK button.  Update transition duration
-		case OK_MSG:
-			{
-				// Verify that all values are good
-				//fTextView->CheckLastEdit();
-				
-				// Get new rate
-				//int32 theTime = fTextView->fTime;		
-							
-				// Close dialog
-				Hide();
-			}
-			break;
-			
-		case CANCEL_MSG:
-			Hide();
-			break;
-			
-		default:
-			BWindow::MessageReceived(message);						
-			break;
+	// User pressed OK button.  Update transition duration
+	case OK_MSG:
+	{
+		// Verify that all values are good
+		//fTextView->CheckLastEdit();
+
+		// Get new rate
+		//int32 theTime = fTextView->fTime;
+
+		// Close dialog
+		Hide();
+	}
+	break;
+
+	case CANCEL_MSG:
+		Hide();
+		break;
+
+	default:
+		BWindow::MessageReceived(message);
+		break;
 
 	}
-	
+
 }

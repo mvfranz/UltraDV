@@ -93,14 +93,14 @@ void TAudioSettingsView::MessageReceived(BMessage *theMessage)
 
 	switch( theMessage->what)
 	{
-		case CANCEL_MSG:
-		case OK_MSG:
-			fParent->MessageReceived(theMessage);
-			break;
+	case CANCEL_MSG:
+	case OK_MSG:
+		fParent->MessageReceived(theMessage);
+		break;
 
-		default:
-			BView::MessageReceived(theMessage);
-			break;
+	default:
+		BView::MessageReceived(theMessage);
+		break;
 	}
 }
 

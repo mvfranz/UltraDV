@@ -68,8 +68,8 @@
 //
 
 TCueView::TCueView(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime, char *name) :
-		  BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS ),
-		  BMediaNode("CueNode")
+	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS ),
+	BMediaNode("CueNode")
 {
 	// Get cue ID
 	fID = id;
@@ -84,10 +84,10 @@ TCueView::TCueView(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime
 	fIsInstantiated = false;
 
 	// Save start time for later initialization
-	fInsertTime 	= startTime;
+	fInsertTime     = startTime;
 
 	// Set these variables to NULL
-	fFile 		  = NULL;
+	fFile             = NULL;
 	fAntThread   = NULL;
 	fEffectsList = NULL;
 
@@ -95,8 +95,8 @@ TCueView::TCueView(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime
 	fEditorOpen = false;
 
 	// Set buttons to NULL
-	fLockButton 			= NULL;
-	fMuteButton 			= NULL;
+	fLockButton                     = NULL;
+	fMuteButton                     = NULL;
 }
 
 //---------------------------------------------------------------------
@@ -106,8 +106,8 @@ TCueView::TCueView(int16 id, TCueChannel *parent, BRect bounds, uint32 startTime
 //
 
 TCueView::TCueView(int16 id, TCueChannel *parent, BRect bounds, BPoint point, uint32 startTime, char *name) :
-		  BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS ),
-		  BMediaNode("CueNode")
+	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS ),
+	BMediaNode("CueNode")
 {
 	// do something with scale, save it???
 	fInsertPoint = point; // ???
@@ -126,10 +126,10 @@ TCueView::TCueView(int16 id, TCueChannel *parent, BRect bounds, BPoint point, ui
 	fIsInstantiated = false;
 
 	// Save start time for later initialization
-	fInsertTime 	= startTime;
+	fInsertTime     = startTime;
 
 	// Set these variables to NULL
-	fFile 		  = NULL;
+	fFile             = NULL;
 	fAntThread   = NULL;
 	fEffectsList = NULL;
 
@@ -137,8 +137,8 @@ TCueView::TCueView(int16 id, TCueChannel *parent, BRect bounds, BPoint point, ui
 	fEditorOpen = false;
 
 	// Set buttons to NULL
-	fLockButton 			= NULL;
-	fMuteButton 			= NULL;
+	fLockButton                     = NULL;
+	fMuteButton                     = NULL;
 }
 
 
@@ -147,8 +147,8 @@ TCueView::TCueView(int16 id, TCueChannel *parent, BRect bounds, BPoint point, ui
 //
 
 TCueView::TCueView(BaseCueChunk *TheChunk, TCueChannel *parent, BRect bounds, char *name) :
-		  BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS ),
-		  BMediaNode("CueNode")
+	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS ),
+	BMediaNode("CueNode")
 {
 	// Get cue ID
 //	fID = id;
@@ -163,10 +163,10 @@ TCueView::TCueView(BaseCueChunk *TheChunk, TCueChannel *parent, BRect bounds, ch
 	fIsInstantiated = false;
 
 	// Save start time for later initialization
-//	fInsertTime 	= startTime;
+//	fInsertTime     = startTime;
 
 	// Set these variables to NULL
-	fFile 		  = NULL;
+	fFile             = NULL;
 	fAntThread   = NULL;
 	fEffectsList = NULL;
 
@@ -174,8 +174,8 @@ TCueView::TCueView(BaseCueChunk *TheChunk, TCueChannel *parent, BRect bounds, ch
 	fEditorOpen = false;
 
 	// Set buttons to NULL
-	fLockButton 			= NULL;
-	fMuteButton 			= NULL;
+	fLockButton                     = NULL;
+	fMuteButton                     = NULL;
 }
 
 //---------------------------------------------------------------------
@@ -186,20 +186,20 @@ TCueView::TCueView(BaseCueChunk *TheChunk, TCueChannel *parent, BRect bounds, ch
 //
 
 TCueView::TCueView(const TCueView *theCue) :
-		  BView(theCue->Bounds(), ((BView *)theCue)->Name(), B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW | B_FRAME_EVENTS ),
-		  BMediaNode("CueNode")
+	BView(theCue->Bounds(), ((BView *)theCue)->Name(), B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW | B_FRAME_EVENTS ),
+	BMediaNode("CueNode")
 {
-	fID 				= theCue->fID;
-	fChannel 			= theCue->fChannel;
-	fStartTime 		= theCue->fStartTime;
-	fIsInstantiated 	= theCue->fIsInstantiated;
-	fInsertTime 		= theCue->fInsertTime;
-	fIsExpanded 		= theCue->fIsExpanded;
+	fID                             = theCue->fID;
+	fChannel                        = theCue->fChannel;
+	fStartTime              = theCue->fStartTime;
+	fIsInstantiated         = theCue->fIsInstantiated;
+	fInsertTime             = theCue->fInsertTime;
+	fIsExpanded             = theCue->fIsExpanded;
 
-	fFile 				= theCue->fFile;
+	fFile                           = theCue->fFile;
 
-	//fLockButton 		= new TCueLockButton(theCue->fLockButton);
-	//fMuteButton 		= new TCueMuteButton(theCue->fMuteButton);
+	//fLockButton           = new TCueLockButton(theCue->fLockButton);
+	//fMuteButton           = new TCueMuteButton(theCue->fMuteButton);
 }
 
 
@@ -213,12 +213,12 @@ TCueView::TCueView(const TCueView *theCue) :
 TCueView::TCueView(BMessage *data) : BView (data), BMediaNode("CueNode")
 {
 	// Set buttons to NULL
-	fLockButton 	= NULL;
-	fMuteButton 	= NULL;
-	fChannel 		= NULL;
-	fFile 		 	= NULL;
-	fAntThread  	= NULL;
-	fEffectsList 	= NULL;
+	fLockButton     = NULL;
+	fMuteButton     = NULL;
+	fChannel                = NULL;
+	fFile                   = NULL;
+	fAntThread      = NULL;
+	fEffectsList    = NULL;
 
 	// Set default values
 	fIsSelected = false;
@@ -228,8 +228,8 @@ TCueView::TCueView(BMessage *data) : BView (data), BMediaNode("CueNode")
 	//
 
 	// Extract our member variables from the archive
-	ssize_t 	numBytes;
-	rgb_color	*color;
+	ssize_t numBytes;
+	rgb_color       *color;
 
 	data->FindData("LowColor", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes );
 	fLowColor = *color;
@@ -281,7 +281,7 @@ TCueView::TCueView(BMessage *data) : BView (data), BMediaNode("CueNode")
 
 	//	Set up our child item pointers
 	fStartText = (TCueTimeText *)FindView("StartTimeTextView");
-	fEndText 	= (TCueTimeText *)FindView("EndTimeTextView");
+	fEndText        = (TCueTimeText *)FindView("EndTimeTextView");
 
 	fLockButton = (TBitmapButton *)FindView("CueLockButton");
 	fMuteButton = (TBitmapButton *)FindView("CueMuteButton");
@@ -297,14 +297,12 @@ TCueView::TCueView(BMessage *data) : BView (data), BMediaNode("CueNode")
 TCueView::~TCueView()
 {
 	// Stop marching ants and destroy MarchingThread
-	if (fAntThread)
-	{
+	if (fAntThread) {
 		delete fAntThread;
 		fAntThread = NULL;
 	}
 
-	if(fIsPlaying)
-	{
+	if(fIsPlaying) {
 		StopCue(GetCurrentTime());
 	}
 
@@ -322,10 +320,8 @@ TCueView::~TCueView()
 	wait_for_thread(fRunThread, &result);
 
 	//	Empty out effects list
-	if (fEffectsList)
-	{
-		for (int32 index = 0; index < fEffectsList->CountItems(); index++)
-		{
+	if (fEffectsList) {
+		for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 			//	Get the effects in the list
 			TCueEffectView *effectView = (TCueEffectView *)fEffectsList->ItemAt(index);
 			if (effectView)
@@ -365,24 +361,24 @@ void TCueView::Init()
 	fAppCursorSet = true;
 
 	//	Set up member variables
-	fTimeToQuit		= false;
-	fIsPlaying 		= false;
-	fIsStopping		= false;
+	fTimeToQuit             = false;
+	fIsPlaying              = false;
+	fIsStopping             = false;
 
 	// Set up default settings
-	fIsPrepared		= false;
-	fIsPaused 			= false;
-	fMouseDown 		= false;
-	fResizing			= false;
-	fIsMuted			= false;
-	fShowDuration		= false;
-	fEffectsVisible	= false;
+	fIsPrepared             = false;
+	fIsPaused                       = false;
+	fMouseDown              = false;
+	fResizing                       = false;
+	fIsMuted                        = false;
+	fShowDuration           = false;
+	fEffectsVisible = false;
 
-	fDrawingMode		= B_OP_COPY;
-	fLowColor			= kWhite;
-	fHighColor			= kBlack;
+	fDrawingMode            = B_OP_COPY;
+	fLowColor                       = kWhite;
+	fHighColor                      = kBlack;
 
-	fCueDisplayMode	= kCueControls;
+	fCueDisplayMode = kCueControls;
 
 	// Mouse tracking
 	fLastClickPt.Set(0, 0);
@@ -406,10 +402,10 @@ void TCueView::Init()
 
 	// Start time is attached to the top left side of the cue rect
 	bounds = Bounds();
-	bounds.left 	+= kTimeTextOffset+kResizeZoneWidth;
-	bounds.top  	+= kTimeTextOffset;
-	bounds.right  	=  bounds.left + kTimeTextWidth;
-	bounds.bottom	=  bounds.top + kTimeTextHeight;
+	bounds.left     += kTimeTextOffset+kResizeZoneWidth;
+	bounds.top      += kTimeTextOffset;
+	bounds.right    =  bounds.left + kTimeTextWidth;
+	bounds.bottom   =  bounds.top + kTimeTextHeight;
 
 	fStartText = new TCueTimeText(this, START_TIME_TEXT_FOCUS_MSG, bounds, "StartTimeTextView", B_FOLLOW_LEFT | B_FOLLOW_TOP, kTextOutline);
 	AddChild(fStartText);
@@ -419,13 +415,12 @@ void TCueView::Init()
 	fStartText->SetText(timeStr);
 
 	// End time is attached to the bottom right side of the cue rect
-	if (fHasDuration)
-	{
+	if (fHasDuration) {
 		bounds = Bounds();
-		bounds.right 	-= kTimeTextOffset+kResizeZoneWidth;
-		bounds.top  	=  bounds.bottom - (kTimeTextHeight+kTimeTextOffset);
-		bounds.left  	=  bounds.right - kTimeTextWidth;
-		bounds.bottom	-= kTimeTextOffset;
+		bounds.right    -= kTimeTextOffset+kResizeZoneWidth;
+		bounds.top      =  bounds.bottom - (kTimeTextHeight+kTimeTextOffset);
+		bounds.left     =  bounds.right - kTimeTextWidth;
+		bounds.bottom   -= kTimeTextOffset;
 
 		fEndText = new TCueTimeText(this, END_TIME_TEXT_FOCUS_MSG, bounds, "EndTimeTextView", B_FOLLOW_RIGHT | B_FOLLOW_TOP, kTextOutline);
 		AddChild(fEndText);
@@ -436,16 +431,15 @@ void TCueView::Init()
 
 		// Set up location of duration delta rect
 		const BRect textRect = bounds;
-		fDurationDeltaRect.top 	= textRect.top;
-		fDurationDeltaRect.bottom 	= textRect.bottom;
-		fDurationDeltaRect.right 	= textRect.left - kDurationDeltaOffset;
-		fDurationDeltaRect.left 	= fDurationDeltaRect.right - fDurationDeltaRect.Height();
+		fDurationDeltaRect.top  = textRect.top;
+		fDurationDeltaRect.bottom       = textRect.bottom;
+		fDurationDeltaRect.right        = textRect.left - kDurationDeltaOffset;
+		fDurationDeltaRect.left         = fDurationDeltaRect.right - fDurationDeltaRect.Height();
 		fDurationDeltaRect.InsetBy(2,2);
-	}
-	else
+	} else
 		fEndText = NULL;
 
-	// 	Create Cue Buttons
+	//      Create Cue Buttons
 	//
 
 	BRect buttonRect;
@@ -453,13 +447,13 @@ void TCueView::Init()
 	//	Cue Lock Button
 	buttonRect.Set( fCueIcon->Frame().right+kCueButtonOffset, fCueIcon->Frame().top, fCueIcon->Frame().right+kCueButtonWidth+kCueButtonOffset, fCueIcon->Frame().top + kCueButtonHeight );
 	fLockButton = new TBitmapButton( buttonRect, "CueLockButton", GetAppIcons()->fUnlock, GetAppIcons()->fLock,
-									  this, new BMessage(LOCK_CUE_MSG), false, B_TWO_STATE_BUTTON);
+	                                 this, new BMessage(LOCK_CUE_MSG), false, B_TWO_STATE_BUTTON);
 	AddChild(fLockButton);
 
 	// Cue Mute Button
 	buttonRect.Set( fLockButton->Frame().right + kCueButtonOffset, buttonRect.top, fLockButton->Frame().right+kCueButtonWidth+kCueButtonOffset, buttonRect.bottom );
 	fMuteButton = new TBitmapButton( buttonRect, "CueMuteButton", GetAppIcons()->fVisibleUp, GetAppIcons()->fVisibleDown,
-									  this, new BMessage(MUTE_BUTTON_MSG), false, B_TWO_STATE_BUTTON);
+	                                 this, new BMessage(MUTE_BUTTON_MSG), false, B_TWO_STATE_BUTTON);
 	AddChild(fMuteButton);
 
 
@@ -467,9 +461,9 @@ void TCueView::Init()
 	//
 
 	buttonRect.Set( fLockButton->Frame().left,  fLockButton->Frame().bottom+kCueButtonOffset,
-					fLockButton->Frame().right, fLockButton->Frame().bottom+kCueButtonOffset+kCueButtonHeight);
+	                fLockButton->Frame().right, fLockButton->Frame().bottom+kCueButtonOffset+kCueButtonHeight);
 	fEffectsButton = new TBitmapButton( buttonRect, "EffectsButton", GetAppIcons()->fExpand, GetAppIcons()->fContract,
-										 this, new BMessage(CUE_EXPAND_MSG), false, B_TWO_STATE_BUTTON);
+	                                    this, new BMessage(CUE_EXPAND_MSG), false, B_TWO_STATE_BUTTON);
 	AddChild(fEffectsButton);
 	fEffectsButton->Show();
 
@@ -497,11 +491,12 @@ void TCueView::Init()
 //
 // missing function
 //
-void TCueView::Init(BaseCueChunk *TheChunk){
+void TCueView::Init(BaseCueChunk *TheChunk)
+{
 
 // Should probably do more, but what?
 
-Init();
+	Init();
 
 }
 
@@ -540,8 +535,7 @@ status_t TCueView::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TCueView");
 
@@ -584,8 +578,7 @@ status_t TCueView::Archive(BMessage *data, bool deep) const
 		data->AddData("CueDisplayMode", B_ANY_TYPE, &fCueDisplayMode, sizeof(CueDisplay) );
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 		}
 	}
 
@@ -618,16 +611,14 @@ void TCueView::Draw(BRect updateRect)
 	FillRect(updateRect);
 
 	// Draw resize zones if transitions and keyframe views are off
-	if ( fDuration && fCanStretch)
-	{
+	if ( fDuration && fCanStretch) {
 		BPoint startPt, endPt;
 		SetHighColor(kSteelBlue);
 		FillRect(fRResizeZone);
 		FillRect(fLResizeZone);
 
 		// Draw duration delta?
-		if (fShowDuration)
-		{
+		if (fShowDuration) {
 			DrawDurationDelta();
 		}
 
@@ -715,44 +706,51 @@ void TCueView::Draw(BRect updateRect)
 
 // ABH missing function???
 
-uint32 TCueView::GetDuration(){
+uint32 TCueView::GetDuration()
+{
 	printf("GetDuration called\n");
 	return fDuration;
 }
 
 // ABH missing function
 
-void TCueView::SetTransitionInID(uint32 id){
+void TCueView::SetTransitionInID(uint32 id)
+{
 	fTransitionInID = id;
 }
 
 // ABH missing function
 
-void TCueView::SetTransitionOutID(uint32 id){
+void TCueView::SetTransitionOutID(uint32 id)
+{
 	fTransitionOutID = id;
 }
 
 // ABH missing function
 
-void TCueView::SetTransitionInDuration(uint32 length){
+void TCueView::SetTransitionInDuration(uint32 length)
+{
 	fTransitionInDuration = length;
 }
 
 // ABH missing function
 
-void TCueView::SetTransitionOutDuration(uint32 length){
+void TCueView::SetTransitionOutDuration(uint32 length)
+{
 	fTransitionOutDuration = length;
 }
 
 // ABH missing function
 
-uint32 TCueView::GetTransitionInDuration(){
+uint32 TCueView::GetTransitionInDuration()
+{
 	return fTransitionInDuration;
 }
 
 // ABH missing function
 
-uint32 TCueView::GetTransitionOutDuration(){
+uint32 TCueView::GetTransitionOutDuration()
+{
 	return fTransitionOutDuration;
 }
 //---------------------------------------------------------------------
@@ -764,10 +762,8 @@ uint32 TCueView::GetTransitionOutDuration(){
 
 void TCueView::DrawDurationDelta()
 {
-	if (fShowDuration)
-	{
-		if (fEndText)
-		{
+	if (fShowDuration) {
+		if (fEndText) {
 			fEndText->Looper()->Lock();
 			const BRect textRect = fEndText->Frame();
 			fEndText->Looper()->Unlock();
@@ -805,8 +801,7 @@ void TCueView::DrawDurationDelta()
 
 void TCueView::DrawEffectsTray(BRect updateRect)
 {
-	if (fEffectsVisible)
-	{
+	if (fEffectsVisible) {
 		BPoint startPt, endPt;
 
 		const BRect bounds = Bounds();
@@ -842,8 +837,7 @@ void TCueView::DrawEffectsTray(BRect updateRect)
 		StrokeLine(endPt);
 
 		//	Draw divider lines
-		for (int32 index = fEffectsTray.top + (8+kEffectHeight); index < bounds.bottom; index += kEffectHeight)
-		{
+		for (int32 index = fEffectsTray.top + (8+kEffectHeight); index < bounds.bottom; index += kEffectHeight) {
 			startPt.Set(bounds.left+3, index);
 			endPt.Set(bounds.right-4, index);
 			SetHighColor(kLightGrey);
@@ -868,14 +862,11 @@ void TCueView::DrawEffectsTray(BRect updateRect)
 void TCueView::DrawEffects(BRect updateRect)
 {
 	//	Are there any effects to be drawn?
-	if (fEffectsList->CountItems() > 0)
-	{
-		for (int32 index = 0; index < fEffectsList->CountItems(); index++)
-		{
+	if (fEffectsList->CountItems() > 0) {
+		for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 			//	Get the effects in the list
 			TCueEffectView *effect = (TCueEffectView *)fEffectsList->ItemAt(index);
-			if (effect)
-			{
+			if (effect) {
 				effect->Draw(updateRect);
 			}
 		}
@@ -909,108 +900,95 @@ void TCueView::MouseDown(BPoint where)
 	fMouseDown = true;
 
 	// Check to see which button is down
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	Window()->CurrentMessage()->FindInt32("buttons", (int32 *)&buttons);
 
 	// Is this a double click?  If so, open editor
-	uint32 	type;
-	int32	count = 0;
+	uint32 type;
+	int32 count = 0;
 	BMessage *message = Window()->CurrentMessage();
 
 	// Determine which button has been clicked
 	switch(buttons)
 	{
-		case B_PRIMARY_MOUSE_BUTTON:
-			{
-				if (B_OK == message->GetInfo("clicks", &type, &count) )
-				{
-					int32 clickCount = message->FindInt32("clicks", count-1);
-					if ( (clickCount == 2) && (where == fLastClickPt) )
-					{
-						//	In effects tray?
-						if ( EffectsClick(where) )
-						{
-							TCueEffectView *effect = ClickedEffect(where);
-							if (effect)
-							{
-								//	See if we need to deselect other effects
-								if (effect->Selected() == false)
-									DeselectAllEffects();
+	case B_PRIMARY_MOUSE_BUTTON:
+	{
+		if (B_OK == message->GetInfo("clicks", &type, &count) ) {
+			int32 clickCount = message->FindInt32("clicks", count-1);
+			if ( (clickCount == 2) && (where == fLastClickPt) ) {
+				//	In effects tray?
+				if ( EffectsClick(where) ) {
+					TCueEffectView *effect = ClickedEffect(where);
+					if (effect) {
+						//	See if we need to deselect other effects
+						if (effect->Selected() == false)
+							DeselectAllEffects();
 
-								//	Give it the double click
-								effect->MouseDown(where, true);
-							}
-							//	Deselect all
-							else
-								DeselectAllEffects();
-						}
-						else
-						{
-							if(fHasEditor)
-								OpenEditor();
-						}
+						//	Give it the double click
+						effect->MouseDown(where, true);
 					}
-					//	Handle single click
+					//	Deselect all
 					else
+						DeselectAllEffects();
+				} else   {
+					if(fHasEditor)
+						OpenEditor();
+				}
+			}
+			//	Handle single click
+			else{
+				//	Was the click in the Effects tray?
+				if ( EffectsClick(where) ) {
+					TCueEffectView *effect = ClickedEffect(where);
+					if (effect) {
+						//	See if we need to deselect other effects
+						if (effect->Selected() == false)
+							DeselectAllEffects();
+
+						//	Give it the click
+						effect->MouseDown(where);
+					}
+					//	Deselect all
+					else
+						DeselectAllEffects();
+				}
+				//	Click is in cue view
+				else{
+					//	Check cue display state and handle properly
+					switch (fCueDisplayMode)
 					{
-						//	Was the click in the Effects tray?
-						if ( EffectsClick(where) )
-						{
-							TCueEffectView *effect = ClickedEffect(where);
-							if (effect)
-							{
-								//	See if we need to deselect other effects
-								if (effect->Selected() == false)
-									DeselectAllEffects();
+					case kCueControls:
+						MouseDownControls(where);
+						break;
 
-								//	Give it the click
-								effect->MouseDown(where);
-							}
-							//	Deselect all
-							else
-								DeselectAllEffects();
-						}
-						//	Click is in cue view
-						else
-						{
-							//	Check cue display state and handle properly
-							switch (fCueDisplayMode)
-							{
-								case kCueControls:
-									MouseDownControls(where);
-									break;
+					case kCueContents:
+						break;
 
-								case kCueContents:
-									break;
-
-								default:
-									TRESPASS();
-									break;
-							}
-						}
+					default:
+						TRESPASS();
+						break;
 					}
 				}
-				break;
-
-			// If the second mouse button is down, open cue menu
-			case B_SECONDARY_MOUSE_BUTTON:
-				{
-					// Deselect all other cues
-					fChannel->GetCueSheet()->DeselectAllCues();
-					Select();
-
-					//	Is the click in the cue body or the effect tray?
-					if ( EffectsClick(where) )
-					{
-						OpenTransitionMenu(where);
-					}
-					else
-					{
-						OpenCueMenu(where);
-					}
-				}
-				break;
+			}
 		}
+		break;
+
+	// If the second mouse button is down, open cue menu
+	case B_SECONDARY_MOUSE_BUTTON:
+	{
+		// Deselect all other cues
+		fChannel->GetCueSheet()->DeselectAllCues();
+		Select();
+
+		//	Is the click in the cue body or the effect tray?
+		if ( EffectsClick(where) ) {
+			OpenTransitionMenu(where);
+		} else   {
+			OpenCueMenu(where);
+		}
+	}
+	break;
+	}
 	}
 
 	// Wait a while for the mouse button to be realeased
@@ -1020,35 +998,30 @@ void TCueView::MouseDown(BPoint where)
 	// Check to see if button is down
 	Window()->CurrentMessage()->FindInt32("buttons", (int32 *)&buttons);
 
-	if (buttons && fMouseDown)
-	{
-		// 	If the left mouse button is down, they are doing the following:
+	if (buttons && fMouseDown) {
+		//      If the left mouse button is down, they are doing the following:
 		//	Dragging the cue either within the channel or to another channel,
 		//	stretching the cue or dragging a transition duration
-		if (buttons == B_PRIMARY_MOUSE_BUTTON)
-		{
+		if (buttons == B_PRIMARY_MOUSE_BUTTON) {
 			//	In effects tray?
-			if ( EffectsClick(where) )
-			{
+			if ( EffectsClick(where) ) {
 				TCueEffectView *effect = ClickedEffect(where);
 				if (effect)
 					effect->MouseMoved(where);
-			}
-			else
-			{
+			} else   {
 				//	Check cue display state and handle properly
 				switch (fCueDisplayMode)
 				{
-					case kCueControls:
-						MouseDragControls(where);
-						break;
+				case kCueControls:
+					MouseDragControls(where);
+					break;
 
-					case kCueContents:
-						break;
+				case kCueContents:
+					break;
 
-					default:
-						TRESPASS();
-						break;
+				default:
+					TRESPASS();
+					break;
 				}
 			}
 		}
@@ -1097,8 +1070,7 @@ void TCueView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message 
 		return;
 
 	// Make sure we aren't locked
-	if ( fChannel->IsLocked() || fIsLocked )
-	{
+	if ( fChannel->IsLocked() || fIsLocked ) {
 		// Inform channel of mouse move.  We are adding the left element of
 		// the frame to create the proper coordinate for the timeline
 		where.x += Frame().left;
@@ -1107,35 +1079,32 @@ void TCueView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message 
 	}
 
 	// Display resizing cursors if mouse button is up
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	Window()->CurrentMessage()->FindInt32("buttons", (int32 *)&buttons);
-	if (fCanStretch && !buttons)
-	{
+	if (fCanStretch && !buttons) {
 		switch(code)
 		{
 
-			case B_ENTERED_VIEW:
-				if ( fRResizeZone.Contains(where) || fLResizeZone.Contains(where) )
-				{
-					be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeHorzCursor );
-				}
-				break;
+		case B_ENTERED_VIEW:
+			if ( fRResizeZone.Contains(where) || fLResizeZone.Contains(where) ) {
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeHorzCursor );
+			}
+			break;
 
-			case B_INSIDE_VIEW:
-				if ( fRResizeZone.Contains(where) || fLResizeZone.Contains(where) )
-					be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeHorzCursor );
-				else
-				{
-					be_app->SetCursor(B_HAND_CURSOR);
-				}
-				break;
+		case B_INSIDE_VIEW:
+			if ( fRResizeZone.Contains(where) || fLResizeZone.Contains(where) )
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeHorzCursor );
+			else{
+				be_app->SetCursor(B_HAND_CURSOR);
+			}
+			break;
 
-			case B_EXITED_VIEW:
-					be_app->SetCursor(B_HAND_CURSOR);
-				break;
+		case B_EXITED_VIEW:
+			be_app->SetCursor(B_HAND_CURSOR);
+			break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 
@@ -1155,20 +1124,16 @@ void TCueView::MouseMoved( BPoint where, uint32 code, const BMessage *a_message 
 void TCueView::MouseDownControls(BPoint where)
 {
 	// If shift key is down the user is group selecting/deselecting
-	if (IsShiftKeyDown())
-	{
+	if (IsShiftKeyDown()) {
 		if(fIsSelected)
 			Deselect();
 		else
 			Select();
-	}
-	else
-	{
+	} else   {
 		// Deselect all other cues
 		if (fIsSelected)
 			fChannel->GetCueSheet()->DeselectAllCues(this);
-		else
-		{
+		else{
 			Select();
 			fChannel->GetCueSheet()->DeselectAllCues(this);
 		}
@@ -1188,15 +1153,12 @@ void TCueView::MouseDragControls(BPoint where)
 	//	Check and see if they are resizing
 	//	First check and see if they are in the right resize zone...
 	//
-	if( fRResizeZone.Contains(where) && fCanStretch )
-	{
+	if( fRResizeZone.Contains(where) && fCanStretch ) {
 		ResizeRightSide();
 
 		// Fix drag zones
 		UpdateResizeZones();
-	}
-	else if( fLResizeZone.Contains(where) && fCanStretch)
-	{
+	} else if( fLResizeZone.Contains(where) && fCanStretch)   {
 		ResizeLeftSide();
 
 		// Fix drag zones
@@ -1205,8 +1167,7 @@ void TCueView::MouseDragControls(BPoint where)
 	//
 	// They must be moving the cue...
 	//
-	else
-	{
+	else{
 		BRect bounds = Bounds();
 
 		BMessage message(CUE_DRAG_MSG);
@@ -1262,28 +1223,26 @@ void TCueView::KeyDown(const char *bytes, int32 numBytes)
 	//	Determine drawing state
 	switch (fCueDisplayMode)
 	{
-		case kCueControls:
-			{
-				//	Do we have effect/effects to delete?
-				if (fEffectsVisible && fEffectsList->CountItems() > 0)
-				{
-					DeleteSelectedEffects();
-				}
-				//	Give click to channel to sort out
-				else
-				{
-					fChannel->KeyDown(bytes, numBytes);
-				}
-			}
-			break;
-
-		case kCueContents:
+	case kCueControls:
+	{
+		//	Do we have effect/effects to delete?
+		if (fEffectsVisible && fEffectsList->CountItems() > 0) {
+			DeleteSelectedEffects();
+		}
+		//	Give click to channel to sort out
+		else{
 			fChannel->KeyDown(bytes, numBytes);
-			break;
+		}
+	}
+	break;
 
-		default:
-			TRESPASS();
-			break;
+	case kCueContents:
+		fChannel->KeyDown(bytes, numBytes);
+		break;
+
+	default:
+		TRESPASS();
+		break;
 	}
 }
 
@@ -1343,13 +1302,11 @@ void TCueView::FrameMoved(BPoint new_position)
 void TCueView::FrameResized(float new_width, float new_height)
 {
 	//  Resize the resize zones of the cue and attached effects
-	if (fCanStretch)
-	{
+	if (fCanStretch) {
 		UpdateResizeZones();
 
 		//	Update effects
-		for (int32 index = 0; index < fEffectsList->CountItems(); index++)
-		{
+		for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 			TCueEffectView *effect = (TCueEffectView *)fEffectsList->ItemAt(index);
 			if(effect)
 				effect->Resized();
@@ -1357,16 +1314,14 @@ void TCueView::FrameResized(float new_width, float new_height)
 	}
 
 	// Fix duration delta location
-	if (fHasDuration)
-	{
-		if (fEndText)
-		{
+	if (fHasDuration) {
+		if (fEndText) {
 			// Set up location of duration delta rect
 			const BRect textRect = fEndText->Frame();
-			fDurationDeltaRect.top 	= textRect.top;
-			fDurationDeltaRect.bottom 	= textRect.bottom;
-			fDurationDeltaRect.right 	= textRect.left - kDurationDeltaOffset;
-			fDurationDeltaRect.left 	= fDurationDeltaRect.right - fDurationDeltaRect.Height();
+			fDurationDeltaRect.top  = textRect.top;
+			fDurationDeltaRect.bottom       = textRect.bottom;
+			fDurationDeltaRect.right        = textRect.left - kDurationDeltaOffset;
+			fDurationDeltaRect.left         = fDurationDeltaRect.right - fDurationDeltaRect.Height();
 			fDurationDeltaRect.InsetBy(2,2);
 		}
 	}
@@ -1389,8 +1344,7 @@ void TCueView::FrameResized(float new_width, float new_height)
 
 void TCueView::AttachedToWindow()
 {
-	if(fChannel == NULL)
-	{
+	if(fChannel == NULL) {
 		fChannel = (TCueChannel *)Parent();
 
 		BList *cueList = fChannel->GetCueList();
@@ -1469,146 +1423,143 @@ void TCueView::MessageReceived(BMessage *message)
 {
 	switch(message->what)
 	{
-		if ( message->WasDropped() )
-		{
-			// Handle both of these cases by calling the channel's
-			// to the cue's channel
-			case CUE_DRAG_MSG:
-			case CUE_ICON_DRAG_MSG:
-				fChannel->MessageReceived(message);
-				break;
-		}
-
-		case LOCK_CUE_MSG:
-			{
-				// Ignore if channel is locked
-				if (fChannel->IsLocked())
-					return;
-
-				if (fIsLocked)
-					UnlockCue();
-				else
-					LockCue();
-			}
-			break;
-
-		//	Message from cue
-		case MUTE_BUTTON_MSG:
-			{
-				// Ignore if channel is locked
-				if (fChannel->IsLocked())
-					return;
-
-				// Ignore if we are locked
-				if (fIsLocked)
-					return;
-
-				//	Change our state
-				if (fIsMuted)
-					Unmute();
-				else
-					Mute();
-
-				//	Update cues visual appearence
-				if (fIsVisible)
-				{
-					BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
-					message->AddInt32("TheTime", GetCurrentTime());
-					fChannel->GetCueSheet()->MessageReceived(message);
-					delete message;
-				}
-			}
-			break;
-
-		case MARCH_ANTS_MSG:
-			{
-				if (fIsSelected)
-					DoMarchingAnts(Bounds());
-			}
-			break;
-
-		case SHOW_BUTTON_MSG:
-			break;
-
-		case LOCK_CUE_BUTTON_MSG:
-			break;
-
-		case PATH_BUTTON_MSG:
-			break;
-
-		//	Messages from cue menu
-		//
-
-		case CUE_LOCK_MSG:
-			{
-				if (fIsLocked)
-					UnlockCue();
-				else
-					LockCue();
-			}
-			break;
-
-		case CUE_CONTROLS_MSG:
-			SetDisplayMode(kCueControls);
-			break;
-
-		case CUE_CONTENTS_MSG:
-			SetDisplayMode(kCueContents);
-			break;
-
-		case CUE_DURATION_MSG:
-			if (fHasDuration)
-			{
-				if (fShowDuration)
-					HideDuration();
-				else
-					ShowDuration();
-				break;
-			}
-
-		// 	Message sent when time text loses focus.  Extract the time and adjust cue postion
-		//	based on result
-		case START_TIME_TEXT_FOCUS_MSG:
-			{
-				uint32 theTime = message->FindInt32("TheTime");
-				AdjustCueStartTime(theTime);
-			}
-			break;
-
-		case END_TIME_TEXT_FOCUS_MSG:
-			{
-				uint32 theTime = message->FindInt32("TheTime");
-				AdjustCueEndTime(theTime);
-			}
-			break;
-
-		case TRANSITION_IN_TEXT_FOCUS_MSG:
-			break;
-
-		case TRANSITION_OUT_TEXT_FOCUS_MSG:
-			break;
-
-		case CUE_SHOWDURATIONS_MSG:
-			ShowDuration();
-			break;
-
-		case CUE_SHOWSTOPTIMES_MSG:
-			HideDuration();
-			break;
-
-		//	Add a keyframe.
-		case CUESHEET_KEYFRAME_MSG:
-			break;
-
-		//	Pass message to channel
-		case CUE_EXPAND_MSG:
+		if ( message->WasDropped() ) {
+		// Handle both of these cases by calling the channel's
+		// to the cue's channel
+		case CUE_DRAG_MSG:
+		case CUE_ICON_DRAG_MSG:
 			fChannel->MessageReceived(message);
 			break;
+		}
 
-		//	Pass up to parent view
-		default:
-			BView::MessageReceived(message);
+	case LOCK_CUE_MSG:
+	{
+		// Ignore if channel is locked
+		if (fChannel->IsLocked())
+			return;
+
+		if (fIsLocked)
+			UnlockCue();
+		else
+			LockCue();
+	}
+	break;
+
+	//	Message from cue
+	case MUTE_BUTTON_MSG:
+	{
+		// Ignore if channel is locked
+		if (fChannel->IsLocked())
+			return;
+
+		// Ignore if we are locked
+		if (fIsLocked)
+			return;
+
+		//	Change our state
+		if (fIsMuted)
+			Unmute();
+		else
+			Mute();
+
+		//	Update cues visual appearence
+		if (fIsVisible) {
+			BMessage *message = new BMessage(TIMELINE_DRAG_MSG);
+			message->AddInt32("TheTime", GetCurrentTime());
+			fChannel->GetCueSheet()->MessageReceived(message);
+			delete message;
+		}
+	}
+	break;
+
+	case MARCH_ANTS_MSG:
+	{
+		if (fIsSelected)
+			DoMarchingAnts(Bounds());
+	}
+	break;
+
+	case SHOW_BUTTON_MSG:
+		break;
+
+	case LOCK_CUE_BUTTON_MSG:
+		break;
+
+	case PATH_BUTTON_MSG:
+		break;
+
+	//	Messages from cue menu
+	//
+
+	case CUE_LOCK_MSG:
+	{
+		if (fIsLocked)
+			UnlockCue();
+		else
+			LockCue();
+	}
+	break;
+
+	case CUE_CONTROLS_MSG:
+		SetDisplayMode(kCueControls);
+		break;
+
+	case CUE_CONTENTS_MSG:
+		SetDisplayMode(kCueContents);
+		break;
+
+	case CUE_DURATION_MSG:
+		if (fHasDuration) {
+			if (fShowDuration)
+				HideDuration();
+			else
+				ShowDuration();
 			break;
+		}
+
+	//      Message sent when time text loses focus.  Extract the time and adjust cue postion
+	//	based on result
+	case START_TIME_TEXT_FOCUS_MSG:
+	{
+		uint32 theTime = message->FindInt32("TheTime");
+		AdjustCueStartTime(theTime);
+	}
+	break;
+
+	case END_TIME_TEXT_FOCUS_MSG:
+	{
+		uint32 theTime = message->FindInt32("TheTime");
+		AdjustCueEndTime(theTime);
+	}
+	break;
+
+	case TRANSITION_IN_TEXT_FOCUS_MSG:
+		break;
+
+	case TRANSITION_OUT_TEXT_FOCUS_MSG:
+		break;
+
+	case CUE_SHOWDURATIONS_MSG:
+		ShowDuration();
+		break;
+
+	case CUE_SHOWSTOPTIMES_MSG:
+		HideDuration();
+		break;
+
+	//	Add a keyframe.
+	case CUESHEET_KEYFRAME_MSG:
+		break;
+
+	//	Pass message to channel
+	case CUE_EXPAND_MSG:
+		fChannel->MessageReceived(message);
+		break;
+
+	//	Pass up to parent view
+	default:
+		BView::MessageReceived(message);
+		break;
 	}
 }
 
@@ -1639,8 +1590,7 @@ void TCueView::UpdateStartTimeText()
 
 void TCueView::UpdateEndTimeText()
 {
-	if (fHasDuration)
-	{
+	if (fHasDuration) {
 		// Update text depending on mode
 		char timeStr[256];
 
@@ -1663,19 +1613,15 @@ void TCueView::UpdateEndTimeText()
 
 void TCueView::AdjustCueStartTime(uint32 theTime)
 {
-	if (theTime != fStartTime)
-	{
+	if (theTime != fStartTime) {
 		// Check for collisions with other cues
-		if (fChannel->CanInsertCue(this, theTime, true))
-		{
+		if (fChannel->CanInsertCue(this, theTime, true)) {
 			// Remove cue from old location
 			fChannel->RemoveCue(this);
 
 			// Insert cue into channel at new location
 			fChannel->InsertCue(this, theTime);
-		}
-		else
-		{
+		} else   {
 			UpdateStartTimeText();
 		}
 	}
@@ -1694,21 +1640,17 @@ void TCueView::AdjustCueEndTime(uint32 theTime)
 
 	int64 endTime = fStartTime + fDuration;
 
-	if (theTime != endTime)
-	{
+	if (theTime != endTime) {
 		uint32 newStartTime = theTime - fDuration;
 
 		// Check for collisions with other cues
-		if (fChannel->CanInsertCue(this, newStartTime, true))
-		{
+		if (fChannel->CanInsertCue(this, newStartTime, true)) {
 			// Remove cue from old location
 			fChannel->RemoveCue(this);
 
 			// Insert cue into channel at new location
 			fChannel->InsertCue(this, newStartTime);
-		}
-		else
-		{
+		} else   {
 			UpdateStartTimeText();
 			UpdateEndTimeText();
 		}
@@ -1728,7 +1670,7 @@ void TCueView::AdjustCueEndTime(uint32 theTime)
 void TCueView::ResolutionChanged( short theFormat, short theResolution)
 {
 	// Get start and duration in pixels
-	int32 startPixels 	 = TimeToPixels( fStartTime, theFormat, theResolution);
+	int32 startPixels        = TimeToPixels( fStartTime, theFormat, theResolution);
 	int32 durationPixels = TimeToPixels( fDuration, theFormat, theResolution);
 
 	Looper()->Lock();
@@ -1764,12 +1706,10 @@ void TCueView::ResolutionChanged( short theFormat, short theResolution)
 
 void TCueView::Select()
 {
-	if (!fIsLocked && !fIsSelected)
-	{
+	if (!fIsLocked && !fIsSelected) {
 		fIsSelected = true;
 
-		if (Looper()->Lock())
-		{
+		if (Looper()->Lock()) {
 			MakeFocus(true);
 			Looper()->Unlock();
 		}
@@ -1787,19 +1727,16 @@ void TCueView::Select()
 
 void TCueView::Deselect()
 {
-	if (fIsSelected)
-	{
+	if (fIsSelected) {
 
 		fIsSelected = false;
 
-		if ( Looper()->Lock() )
-		{
+		if ( Looper()->Lock() ) {
 			Draw(Bounds());
 			Looper()->Unlock();
 		}
 
-		if (fAntThread)
-		{
+		if (fAntThread) {
 			delete fAntThread;
 			fAntThread = NULL;
 		}
@@ -1808,48 +1745,47 @@ void TCueView::Deselect()
 
 /*-----------------------------------------------------------------------------------
 
-	DoMarchingAnts
+        DoMarchingAnts
 
-	This routine is used to do the actual marching of the ants (animate  the
-	selection rectangle). It should be called periodically, like in the main
-	event loop of the application.
+        This routine is used to do the actual marching of the ants (animate  the
+        selection rectangle). It should be called periodically, like in the main
+        event loop of the application.
 
-	The routine first makes a few checks. It makes sure that we have the
-	animation turned on, that we have a front window, that an adequate time
-	has passed since the last time we animated the selection, and that there
-	is indeed a selection rectangle for the window. If all those condition
-	hold, we animate the selection rectangle. This is done by shifting all of
-	the horizontal lines of the pattern downwards by a single line. The line
-	at the bottom is moved to the top of the pattern. This gives the following
-	transformation:
+        The routine first makes a few checks. It makes sure that we have the
+        animation turned on, that we have a front window, that an adequate time
+        has passed since the last time we animated the selection, and that there
+        is indeed a selection rectangle for the window. If all those condition
+        hold, we animate the selection rectangle. This is done by shifting all of
+        the horizontal lines of the pattern downwards by a single line. The line
+        at the bottom is moved to the top of the pattern. This gives the following
+        transformation:
 
-					Start				Result
-					========			========
-					11111000 ---\		01111100 <--+
-					11110001	 \---->	11111000	|
-					11100011 ---\		11110001	|
-					11000111	 \---->	11100011	|
-					10001111 ---\		11000111	|
-					00011111	 \---->	10001111	|
-					00111110 ---\		00011111	|
-					01111100 -\	 \---->	00111110	|
-							   \					|
-								\-------------------+
+                                        Start				Result
+                                        ========			========
+                                        11111000 ---\		01111100 <--+
+                                        11110001	 \---->	11111000	|
+                                        11100011 ---\		11110001	|
+                                        11000111	 \---->	11100011	|
+                                        10001111 ---\		11000111	|
+                                        00011111	 \---->	10001111	|
+                                        00111110 ---\		00011111	|
+                                        01111100 -\	 \---->	00111110	|
+ \					|
+ \-------------------+
 
-	Once we have the new pattern, we redraw the selection rectangle with it.
+        Once we have the new pattern, we redraw the selection rectangle with it.
 
-----------------------------------------------------------------------------------*/
+   ----------------------------------------------------------------------------------*/
 
 void TCueView::DoMarchingAnts(BRect antsRect)
 {
-	if (LockLooper())
-	{
+	if (LockLooper()) {
 		PushState();
 
 		SetHighColor(kBlack);
 
-		int16	index;
-		uchar	lastPart;
+		int16 index;
+		uchar lastPart;
 
 		lastPart = fCueAnts.data[7];
 
@@ -1862,7 +1798,8 @@ void TCueView::DoMarchingAnts(BRect antsRect)
 
 		PopState();
 		UnlockLooper();
-	};
+	}
+	;
 }
 
 
@@ -1876,8 +1813,7 @@ void TCueView::SelectAllEffects()
 {
 	LockLooper();
 
-	for (int32 index = 0; index < fEffectsList->CountItems(); index++)
-	{
+	for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 		//	Get the effects in the list
 		TCueEffectView *effect = (TCueEffectView *)fEffectsList->ItemAt(index);
 		if (effect)
@@ -1898,8 +1834,7 @@ void TCueView::DeselectAllEffects()
 {
 	LockLooper();
 
-	for (int32 index = 0; index < fEffectsList->CountItems(); index++)
-	{
+	for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 		//	Get the effects in the list
 		TCueEffectView *effect = (TCueEffectView *)fEffectsList->ItemAt(index);
 		if (effect)
@@ -1921,15 +1856,12 @@ void TCueView::DeleteSelectedEffects()
 {
 	LockLooper();
 
-	for (int32 index = 0; index < fEffectsList->CountItems(); index++)
-	{
+	for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 		//	Get the effects in the list
 		TCueEffectView *effect = (TCueEffectView *)fEffectsList->ItemAt(index);
-		if (effect)
-		{
+		if (effect) {
 			//	Delete if selected
-			if (effect->Selected())
-			{
+			if (effect->Selected()) {
 				fEffectsList->RemoveItem(effect);
 				delete effect;
 				index--;
@@ -2015,8 +1947,7 @@ void TCueView::UnlockCue()
 		fStartText->UnlockText();
 
 	// Only unlock end text if it is in end time mode
-	if (fEndText)
-	{
+	if (fEndText) {
 		if (fShowDuration == false)
 			fEndText->UnlockText();
 	}
@@ -2035,7 +1966,7 @@ void TCueView::UnlockCue()
 //	UpdateResizeZones
 //---------------------------------------------------------------------
 //
-// 	The cue has been resized.  Update the mouse over zones that allow
+//      The cue has been resized.  Update the mouse over zones that allow
 //	horizontal resizing
 //
 
@@ -2057,8 +1988,7 @@ void TCueView::UpdateResizeZones()
 		fEffectsTray.Set(Bounds().left+4, Bounds().top+addAmount, Bounds().right-4, Bounds().bottom-4);
 
 	//	Adjust effects location
-	for (int32 index = 0; index < fEffectsList->CountItems(); index++)
-	{
+	for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 		TCueEffectView *effect = (TCueEffectView *)fEffectsList->ItemAt(index);
 		if(effect)
 			effect->Resized();
@@ -2071,13 +2001,13 @@ void TCueView::UpdateResizeZones()
 //	ResizeRightSide
 //---------------------------------------------------------------------
 //
-// 	Stretch the cue to the right side
+//      Stretch the cue to the right side
 //
 
 void TCueView::ResizeRightSide()
 {
-	BPoint 	oldPt, resizePt;
-	bool	wasResized = false;
+	BPoint oldPt, resizePt;
+	bool wasResized = false;
 
 	// Set up environment
 	PushState();
@@ -2094,8 +2024,8 @@ void TCueView::ResizeRightSide()
 
 	// Get right side limit point.  This will either be another cue or the physical end
 	// of the cue channel.  We cannot allow a drag over another cues end time.
-	float 	limitX;
-	BPoint	limitPt;
+	float limitX;
+	BPoint limitPt;
 	if ( fChannel->GetNeighborRightPoint(this, &limitPt) )
 		limitX = limitPt.x;
 	else
@@ -2112,18 +2042,16 @@ void TCueView::ResizeRightSide()
 
 	// Check to see if button is down
 	BPoint mousePt;
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	GetMouse(&mousePt, &buttons, true);
 
-	while(buttons)
-	{
+	while(buttons) {
 		// Convert the view to the parents coordinates for proper
 		// mouse tracking and rect resizing
 		resizePt = ConvertToParent(mousePt);
 
 		// Idle if in same mouse location
-		if (resizePt != oldPt)
-		{
+		if (resizePt != oldPt) {
 			wasResized = true;
 
 			frame.right = resizePt.x;
@@ -2145,8 +2073,8 @@ void TCueView::ResizeRightSide()
 			fChannel->Looper()->Unlock();
 
 			// Save point and frame for future compare
-			oldPt 		= resizePt;
-			oldFrame 	= frame;
+			oldPt           = resizePt;
+			oldFrame        = frame;
 
 			// Notify timeline of mouse location
 			BMessage *message = new BMessage(UPDATE_TIMELINE_MSG);
@@ -2164,8 +2092,7 @@ void TCueView::ResizeRightSide()
 	}
 
 	// Only resize
-	if( wasResized )
-	{
+	if( wasResized ) {
 		wasResized = false;
 
 		// Clean up last drag rect
@@ -2208,13 +2135,13 @@ void TCueView::ResizeRightSide()
 //	ResizeLeftSide
 //---------------------------------------------------------------------
 //
-// 	Stretch the cue to the left side
+//      Stretch the cue to the left side
 //
 
 void TCueView::ResizeLeftSide()
 {
-	BPoint 	oldPt, resizePt;
-	bool	wasResized = false;
+	BPoint oldPt, resizePt;
+	bool wasResized = false;
 
 	// Set up environment
 	PushState();
@@ -2231,8 +2158,8 @@ void TCueView::ResizeLeftSide()
 
 	// Get left side limit point.  This will either be another cue or the physical start
 	// of the cue channel.  We cannot allow a drag over another cues end time.
-	float 	limitX;
-	BPoint	limitPt;
+	float limitX;
+	BPoint limitPt;
 	if ( fChannel->GetNeighborLeftPoint(this, &limitPt) )
 		limitX = limitPt.x;
 	else
@@ -2249,18 +2176,16 @@ void TCueView::ResizeLeftSide()
 
 	// Check to see if button is down
 	BPoint mousePt;
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	GetMouse(&mousePt, &buttons, true);
 
-	while(buttons)
-	{
+	while(buttons) {
 		// Convert the view to the parents coordinates for proper
 		// mouse tracking and rect resizing
 		resizePt = ConvertToParent(mousePt);
 
 		// Idle if in same mouse location
-		if (resizePt != oldPt)
-		{
+		if (resizePt != oldPt) {
 			wasResized = true;
 
 			frame.left = resizePt.x;
@@ -2280,8 +2205,8 @@ void TCueView::ResizeLeftSide()
 			fChannel->StrokeRect(frame);
 
 			// Save point and frame for future compare
-			oldPt 		= resizePt;
-			oldFrame 	= frame;
+			oldPt           = resizePt;
+			oldFrame        = frame;
 
 			// Notify timeline of mouse location
 			BMessage *message = new BMessage(UPDATE_TIMELINE_MSG);
@@ -2299,8 +2224,7 @@ void TCueView::ResizeLeftSide()
 	}
 
 	// Only resize
-	if( wasResized )
-	{
+	if( wasResized ) {
 		wasResized = false;
 
 		// Clean up last drag rect
@@ -2348,7 +2272,7 @@ void TCueView::ResizeLeftSide()
 //	Contract
 //---------------------------------------------------------------------
 //
-// 	Hide cue controls
+//      Hide cue controls
 //
 
 void TCueView::Contract(bool force)
@@ -2381,7 +2305,7 @@ void TCueView::Contract(bool force)
 //	Expand
 //---------------------------------------------------------------------
 //
-// 	Show cue controls
+//      Show cue controls
 //
 
 void TCueView::Expand(bool force)
@@ -2410,8 +2334,7 @@ void TCueView::Expand(bool force)
 void TCueView::HideEffects()
 {
 	//	Hide effects tray
-	if (fEffectsVisible == true)
-	{
+	if (fEffectsVisible == true) {
 		//	Effects are now visible
 		fEffectsVisible = false;
 
@@ -2433,8 +2356,7 @@ void TCueView::HideEffects()
 void TCueView::ShowEffects()
 {
 	//	Show effects tray
-	if (fEffectsVisible == false)
-	{
+	if (fEffectsVisible == false) {
 		//	Effects are now visible
 		fEffectsVisible = true;
 
@@ -2510,7 +2432,7 @@ int32 TCueView::GetChannelID()
 
 void TCueView::OpenCueMenu(BPoint menuPt)
 {
-	BMenuItem 	*selected;
+	BMenuItem       *selected;
 
 	// Create the menu and mark the current transition
 	TCueMenu *theMenu = new TCueMenu(this);
@@ -2519,8 +2441,7 @@ void TCueView::OpenCueMenu(BPoint menuPt)
 	ConvertToScreen(&menuPt);
 	selected = theMenu->Go(menuPt);
 
-	if (selected)
-	{
+	if (selected) {
 		if ( selected->Message() )
 			MessageReceived( selected->Message() );
 	}
@@ -2548,8 +2469,7 @@ void TCueView::OpenTransitionMenu(BPoint menuPt)
 	ConvertToScreen(&menuPt);
 	selected = theMenu->Go(menuPt);
 
-	if (selected)
-	{
+	if (selected) {
 		if ( selected->Message() )
 			MessageReceived( selected->Message() );
 	}
@@ -2612,27 +2532,23 @@ void TCueView::ShowControls()
 
 	BRect rect;
 
-	if (fCueIcon)
-	{
+	if (fCueIcon) {
 		rect.Set(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
 		rect.OffsetBy(kResizeZoneWidth+5, 0);
 		fCueIcon->MoveTo(rect.left, rect.top);
 	}
 
-	if (fLockButton)
-	{
+	if (fLockButton) {
 		rect.Set( fCueIcon->Frame().right+kCueButtonOffset, fCueIcon->Frame().top, fCueIcon->Frame().right+kCueButtonWidth+kCueButtonOffset, fCueIcon->Frame().top + kCueButtonHeight );
 		fLockButton->MoveTo(rect.left, rect.top);
 	}
 
-	if (fMuteButton)
-	{
+	if (fMuteButton) {
 		rect.Set( fLockButton->Frame().right+kCueButtonOffset, rect.top, fLockButton->Frame().right+kCueButtonWidth+kCueButtonOffset, rect.bottom );
 		fMuteButton->MoveTo(rect.left, rect.top);
 	}
 
-	if (fEffectsButton)
-	{
+	if (fEffectsButton) {
 		rect.Set( fLockButton->Frame().left, fLockButton->Frame().bottom+kCueButtonOffset, fLockButton->Frame().right, fLockButton->Frame().bottom+kCueButtonOffset+kCueButtonHeight);
 		fEffectsButton->MoveTo(rect.left, rect.top);
 	}
@@ -2674,8 +2590,7 @@ void TCueView::HideControls()
 
 void TCueView::ShowDuration()
 {
-	if (fHasDuration)
-	{
+	if (fHasDuration) {
 		// Get duration
 		char timeStr[256];
 		TimeToString(fDuration, fChannel->GetCueSheet()->GetTimeFormat(), timeStr, false);
@@ -2704,8 +2619,7 @@ void TCueView::ShowDuration()
 void TCueView::HideDuration()
 {
 
-	if (fHasDuration)
-	{
+	if (fHasDuration) {
 		// Get end time
 		char timeStr[256];
 		TimeToString(fStartTime+fDuration, fChannel->GetCueSheet()->GetTimeFormat(), timeStr, false);
@@ -2754,31 +2668,31 @@ void TCueView::SetDisplayMode(CueDisplay theMode)
 	//	Clean up old mode
 	switch(fCueDisplayMode)
 	{
-		case kCueControls:
-			break;
+	case kCueControls:
+		break;
 
-		case kCueContents:
-			HideContents();
-			break;
+	case kCueContents:
+		HideContents();
+		break;
 
-		default:
-			TRESPASS();
-			break;
+	default:
+		TRESPASS();
+		break;
 	}
 
 	//	Set new mode
 	switch(theMode)
 	{
-		case kCueControls:
-			break;
+	case kCueControls:
+		break;
 
-		case kCueContents:
-			ShowContents();
-			break;
+	case kCueContents:
+		ShowContents();
+		break;
 
-		default:
-			TRESPASS();
-			break;
+	default:
+		TRESPASS();
+		break;
 	}
 
 	//	Set new cue mode
@@ -2894,8 +2808,7 @@ void TCueView::AddToBrowser()
 	BMessage *theMessage = new BMessage(ADD_REF_MSG);
 	theMessage->AddRef("FileRef", &fFileRef);
 	TBrowserWindow * theBrowser = static_cast<MuseumApp *>(be_app)->GetBrowser();
-	if (theBrowser)
-	{
+	if (theBrowser) {
 		theBrowser->PostMessage(theMessage, NULL);
 	}
 	delete theMessage;
@@ -2912,12 +2825,9 @@ bool TCueView::EffectsClick(BPoint where)
 {
 
 	//	Was the click in the Effects tray?
-	if ( fEffectsVisible && fEffectsTray.Contains(where))
-	{
+	if ( fEffectsVisible && fEffectsTray.Contains(where)) {
 		return true;
-	}
-	else
-	{
+	} else   {
 		return false;
 	}
 }
@@ -2933,13 +2843,10 @@ bool TCueView::EffectsClick(BPoint where)
 TCueEffectView *TCueView::ClickedEffect(BPoint where)
 {
 	//	Was the click in the Effects tray?
-	if ( fEffectsVisible && fEffectsTray.Contains(where))
-	{
+	if ( fEffectsVisible && fEffectsTray.Contains(where)) {
 		//	Pass click to effects cue
-		if (fEffectsList->CountItems() > 0)
-		{
-			for (int32 index = 0; index < fEffectsList->CountItems(); index++)
-			{
+		if (fEffectsList->CountItems() > 0) {
+			for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
 				//	Get the effects in the list
 				TCueEffectView *effect = (TCueEffectView *)fEffectsList->ItemAt(index);
 
@@ -3114,20 +3021,18 @@ status_t TCueView::service_routine(void * data)
 
 void TCueView::ServiceRoutine()
 {
-	while (!fTimeToQuit)
-	{
+	while (!fTimeToQuit) {
 		//	Read message
-		status_t 		err  = 0;
-		int32 			code = 0;
-		char 			msg[B_MEDIA_MESSAGE_SIZE];
+		status_t err  = 0;
+		int32 code = 0;
+		char msg[B_MEDIA_MESSAGE_SIZE];
 
 		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);
 
 		if (err == B_TIMED_OUT)
 			continue;
 
-		if (err < B_OK)
-		{
+		if (err < B_OK) {
 			printf("TTimePalette::ServiceRoutine: Unexpected error in read_port(): %x\n", err);
 			continue;
 		}
@@ -3136,8 +3041,7 @@ void TCueView::ServiceRoutine()
 		if (code == 0x60000000)
 			break;
 
-		if ( (BMediaNode::HandleMessage(code, msg, err)) )
-		{
+		if ( (BMediaNode::HandleMessage(code, msg, err)) ) {
 			BMediaNode::HandleBadMessage(code, msg, err);
 		}
 
@@ -3169,27 +3073,22 @@ status_t TCueView::run_routine(void *data)
 
 void TCueView::RunRoutine()
 {
-	while(!fTimeToQuit)
-	{
+	while(!fTimeToQuit) {
 		snooze(20000);
 
 		//	Update media_server
-		if (TimeSource()->IsRunning())
-		{
+		if (TimeSource()->IsRunning()) {
 			//	Do nothing if we have been muted
-			if (!fIsMuted)
-			{
+			if (!fIsMuted) {
 				const uint32 curTime = GetCurrentTime();
 
 				//	Check and see if we need to start internal playback
-				if ( (fIsPlaying == false) && (curTime >= fStartTime) )
-				{
+				if ( (fIsPlaying == false) && (curTime >= fStartTime) ) {
 					PlayCue(fStartTime);
 				}
 
 				//	Handle current playback
-				if (fIsPlaying == true)
-				{
+				if (fIsPlaying == true) {
 					//	Handle playback at current time
 					if (curTime <= (fStartTime + fDuration))
 						HandlePlayback(curTime);
@@ -3200,8 +3099,7 @@ void TCueView::RunRoutine()
 			}
 		}
 		//	Stop cue playback
-		else
-		{
+		else{
 			if (fIsPlaying == true)
 				StopCue(GetCurrentTime());
 		}

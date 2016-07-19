@@ -81,21 +81,19 @@ void TStageTextView::MouseDown(BPoint where)
 
 	// Is button down?  They are dragging or resizing the view...
 	// Check to see if button is down
-	uint32 	buttons = 0;
-	BPoint	mousePt, savePt;
+	uint32 buttons = 0;
+	BPoint mousePt, savePt;
 
 	GetMouse(&mousePt, &buttons, true);
 	ConvertToParent(&mousePt);
 	savePt = mousePt;
 
-	while (buttons)
-	{
-		if (mousePt != savePt)
-		{
+	while (buttons) {
+		if (mousePt != savePt) {
 			// Convert to parents coordinate system
 			ConvertToParent(&mousePt);
 
-			MoveBy( ( mousePt.x - savePt.x) , (mousePt.y - savePt.y) );
+			MoveBy( (mousePt.x - savePt.x), (mousePt.y - savePt.y) );
 
 			// Save mouse location for next compare
 			savePt = mousePt;

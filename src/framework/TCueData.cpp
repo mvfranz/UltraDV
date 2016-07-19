@@ -24,19 +24,19 @@
 
 #include "TCueData.h"
 
-#include <support/Debug.h>		// for ASSERT()
+#include <support/Debug.h>              // for ASSERT()
 
 // Class Constants
-	// Name used for fentryRef in a message
+// Name used for fentryRef in a message
 const char* TCueData::kRefTagName = "ref";
-	// Contains all the MIME types supported by this class
+// Contains all the MIME types supported by this class
 TCueData::TTypeVector TCueData::sftypes;
-	// The default file name
+// The default file name
 string TCueData::sfdefaultName;
-	// The 'up' and 'down' cue icons
+// The 'up' and 'down' cue icons
 BBitmap* TCueData::sfupIcon;
 BBitmap* TCueData::sfdownIcon;
-	// Type information
+// Type information
 bool TCueData::sfisVisual;
 bool TCueData::sfisAudible;
 bool TCueData::sfcanStretch;
@@ -179,7 +179,7 @@ string TCueData::Description() const
 //---------------------------------------------------------------------
 //
 //	The cue's natural size, if applicable. This won't be called
-// 	for cues that aren't naturally visible.
+//      for cues that aren't naturally visible.
 //
 
 BRect TCueData::OriginalArea() const

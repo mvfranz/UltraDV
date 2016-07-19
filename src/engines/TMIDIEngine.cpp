@@ -15,10 +15,10 @@
 // Includes
 #include "BuildApp.h"
 
-#include 	<app/Application.h>
+#include        <app/Application.h>
 // ABH #include	<media/Subscriber.h>
-#include 	<support/Debug.h>
-#include 	<support/ByteOrder.h>
+#include        <support/Debug.h>
+#include        <support/ByteOrder.h>
 
 
 #include "TMIDIEngine.h"
@@ -30,17 +30,17 @@
 //
 
 TMIDIEngine::TMIDIEngine(BMidiStore *midiStore)
-{		
+{
 	// Create engine's MIDI port and save BMIDIStore
-	fMIDIPort = new BMidiPort(); 
-   	fMIDIStore = midiStore;
-   	
-   	// Open MIDI port
+	fMIDIPort = new BMidiPort();
+	fMIDIStore = midiStore;
+
+	// Open MIDI port
 	fMIDIPort->Open("midi2");
-   
-	// Connect the output of the MIDIStore to the input of the MIDIPort. 
+
+	// Connect the output of the MIDIStore to the input of the MIDIPort.
 	fMIDIStore->Connect(fMIDIPort);
-	
+
 
 }
 
@@ -54,11 +54,11 @@ TMIDIEngine::TMIDIEngine(BMidiStore *midiStore)
 TMIDIEngine::~TMIDIEngine()
 {
 	//  Disconnect store from port
-	fMIDIPort->Disconnect(fMIDIStore);		
-	
+	fMIDIPort->Disconnect(fMIDIStore);
+
 	// Free MIDIPort
 	delete fMIDIPort;
-	 	
+
 }
 
 
@@ -71,9 +71,9 @@ TMIDIEngine::~TMIDIEngine()
 
 void TMIDIEngine::Play()
 {
-	if ( !fMIDIStore->IsRunning() )		 	
+	if ( !fMIDIStore->IsRunning() )
 		fMIDIStore->Start();
-}	
+}
 
 
 //---------------------------------------------------------------------
@@ -85,7 +85,7 @@ void TMIDIEngine::Play()
 
 void TMIDIEngine::Stop()
 {
-	if ( fMIDIStore->IsRunning() )		 	
+	if ( fMIDIStore->IsRunning() )
 		fMIDIStore->Stop();
 }
 
@@ -99,7 +99,7 @@ void TMIDIEngine::Stop()
 
 void TMIDIEngine::Pause()
 {
-	if ( fMIDIStore->IsRunning() )		 	
+	if ( fMIDIStore->IsRunning() )
 		fMIDIStore->Stop();
-}	
+}
 

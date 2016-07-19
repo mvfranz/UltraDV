@@ -39,20 +39,20 @@ TAudioZoomOutButton::TAudioZoomOutButton(TAudioEditorToolbar *parent, BRect boun
 {
 	// Save parent view
 	fParent = parent;
-	
+
 	// Save handler
 	fHandler = handler;
 
 	// Set MouseDown/MouseUp flag
 	fMouseDown = false;
-	
+
 	// Store bitmaps
 	fOffBitmap = offBitmap;
 	fOnBitmap = onBitmap;
-		
+
 	// Store target and handler
 	fHandler = handler;
-	
+
 	// Perform default initialization
 	Init();
 }
@@ -79,7 +79,7 @@ TAudioZoomOutButton::~TAudioZoomOutButton()
 //	Perform default initialization tasks
 
 void TAudioZoomOutButton::Init()
-{        	
+{
 }
 
 
@@ -93,7 +93,7 @@ void TAudioZoomOutButton::Draw(BRect updateRect)
 {
 	// Draw proper bitmap state, if fState is true, draw on bitmap
 	if (fMouseDown)
-		DrawBitmap(fOffBitmap, B_ORIGIN);		
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 	else
 		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
@@ -108,7 +108,7 @@ void TAudioZoomOutButton::Draw(BRect updateRect)
 //
 
 void TAudioZoomOutButton::MouseDown(BPoint where)
-{				
+{
 	// Handle button click
 	DoClick();
 }
@@ -123,10 +123,10 @@ void TAudioZoomOutButton::MouseDown(BPoint where)
 
 void TAudioZoomOutButton::MouseUp(BPoint where)
 {
-	
+
 	// Set flag that we have been clicked. When the MouseUp method
-	// is implimented we can remove this		
-	//fMouseDown = false; 
+	// is implimented we can remove this
+	//fMouseDown = false;
 }
 
 
@@ -218,21 +218,21 @@ void TAudioZoomOutButton::DoClick()
 {
 	// Force redraw to reflect new state
 	//Invalidate();
-	
+
 	// We will always be in the up position when we start.
 	// First, set the button state to down and force a redraw...
-	fMouseDown = true; 
-	Draw(Bounds()); 
-		
+	fMouseDown = true;
+	Draw(Bounds());
+
 	// Now send message to the view that the user is zooming out...
 	BMessage *message = new BMessage(AUDIO_ZOOMOUT_BUTTON_MSG);
 	fParent->Window()->PostMessage(message, (( TAudioEditor *)fParent->Window())->GetEditorView() );
 	delete message;
-	
+
 	// Wait a short while before restoring to up position
 	snooze(100 * 1000);
-	
+
 	// Restore and invalidate
-	fMouseDown = false; 
-	Draw(Bounds()); 
+	fMouseDown = false;
+	Draw(Bounds());
 }

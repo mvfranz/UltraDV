@@ -70,8 +70,8 @@ void TAboutBox::Init()
 	if (file.InitCheck())
 		return;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 	{
 		BResources res(&file);
 		data = (BBitmap *)res.FindResource('bits', "Splash", &size);
@@ -92,7 +92,7 @@ void TAboutBox::Init()
 
 
 	// Create the OK button
-	const BRect okFrame( ( (Bounds().right - Bounds().left)/2)-30 , Bounds().bottom-30, ((Bounds().right-Bounds().left)/2)+30,  Bounds().bottom-10);
+	const BRect okFrame( ( (Bounds().right - Bounds().left)/2)-30, Bounds().bottom-30, ((Bounds().right-Bounds().left)/2)+30,  Bounds().bottom-10);
 	fOKButton = new BButton(okFrame, "OK","OK", new BMessage(ABOUT_OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);
 	bm->AddChild(fOKButton);
 	fOKButton->MakeDefault(true);
@@ -114,14 +114,14 @@ void TAboutBox::MessageReceived(BMessage* message)
 
 	switch(message->what)
 	{
-		case ABOUT_OK_MSG:
-			Lock();
-			Quit();
-			break;
+	case ABOUT_OK_MSG:
+		Lock();
+		Quit();
+		break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 
 }

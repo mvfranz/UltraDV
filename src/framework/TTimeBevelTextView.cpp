@@ -206,9 +206,9 @@ void TTimeBevelTextView::MessageReceived(BMessage *message)
 	switch(message->what)
 	{
 
-		default:
-			BView::MessageReceived(message);
-			break;
+	default:
+		BView::MessageReceived(message);
+		break;
 	}
 
 }

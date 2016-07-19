@@ -17,21 +17,21 @@
 
 #include "TMediaTabView.h"
 
-#include "AppConstants.h"		// for kScrollHeight
-#include "AppMessages.h"		// For ADD_REF_MSG
-#include <assert.h>				// For assert()
-#include "ResourceManager.h"	// for GetIcon16FromResource
-#include "TRadioBitmapButton.h"	// For the bitmap button
-#include "TElementsView.h"		// For the different member views
-#include "TThumbnailView.h"		// ...
-#include "TIconView.h"			// ...
-#include "TSizeScrollView.h"	// For TSizeScrollView
-#include "TSorterContainer.h"	// For SORTER MSG decls
+#include "AppConstants.h"               // for kScrollHeight
+#include "AppMessages.h"                // For ADD_REF_MSG
+#include <assert.h>                             // For assert()
+#include "ResourceManager.h"    // for GetIcon16FromResource
+#include "TRadioBitmapButton.h" // For the bitmap button
+#include "TElementsView.h"              // For the different member views
+#include "TThumbnailView.h"             // ...
+#include "TIconView.h"                  // ...
+#include "TSizeScrollView.h"    // For TSizeScrollView
+#include "TSorterContainer.h"   // For SORTER MSG decls
 
 // Local constants
-#define MEDIA_TAB_LIST_VIEW_MSG			'mtLV'
-#define MEDIA_TAB_THUMBNAIL_VIEW_MSG	'mtTH'
-#define MEDIA_TAB_ICON_VIEW_MSG			'mtIC'
+#define MEDIA_TAB_LIST_VIEW_MSG                 'mtLV'
+#define MEDIA_TAB_THUMBNAIL_VIEW_MSG    'mtTH'
+#define MEDIA_TAB_ICON_VIEW_MSG                 'mtIC'
 
 
 //---------------------------------------------------------------------
@@ -77,8 +77,8 @@ void TMediaTabView::Init()
 	// is high. It's top is one scroll bar height away from the bottom
 	BRect buttBounds(0, 0, kScrollHeight, kScrollHeight);
 	fbuttons[0] = new TRadioBitmapButton(buttBounds, "ListViewButton", up, down, this,
-										  new BMessage(MEDIA_TAB_LIST_VIEW_MSG),
-										  B_FOLLOW_LEFT + B_FOLLOW_BOTTOM);
+	                                     new BMessage(MEDIA_TAB_LIST_VIEW_MSG),
+	                                     B_FOLLOW_LEFT + B_FOLLOW_BOTTOM);
 	// This button is on by default
 	fbuttons[0]->SetValue(1);
 
@@ -88,8 +88,8 @@ void TMediaTabView::Init()
 	buttBounds.left = buttBounds.right;
 	buttBounds.right = buttBounds.left + kScrollHeight;
 	fbuttons[1] = new TRadioBitmapButton(buttBounds, "ThumbnailButton", up, down,
-			this, new BMessage(MEDIA_TAB_THUMBNAIL_VIEW_MSG), B_FOLLOW_LEFT +
-			B_FOLLOW_BOTTOM);
+	                                     this, new BMessage(MEDIA_TAB_THUMBNAIL_VIEW_MSG), B_FOLLOW_LEFT +
+	                                     B_FOLLOW_BOTTOM);
 
 	// With the icon view button next
 	up = GetIcon16FromResource("IconViewUp");
@@ -97,8 +97,8 @@ void TMediaTabView::Init()
 	buttBounds.left = buttBounds.right;
 	buttBounds.right = buttBounds.left + kScrollHeight;
 	fbuttons[2] = new TRadioBitmapButton(buttBounds, "IconViewButton", up, down,
-			this, new BMessage(MEDIA_TAB_ICON_VIEW_MSG), B_FOLLOW_LEFT +
-			B_FOLLOW_BOTTOM);
+	                                     this, new BMessage(MEDIA_TAB_ICON_VIEW_MSG), B_FOLLOW_LEFT +
+	                                     B_FOLLOW_BOTTOM);
 
 	// create the views needed to support list, thumbnail and icon view.
 	// Tell it to make room for the buttons. Hide the non-default views
@@ -134,23 +134,21 @@ void TMediaTabView::MessageReceived(BMessage* message)
 	EChildID newView;
 	switch (message->what)
 	{
-		case MEDIA_TAB_LIST_VIEW_MSG:
-			newView = kElementsView;
-			buttonMsg = true;
-			break;
-		case MEDIA_TAB_THUMBNAIL_VIEW_MSG:
-			newView = kThumbnailView;
-			buttonMsg = true;
-			break;
-		case MEDIA_TAB_ICON_VIEW_MSG:
-			newView = kIconView;
-			buttonMsg = true;
-			break;
+	case MEDIA_TAB_LIST_VIEW_MSG:
+		newView = kElementsView;
+		buttonMsg = true;
+		break;
+	case MEDIA_TAB_THUMBNAIL_VIEW_MSG:
+		newView = kThumbnailView;
+		buttonMsg = true;
+		break;
+	case MEDIA_TAB_ICON_VIEW_MSG:
+		newView = kIconView;
+		buttonMsg = true;
+		break;
 	}
-	if (buttonMsg)
-	{
-		if (newView != fCurrentView)
-		{
+	if (buttonMsg) {
+		if (newView != fCurrentView) {
 			// Protect this section of code.
 			Looper()->Lock();
 
@@ -167,19 +165,19 @@ void TMediaTabView::MessageReceived(BMessage* message)
 	// Accept messages from the sorter object
 	switch (message->what)
 	{
-		case SORTER_SELECT_MSG:
-		case SORTER_INVOKE_MSG:
-			if (fCurrentView == kElementsView)
-				ChildAt(fCurrentView)->MessageReceived(message);
-			return;
+	case SORTER_SELECT_MSG:
+	case SORTER_INVOKE_MSG:
+		if (fCurrentView == kElementsView)
+			ChildAt(fCurrentView)->MessageReceived(message);
+		return;
 
-		// Some cue is adding an entry_ref to our browser
-		// TODO: include the other two views in this. They can
-		// have a new REF as well.
-		case ADD_REF_MSG:
-			if (fCurrentView == kElementsView)
-				ChildAt(fCurrentView)->MessageReceived(message);
-			return;
+	// Some cue is adding an entry_ref to our browser
+	// TODO: include the other two views in this. They can
+	// have a new REF as well.
+	case ADD_REF_MSG:
+		if (fCurrentView == kElementsView)
+			ChildAt(fCurrentView)->MessageReceived(message);
+		return;
 	}
 
 	// Default handler
@@ -216,7 +214,7 @@ BView* TMediaTabView::AddSizeScrollChild(BView* target)
 
 	// Create the size/scroll view
 	TSizeScrollView* view = new TSizeScrollView("", target, B_FOLLOW_ALL,
-			0, true, true);
+	                                            0, true, true);
 
 	// make room for the buttons by scooting over the horiz scroll bar
 	BScrollBar* horiz = view->ScrollBar(B_HORIZONTAL);
@@ -250,8 +248,7 @@ void TMediaTabView::ActivateView(EChildID which)
 		pt.y -= kScrollHeight + 1;
 	}
 
-	for (int i = 0; i < 3; i++)
-	{
+	for (int i = 0; i < 3; i++) {
 		view->AddChild(fbuttons[i]);
 		fbuttons[i]->MoveTo(pt);
 		pt.x += kScrollHeight;

@@ -72,25 +72,25 @@ void TStageSetup::Init()
 	fSaveColor = fStage->GetStageView()->ViewColor();
 
 	// Get dialog items
-	fDimesionsBox 	= (BBox *)FindView("DimensionBox");
-	fSettingsBox	= (BBox *)FindView("SettingsBox");
-	fColorBox		= (BBox *)FindView("ColorBox");
+	fDimesionsBox   = (BBox *)FindView("DimensionBox");
+	fSettingsBox    = (BBox *)FindView("SettingsBox");
+	fColorBox               = (BBox *)FindView("ColorBox");
 
-	fWidth 		= (BTextControl *)FindView("WidthText");
-	fHeight 		= (BTextControl *)FindView("HeightText");
-	fXPos  		= (BTextControl *)FindView("XPosText");
-	fYPos 			= (BTextControl *)FindView("YPosText");
+	fWidth          = (BTextControl *)FindView("WidthText");
+	fHeight                 = (BTextControl *)FindView("HeightText");
+	fXPos           = (BTextControl *)FindView("XPosText");
+	fYPos                   = (BTextControl *)FindView("YPosText");
 
-	fTitleText 	= (BTextControl *)FindView("TitleText");
+	fTitleText      = (BTextControl *)FindView("TitleText");
 
-	fCenterCheck 	= (BCheckBox *)FindView("CenterCheck");
-	fTitleCheck	= (BCheckBox *)FindView("TitleCheck");
+	fCenterCheck    = (BCheckBox *)FindView("CenterCheck");
+	fTitleCheck     = (BCheckBox *)FindView("TitleCheck");
 
-	fStageColor 	= (BColorControl *)FindView("StageColor");
+	fStageColor     = (BColorControl *)FindView("StageColor");
 
 	// Set up dialog items
-	char 	tmpStr[64];
-	int32	tmpNum;
+	char tmpStr[64];
+	int32 tmpNum;
 
 	// Width
 	tmpNum = fStage->Bounds().Width();
@@ -127,41 +127,41 @@ void TStageSetup::MessageReceived(BMessage* message)
 
 	switch(message->what)
 	{
-		// User pressed OK button.  Update channel name with text in control field
-		case OK_MSG:
-			GetDialogSettings();
-			Lock();
-			Quit();
-			break;
+	// User pressed OK button.  Update channel name with text in control field
+	case OK_MSG:
+		GetDialogSettings();
+		Lock();
+		Quit();
+		break;
 
-		// Restore backgorund color if changed
-		case CANCEL_MSG:
-			{
-				fStage->Lock();
-				rgb_color newColor = fStage->GetStageView()->ViewColor();
-				fStage->GetStageView()->SetViewColor(fSaveColor);
-				fStage->GetStageView()->Invalidate();
-				fStage->Unlock();
-				Lock();
-				Quit();
-			}
-			break;
+	// Restore backgorund color if changed
+	case CANCEL_MSG:
+	{
+		fStage->Lock();
+		rgb_color newColor = fStage->GetStageView()->ViewColor();
+		fStage->GetStageView()->SetViewColor(fSaveColor);
+		fStage->GetStageView()->Invalidate();
+		fStage->Unlock();
+		Lock();
+		Quit();
+	}
+	break;
 
-		case CENTER_CHECK_MSG:
-		case TITLE_CHECK_MSG:
-			break;
+	case CENTER_CHECK_MSG:
+	case TITLE_CHECK_MSG:
+		break;
 
-		// Update the stage color
-		case STAGE_COLOR_MSG:
-			fStage->Lock();
-			fStage->GetStageView()->SetViewColor( fStageColor->ValueAsColor() );
-			fStage->GetStageView()->Invalidate();
-			fStage->Unlock();
-			break;
+	// Update the stage color
+	case STAGE_COLOR_MSG:
+		fStage->Lock();
+		fStage->GetStageView()->SetViewColor( fStageColor->ValueAsColor() );
+		fStage->GetStageView()->Invalidate();
+		fStage->Unlock();
+		break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 
 }

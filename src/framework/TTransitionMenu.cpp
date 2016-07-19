@@ -43,7 +43,7 @@ TTransitionMenu::TTransitionMenu(TCueView *target, bool transitionIn) : BPopUpMe
 	// Create "None"
 	menuMessage = new BMessage(TRAN_NONE_MSG);
 	menuMessage->AddBool("TransitionIn", transitionIn);
-	BMenuItem	*noneItem = new BMenuItem("None", menuMessage);
+	BMenuItem       *noneItem = new BMenuItem("None", menuMessage);
 	AddItem(noneItem);
 
 	// Seperator01
@@ -281,47 +281,47 @@ BMenuItem *TTransitionMenu::GetMenuItem(int16 menuID)
 {
 	switch (menuID)
 	{
-		case kTransitionNone:
-			return ( FindItem(TRAN_NONE_MSG) );
-			break;
+	case kTransitionNone:
+		return (FindItem(TRAN_NONE_MSG) );
+		break;
 
-		// Straight Wipes Submenu
-		case kWipeRight:
-		case kWipeLeft:
-		case kWipeDown:
-		case kWipeTop:
-			return GetStraightWipesMenuItem(menuID);
-			break;
+	// Straight Wipes Submenu
+	case kWipeRight:
+	case kWipeLeft:
+	case kWipeDown:
+	case kWipeTop:
+		return GetStraightWipesMenuItem(menuID);
+		break;
 
-		// Diagonal Wipes Submenu
-		case kWipeTopLeftBottomRight:
-		case kWipeTopRightBottomLeft:
-		case kWipeBottomLeftTopRight:
-		case kWipeBottomRightTopLeft:
-			return GetDiagonalWipesMenuItem(menuID);
-			break;
+	// Diagonal Wipes Submenu
+	case kWipeTopLeftBottomRight:
+	case kWipeTopRightBottomLeft:
+	case kWipeBottomLeftTopRight:
+	case kWipeBottomRightTopLeft:
+		return GetDiagonalWipesMenuItem(menuID);
+		break;
 
 
-		// Reveal Submenu
-		case kRevealRight:
-		case kRevealLeft:
-		case kRevealDown:
-		case kRevealUp:
-		case kRevealTopLeftBottomRight:
-		case kRevealTopRightBottomLeft:
-		case kRevealBottomLeftTopRight:
-		case kRevealBottomRightTopLeft:
-			return GetRevealMenuItem(menuID);
-			break;
+	// Reveal Submenu
+	case kRevealRight:
+	case kRevealLeft:
+	case kRevealDown:
+	case kRevealUp:
+	case kRevealTopLeftBottomRight:
+	case kRevealTopRightBottomLeft:
+	case kRevealBottomLeftTopRight:
+	case kRevealBottomRightTopLeft:
+		return GetRevealMenuItem(menuID);
+		break;
 
-		// Curtain Submenu
-		case kCurtainsIn:
-		case kCurtainsOut:
-			return GetCurtainsMenuItem(menuID);
-			break;
+	// Curtain Submenu
+	case kCurtainsIn:
+	case kCurtainsOut:
+		return GetCurtainsMenuItem(menuID);
+		break;
 
-		default:
-			return NULL;
+	default:
+		return NULL;
 	}
 	return NULL;
 }
@@ -341,25 +341,25 @@ BMenuItem *TTransitionMenu::GetStraightWipesMenuItem(int16 menuID)
 	switch (menuID)
 	{
 
-		// Wipes Submenu
-		case kWipeRight:
-			return ( subMenu->FindItem(TRAN_WIPE_RIGHT_MSG) );
-			break;
+	// Wipes Submenu
+	case kWipeRight:
+		return (subMenu->FindItem(TRAN_WIPE_RIGHT_MSG) );
+		break;
 
-		case kWipeLeft:
-			return ( subMenu->FindItem(TRAN_WIPE_LEFT_MSG) );
-			break;
+	case kWipeLeft:
+		return (subMenu->FindItem(TRAN_WIPE_LEFT_MSG) );
+		break;
 
-		case kWipeDown:
-			return ( subMenu->FindItem(TRAN_WIPE_DOWN_MSG) );
-			break;
+	case kWipeDown:
+		return (subMenu->FindItem(TRAN_WIPE_DOWN_MSG) );
+		break;
 
-		case kWipeTop:
-			return ( subMenu->FindItem(TRAN_WIPE_UP_MSG) );
-			break;
+	case kWipeTop:
+		return (subMenu->FindItem(TRAN_WIPE_UP_MSG) );
+		break;
 
-		default:
-			return NULL;
+	default:
+		return NULL;
 	}
 }
 
@@ -379,25 +379,25 @@ BMenuItem *TTransitionMenu::GetDiagonalWipesMenuItem(int16 menuID)
 	switch (menuID)
 	{
 
-		// Wipes Submenu
-		case kWipeTopLeftBottomRight:
-			return ( subMenu->FindItem(TRAN_WIPE_TOP_LEFT_BOTTOM_RIGHT_MSG) );
-			break;
+	// Wipes Submenu
+	case kWipeTopLeftBottomRight:
+		return (subMenu->FindItem(TRAN_WIPE_TOP_LEFT_BOTTOM_RIGHT_MSG) );
+		break;
 
-		case kWipeTopRightBottomLeft:
-			return ( subMenu->FindItem(TRAN_WIPE_TOP_RIGHT_BOTTON_LEFT_MSG) );
-			break;
+	case kWipeTopRightBottomLeft:
+		return (subMenu->FindItem(TRAN_WIPE_TOP_RIGHT_BOTTON_LEFT_MSG) );
+		break;
 
-		case kWipeBottomLeftTopRight:
-			return ( subMenu->FindItem(TRAN_WIPE_BOTTOM_LEFT_TOP_RIGHT_MSG) );
-			break;
+	case kWipeBottomLeftTopRight:
+		return (subMenu->FindItem(TRAN_WIPE_BOTTOM_LEFT_TOP_RIGHT_MSG) );
+		break;
 
-		case kWipeBottomRightTopLeft:
-			return ( subMenu->FindItem(TRAN_WIPE_BOTTOM_RIGHT_TOP_LEFT_MSG) );
-			break;
+	case kWipeBottomRightTopLeft:
+		return (subMenu->FindItem(TRAN_WIPE_BOTTOM_RIGHT_TOP_LEFT_MSG) );
+		break;
 
-		default:
-			return NULL;
+	default:
+		return NULL;
 	}
 }
 
@@ -416,40 +416,40 @@ BMenuItem *TTransitionMenu::GetRevealMenuItem(int16 menuID)
 	switch (menuID)
 	{
 
-		case kRevealRight:
-			return ( subMenu->FindItem(TRAN_REVEAL_RIGHT_MSG) );
-			break;
+	case kRevealRight:
+		return (subMenu->FindItem(TRAN_REVEAL_RIGHT_MSG) );
+		break;
 
-		case kRevealLeft:
-			return ( subMenu->FindItem(TRAN_REVEAL_LEFT_MSG) );
-			break;
+	case kRevealLeft:
+		return (subMenu->FindItem(TRAN_REVEAL_LEFT_MSG) );
+		break;
 
-		case kRevealDown:
-			return ( subMenu->FindItem(TRAN_REVEAL_DOWN_MSG) );
-			break;
+	case kRevealDown:
+		return (subMenu->FindItem(TRAN_REVEAL_DOWN_MSG) );
+		break;
 
-		case kRevealUp:
-			return ( subMenu->FindItem(TRAN_REVEAL_UP_MSG) );
-			break;
+	case kRevealUp:
+		return (subMenu->FindItem(TRAN_REVEAL_UP_MSG) );
+		break;
 
-		case kRevealTopLeftBottomRight:
-			return ( subMenu->FindItem(TRAN_REVEAL_TOP_LEFT_BOTTOM_RIGHT_MSG) );
-			break;
+	case kRevealTopLeftBottomRight:
+		return (subMenu->FindItem(TRAN_REVEAL_TOP_LEFT_BOTTOM_RIGHT_MSG) );
+		break;
 
-		case kRevealTopRightBottomLeft:
-			return ( subMenu->FindItem(TRAN_REVEAL_TOP_RIGHT_BOTTON_LEFT_MSG) );
-			break;
+	case kRevealTopRightBottomLeft:
+		return (subMenu->FindItem(TRAN_REVEAL_TOP_RIGHT_BOTTON_LEFT_MSG) );
+		break;
 
-		case kRevealBottomLeftTopRight:
-			return ( subMenu->FindItem(TRAN_REVEAL_BOTTOM_LEFT_TOP_RIGHT_MSG) );
-			break;
+	case kRevealBottomLeftTopRight:
+		return (subMenu->FindItem(TRAN_REVEAL_BOTTOM_LEFT_TOP_RIGHT_MSG) );
+		break;
 
-		case kRevealBottomRightTopLeft:
-			return ( subMenu->FindItem(TRAN_REVEAL_BOTTOM_RIGHT_TOP_LEFT_MSG) );
-			break;
+	case kRevealBottomRightTopLeft:
+		return (subMenu->FindItem(TRAN_REVEAL_BOTTOM_RIGHT_TOP_LEFT_MSG) );
+		break;
 
-		default:
-			return NULL;
+	default:
+		return NULL;
 	}
 }
 
@@ -468,15 +468,15 @@ BMenuItem *TTransitionMenu::GetCurtainsMenuItem(int16 menuID)
 	switch (menuID)
 	{
 
-		case kCurtainsIn:
-			return ( subMenu->FindItem(TRAN_CURTAINS_IN_MSG) );
-			break;
+	case kCurtainsIn:
+		return (subMenu->FindItem(TRAN_CURTAINS_IN_MSG) );
+		break;
 
-		case kCurtainsOut:
-			return ( subMenu->FindItem(TRAN_CURTAINS_OUT_MSG) );
-			break;
+	case kCurtainsOut:
+		return (subMenu->FindItem(TRAN_CURTAINS_OUT_MSG) );
+		break;
 
-		default:
-			return NULL;
+	default:
+		return NULL;
 	}
 }

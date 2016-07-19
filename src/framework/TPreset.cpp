@@ -47,8 +47,8 @@ TPreset::TPreset(char *theName)
 
 TPreset::TPreset(BMessage *data)
 {
-	char 	*tmpStr;
-	int16 	tmpInt16;
+	char    *tmpStr;
+	int16 tmpInt16;
 
 	data->FindString((const char *)"Name",(const char **) &tmpStr);
 	strcpy(fName, tmpStr);
@@ -126,8 +126,7 @@ status_t TPreset::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BArchivable::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TPreset");
 
@@ -144,8 +143,7 @@ status_t TPreset::Archive(BMessage *data, bool deep) const
 		data->AddInt32("FrameHeight", fFrameHeight);
 
 		// Add attached data
-		if (deep)
-		{
+		if (deep) {
 		}
 	}
 
@@ -202,9 +200,9 @@ void TPreset::WriteToFile(char *theName)
 	theChunk.ArchivedData = archive;
 
 	// Now write preset information out
-	ChunkHeader	theHeader;
+	ChunkHeader theHeader;
 
-	theHeader.chunkID 	= kPresetChunkID;
+	theHeader.chunkID       = kPresetChunkID;
 	theHeader.chunkSize = archive->FlattenedSize();
 
 	BFile theFile;
@@ -217,60 +215,60 @@ void TPreset::WriteToFile(char *theName)
 //	BEntry entry(&appInfo.ref);
 	BDirectory parentDir;
 	BEntry entry(kPresetsPathString);
-	if (!entry.Exists()){
-			printf("TPresets: kPresets path does not exist, creating...\n");
-			if (create_directory(kPresetsPathString,0770) != B_OK){
-				printf("TPreset: can't create kPresetsPathString - %s\n",
-						kPresetsPathString);
-			}
+	if (!entry.Exists()) {
+		printf("TPresets: kPresets path does not exist, creating...\n");
+		if (create_directory(kPresetsPathString,0770) != B_OK) {
+			printf("TPreset: can't create kPresetsPathString - %s\n",
+			       kPresetsPathString);
+		}
 	}
 //	char fullPath[64];
 //	strcpy(fullPath,kPresetsPathString);
 //	strcpy(fullPath, "UltraDV");
 
-	if (entry.SetTo(kPresetsPathString) != B_OK){
-			printf("TPreset: SetTo in entry failed\n");
+	if (entry.SetTo(kPresetsPathString) != B_OK) {
+		printf("TPreset: SetTo in entry failed\n");
 	}
-	if (entry.GetParent(&parentDir) != B_OK){
-			printf("TPreset: Getparent failed\n");
+	if (entry.GetParent(&parentDir) != B_OK) {
+		printf("TPreset: Getparent failed\n");
 	}
 
-	if ((retVal=parentDir.SetTo( kPresetsPathString)) != B_OK){
-			printf("TPreset: dir.SetTo failed\n");
-			switch(retVal){
-				case B_OK:
-					printf("B_OK\n");
-					break;
-				case B_ENTRY_NOT_FOUND:
-					printf("not found\n");
-					break;
-				case B_BAD_VALUE:
-					printf("bad value\n");
-					break;
-				case B_NO_MEMORY:
-					printf("no mem\n");
-					break;
-				case B_FILE_ERROR:
-					printf("file error\n");
-					break;
-				default:
-					printf("Other\n");
-			}
+	if ((retVal=parentDir.SetTo( kPresetsPathString)) != B_OK) {
+		printf("TPreset: dir.SetTo failed\n");
+		switch(retVal) {
+		case B_OK:
+			printf("B_OK\n");
+			break;
+		case B_ENTRY_NOT_FOUND:
+			printf("not found\n");
+			break;
+		case B_BAD_VALUE:
+			printf("bad value\n");
+			break;
+		case B_NO_MEMORY:
+			printf("no mem\n");
+			break;
+		case B_FILE_ERROR:
+			printf("file error\n");
+			break;
+		default:
+			printf("Other\n");
+		}
 	}
 
 	retVal = parentDir.CreateFile(theName, &theFile, false);
 
 /*
-	BEntry entry1(kPresetsPathString);
-	if (!entry1.Exists){
-		printf("TPresets: presets path does not exist\n");
-	}
-	BEntry entry2;
-	BDirectory currentDir;
-	entry_ref ref;
-	entry1.GetRef(&ref);
-	entry2.SetTo(&ref, true);
-*/
+        BEntry entry1(kPresetsPathString);
+        if (!entry1.Exists){
+                printf("TPresets: presets path does not exist\n");
+        }
+        BEntry entry2;
+        BDirectory currentDir;
+        entry_ref ref;
+        entry1.GetRef(&ref);
+        entry2.SetTo(&ref, true);
+ */
 
 
 
@@ -281,8 +279,7 @@ void TPreset::WriteToFile(char *theName)
 
 		// Set file type
 		BNodeInfo info(&theFile);
-		if ( info.InitCheck() == B_OK )
-		{
+		if ( info.InitCheck() == B_OK ) {
 			retVal = info.SetType(kCueSheetTypeString);
 
 			// Give it some nice icons

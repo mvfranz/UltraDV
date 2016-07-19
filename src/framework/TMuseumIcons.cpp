@@ -131,78 +131,78 @@ void TMuseumIcons::Init()
 {
 
 	// Cue icons
-	fAnimationIcon16 	= GetMICNFromResource("Animation");
-	fAnimation32		= GetICONFromResource("Animation");
-	fAudioIcon16		= GetMICNFromResource("Audio");
-	fAudioIcon32		= GetICONFromResource("Audio");
-	fMIDIIcon16		= GetMICNFromResource("MIDI");
-	fMIDIIcon32		= GetICONFromResource("MIDI");
-	fMovieIcon16		= GetMICNFromResource("Movie");
-	fMovieIcon32		= GetICONFromResource("Movie");
-	fPictureIcon16		= GetMICNFromResource("Picture");
-	fPictureIcon32		= GetICONFromResource("Picture");
-	fTextIcon16		= GetMICNFromResource("Text");
-	fTextIcon32		= GetICONFromResource("Text");
+	fAnimationIcon16        = GetMICNFromResource("Animation");
+	fAnimation32            = GetICONFromResource("Animation");
+	fAudioIcon16            = GetMICNFromResource("Audio");
+	fAudioIcon32            = GetICONFromResource("Audio");
+	fMIDIIcon16             = GetMICNFromResource("MIDI");
+	fMIDIIcon32             = GetICONFromResource("MIDI");
+	fMovieIcon16            = GetMICNFromResource("Movie");
+	fMovieIcon32            = GetICONFromResource("Movie");
+	fPictureIcon16          = GetMICNFromResource("Picture");
+	fPictureIcon32          = GetICONFromResource("Picture");
+	fTextIcon16             = GetMICNFromResource("Text");
+	fTextIcon32             = GetICONFromResource("Text");
 
-	fLock 				= GetIcon16FromResource("Lock");
-	fUnlock 			= GetIcon16FromResource("Unlock");
-	fLockDark 			= GetIcon16FromResource("LockDark");
-	fUnlockDark 		= GetIcon16FromResource("UnlockDark");
-	fVisibleUp 		= GetIcon16FromResource("VisibleUp");
-	fVisibleDown 		= GetIcon16FromResource("VisibleDown");
-	fTransitionIn 		= GetIcon16FromResource("TransitionIn");
-	fTransitionOut 	= GetIcon16FromResource("TransitionOut");
-	fPathIn  			= GetIcon16FromResource("Path");
-	fPathOut  			= GetIcon16FromResource("Path");
+	fLock                           = GetIcon16FromResource("Lock");
+	fUnlock                         = GetIcon16FromResource("Unlock");
+	fLockDark                       = GetIcon16FromResource("LockDark");
+	fUnlockDark             = GetIcon16FromResource("UnlockDark");
+	fVisibleUp              = GetIcon16FromResource("VisibleUp");
+	fVisibleDown            = GetIcon16FromResource("VisibleDown");
+	fTransitionIn           = GetIcon16FromResource("TransitionIn");
+	fTransitionOut  = GetIcon16FromResource("TransitionOut");
+	fPathIn                         = GetIcon16FromResource("Path");
+	fPathOut                        = GetIcon16FromResource("Path");
 
-	fAnimationUpIcon 	= GetCicnFromResource("AnimationCueUp");
-	fAnimationDnIcon 	= GetCicnFromResource("AnimationCueDn");
-	fAudioUpIcon 		= GetCicnFromResource("AudioCueUp");
-	fAudioDnIcon 		= GetCicnFromResource("AudioCueDn");
-	fMIDIUpIcon 		= GetCicnFromResource("MIDICueUp");
-	fMIDIDnIcon 		= GetCicnFromResource("MIDICueDn");
-	fMovieUpIcon 		= GetCicnFromResource("MovieCueUp");
-	fMovieDnIcon 		= GetCicnFromResource("MovieCueDn");
-	fPictureUpIcon 	= GetCicnFromResource("PictureCueUp");
-	fPictureDnIcon 	= GetCicnFromResource("PictureCueDn");
-	fTextUpIcon 		= GetCicnFromResource("TextCueUp");
-	fTextDnIcon 		= GetCicnFromResource("TextCueDn");
+	fAnimationUpIcon        = GetCicnFromResource("AnimationCueUp");
+	fAnimationDnIcon        = GetCicnFromResource("AnimationCueDn");
+	fAudioUpIcon            = GetCicnFromResource("AudioCueUp");
+	fAudioDnIcon            = GetCicnFromResource("AudioCueDn");
+	fMIDIUpIcon             = GetCicnFromResource("MIDICueUp");
+	fMIDIDnIcon             = GetCicnFromResource("MIDICueDn");
+	fMovieUpIcon            = GetCicnFromResource("MovieCueUp");
+	fMovieDnIcon            = GetCicnFromResource("MovieCueDn");
+	fPictureUpIcon  = GetCicnFromResource("PictureCueUp");
+	fPictureDnIcon  = GetCicnFromResource("PictureCueDn");
+	fTextUpIcon             = GetCicnFromResource("TextCueUp");
+	fTextDnIcon             = GetCicnFromResource("TextCueDn");
 
 	// Header icons
-	fMuteUp 			= GetIcon16FromResource("MuteUp");
-	fMuteDown 			= GetIcon16FromResource("MuteDown");
-	fSoloUp 			= GetIcon16FromResource("SoloUp");
-	fSoloDown 			= GetIcon16FromResource("SoloDown");
-	fContract 			= GetIcon16FromResource("Contract");
-	fExpand 			= GetIcon16FromResource("Expand");
+	fMuteUp                         = GetIcon16FromResource("MuteUp");
+	fMuteDown                       = GetIcon16FromResource("MuteDown");
+	fSoloUp                         = GetIcon16FromResource("SoloUp");
+	fSoloDown                       = GetIcon16FromResource("SoloDown");
+	fContract                       = GetIcon16FromResource("Contract");
+	fExpand                         = GetIcon16FromResource("Expand");
 
 	// Transitions
-	fWipeDown					= GetIcon16FromResource("WipeDown");
-	fWipeLeft					= GetIcon16FromResource("WipeLeft");
-	fWipeRight					= GetIcon16FromResource("WipeRight");
-	fWipeUp					= GetIcon16FromResource("WipeUp");
-	fWipeBottomLeftTopRight	= GetIcon16FromResource("WipeBottomLeftTopRight");
-	fWipeBottomRightTopLeft	= GetIcon16FromResource("WipeBottomRightTopLeft");
-	fWipeTopLeftBottomRight	= GetIcon16FromResource("WipeTopLeftBottomRight");
-	fWipeTopRightBottomLeft	= GetIcon16FromResource("WipeTopRightBottomLeft");
-	fCurtainsIn				= GetIcon16FromResource("CurtainsIn");
-	fCurtainsOut				= GetIcon16FromResource("CurtainsOut");
-	fRevealBottomLeftTopRight	= GetIcon16FromResource("RevealBottomLeftTopRight");
-	fRevealBottomRightTopLeft	= GetIcon16FromResource("RevealBottomRightTopLeft");
-	fRevealTopLeftBottomRight	= GetIcon16FromResource("RevealTopLeftBottomRight");
-	fRevealTopRightBottomLeft	= GetIcon16FromResource("RevealTopRightBottomLeft");
-	fRevealUp					= GetIcon16FromResource("RevealUp");
-	fRevealDown				= GetIcon16FromResource("RevealDown");
-	fRevealLeft				= GetIcon16FromResource("RevealLeft");
-	fRevealRight				= GetIcon16FromResource("RevealRight");
+	fWipeDown                                       = GetIcon16FromResource("WipeDown");
+	fWipeLeft                                       = GetIcon16FromResource("WipeLeft");
+	fWipeRight                                      = GetIcon16FromResource("WipeRight");
+	fWipeUp                                 = GetIcon16FromResource("WipeUp");
+	fWipeBottomLeftTopRight = GetIcon16FromResource("WipeBottomLeftTopRight");
+	fWipeBottomRightTopLeft = GetIcon16FromResource("WipeBottomRightTopLeft");
+	fWipeTopLeftBottomRight = GetIcon16FromResource("WipeTopLeftBottomRight");
+	fWipeTopRightBottomLeft = GetIcon16FromResource("WipeTopRightBottomLeft");
+	fCurtainsIn                             = GetIcon16FromResource("CurtainsIn");
+	fCurtainsOut                            = GetIcon16FromResource("CurtainsOut");
+	fRevealBottomLeftTopRight       = GetIcon16FromResource("RevealBottomLeftTopRight");
+	fRevealBottomRightTopLeft       = GetIcon16FromResource("RevealBottomRightTopLeft");
+	fRevealTopLeftBottomRight       = GetIcon16FromResource("RevealTopLeftBottomRight");
+	fRevealTopRightBottomLeft       = GetIcon16FromResource("RevealTopRightBottomLeft");
+	fRevealUp                                       = GetIcon16FromResource("RevealUp");
+	fRevealDown                             = GetIcon16FromResource("RevealDown");
+	fRevealLeft                             = GetIcon16FromResource("RevealLeft");
+	fRevealRight                            = GetIcon16FromResource("RevealRight");
 
 	//	Controls
-	fExportSliderLeft		= GetCicnFromResource("ExportSliderLeft");
-	fExportSliderRight		= GetCicnFromResource("ExportSliderRight");;
+	fExportSliderLeft               = GetCicnFromResource("ExportSliderLeft");
+	fExportSliderRight              = GetCicnFromResource("ExportSliderRight");;
 
 	//	Keyframes
-	fKeyframeOff 	= GetCicnFromResource("KeyframeOff");
-	fKeyframeOn  	= GetCicnFromResource("KeyframeOn");
+	fKeyframeOff    = GetCicnFromResource("KeyframeOff");
+	fKeyframeOn     = GetCicnFromResource("KeyframeOn");
 }
 
 //---------------------------------------------------------------------

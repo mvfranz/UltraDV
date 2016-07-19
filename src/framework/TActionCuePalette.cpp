@@ -46,8 +46,8 @@ const BRect kMediaCueBounds(10, 50, 20+kCueIconWidth, 60+((kCueIconHeight+kCueTe
 //
 //
 
-TActionCuePalette::TActionCuePalette():BWindow( kMediaCueBounds, "Action", B_FLOATING_WINDOW_LOOK, B_FLOATING_ALL_WINDOW_FEEL,
-									  B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
+TActionCuePalette::TActionCuePalette() : BWindow( kMediaCueBounds, "Action", B_FLOATING_WINDOW_LOOK, B_FLOATING_ALL_WINDOW_FEEL,
+	                                          B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
 {
 	Init();
 }
@@ -126,7 +126,7 @@ void TActionCuePalette::MessageReceived(BMessage* message)
 	switch (message->what)
 	{
 
-		default:
+	default:
 		BWindow::MessageReceived(message);
 		break;
 

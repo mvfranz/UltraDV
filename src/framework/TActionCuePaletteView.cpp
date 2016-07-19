@@ -29,11 +29,11 @@
 // Constants
 
 
-// 	I am subtracting l pixel of the width and height to create an actual
-// 	width offset from 0 (ie: 0-31 = 32 pixels)
-// 	The media cue button itself is offset form thesides and top of the
+//      I am subtracting l pixel of the width and height to create an actual
+//      width offset from 0 (ie: 0-31 = 32 pixels)
+//      The media cue button itself is offset form thesides and top of the
 //	surrounding palette area.
-const BRect	kCueButtonBounds(0, 0, kCueIconWidth-1, kCueIconHeight-1);
+const BRect kCueButtonBounds(0, 0, kCueIconWidth-1, kCueIconHeight-1);
 
 //---------------------------------------------------------------------
 //	Constructor
@@ -68,8 +68,8 @@ TActionCuePaletteView::~TActionCuePaletteView()
 
 void TActionCuePaletteView::Init()
 {
-	BBitmap 	*offBitmap;
-	BBitmap		*onBitmap;
+	BBitmap         *offBitmap;
+	BBitmap         *onBitmap;
 
 	// Set view background color
 	SetViewColor(kSteelGrey);
@@ -98,72 +98,72 @@ void TActionCuePaletteView::Init()
 	cueRect.Set( kCueButtonOffset, kCueButtonOffset, kCueIconWidth+kCueButtonOffset-1, kCueIconHeight+kCueButtonOffset-1);
 
 	// Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->fActionIcon;
-// ABH	onBitmap 	= GetAppIcons()->fActionIcon;
+// ABH	offBitmap       = GetAppIcons()->fActionIcon;
+// ABH	onBitmap        = GetAppIcons()->fActionIcon;
 
 	// Create button
 	fActionCueButton = new TCueButton(cueRect, "ActionCue", offBitmap, onBitmap, new BMessage(ACTION_CUE_MSG), kActionCue);
 	AddChild(fActionCueButton);
 
 
-    //
-    //	Button Cue
+	//
+	//	Button Cue
 
-    // Set button location
-    cueRect.top 	= cueRect.top+kCueIconHeight+kCueTextOffset;
-	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
+	// Set button location
+	cueRect.top         = cueRect.top+kCueIconHeight+kCueTextOffset;
+	cueRect.bottom  = cueRect.top+kCueIconHeight-1;
 
-    // Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->fButtonIcon;
-// ABH	onBitmap 	= GetAppIcons()->fButtonIcon;
+	// Load bitmaps
+// ABH	offBitmap       = GetAppIcons()->fButtonIcon;
+// ABH	onBitmap        = GetAppIcons()->fButtonIcon;
 
 	// Create button
 	fButtonCueButton = new TCueButton(cueRect, "ButtonCue", offBitmap, onBitmap, new BMessage(BUTTON_CUE_MSG), kButtonCue);
 	AddChild(fButtonCueButton);
 
 
-    // CD Cue
-    //
+	// CD Cue
+	//
 
-    // Set button location
-	cueRect.top 	= cueRect.top+kCueIconHeight+kCueTextOffset;
-	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
+	// Set button location
+	cueRect.top     = cueRect.top+kCueIconHeight+kCueTextOffset;
+	cueRect.bottom  = cueRect.top+kCueIconHeight-1;
 
-    // Load bitmaps
-//ABH 	offBitmap 	= GetAppIcons()->fCDIcon;
-//ABH	onBitmap 	= GetAppIcons()->fCDIcon;
+	// Load bitmaps
+//ABH   offBitmap       = GetAppIcons()->fCDIcon;
+//ABH	onBitmap        = GetAppIcons()->fCDIcon;
 
 	// Create button
 	fCDCueButton = new TCueButton(cueRect, "CDCue", offBitmap, onBitmap, new BMessage(CD_CUE_MSG), kCDCue);
 	AddChild(fCDCueButton);
 
 
-    // Control Cue
-    //
+	// Control Cue
+	//
 
- 	// Set button location
-	cueRect.top 	= cueRect.top+kCueIconHeight+kCueTextOffset;
-	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
+	// Set button location
+	cueRect.top     = cueRect.top+kCueIconHeight+kCueTextOffset;
+	cueRect.bottom  = cueRect.top+kCueIconHeight-1;
 
-    // Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->fControlIcon;
-// ABH	onBitmap 	= GetAppIcons()->fControlIcon;
+	// Load bitmaps
+// ABH	offBitmap       = GetAppIcons()->fControlIcon;
+// ABH	onBitmap        = GetAppIcons()->fControlIcon;
 
 	// Create button
 	fControlCueButton = new TCueButton(cueRect, "ControlCue", offBitmap, onBitmap, new BMessage(CONTROL_CUE_MSG), kControlCue);
 	AddChild(fControlCueButton);
 
 
-    // Marker Cue
-    //
+	// Marker Cue
+	//
 
-    // Set button location
-	cueRect.top 	= cueRect.top+kCueIconHeight+kCueTextOffset;
-	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
+	// Set button location
+	cueRect.top     = cueRect.top+kCueIconHeight+kCueTextOffset;
+	cueRect.bottom  = cueRect.top+kCueIconHeight-1;
 
-    // Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->fMarkerIcon;
-// ABH	onBitmap 	= GetAppIcons()->fMarkerIcon;
+	// Load bitmaps
+// ABH	offBitmap       = GetAppIcons()->fMarkerIcon;
+// ABH	onBitmap        = GetAppIcons()->fMarkerIcon;
 
 	// Create button
 	fMarkerCueButton = new TCueButton(cueRect, "", offBitmap, onBitmap, new BMessage(MARKER_CUE_MSG), kMarkerCue);
@@ -171,32 +171,32 @@ void TActionCuePaletteView::Init()
 
 
 
-    // Pause Cue
-    //
+	// Pause Cue
+	//
 
 	// Set button location
-	cueRect.top 	= cueRect.top+kCueIconHeight+kCueTextOffset;
-	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
+	cueRect.top     = cueRect.top+kCueIconHeight+kCueTextOffset;
+	cueRect.bottom  = cueRect.top+kCueIconHeight-1;
 
-    // Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->fPauseIcon;
-// ABH	onBitmap 	= GetAppIcons()->fPauseIcon;
+	// Load bitmaps
+// ABH	offBitmap       = GetAppIcons()->fPauseIcon;
+// ABH	onBitmap        = GetAppIcons()->fPauseIcon;
 
 	// Create button
 	fPauseCueButton = new TCueButton(cueRect, "PauseCue", offBitmap, onBitmap, new BMessage(PAUSE_CUE_MSG), kPauseCue);
 	AddChild(fPauseCueButton);
 
 
-    // Video Cue
-    //
+	// Video Cue
+	//
 
 	// Set button location
-	cueRect.top 	= cueRect.top+kCueIconHeight+kCueTextOffset;
-	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
+	cueRect.top     = cueRect.top+kCueIconHeight+kCueTextOffset;
+	cueRect.bottom  = cueRect.top+kCueIconHeight-1;
 
 	// Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->fVideoIcon;
-// ABH	onBitmap 	= GetAppIcons()->fVideoIcon;
+// ABH	offBitmap       = GetAppIcons()->fVideoIcon;
+// ABH	onBitmap        = GetAppIcons()->fVideoIcon;
 
 	// Create button
 	fVideoCueButton = new TCueButton(cueRect, "VideoCue", offBitmap, onBitmap, new BMessage(VIDEO_CUE_MSG), kVideoCue);
@@ -218,16 +218,16 @@ void TActionCuePaletteView::Draw(BRect updateRect)
 
 	// Setup font
 	BFont saveFont;
-   	GetFont(&saveFont);
+	GetFont(&saveFont);
 	SetFont(be_bold_font);
 	SetFontSize(10);
-   	SetHighColor(kBlack);
+	SetHighColor(kBlack);
 
 	// Draw the cue item text descriptions
 	//
 
-	float 	stringWidth;
-	BPoint 	textPt;
+	float stringWidth;
+	BPoint textPt;
 
 	// Action
 	textPt.y = kCueIconHeight+(kCueButtonOffset*3);

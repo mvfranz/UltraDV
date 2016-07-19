@@ -67,8 +67,7 @@ TNewProject::TNewProject(MuseumApp *parent, BMessage *theMessage) : BWindow(theM
 
 TNewProject::~TNewProject()
 {
-	if (fPresetList)
-	{
+	if (fPresetList) {
 		FreePresetList(fPresetList);
 		delete fPresetList;
 	}
@@ -83,7 +82,7 @@ TNewProject::~TNewProject()
 
 void TNewProject::Init()
 {
-WATCH("In TNewProject::Init\n");
+	WATCH("In TNewProject::Init\n");
 	// Get dialog items
 	fBackground = (BView *)FindView("NewProjectView");
 	ASSERT(fBackground);
@@ -136,7 +135,7 @@ WATCH("In TNewProject::Init\n");
 
 		fPresetList = LoadPresets();
 		if (fPresetList) {
-printf("LoadPresets returned count of %d\n",fPresetList->CountItems());
+			printf("LoadPresets returned count of %d\n",fPresetList->CountItems());
 			SetupPresetList(fPresetList, fPresetsListView);
 		}
 		// We have a big problem if we can't create a new set...
@@ -149,7 +148,7 @@ printf("LoadPresets returned count of %d\n",fPresetList->CountItems());
 	// Set focus to first item in list
 	fPresetsListView->Select(0);
 	fPresetsListView->MakeFocus(true);
-WATCH("Leaving TNewProject::Init\n");
+	WATCH("Leaving TNewProject::Init\n");
 }
 
 
@@ -164,111 +163,108 @@ WATCH("Leaving TNewProject::Init\n");
 
 void TNewProject::MessageReceived(BMessage* message)
 {
-WATCH("In TNewProject::MessageReceived\n");
+	WATCH("In TNewProject::MessageReceived\n");
 
 
-			char msg1[10];
-			memset(msg1, '\0', 9);
-			memcpy(msg1,&(message->what),4);
-			printf("TNP::MR before switch: ");
-			printf(" %s\n",msg1);
+	char msg1[10];
+	memset(msg1, '\0', 9);
+	memcpy(msg1,&(message->what),4);
+	printf("TNP::MR before switch: ");
+	printf(" %s\n",msg1);
 
 
 	switch(message->what)
-	{	// User pressed OK button.  Inform app about project settings
-		case OK_MSG:
-			{
-WATCH("TWP::MR: OK button\n");
-				// Retrive preset from list
-				TPreset *thePreset = static_cast<TPreset *>(fPresetList->ItemAt(GetSelectedItem()));
+	{       // User pressed OK button.  Inform app about project settings
+	case OK_MSG:
+	{
+		WATCH("TWP::MR: OK button\n");
+		// Retrive preset from list
+		TPreset *thePreset = static_cast<TPreset *>(fPresetList->ItemAt(GetSelectedItem()));
 
-				// Archive it and add it to the message
-				BMessage invokeMessage(NEW_PROJECT_MSG);
-				BMessage *archiveMessage = new BMessage();
-				thePreset->Archive(archiveMessage);
-				invokeMessage.AddMessage("Preset", archiveMessage);
+		// Archive it and add it to the message
+		BMessage invokeMessage(NEW_PROJECT_MSG);
+		BMessage *archiveMessage = new BMessage();
+		thePreset->Archive(archiveMessage);
+		invokeMessage.AddMessage("Preset", archiveMessage);
 
-				// Inform application
-				fParent->PostMessage(&invokeMessage);
-				Lock();
-				Quit();
-			}
-			break;
+		// Inform application
+		fParent->PostMessage(&invokeMessage);
+		Lock();
+		Quit();
+	}
+	break;
 
-		case CANCEL_MSG:
-			{
-WATCH("TWP:MR: CANCEL\n");
-				// 	Quit application if there are no cue sheets open, otherwise
-				//	just quit
-				BList *theList = fParent->GetCueSheetList();
-				if (theList)
-				{
-					if (theList->CountItems() == 0)
-						fParent->PostMessage(B_QUIT_REQUESTED);
-				}
-				else
-					fParent->PostMessage(B_QUIT_REQUESTED);
+	case CANCEL_MSG:
+	{
+		WATCH("TWP:MR: CANCEL\n");
+		//      Quit application if there are no cue sheets open, otherwise
+		//	just quit
+		BList *theList = fParent->GetCueSheetList();
+		if (theList) {
+			if (theList->CountItems() == 0)
+				fParent->PostMessage(B_QUIT_REQUESTED);
+		} else
+			fParent->PostMessage(B_QUIT_REQUESTED);
 
-				Lock();
-				Quit();
-			}
-			break;
+		Lock();
+		Quit();
+	}
+	break;
 
-		//case OPEN_MSG:
-		//	break;
+	//case OPEN_MSG:
+	//	break;
 
-		// List item was selected
-		case LIST_SELECT_MSG:
-			{
-WATCH("TNP::MessageReceived: LIST_SELECT_MSG\n");
-				// 	Make sure that we have an item selected.  If not,
-				//	select first item
-				if ( fPresetsListView->CurrentSelection() < 0)
-				{
-					fPresetsListView->Select(0);
-					fPresetsListView->ScrollToSelection();
-				}
+	// List item was selected
+	case LIST_SELECT_MSG:
+	{
+		WATCH("TNP::MessageReceived: LIST_SELECT_MSG\n");
+		//      Make sure that we have an item selected.  If not,
+		//	select first item
+		if ( fPresetsListView->CurrentSelection() < 0) {
+			fPresetsListView->Select(0);
+			fPresetsListView->ScrollToSelection();
+		}
 
-				// Display settings in setting area
-				fSettingsBox->Invalidate();
+		// Display settings in setting area
+		fSettingsBox->Invalidate();
 
-			}
-			break;
+	}
+	break;
 
-		//  User double clicked item.  Load preset and notify app
-		case LIST_INVOKE_MSG:
-			{
+	//  User double clicked item.  Load preset and notify app
+	case LIST_INVOKE_MSG:
+	{
 
-WATCH("TNP::MessageReceived: LIST_INVOKE_MSG\n")
-				// Make sure an item is selected
-				if ( fPresetsListView->CurrentSelection() > 0){
-					// Get item selected from message
-					int32 theItem;
-					message->FindInt32("index", &theItem);
+		WATCH("TNP::MessageReceived: LIST_INVOKE_MSG\n")
+		// Make sure an item is selected
+		if ( fPresetsListView->CurrentSelection() > 0) {
+			// Get item selected from message
+			int32 theItem;
+			message->FindInt32("index", &theItem);
 
-					// Retreive preset from list
-					TPreset *thePreset = static_cast<TPreset *>(fPresetList->ItemAt(theItem));
+			// Retreive preset from list
+			TPreset *thePreset = static_cast<TPreset *>(fPresetList->ItemAt(theItem));
 
-					// Archive it and add it to the message
-					BMessage invokeMessage(NEW_PROJECT_MSG);
-					BMessage *archiveMessage = new BMessage();
-					thePreset->Archive(archiveMessage);
-					invokeMessage.AddMessage("Preset", archiveMessage);
+			// Archive it and add it to the message
+			BMessage invokeMessage(NEW_PROJECT_MSG);
+			BMessage *archiveMessage = new BMessage();
+			thePreset->Archive(archiveMessage);
+			invokeMessage.AddMessage("Preset", archiveMessage);
 
-					// Inform application
-					fParent->PostMessage(&invokeMessage);
-					Lock();
-					Quit();
-				} else {
-					WATCH("PresetListView: no current selection!\n");
-				}
-			}
-			break;
+			// Inform application
+			fParent->PostMessage(&invokeMessage);
+			Lock();
+			Quit();
+		} else {
+			WATCH("PresetListView: no current selection!\n");
+		}
+	}
+	break;
 
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 
 }
@@ -286,17 +282,17 @@ WATCH("TNP::MessageReceived: LIST_INVOKE_MSG\n")
 
 void TNewProject::GetDialogSettings()
 {
-printf("TNP:GDS not implemented!\n");
+	printf("TNP:GDS not implemented!\n");
 	/*
-	// Set cue sheet's TimeFormat based on user changes
-	BMessage *message = new BMessage(TIMEFORMAT_CHANGED_MSG);
-	short format = fTimeFormat;
-	message->AddInt16("TimeFormat", format);
-	TCueSheetWindow *theWindow = static_cast<MuseumApp *>(be_app)->GetCueSheet();
-	TCueSheetView *theView = theWindow->GetCueSheetView();
-	theWindow->PostMessage( message, theView);
-	delete message;
-	*/
+	   // Set cue sheet's TimeFormat based on user changes
+	   BMessage *message = new BMessage(TIMEFORMAT_CHANGED_MSG);
+	   short format = fTimeFormat;
+	   message->AddInt16("TimeFormat", format);
+	   TCueSheetWindow *theWindow = static_cast<MuseumApp *>(be_app)->GetCueSheet();
+	   TCueSheetView *theView = theWindow->GetCueSheetView();
+	   theWindow->PostMessage( message, theView);
+	   delete message;
+	 */
 	// Set new start time
 
 	// Now set duration.  We can use this and ignore the end time because it has
@@ -324,80 +320,79 @@ BList  *TNewProject::LoadPresets()
 	BEntry entry(&appInfo.ref);
 	BDirectory settingsDir;
 	entry.GetParent(&settingsDir);
-// ABH 	if (settingsDir.SetTo(&settingsDir, kPresetsPathString) != B_OK){
-	if (settingsDir.SetTo(kPresetsPathString) != B_OK){
+// ABH  if (settingsDir.SetTo(&settingsDir, kPresetsPathString) != B_OK){
+	if (settingsDir.SetTo(kPresetsPathString) != B_OK) {
 		printf("LoadPresets: SetTo failed\n");
 	} else {
 		printf("LoadPresets: SetTo succeeded\n");
 	}
 
-	status_t 	myErr;
-	BList		*refList = new BList();
+	status_t myErr;
+	BList           *refList = new BList();
 
 	if (settingsDir.InitCheck() == B_OK) { // ABH this fails
 		int32 entries = settingsDir.CountEntries();
 
-		for( int32 index = 0; index < entries; index++)	{
+		for( int32 index = 0; index < entries; index++) {
 			BEntry *theEntry = new BEntry();
 			myErr = settingsDir.GetNextEntry(theEntry, true);
 
 			// Add it to our list if we are successful
-			if (myErr != B_ENTRY_NOT_FOUND)	{
+			if (myErr != B_ENTRY_NOT_FOUND) {
 				refList->AddItem(theEntry);
-			}else
+			} else
 				delete theEntry;
 		}
 	} else { //ABH
 		printf("settingsDir failed in TNP::LoadPresets\n");
 		int r_val = settingsDir.InitCheck();
-		switch (r_val){
-			case B_OK:
-				printf("B_OK\n");
-				break;
-			case B_BAD_VALUE:
-				printf("bad value\n");
-				break;
-			case B_ENTRY_NOT_FOUND:
-				printf("entry not found\n");
-				break;
-			case B_NAME_TOO_LONG:
-				printf("name too long\n");
-				break;
-			case B_LINK_LIMIT:
-				printf("link limit\n");
-				break;
-			case B_NO_MEMORY:
-				printf("no memory\n");
-				break;
-			case B_FILE_ERROR:
-				printf("file error\n");
-				break;
-			default:
-				printf("default\n");
-				break;
+		switch (r_val) {
+		case B_OK:
+			printf("B_OK\n");
+			break;
+		case B_BAD_VALUE:
+			printf("bad value\n");
+			break;
+		case B_ENTRY_NOT_FOUND:
+			printf("entry not found\n");
+			break;
+		case B_NAME_TOO_LONG:
+			printf("name too long\n");
+			break;
+		case B_LINK_LIMIT:
+			printf("link limit\n");
+			break;
+		case B_NO_MEMORY:
+			printf("no memory\n");
+			break;
+		case B_FILE_ERROR:
+			printf("file error\n");
+			break;
+		default:
+			printf("default\n");
+			break;
 		}
 	}
 
 	// March through list and load presets in the refList
-	for (int32 index = 0; index < refList->CountItems(); index++)
-	{
+	for (int32 index = 0; index < refList->CountItems(); index++) {
 		// Validate that the items in the list are cue add-ons
 		//BEntry *presetEntry = (BEntry *)refList->ItemAt(index);
 		BEntry *presetEntry = static_cast<BEntry *>(refList->ItemAt(index));
 
-		if (presetEntry){
+		if (presetEntry) {
 
 			// Create file from ref
 			BFile *openFile = new BFile(presetEntry, B_READ_ONLY);
 
-			if (openFile->InitCheck() == B_OK){
+			if (openFile->InitCheck() == B_OK) {
 
 				// Is this a valid file?  Read in the header and check...
 				openFile->Seek(0, SEEK_SET);
-				ChunkHeader	fileHeader;
+				ChunkHeader fileHeader;
 				openFile->Read(&fileHeader, sizeof(ChunkHeader));
 
-				if (fileHeader.chunkID == kPresetChunkID){
+				if (fileHeader.chunkID == kPresetChunkID) {
 
 					// Load in archived BMessage
 					void *data = malloc( fileHeader.chunkSize);
@@ -407,14 +402,14 @@ BList  *TNewProject::LoadPresets()
 					BMessage *presetMessage = new BMessage();
 					presetMessage->Unflatten((const char *)data);
 
-					if (presetMessage){
+					if (presetMessage) {
 
-					 	BArchivable *unarchived = instantiate_object(presetMessage);
-					 	if ( unarchived ){
+						BArchivable *unarchived = instantiate_object(presetMessage);
+						if ( unarchived ) {
 
 							// Add cue to our list of unarchived cues
 							TPreset *thePreset = cast_as(unarchived, TPreset);
-		  					if (thePreset)
+							if (thePreset)
 								presetList->AddItem(thePreset);
 						}
 					}
@@ -454,19 +449,17 @@ void TNewProject::SetupPresetList(BList *presetList, BListView *presetListView )
 	ASSERT(presetList);
 	ASSERT(presetListView);
 	// ABH
-	if (!presetList){
+	if (!presetList) {
 		printf("TNP::SetupPresetList: presetList == NULL!\n");
 	}
-	if (!presetListView){
+	if (!presetListView) {
 		printf("TNP::SetupPresetList: presetListView == NULL!\n");
 	}
 
-	for( int32 index = 0; index < presetList->CountItems(); index++ )
-	{
+	for( int32 index = 0; index < presetList->CountItems(); index++ ) {
 		TPreset *thePreset = static_cast<TPreset *>(presetList->ItemAt(index));
 
-		if (thePreset)
-		{
+		if (thePreset) {
 			BStringItem *theItem = new BStringItem(thePreset->fName, 0, true);
 			presetListView->AddItem(theItem);
 		}
@@ -483,10 +476,8 @@ void TNewProject::SetupPresetList(BList *presetList, BListView *presetListView )
 
 void TNewProject::FreePresetList(BList *presetList)
 {
-	if (presetList)
-	{
-		for(int32 index = 0; index < presetList->CountItems(); index++)
-		{
+	if (presetList) {
+		for(int32 index = 0; index < presetList->CountItems(); index++) {
 			TPreset *preset = static_cast<TPreset *>(presetList->ItemAt(index));
 			if (preset)
 				delete preset;
@@ -511,7 +502,7 @@ void TNewProject::CreateDefaultPresets()
 	//
 	//	Create default set
 	//
-printf("In TNP::CreateDefaultPresets\n");
+	printf("In TNP::CreateDefaultPresets\n");
 
 	// Online Video 01
 	TPreset online01Preset("Online Video 01");
@@ -520,11 +511,11 @@ printf("In TNP::CreateDefaultPresets\n");
 	strcpy (online01Preset.fDescription03, "Description Line Three");
 	strcpy (online01Preset.fDescription04, "Description Line Four");
 	strcpy (online01Preset.fDescription05, "Description Line Five");
-	online01Preset.fTimebase 		 = B_TIMECODE_24;
+	online01Preset.fTimebase                 = B_TIMECODE_24;
 	online01Preset.fAudioCompressor = M_A_MULAW_TYPE;
 	online01Preset.fVideoCompressor = M_V_SORENSON_TYPE;
-	online01Preset.fFrameWidth  	 = 320;
-	online01Preset.fFrameHeight 	 = 240;
+	online01Preset.fFrameWidth       = 320;
+	online01Preset.fFrameHeight      = 240;
 	online01Preset.WriteToFile(online01Preset.fName);
 
 	// Online Video 02
@@ -534,11 +525,11 @@ printf("In TNP::CreateDefaultPresets\n");
 	strcpy (online02Preset.fDescription03, "Description Line Three");
 	strcpy (online02Preset.fDescription04, "Description Line Four");
 	strcpy (online02Preset.fDescription05, "Description Line Five");
-	online02Preset.fTimebase 			= B_TIMECODE_24;
-	online02Preset.fAudioCompressor 	= M_A_MULAW_TYPE;
-	online02Preset.fVideoCompressor 	= M_V_SORENSON_TYPE;
-	online02Preset.fFrameWidth  		= 320;
-	online02Preset.fFrameHeight 		= 240;
+	online02Preset.fTimebase                        = B_TIMECODE_24;
+	online02Preset.fAudioCompressor         = M_A_MULAW_TYPE;
+	online02Preset.fVideoCompressor         = M_V_SORENSON_TYPE;
+	online02Preset.fFrameWidth              = 320;
+	online02Preset.fFrameHeight             = 240;
 	online02Preset.WriteToFile(online02Preset.fName);
 
 	// Online Video 03
@@ -604,11 +595,11 @@ printf("In TNP::CreateDefaultPresets\n");
 	strcpy (cd01.fDescription03, "Description Line Three");
 	strcpy (cd01.fDescription04, "Description Line Four");
 	strcpy (cd01.fDescription05, "Description Line Five");
-	cd01.fTimebase 		= B_TIMECODE_24;
-	cd01.fAudioCompressor 	= M_A_MULAW_TYPE;
-	cd01.fVideoCompressor 	= M_V_SORENSON_TYPE;
-	cd01.fFrameWidth 		= 320;
-	cd01.fFrameHeight 		= 240;
+	cd01.fTimebase          = B_TIMECODE_24;
+	cd01.fAudioCompressor   = M_A_MULAW_TYPE;
+	cd01.fVideoCompressor   = M_V_SORENSON_TYPE;
+	cd01.fFrameWidth                = 320;
+	cd01.fFrameHeight               = 240;
 	cd01.WriteToFile(cd01.fName);
 
 	// CD-ROM Video 02

@@ -72,21 +72,21 @@ void TVideoCompressionView::Init()
 	SetViewColor(kBeGrey);
 
 	// Find view items
-	fCompressorMenuField 	= (BMenuField *)FindView("CompressorMenuField");
-	fDepthMenuField 		= (BMenuField *)FindView("DepthMenuField");
+	fCompressorMenuField    = (BMenuField *)FindView("CompressorMenuField");
+	fDepthMenuField                 = (BMenuField *)FindView("DepthMenuField");
 
-	fQualityString 	= (BStringView *)FindView("QualityString");
+	fQualityString  = (BStringView *)FindView("QualityString");
 
-	fFPSTextControl 	= (BTextControl *)FindView("FPSTextControl");
+	fFPSTextControl         = (BTextControl *)FindView("FPSTextControl");
 
-	fKeyframeCheckBox		= (BCheckBox *)FindView("KeyframeCheckBox");
-	fKeyframeTextControl 	= (BTextControl *)FindView("KeyframeTextControl");
+	fKeyframeCheckBox               = (BCheckBox *)FindView("KeyframeCheckBox");
+	fKeyframeTextControl    = (BTextControl *)FindView("KeyframeTextControl");
 
-	fLimitDataRateCheckBox		= (BCheckBox *)FindView("LimitDataRateCheckBox");
-	fLimitDataRateTextControl 	= (BTextControl *)FindView("LimitDataRateTextControl");
+	fLimitDataRateCheckBox          = (BCheckBox *)FindView("LimitDataRateCheckBox");
+	fLimitDataRateTextControl       = (BTextControl *)FindView("LimitDataRateTextControl");
 
 	//	Set up  preview view bounds.  Use attached view in BBox to set up size
-	BView *previewView	= (BView *)FindView("PreviewView");
+	BView *previewView      = (BView *)FindView("PreviewView");
 	fPreviewRect = previewView->Frame();
 	RemoveChild(previewView);
 	delete previewView;
@@ -99,8 +99,7 @@ void TVideoCompressionView::Init()
 
 	// Setup compressors menu
 	theMenu = fCompressorMenuField->Menu();
-	if (theMenu)
-	{
+	if (theMenu) {
 		// None
 		BMenuItem *noneItem = new BMenuItem("None", new BMessage(VID_RAW_MSG)  );
 		//rawItem->SetTarget(be_app);
@@ -197,8 +196,7 @@ void TVideoCompressionView::Init()
 
 	// Setup compressors menu
 	theMenu = fDepthMenuField->Menu();
-	if (theMenu)
-	{
+	if (theMenu) {
 		// 8-bit
 		BMenuItem *eightBitItem = new BMenuItem("8-bit", new BMessage(VID_RAW_MSG)  );
 		//eightBitItem->SetTarget(be_app);
@@ -220,10 +218,10 @@ void TVideoCompressionView::Init()
 
 	// Create quality slider
 	BRect sliderFrame;
-	sliderFrame.left 	= fQualityString->Frame().right+10;
-	sliderFrame.top 	= fQualityString->Frame().top - 4;
-	sliderFrame.right 	= sliderFrame.left + 100;
-	sliderFrame.bottom 	= sliderFrame.top + 10;
+	sliderFrame.left        = fQualityString->Frame().right+10;
+	sliderFrame.top         = fQualityString->Frame().top - 4;
+	sliderFrame.right       = sliderFrame.left + 100;
+	sliderFrame.bottom      = sliderFrame.top + 10;
 
 	fQualitySlider = new TMuseumSlider(sliderFrame, "Quality", NULL, new BMessage(VID_RAW_MSG), -100, +100);
 	//fQualitySlider->SetModificationMessage(new BMessage(msg_brightness));
@@ -253,8 +251,7 @@ void TVideoCompressionView::AttachedToWindow()
 	//	Get pointer to previewView and attach to BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");
 	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
-	if (previewView)
-	{
+	if (previewView) {
 		previewBox->AddChild(previewView);
 		previewView->MoveTo(fPreviewRect.left, fPreviewRect.top);
 		previewView->ResizeTo(fPreviewRect.Width(), fPreviewRect.Height());
@@ -278,8 +275,7 @@ void TVideoCompressionView::DetachedFromWindow()
 	//	Get pointer to previewView and detach from BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");
 	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();
-	if (previewView)
-	{
+	if (previewView) {
 		previewView->Hide();
 		previewBox->RemoveChild(previewView);
 	}

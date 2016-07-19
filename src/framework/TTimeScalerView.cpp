@@ -39,7 +39,7 @@ const short kScalerTickHeight = 5;
 //
 //
 
-TTimeScalerView::TTimeScalerView(BRect bounds, TCueSheetView *parent) : BView(bounds, "TimeScalerView", B_FOLLOW_LEFT|B_FOLLOW_BOTTOM , B_WILL_DRAW)
+TTimeScalerView::TTimeScalerView(BRect bounds, TCueSheetView *parent) : BView(bounds, "TimeScalerView", B_FOLLOW_LEFT|B_FOLLOW_BOTTOM, B_WILL_DRAW)
 {
 	// Set CueSheet parent
 	//fCueSheet = parent;
@@ -100,10 +100,9 @@ void TTimeScalerView::Init()
 	short tickWidth = fControlRect.Width();
 	short spaceWidth = tickWidth / kTotalTicks;
 
-	for (short index = 0; index < kTotalTicks; index++)
-	{
-		fClickArray[index].Set( fControlRect.left +( index * spaceWidth), fControlRect.top,
-								 fControlRect.left + spaceWidth +( index * spaceWidth), fControlRect.bottom);
+	for (short index = 0; index < kTotalTicks; index++) {
+		fClickArray[index].Set( fControlRect.left +(index * spaceWidth), fControlRect.top,
+		                        fControlRect.left + spaceWidth +(index * spaceWidth), fControlRect.bottom);
 	}
 
 	// Load thumb bitmap
@@ -155,16 +154,14 @@ status_t TTimeScalerView::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TTimeScalerView");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -274,12 +271,11 @@ void TTimeScalerView::MouseDown(BPoint where)
 	Invalidate(fTextRect);
 
 	// If the user is holding down the mouse, move the indicator in reply
-	uint32 	buttons = 0;
-	BPoint 	savePt;
+	uint32 buttons = 0;
+	BPoint savePt;
 
 	GetMouse(&where, &buttons, true);
-	while (buttons)
-	{
+	while (buttons) {
 		// Clip the mouse point to be within our control rect
 		if (where.x < fControlRect.left)
 			where.x = fControlRect.left;
@@ -289,8 +285,7 @@ void TTimeScalerView::MouseDown(BPoint where)
 
 		where.y = fControlRect.Height()/2;
 
-		if (where != savePt)
-		{
+		if (where != savePt) {
 			// Now, locate which tick rect click is in
 			short rectIndex = GetClickRect(where);
 
@@ -339,8 +334,7 @@ void TTimeScalerView::DrawTimeScaleTicks()
 	SetHighColor(kBlack);
 	short tickWidth = kTimeScalerWidth / 2;
 	short spaceWidth = tickWidth / kTotalTicks;
-	for (short i = 0; i < kTotalTicks; i++)
-	{
+	for (short i = 0; i < kTotalTicks; i++) {
 		startPt.Set(fControlRect.left+5+(i * spaceWidth), fControlRect.top+1);
 		endPt.Set(fControlRect.left+5+(i * spaceWidth), fControlRect.top+kScalerTickHeight);
 		StrokeLine(startPt, endPt);
@@ -396,10 +390,8 @@ short TTimeScalerView::GetClickRect(BPoint where)
 	// Now, locate which tick rect click is in
 	short rectIndex = 0;
 
-	for (short index = 0; index < kTotalTicks; index++)
-	{
-		if ( fClickArray[index].Contains(where) )
-		{
+	for (short index = 0; index < kTotalTicks; index++) {
+		if ( fClickArray[index].Contains(where) ) {
 			rectIndex = index;
 			return rectIndex;
 		}

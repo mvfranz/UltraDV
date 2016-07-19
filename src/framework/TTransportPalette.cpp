@@ -49,9 +49,9 @@
 //
 //
 
-TTransportPalette::TTransportPalette(BRect bounds):BWindow( bounds, "Transport", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
-									  B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE),
-									  BMediaNode("TransportNode")
+TTransportPalette::TTransportPalette(BRect bounds) : BWindow( bounds, "Transport", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
+	                                                      B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE),
+	BMediaNode("TransportNode")
 {
 	Init();
 }
@@ -98,9 +98,9 @@ void TTransportPalette::Init()
 	Lock();
 
 	//	Set up member variables
-	fTimeToQuit	= false;
-	fIsPlaying 	= false;
-	fIsStopping	= false;
+	fTimeToQuit     = false;
+	fIsPlaying      = false;
+	fIsStopping     = false;
 
 	//
 	// Create background bitmap
@@ -114,8 +114,8 @@ void TTransportPalette::Init()
 	if (file.InitCheck())
 		return;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res(&file);
 	data = (BBitmap *)res.FindResource('bits', "Transport", &size);
@@ -166,9 +166,9 @@ void TTransportPalette::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 	}
 }
 
@@ -211,7 +211,7 @@ port_id TTransportPalette::ControlPort() const
 //	No an addon.  Return NULL
 //
 
-BMediaAddOn	*TTransportPalette::AddOn(int32 * internal_id) const
+BMediaAddOn     *TTransportPalette::AddOn(int32 * internal_id) const
 {
 	return NULL;
 }
@@ -244,20 +244,18 @@ status_t TTransportPalette::service_routine(void * data)
 
 void TTransportPalette::ServiceRoutine()
 {
-	while (!fTimeToQuit)
-	{
+	while (!fTimeToQuit) {
 		//	Read message
-		status_t 		err  = 0;
-		int32 			code = 0;
-		char 			msg[B_MEDIA_MESSAGE_SIZE];
+		status_t err  = 0;
+		int32 code = 0;
+		char msg[B_MEDIA_MESSAGE_SIZE];
 
 		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);
 
 		if (err == B_TIMED_OUT)
 			continue;
 
-		if (err < B_OK)
-		{
+		if (err < B_OK) {
 			printf("TTransportPalette::ServiceRoutine: Unexpected error in read_port(): %x\n", err);
 			continue;
 		}
@@ -297,13 +295,11 @@ void TTransportPalette::RunRoutine()
 {
 	char text[12];
 
-	while(!fTimeToQuit)
-	{
+	while(!fTimeToQuit) {
 		snooze(50000);
 
 		//	Update media_server
-		if (TimeSource()->IsRunning())
-		{
+		if (TimeSource()->IsRunning()) {
 			//	Update text
 			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
 			fTransportView->GetTransportText()->SetText(text);

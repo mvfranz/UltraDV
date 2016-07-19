@@ -60,9 +60,9 @@ void TAudioSourceView::Init()
 	SetViewColor(kBeGrey);
 
 	// Locate view items
-	fDeviceMenuField 	= (BMenuField *)FindView("DeviceMenuField");
-	fInputMenuField 	= (BMenuField *)FindView("InputMenuField");
-	fVolumeBox			= (BBox *)FindView("VolumeBox");
+	fDeviceMenuField        = (BMenuField *)FindView("DeviceMenuField");
+	fInputMenuField         = (BMenuField *)FindView("InputMenuField");
+	fVolumeBox                      = (BBox *)FindView("VolumeBox");
 
 	// Set up Input Slider
 	BView *inputView = (BView *)FindView("InputView");
@@ -81,7 +81,7 @@ void TAudioSourceView::Init()
 	fOutputSlider->Show();
 
 	// Set up level indicator
-	BView 	*levelsView = (BMenuField *)FindView("LevelsView");
+	BView   *levelsView = (BMenuField *)FindView("LevelsView");
 	fAudioLevelsView = new TAudioLevelsView(levelsView->Frame());
 	fVolumeBox->RemoveChild(levelsView);
 	delete levelsView;
@@ -92,8 +92,7 @@ void TAudioSourceView::Init()
 
 	// Setup Device menu
 	theMenu = fDeviceMenuField->Menu();
-	if (theMenu)
-	{
+	if (theMenu) {
 		// None
 		BMenuItem *defaultItem = new BMenuItem("Default", new BMessage(DEVICE_DEFAULT_MSG) );
 		theMenu->AddItem(defaultItem);
@@ -104,8 +103,7 @@ void TAudioSourceView::Init()
 
 	// Setup Input menu
 	theMenu = fInputMenuField->Menu();
-	if (theMenu)
-	{
+	if (theMenu) {
 		// None
 		BMenuItem *noneItem = new BMenuItem("None", new BMessage(SOURCE_NONE_MSG) );
 		theMenu->AddItem(noneItem);
@@ -128,31 +126,31 @@ void TAudioSourceView::Init()
 
 		// Select the current input item
 		/*int32 currentDevice;
-		BADCStream theStream;
-		if ( theStream.ADCInput(&currentDevice) == B_OK)
-		{
-			switch(currentDevice)
-			{
-				case B_MIC_IN:
-					if (theStream.IsMicBoosted())
-						mic20Item->SetMarked(true);
-					else
-						micItem->SetMarked(true);
-					break;
+		   BADCStream theStream;
+		   if ( theStream.ADCInput(&currentDevice) == B_OK)
+		   {
+		        switch(currentDevice)
+		        {
+		                case B_MIC_IN:
+		                        if (theStream.IsMicBoosted())
+		                                mic20Item->SetMarked(true);
+		                        else
+		                                micItem->SetMarked(true);
+		                        break;
 
-				case B_CD_IN:
-					cdItem->SetMarked(true);
-					break;
+		                case B_CD_IN:
+		                        cdItem->SetMarked(true);
+		                        break;
 
-				case B_LINE_IN:
-					auxItem->SetMarked(true);
-					break;
+		                case B_LINE_IN:
+		                        auxItem->SetMarked(true);
+		                        break;
 
-				default:
-					noneItem->SetMarked(true);
-					break;
-			}
-		}*/
+		                default:
+		                        noneItem->SetMarked(true);
+		                        break;
+		        }
+		   }*/
 	}
 
 }
@@ -171,47 +169,47 @@ void TAudioSourceView::MessageReceived(BMessage *theMessage)
 {
 	switch( theMessage->what)
 	{
-		// Set source to none
-		case SOURCE_NONE_MSG:
-			{
-				//BADCStream stream;
-				//stream.SetADCInput(B_CD_IN);
-			}
-			break;
+	// Set source to none
+	case SOURCE_NONE_MSG:
+	{
+		//BADCStream stream;
+		//stream.SetADCInput(B_CD_IN);
+	}
+	break;
 
-		case SOURCE_MIC_MSG:
-			{
-				//BADCStream stream;
-				//stream.SetADCInput(B_MIC_IN);
-				//stream.BoostMic(false);
-			}
-			break;
+	case SOURCE_MIC_MSG:
+	{
+		//BADCStream stream;
+		//stream.SetADCInput(B_MIC_IN);
+		//stream.BoostMic(false);
+	}
+	break;
 
-		case SOURCE_MIC_20_MSG:
-			{
-				//BADCStream stream;
-				//stream.SetADCInput(B_MIC_IN);
-				//stream.BoostMic(true);
-			}
-			break;
+	case SOURCE_MIC_20_MSG:
+	{
+		//BADCStream stream;
+		//stream.SetADCInput(B_MIC_IN);
+		//stream.BoostMic(true);
+	}
+	break;
 
-		case SOURCE_CD_MSG:
-			{
-				//BADCStream stream;
-				//stream.SetADCInput(B_CD_IN);
-			}
-			break;
+	case SOURCE_CD_MSG:
+	{
+		//BADCStream stream;
+		//stream.SetADCInput(B_CD_IN);
+	}
+	break;
 
-		case SOURCE_AUX_MSG:
-			{
-				//BADCStream stream;
-				//stream.SetADCInput(B_LINE_IN);
-			}
-			break;
+	case SOURCE_AUX_MSG:
+	{
+		//BADCStream stream;
+		//stream.SetADCInput(B_LINE_IN);
+	}
+	break;
 
-		default:
-			BView::MessageReceived(theMessage);
-			break;
+	default:
+		BView::MessageReceived(theMessage);
+		break;
 	}
 }
 
@@ -233,16 +231,14 @@ void TAudioSourceView::AttachedToWindow()
 
 	// Device Menu
 	BMenu *deviceMenu = fDeviceMenuField->Menu();
-	if (deviceMenu)
-	{
+	if (deviceMenu) {
 		BMenuItem *defaultItem = deviceMenu->FindItem(DEVICE_DEFAULT_MSG);
 		defaultItem->SetTarget(this);
 	}
 
 	// Input Menu
 	BMenu *inputMenu = fInputMenuField->Menu();
-	if (inputMenu)
-	{
+	if (inputMenu) {
 		BMenuItem *noneItem = inputMenu->FindItem(SOURCE_NONE_MSG);
 		noneItem->SetTarget(this);
 
@@ -260,31 +256,31 @@ void TAudioSourceView::AttachedToWindow()
 
 		// Select the current input item
 		/*int32 currentDevice;
-		BADCStream theStream;
-		if ( theStream.ADCInput(&currentDevice) == B_OK)
-		{
-			switch(currentDevice)
-			{
-				case B_MIC_IN:
-					if (theStream.IsMicBoosted())
-						mic20Item->SetMarked(true);
-					else
-						micItem->SetMarked(true);
-					break;
+		   BADCStream theStream;
+		   if ( theStream.ADCInput(&currentDevice) == B_OK)
+		   {
+		        switch(currentDevice)
+		        {
+		                case B_MIC_IN:
+		                        if (theStream.IsMicBoosted())
+		                                mic20Item->SetMarked(true);
+		                        else
+		                                micItem->SetMarked(true);
+		                        break;
 
-				case B_CD_IN:
-					cdItem->SetMarked(true);
-					break;
+		                case B_CD_IN:
+		                        cdItem->SetMarked(true);
+		                        break;
 
-				case B_LINE_IN:
-					auxItem->SetMarked(true);
-					break;
+		                case B_LINE_IN:
+		                        auxItem->SetMarked(true);
+		                        break;
 
-				default:
-					noneItem->SetMarked(true);
-					break;
-			}
-		}*/
+		                default:
+		                        noneItem->SetMarked(true);
+		                        break;
+		        }
+		   }*/
 	}
 }
 

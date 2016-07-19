@@ -44,8 +44,8 @@
 
 TPasteCues::TPasteCues(TCueSheetView *cueSheet, BList *cueList, BMessage *theMessage) : BWindow(theMessage)
 {
-	fCueSheet 	= cueSheet;
-	fCueList	= cueList;
+	fCueSheet       = cueSheet;
+	fCueList        = cueList;
 
 	// Default initialization
 	Init();
@@ -141,77 +141,76 @@ void TPasteCues::MessageReceived(BMessage* message)
 
 	switch(message->what)
 	{
-		// User pressed OK button.
-		case OK_MSG:
-			{
-				// Get total number of channels
-				int32 numChannels = fCueSheet->GetTotalChannels();
-				char numStr[10];
-				sprintf(numStr, "%d", numChannels);
+	// User pressed OK button.
+	case OK_MSG:
+	{
+		// Get total number of channels
+		int32 numChannels = fCueSheet->GetTotalChannels();
+		char numStr[10];
+		sprintf(numStr, "%d", numChannels);
 
-				// 	Get the time the user wants to paste at
-				int64 theTime = fPasteTime->GetTime();
+		//      Get the time the user wants to paste at
+		int64 theTime = fPasteTime->GetTime();
 
-				// 	Get the channel the user wants to paste into
-				int32 theChannel = atoi(fChannelText->Text());
+		//      Get the channel the user wants to paste into
+		int32 theChannel = atoi(fChannelText->Text());
 
-				// Send message to cue sheet view.  Add time, channel and cue list
-				if (theChannel > 0 && theChannel <= numChannels)
-				{
-					BMessage *theMessage = new BMessage(CUE_PASTE_MSG);
-					theMessage->AddPointer("CueList", fCueList);
-					theMessage->AddInt32("PasteTime", theTime);
-					theMessage->AddInt32("PasteChannel", theChannel);
-					(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(theMessage, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
-					delete theMessage;
-				}
+		// Send message to cue sheet view.  Add time, channel and cue list
+		if (theChannel > 0 && theChannel <= numChannels) {
+			BMessage *theMessage = new BMessage(CUE_PASTE_MSG);
+			theMessage->AddPointer("CueList", fCueList);
+			theMessage->AddInt32("PasteTime", theTime);
+			theMessage->AddInt32("PasteChannel", theChannel);
+			(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(theMessage, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );
+			delete theMessage;
+		}
 
-				// Close the dialog
-				Lock();
-				Quit();
-			}
-			break;
+		// Close the dialog
+		Lock();
+		Quit();
+	}
+	break;
 
-		// User has canceled the dialog
-		case CANCEL_MSG:
-			{
-				// Free the cue list
-				delete fCueList;
+	// User has canceled the dialog
+	case CANCEL_MSG:
+	{
+		// Free the cue list
+		delete fCueList;
 
-				Lock();
-				Quit();
-			}
-			break;
+		Lock();
+		Quit();
+	}
+	break;
 
-		// 	The text has been changed in the "In Channel" text box
-		// 	Contrain the number to the total number of channels
-		case IN_CHANNEL_MSG:
-			{
-     			// Get total number of channels
-				int32 numChannels = fCueSheet->GetTotalChannels();
-				char numStr[10];
-				char oneStr[10];
+	//      The text has been changed in the "In Channel" text box
+	//      Contrain the number to the total number of channels
+	case IN_CHANNEL_MSG:
+	{
+		// Get total number of channels
+		int32 numChannels = fCueSheet->GetTotalChannels();
+		char numStr[10];
+		char oneStr[10];
 
-				sprintf(oneStr, "%d", 1);
-				sprintf(numStr, "%d", numChannels);
+		sprintf(oneStr, "%d", 1);
+		sprintf(numStr, "%d", numChannels);
 
-				// Get the channel number entered
-				int32 theNum = atoi( fChannelText->Text());
+		// Get the channel number entered
+		int32 theNum = atoi( fChannelText->Text());
 
-				// 	If the after channel is less than zero, correct the user input
-				if (theNum < 1)
-     				fChannelText->SetText(oneStr);
+		//      If the after channel is less than zero, correct the user input
+		if (theNum < 1)
+			fChannelText->SetText(oneStr);
 
-				// 	If the after channel is greater than total channels,
-     			//	correct the user input
-				if (theNum > numChannels)
-     				fChannelText->SetText(numStr);
-     		}
-			break;
+		//      If the after channel is greater than total channels,
+		//	correct the user input
+		if (theNum > numChannels)
+			fChannelText->SetText(numStr);
+	}
+	break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 
 	}
 

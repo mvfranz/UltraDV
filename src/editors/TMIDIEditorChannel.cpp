@@ -8,7 +8,7 @@
 //
 //	Desc:	MIDI editor channel.
 //			Display the channel control which includes the volume slider,
-//			channel number, instrument name, mute and solo buttons, 
+//			channel number, instrument name, mute and solo buttons,
 //			pannimg control and track name.
 //
 //	Copyright ©1998 mediapede Software
@@ -28,17 +28,17 @@
 
 // Constants
 
-	 
+
 //---------------------------------------------------------------------
 //	Constructor
 //---------------------------------------------------------------------
 //
 //
 
-TMIDIEditorChannel::TMIDIEditorChannel(TMIDIEditor *parent, BRect bounds) : 
+TMIDIEditorChannel::TMIDIEditorChannel(TMIDIEditor *parent, BRect bounds) :
 	BView(bounds, "MIDIEditorView", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
 {
-	fParent = parent;		
+	fParent = parent;
 }
 
 
@@ -49,7 +49,7 @@ TMIDIEditorChannel::TMIDIEditorChannel(TMIDIEditor *parent, BRect bounds) :
 //
 
 TMIDIEditorChannel::~TMIDIEditorChannel()
-{			
+{
 }
 
 
@@ -61,7 +61,7 @@ TMIDIEditorChannel::~TMIDIEditorChannel()
 //
 
 void TMIDIEditorChannel::MouseDown(BPoint where)
-{	
+{
 }
 
 
@@ -151,7 +151,7 @@ void TMIDIEditorChannel::FrameMoved(BPoint new_position)
 
 void TMIDIEditorChannel::FrameResized(float new_width, float new_height)
 {
-	// For now, invalidate the whole screen and get a redraw filled to the 
+	// For now, invalidate the whole screen and get a redraw filled to the
 	// current frame size
 	//Invalidate();
 }
@@ -167,12 +167,12 @@ void TMIDIEditorChannel::FrameResized(float new_width, float new_height)
 //
 
 void TMIDIEditorChannel::MessageReceived(BMessage* message)
-{	
+{
 	switch (message->what)
 	{
-						
-	}		
-}	
+
+	}
+}
 
 
 #pragma mark -
@@ -185,24 +185,24 @@ void TMIDIEditorChannel::MessageReceived(BMessage* message)
 //
 
 void TMIDIEditorChannel::Draw(BRect updateRect)
-{	
-	
+{
+
 	BPoint startPt, endPt;
-	
+
 	// Set up environment
 	rgb_color saveColor = HighColor();
-	drawing_mode saveMode = DrawingMode();	
+	drawing_mode saveMode = DrawingMode();
 	float savePen = PenSize();
 	SetPenSize(0.0);
 	SetDrawingMode(B_OP_COPY);
-			
+
 	// Fill backgound
 	SetHighColor(kLightGrey);
 	FillRect( Bounds() );
-	
+
 	// Set pen color
 	SetHighColor(kDarkGrey);
-							
+
 	// Restore environment
 	SetPenSize(savePen);
 	SetDrawingMode(saveMode);

@@ -85,21 +85,21 @@ void TChannelName::MessageReceived(BMessage* message)
 
 	switch(message->what)
 	{
-		// User pressed OK button.  Update channel name with text in control field
-		case OK_MSG:
-			fChannel->SetChannelName( fTextView->Text() );
-			Lock();
-			Quit();
-			break;
+	// User pressed OK button.  Update channel name with text in control field
+	case OK_MSG:
+		fChannel->SetChannelName( fTextView->Text() );
+		Lock();
+		Quit();
+		break;
 
-		case CANCEL_MSG:
-			Lock();
-			Quit();
-			break;
+	case CANCEL_MSG:
+		Lock();
+		Quit();
+		break;
 
-		default:
-			BWindow::MessageReceived(message);
-			break;
+	default:
+		BWindow::MessageReceived(message);
+		break;
 
 	}
 

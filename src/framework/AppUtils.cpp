@@ -49,66 +49,66 @@ int32 GetUnitMSec(short format, short resolution)
 {
 	switch (resolution)
 	{
-		case 0:						// Frames/10ths
-			switch (format)
-			{
-				case B_TIMECODE_DEFAULT:
-					return 100.0;		// 10th second
-					break;
-
-				case B_TIMECODE_24:
-					return 1000.0 / 24;
-					break;
-
-				case B_TIMECODE_25:
-					return 1000.0 / 25;
-					break;
-
-				case B_TIMECODE_30_DROP_2:
-					return 1000.0 / 29.97;
-					break;
-
-				case B_TIMECODE_30:
-					return 1000.0 / 30;
-					break;
-			}
+	case 0:                                                 // Frames/10ths
+		switch (format)
+		{
+		case B_TIMECODE_DEFAULT:
+			return 100.0;                           // 10th second
 			break;
 
-		case 1:
-			return 250.0;			// 1/4 Second
+		case B_TIMECODE_24:
+			return 1000.0 / 24;
 			break;
 
-		case 2:						// Half Second
-			return 500.0;
+		case B_TIMECODE_25:
+			return 1000.0 / 25;
 			break;
 
-		case 3:						// One Second
-			return 1000.0;
+		case B_TIMECODE_30_DROP_2:
+			return 1000.0 / 29.97;
 			break;
 
-		case 4:						// 2 Seconds
-			return 2000.0;
+		case B_TIMECODE_30:
+			return 1000.0 / 30;
 			break;
+		}
+		break;
 
-		case 5:						// 5 Seconds
-			return 5000.0;
-			break;
+	case 1:
+		return 250.0;                           // 1/4 Second
+		break;
 
-		case 6:						// 10 Seconds
-			return 10000.0;
-			break;
+	case 2:                                                 // Half Second
+		return 500.0;
+		break;
 
-		case 7:						// 30 Seconds
-			return 30000.0;
-			break;
+	case 3:                                                 // One Second
+		return 1000.0;
+		break;
 
-		case 8:						// 1 Minute
-			return 60000.0;
-			break;
+	case 4:                                                 // 2 Seconds
+		return 2000.0;
+		break;
 
-		case 9:						// 5 Minutes
-			return 300000.0;
-			break;
+	case 5:                                                 // 5 Seconds
+		return 5000.0;
+		break;
+
+	case 6:                                                 // 10 Seconds
+		return 10000.0;
+		break;
+
+	case 7:                                                 // 30 Seconds
+		return 30000.0;
+		break;
+
+	case 8:                                                 // 1 Minute
+		return 60000.0;
+		break;
+
+	case 9:                                                 // 5 Minutes
+		return 300000.0;
+		break;
 
 //		case 10:					// 30 Minutes
 //			return 1800000.0;
@@ -127,15 +127,15 @@ int32 GetUnitMSec(short format, short resolution)
 //	Converts a millisecond time into a formatted time string.
 //
 
-#define		k30_DROP_MSEC_PER_NON_TENTH_MINUTE	59993.326
-#define		k30_DROP_MSEC_PER_TENTH_MINUTE		60060.066
-#define		k30_DROP_MSEC_PER_FRAME				33.3667
+#define         k30_DROP_MSEC_PER_NON_TENTH_MINUTE      59993.326
+#define         k30_DROP_MSEC_PER_TENTH_MINUTE          60060.066
+#define         k30_DROP_MSEC_PER_FRAME                         33.3667
 
 void TimeToString(uint32 mSecTime, short format, char str[256], bool stripLeadingZeros)
 {
-	short		hours, minutes, seconds, fraction;
-	uint32		mSecCopy = mSecTime;
-	bool		isNegative = mSecTime < 0;
+	short hours, minutes, seconds, fraction;
+	uint32 mSecCopy = mSecTime;
+	bool isNegative = mSecTime < 0;
 
 	if (isNegative)
 		mSecTime = -mSecTime;
@@ -155,65 +155,60 @@ void TimeToString(uint32 mSecTime, short format, char str[256], bool stripLeadin
 
 	switch (format)
 	{
-		case B_TIMECODE_DEFAULT:
-			fraction /= 10;		// convert to 1/100 sec.
-			break;
+	case B_TIMECODE_DEFAULT:
+		fraction /= 10;                 // convert to 1/100 sec.
+		break;
 
-		case B_TIMECODE_24:
-			fraction = (fraction * 24 + 12) / 1000;
-			break;
+	case B_TIMECODE_24:
+		fraction = (fraction * 24 + 12) / 1000;
+		break;
 
-		case B_TIMECODE_25:
-			fraction = (fraction * 25 + 13) / 1000;
-			break;
+	case B_TIMECODE_25:
+		fraction = (fraction * 25 + 13) / 1000;
+		break;
 
-		case B_TIMECODE_30_DROP_2:
-			hours 		= (int32)mSecCopy / 3600000L;
-			mSecCopy 	= (int32)mSecCopy % 3600000L;				// take out hours
-			minutes 	= (int32)mSecCopy / 600000L * 10;			// Ten minute marks
-			mSecCopy 	-= (minutes * 60000L);
+	case B_TIMECODE_30_DROP_2:
+		hours           = (int32)mSecCopy / 3600000L;
+		mSecCopy        = (int32)mSecCopy % 3600000L;                                   // take out hours
+		minutes         = (int32)mSecCopy / 600000L * 10;                               // Ten minute marks
+		mSecCopy        -= (minutes * 60000L);
 
-			// At this point, mSecCopy contains the number of milliseconds since
-			// the last ten minute (or 0 minute) time
+		// At this point, mSecCopy contains the number of milliseconds since
+		// the last ten minute (or 0 minute) time
 
-			fraction = 0;
-			// First minute is longer
-			if (mSecCopy > k30_DROP_MSEC_PER_TENTH_MINUTE)
-			{
+		fraction = 0;
+		// First minute is longer
+		if (mSecCopy > k30_DROP_MSEC_PER_TENTH_MINUTE) {
+			minutes++;
+			mSecCopy -= k30_DROP_MSEC_PER_TENTH_MINUTE;
+			while (mSecCopy > k30_DROP_MSEC_PER_NON_TENTH_MINUTE) {
 				minutes++;
-				mSecCopy -= k30_DROP_MSEC_PER_TENTH_MINUTE;
-				while (mSecCopy > k30_DROP_MSEC_PER_NON_TENTH_MINUTE)
-				{
-					minutes++;
-					mSecCopy -= k30_DROP_MSEC_PER_NON_TENTH_MINUTE;
-				}
-				// We start at frame 2
-				fraction = 2;
+				mSecCopy -= k30_DROP_MSEC_PER_NON_TENTH_MINUTE;
 			}
+			// We start at frame 2
+			fraction = 2;
+		}
 
-			// At this point, mSecCopy contains the number of milliseconds since the
-			// last minute time
-			fraction += (mSecCopy / k30_DROP_MSEC_PER_FRAME);
+		// At this point, mSecCopy contains the number of milliseconds since the
+		// last minute time
+		fraction += (mSecCopy / k30_DROP_MSEC_PER_FRAME);
 
-			// fraction is the number of frames...
-			seconds = fraction / 30;
-			fraction = fraction % 30;
-			break;
+		// fraction is the number of frames...
+		seconds = fraction / 30;
+		fraction = fraction % 30;
+		break;
 
-		case B_TIMECODE_30:
-			fraction = (fraction * 30 + 15) / 1000;
-			break;
+	case B_TIMECODE_30:
+		fraction = (fraction * 30 + 15) / 1000;
+		break;
 	}
 
-	if (isNegative)
-	{
+	if (isNegative) {
 		if (format == B_TIMECODE_30_DROP_2 || format == B_TIMECODE_30)
 			sprintf((char*)str, "-%02d:%02d:%02d.%02d\0", hours, minutes, seconds, fraction);
 		else
 			sprintf((char*)str, "-%02d:%02d:%02d:%02d\0", hours, minutes, seconds, fraction);
-	}
-	else
-	{
+	} else   {
 		if (format == B_TIMECODE_30_DROP_2 || format == B_TIMECODE_30)
 			sprintf((char*)str, "%02d:%02d:%02d.%02d\0", hours, minutes, seconds, fraction);
 		else
@@ -233,57 +228,57 @@ void GetTimeScaleString(short resolution, char *timeStr)
 {
 	switch (resolution)
 	{
-		// One Frame
-		case 0:
-			sprintf(timeStr, "One Frame");
-			break;
+	// One Frame
+	case 0:
+		sprintf(timeStr, "One Frame");
+		break;
 
-		// 1/4 Second
-		case 1:
-			sprintf(timeStr, "1/4 Second");
-			break;
+	// 1/4 Second
+	case 1:
+		sprintf(timeStr, "1/4 Second");
+		break;
 
-		// Half Second
-		case 2:
-			sprintf(timeStr, "1/2 Second");
-			break;
+	// Half Second
+	case 2:
+		sprintf(timeStr, "1/2 Second");
+		break;
 
-		// One Second
-		case 3:
-			sprintf(timeStr, "1 Second");
-			break;
+	// One Second
+	case 3:
+		sprintf(timeStr, "1 Second");
+		break;
 
-		// 2 Seconds
-		case 4:
-			sprintf(timeStr, "2 Seconds");
-			break;
+	// 2 Seconds
+	case 4:
+		sprintf(timeStr, "2 Seconds");
+		break;
 
-		// 5 Seconds
-		case 5:
-			sprintf(timeStr, "5 Seconds");
-			break;
+	// 5 Seconds
+	case 5:
+		sprintf(timeStr, "5 Seconds");
+		break;
 
-		// 10 Seconds
-		case 6:
-			sprintf(timeStr, "10 Seconds");
-			break;
+	// 10 Seconds
+	case 6:
+		sprintf(timeStr, "10 Seconds");
+		break;
 
-		// 30 Seconds
-		case 7:
-			sprintf(timeStr, "30 Seconds");
-			break;
+	// 30 Seconds
+	case 7:
+		sprintf(timeStr, "30 Seconds");
+		break;
 
-		// 1 Minute
-		case 8:
-			sprintf(timeStr, "1 Minute");
-			break;
+	// 1 Minute
+	case 8:
+		sprintf(timeStr, "1 Minute");
+		break;
 
-		// 5 Minutes
-		case 9:
-			sprintf(timeStr, "5 Minutes");
-			break;
+	// 5 Minutes
+	case 9:
+		sprintf(timeStr, "5 Minutes");
+		break;
 	}
-		// 30 Minutes
+	// 30 Minutes
 //		case 10:
 //			return 1800000.0;
 //			break;
@@ -333,30 +328,30 @@ uint32 PixelsToTime(uint32 pixels, short format, short resolution)
 	// Clip time to current resolution
 	switch (format)
 	{
-		case B_TIMECODE_DEFAULT:
-			frames  = theTime / 100;
-			theTime = (frames * 1000 + 12) / 24;
-			break;
+	case B_TIMECODE_DEFAULT:
+		frames  = theTime / 100;
+		theTime = (frames * 1000 + 12) / 24;
+		break;
 
-		case B_TIMECODE_24:
-			frames  = theTime / (1000.0 / 24);
-			theTime = (frames * 1000 + 12) / 24;
-			break;
+	case B_TIMECODE_24:
+		frames  = theTime / (1000.0 / 24);
+		theTime = (frames * 1000 + 12) / 24;
+		break;
 
-		case B_TIMECODE_25:
-			frames  = theTime / (1000.0 / 25);
-			theTime = (frames * 1000 + 13) / 25;
-			break;
+	case B_TIMECODE_25:
+		frames  = theTime / (1000.0 / 25);
+		theTime = (frames * 1000 + 13) / 25;
+		break;
 
-		case B_TIMECODE_30_DROP_2:
-			frames   =  theTime / (1000.0 / 29.97);
-			theTime = (frames * 1000 + 15) / 30;
-			break;
+	case B_TIMECODE_30_DROP_2:
+		frames   =  theTime / (1000.0 / 29.97);
+		theTime = (frames * 1000 + 15) / 30;
+		break;
 
-		case B_TIMECODE_30:
-			frames = theTime / (1000.0 / 30);
-			theTime = (frames * 1000 + 15) / 30;
-			break;
+	case B_TIMECODE_30:
+		frames = theTime / (1000.0 / 30);
+		theTime = (frames * 1000 + 15) / 30;
+		break;
 	}
 
 	return theTime;
@@ -379,30 +374,30 @@ uint32 ClipTime(uint32 theTime, short format, short resolution)
 	// Clip time to current resolution
 	switch (format)
 	{
-		case B_TIMECODE_DEFAULT:
-			frames  = theTime / 100;
-			theTime = (frames * 1000 + 12) / 24;
-			break;
+	case B_TIMECODE_DEFAULT:
+		frames  = theTime / 100;
+		theTime = (frames * 1000 + 12) / 24;
+		break;
 
-		case B_TIMECODE_24:
-			frames  = theTime / (1000.0 / 24);
-			theTime = (frames * 1000 + 12) / 24;
-			break;
+	case B_TIMECODE_24:
+		frames  = theTime / (1000.0 / 24);
+		theTime = (frames * 1000 + 12) / 24;
+		break;
 
-		case B_TIMECODE_25:
-			frames  = theTime / (1000.0 / 25);
-			theTime = (frames * 1000 + 13) / 25;
-			break;
+	case B_TIMECODE_25:
+		frames  = theTime / (1000.0 / 25);
+		theTime = (frames * 1000 + 13) / 25;
+		break;
 
-		case B_TIMECODE_30_DROP_2:
-			frames   =  theTime / (1000.0 / 29.97);
-			theTime = (frames * 1000 + 15) / 30;
-			break;
+	case B_TIMECODE_30_DROP_2:
+		frames   =  theTime / (1000.0 / 29.97);
+		theTime = (frames * 1000 + 15) / 30;
+		break;
 
-		case B_TIMECODE_30:
-			frames = theTime / (1000.0 / 30);
-			theTime = (frames * 1000 + 15) / 30;
-			break;
+	case B_TIMECODE_30:
+		frames = theTime / (1000.0 / 30);
+		theTime = (frames * 1000 + 15) / 30;
+		break;
 	}
 
 	return theTime;
@@ -421,20 +416,20 @@ float GetFPSValue(timecode_type theType)
 	// Clip time to current resolution
 	switch (theType)
 	{
-		case B_TIMECODE_DEFAULT:
-			return 30;
+	case B_TIMECODE_DEFAULT:
+		return 30;
 
-		case B_TIMECODE_24:
-			return 24;
+	case B_TIMECODE_24:
+		return 24;
 
-		case B_TIMECODE_25:
-			return 25;
+	case B_TIMECODE_25:
+		return 25;
 
-		case B_TIMECODE_30_DROP_2:
-			return 29.97;
+	case B_TIMECODE_30_DROP_2:
+		return 29.97;
 
-		case B_TIMECODE_30:
-			return 30;
+	case B_TIMECODE_30:
+		return 30;
 	}
 
 	return 30;
@@ -557,12 +552,9 @@ bool IsControlKeyDown()
 
 void AdjustScrollBar( BScrollBar *scrollBar, float page, float pageStep, float total, float start)
 {
-	if (total <= page)
-	{
+	if (total <= page) {
 		scrollBar->SetRange(start, start);
-	}
-	else
-	{
+	} else   {
 		scrollBar->SetRange(start, start+total-page);
 	}
 
@@ -589,14 +581,12 @@ void AdjustScrollBar( BScrollBar *scrollBar, float page, float pageStep, float t
 
 uint32 Duration()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() )
-	{
+	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
 		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() )
 			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->Duration();
 		else
 			return 0;
-	}
-	else
+	} else
 		return 0;
 }
 
@@ -610,14 +600,12 @@ uint32 Duration()
 
 uint32 GetCurrentTime()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() )
-	{
+	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
 		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() )
 			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetCurrentTime();
 		else
 			return 0;
-	}
-	else
+	} else
 		return 0;
 }
 
@@ -631,14 +619,12 @@ uint32 GetCurrentTime()
 
 uint32 StartTime()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() )
-	{
+	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
 		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() )
 			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->StartTime();
 		else
 			return 0;
-	}
-	else
+	} else
 		return 0;
 }
 
@@ -652,16 +638,12 @@ uint32 StartTime()
 
 short GetCurrentResolution()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() )
-	{
-		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() )
-		{
+	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
+		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() ) {
 			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetResolution();
-		}
-		else
+		} else
 			return 0;
-	}
-	else
+	} else
 		return 0;
 }
 
@@ -675,14 +657,12 @@ short GetCurrentResolution()
 
 timecode_type GetCurrentTimeFormat()
 {
-	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() )
-	{
+	if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() ) {
 		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView() )
 			return static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetTimeFormat();
 		else
 			return B_TIMECODE_DEFAULT;
-	}
-	else
+	} else
 		return B_TIMECODE_DEFAULT;
 }
 
@@ -718,13 +698,13 @@ int SortCuesByChannelID( const void *itemOne, const void *itemTwo)
 	//TStageCue **firstCue =  (TStageCue **)itemOne;
 	//TStageCue **secondCue = (TStageCue **)itemTwo;
 
-	//int32 firstID 	= (*firstCue)->GetChannelCue()->GetChannel()->GetID();
-	//int32 secondID 	= (*secondCue)->GetChannelCue()->GetChannel()->GetID();
+	//int32 firstID         = (*firstCue)->GetChannelCue()->GetChannel()->GetID();
+	//int32 secondID        = (*secondCue)->GetChannelCue()->GetChannel()->GetID();
 
 	//if ( firstID < secondID)
 	//	return -1;
 	//else
-		return 1;
+	return 1;
 }
 
 
@@ -741,25 +721,22 @@ int SortCuesByChannelID( const void *itemOne, const void *itemTwo)
 
 BWindow  *FindWindow(const char *title)
 {
-	 BWindow 	*theWindow = NULL;
-	 const char *tmpTitle;
+	BWindow        *theWindow = NULL;
+	const char *tmpTitle;
 
-	for ( int32 index = 0; index < be_app->CountWindows(); index++)
-	{
+	for ( int32 index = 0; index < be_app->CountWindows(); index++) {
 		theWindow = be_app->WindowAt(index);
 
-		if (theWindow)
-		{
+		if (theWindow) {
 			theWindow->Lock();
 
 			tmpTitle = theWindow->Title();
 
-			if( tmpTitle != NULL && strcmp( tmpTitle, title) == 0)
-		    {
+			if( tmpTitle != NULL && strcmp( tmpTitle, title) == 0) {
 				theWindow->Unlock();
 				return theWindow;
 			}
-		theWindow->Unlock();
+			theWindow->Unlock();
 		}
 	}
 
@@ -807,8 +784,7 @@ void UpdateStage()
 	TStageWindow *stageWindow = cueSheet->GetStage();
 	stageWindow->Lock();
 	TStageView *theView = cueSheet->GetStage()->GetStageView();
-	if (theView)
-	{
+	if (theView) {
 		theView->StageDraw(theView->Bounds(), GetCurrentTime());
 		theView->Invalidate();
 	}
@@ -829,53 +805,45 @@ bool DiffRect( BRect *rectOne, BRect *rectTwo, BRect *dstRect)
 {
 	BRect diffRect;
 
-	if (rectOne->Intersects( *rectTwo ) )
-	{
-		if (rectOne->Width() > rectTwo->Width() )
-		{
+	if (rectOne->Intersects( *rectTwo ) ) {
+		if (rectOne->Width() > rectTwo->Width() ) {
 			// Determine shared side of rect
 			//
 
 			// Left sides match
-			if (rectOne->left == rectTwo->left)
-			{
-				dstRect->left 	= rectTwo->right;
-				dstRect->top 	= rectTwo->top;
-				dstRect->right 	= rectOne->right;
-				dstRect->bottom	= rectTwo->bottom;
+			if (rectOne->left == rectTwo->left) {
+				dstRect->left   = rectTwo->right;
+				dstRect->top    = rectTwo->top;
+				dstRect->right  = rectOne->right;
+				dstRect->bottom = rectTwo->bottom;
 			}
 			// right sides match
-			else if ( rectOne->right == rectTwo->right)
-			{
-				dstRect->left 	= rectOne->left;
-				dstRect->top 	= rectOne->top;
-				dstRect->right 	= rectTwo->left;
-				dstRect->bottom	= rectOne->bottom;
+			else if ( rectOne->right == rectTwo->right) {
+				dstRect->left   = rectOne->left;
+				dstRect->top    = rectOne->top;
+				dstRect->right  = rectTwo->left;
+				dstRect->bottom = rectOne->bottom;
 			}
 			// no shared side...
 			else
 				return false;
-		}
-		else
-		{
+		} else   {
 			// Determine shared side of rect
 			//
 
 			// Left sides match
-			if (rectOne->left == rectTwo->left)
-			{
-				dstRect->left 	= rectOne->right;
-				dstRect->top 	= rectOne->top;
-				dstRect->right 	= rectTwo->right;
+			if (rectOne->left == rectTwo->left) {
+				dstRect->left   = rectOne->right;
+				dstRect->top    = rectOne->top;
+				dstRect->right  = rectTwo->right;
 				dstRect->bottom = rectOne->bottom;
 			}
 			// right sides match
-			else if ( rectOne->right == rectTwo->right)
-			{
-				dstRect->left 	= rectTwo->left;
-				dstRect->top 	= rectTwo->top;
-				dstRect->right 	= rectOne->left;
-				dstRect->bottom	= rectTwo->bottom;
+			else if ( rectOne->right == rectTwo->right) {
+				dstRect->left   = rectTwo->left;
+				dstRect->top    = rectTwo->top;
+				dstRect->right  = rectOne->left;
+				dstRect->bottom = rectTwo->bottom;
 			}
 			// no shared side...
 			else
@@ -905,8 +873,7 @@ void FillBitmap(BBitmap * map, uint32 color)
 	uchar *dst = (uchar *)map->Bits();
 	uchar *end = dst+map->BitsLength();
 
-	if (((ulong)dst)&4)
-	{
+	if (((ulong)dst)&4) {
 		*(uint32*)dst = color;
 		dst += 4;
 	}
@@ -915,8 +882,7 @@ void FillBitmap(BBitmap * map, uint32 color)
 	uint32 a[2] = { color, color };
 
 	d = *(double *)a;
-	while (end-dst > 7)
-	{
+	while (end-dst > 7) {
 		*(double *)dst = d;
 		dst += 8;
 	}
@@ -985,15 +951,13 @@ bool IsImage(BNodeInfo &nodeInfo)
 {
 	char theType[B_MIME_TYPE_LENGTH];
 
-	if (nodeInfo.GetType(theType) == B_NO_ERROR)
-	{
+	if (nodeInfo.GetType(theType) == B_NO_ERROR) {
 		BMimeType mimeType(theType);
 		if (mimeType.InitCheck() != B_NO_ERROR)
 			return false;
 
 		BMimeType superType;
-		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR)
-		{
+		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
 			const char *superTypeStr= superType.Type();
 
 			if ( strcmp(superTypeStr, "image") == 0)
@@ -1017,19 +981,16 @@ bool IsAudio(BNodeInfo &nodeInfo)
 {
 	char theType[B_MIME_TYPE_LENGTH];
 
-	if (nodeInfo.GetType(theType) == B_NO_ERROR)
-	{
+	if (nodeInfo.GetType(theType) == B_NO_ERROR) {
 		BMimeType mimeType(theType);
 		if (mimeType.InitCheck() != B_NO_ERROR)
 			return false;
 
 		BMimeType superType;
-		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR)
-		{
+		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
 			const char *superTypeStr= superType.Type();
 
-			if ( strcmp(superTypeStr, "audio") == 0)
-			{
+			if ( strcmp(superTypeStr, "audio") == 0) {
 				//	Make sure it is not a MIDI file
 				if ( strcmp(mimeType.Type(), "audio/midi") != 0)
 					return true;
@@ -1054,19 +1015,16 @@ bool IsMIDI(BNodeInfo &nodeInfo)
 {
 	char theType[B_MIME_TYPE_LENGTH];
 
-	if (nodeInfo.GetType(theType) == B_NO_ERROR)
-	{
+	if (nodeInfo.GetType(theType) == B_NO_ERROR) {
 		BMimeType mimeType(theType);
 		if (mimeType.InitCheck() != B_NO_ERROR)
 			return false;
 
 		BMimeType superType;
-		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR)
-		{
+		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
 			const char *superTypeStr= superType.Type();
 
-			if ( strcmp(superTypeStr, "audio") == 0)
-			{
+			if ( strcmp(superTypeStr, "audio") == 0) {
 				//	Make sure it is not a MIDI file
 				if ( strcmp( mimeType.Type(), "audio/midi") == 0)
 					return true;
@@ -1090,15 +1048,13 @@ bool IsVideo(BNodeInfo &nodeInfo)
 {
 	char theType[B_MIME_TYPE_LENGTH];
 
-	if (nodeInfo.GetType(theType) == B_NO_ERROR)
-	{
+	if (nodeInfo.GetType(theType) == B_NO_ERROR) {
 		BMimeType mimeType(theType);
 		if (mimeType.InitCheck() != B_NO_ERROR)
 			return false;
 
 		BMimeType superType;
-		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR)
-		{
+		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
 			const char *superTypeStr= superType.Type();
 
 			if ( strcmp(superTypeStr, "video") == 0)
@@ -1122,15 +1078,13 @@ bool IsText(BNodeInfo &nodeInfo)
 {
 	char theType[B_MIME_TYPE_LENGTH];
 
-	if (nodeInfo.GetType(theType) == B_NO_ERROR)
-	{
+	if (nodeInfo.GetType(theType) == B_NO_ERROR) {
 		BMimeType mimeType(theType);
 		if (mimeType.InitCheck() != B_NO_ERROR)
 			return false;
 
 		BMimeType superType;
-		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR)
-		{
+		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
 			const char *superTypeStr= superType.Type();
 
 			if ( strcmp(superTypeStr,  "text") == 0)
@@ -1154,19 +1108,16 @@ bool IsCueSheet(BNodeInfo &nodeInfo)
 {
 	char theType[B_MIME_TYPE_LENGTH];
 
-	if (nodeInfo.GetType(theType) == B_NO_ERROR)
-	{
+	if (nodeInfo.GetType(theType) == B_NO_ERROR) {
 		BMimeType mimeType(theType);
 		if (mimeType.InitCheck() != B_NO_ERROR)
 			return false;
 
 		BMimeType superType;
-		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR)
-		{
+		if ( mimeType.GetSupertype(&superType) == B_NO_ERROR) {
 			const char *superTypeStr= superType.Type();
 
-			if ( strcmp(superTypeStr, "application") == 0)
-			{
+			if ( strcmp(superTypeStr, "application") == 0) {
 				//	Make sure it is not a MIDI file
 				if ( strcmp( mimeType.Type(), "application/x-mediapede-cuesheet") == 0)
 					return true;

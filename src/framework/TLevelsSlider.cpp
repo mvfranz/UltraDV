@@ -26,8 +26,8 @@
 #include "TLevelsSlider.h"
 
 // Constants
-const int8 kTopOffset 		= 1;
-const int8 kBottomOffset 	= 3;
+const int8 kTopOffset           = 1;
+const int8 kBottomOffset        = 3;
 
 //---------------------------------------------------------------------
 //	Constructor
@@ -76,53 +76,53 @@ void TLevelsSlider::Init()
 	LoadSliders();
 
 	/*
-	// Get output device
-	BADCStream adcStream;
-	int32 curADCDevice = 0;
-	if ( adcStream.ADCInput(&curADCDevice) != B_OK)
-		DebugAlert("AudioServer not runnng!");
+	   // Get output device
+	   BADCStream adcStream;
+	   int32 curADCDevice = 0;
+	   if ( adcStream.ADCInput(&curADCDevice) != B_OK)
+	        DebugAlert("AudioServer not runnng!");
 
-	// Get volume settings
-	BDACStream 	dacStream;
-	float 		volLeft, volRight;
+	   // Get volume settings
+	   BDACStream   dacStream;
+	   float                volLeft, volRight;
 
-	// Input
-	if (fType == kAudioInputSlider)
-	{
+	   // Input
+	   if (fType == kAudioInputSlider)
+	   {
 
-		dacStream.GetVolume(B_ADC_IN, &volLeft, &volRight, NULL);
-	}
-	// Output
-	else
-	{
-		dacStream.GetVolume(B_DAC_OUT, &volLeft, &volRight, NULL);
-	}
-	*/
+	        dacStream.GetVolume(B_ADC_IN, &volLeft, &volRight, NULL);
+	   }
+	   // Output
+	   else
+	   {
+	        dacStream.GetVolume(B_DAC_OUT, &volLeft, &volRight, NULL);
+	   }
+	 */
 
-	float volLeft 	= 0.0;
-	float volRight	= 0.0;
+	float volLeft   = 0.0;
+	float volRight  = 0.0;
 
 	// Set up slider rects
-	const BRect bounds 			= Bounds();
-	const uint32 sliderWidth 	= fLeftSlider->Bounds().IntegerWidth();
-	const uint32 sliderHeight 	= fLeftSlider->Bounds().IntegerHeight();
-	const uint32 height 		= (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
+	const BRect bounds                      = Bounds();
+	const uint32 sliderWidth        = fLeftSlider->Bounds().IntegerWidth();
+	const uint32 sliderHeight       = fLeftSlider->Bounds().IntegerHeight();
+	const uint32 height             = (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
 
 	// Get pixel location of levels
-	int32 sliderLeft	= height * volLeft;
-	int32 sliderRight 	= height * volRight;
+	int32 sliderLeft        = height * volLeft;
+	int32 sliderRight       = height * volRight;
 
 	sliderLeft  += sliderHeight+kBottomOffset;
 	sliderRight += sliderHeight+kBottomOffset;
 
-	fLeftSliderRect.left 	 = (bounds.Width()/2) - sliderWidth;
-	fLeftSliderRect.right 	 = fLeftSliderRect.left + sliderWidth;
-	fLeftSliderRect.top 	 = bounds.Height() + (-sliderLeft);
+	fLeftSliderRect.left     = (bounds.Width()/2) - sliderWidth;
+	fLeftSliderRect.right    = fLeftSliderRect.left + sliderWidth;
+	fLeftSliderRect.top      = bounds.Height() + (-sliderLeft);
 	fLeftSliderRect.bottom  = fLeftSliderRect.top - sliderHeight;
 
-	fRightSliderRect.left 	 = (bounds.Width()/2);
-	fRightSliderRect.right	 = fRightSliderRect.left + sliderWidth;
-	fRightSliderRect.top 	 = bounds.Height() + (-sliderRight);
+	fRightSliderRect.left    = (bounds.Width()/2);
+	fRightSliderRect.right   = fRightSliderRect.left + sliderWidth;
+	fRightSliderRect.top     = bounds.Height() + (-sliderRight);
 	fRightSliderRect.bottom = fRightSliderRect.top - sliderHeight;
 }
 
@@ -141,14 +141,14 @@ void TLevelsSlider::MessageReceived(BMessage *theMessage)
 
 	switch( theMessage->what)
 	{
-		// Mouse Tracking Messages
-		case MW_MOUSE_MOVED:
-			TrackSliders();
-			break;
+	// Mouse Tracking Messages
+	case MW_MOUSE_MOVED:
+		TrackSliders();
+		break;
 
-		default:
-			BView::MessageReceived(theMessage);
-			break;
+	default:
+		BView::MessageReceived(theMessage);
+		break;
 	}
 }
 
@@ -220,10 +220,10 @@ void TLevelsSlider::Draw(BRect updateRect)
 	StrokeLine(endPt);
 
 	// Create channel slot
-	BRect slot 	= bounds;
-	slot.left 	= (bounds.Width()/2) - 3;
-	slot.right 	= (bounds.Width()/2) + 2;
-	slot.top 	+= 1;
+	BRect slot      = bounds;
+	slot.left       = (bounds.Width()/2) - 3;
+	slot.right      = (bounds.Width()/2) + 2;
+	slot.top        += 1;
 	slot.bottom -= 3;
 	SetHighColor(kBlack);
 	FillRect(slot);
@@ -233,8 +233,8 @@ void TLevelsSlider::Draw(BRect updateRect)
 	endPt.Set(slot.left, slot.bottom);
 	SetHighColor(kDarkGrey);
 	StrokeLine(startPt, endPt);
-	slot.top 	+=1;
-	slot.left 	= slot.right-2;
+	slot.top        +=1;
+	slot.left       = slot.right-2;
 	rgb_color dkGrey = {35,35,35,255};
 	SetHighColor(dkGrey);
 	FillRect(slot);
@@ -311,142 +311,137 @@ void TLevelsSlider::DrawRightSlider()
 void TLevelsSlider::MouseDown(BPoint where)
 {
 	// Check for which button is pressed
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
 
 	// Determine which button has been clicked
 	switch(buttons)
 	{
 
-		case B_PRIMARY_MOUSE_BUTTON:
-			{
-				const BRect bounds = Bounds();
+	case B_PRIMARY_MOUSE_BUTTON:
+	{
+		const BRect bounds = Bounds();
 
-				// Get old positions
-				BRect oldLeftRect 	= fLeftSliderRect;
-				BRect oldRightRect 	= fRightSliderRect;
+		// Get old positions
+		BRect oldLeftRect       = fLeftSliderRect;
+		BRect oldRightRect      = fRightSliderRect;
 
-				// Move both left and right slider under mouse
-				const uint32 leftHeight	 = fLeftSlider->Bounds().IntegerHeight();
-				const uint32 rightHeight = fRightSlider->Bounds().IntegerHeight();
+		// Move both left and right slider under mouse
+		const uint32 leftHeight  = fLeftSlider->Bounds().IntegerHeight();
+		const uint32 rightHeight = fRightSlider->Bounds().IntegerHeight();
 
-				fLeftSliderRect.top 		= where.y - leftHeight/2;
-				fLeftSliderRect.bottom 	= fLeftSliderRect.top + leftHeight;
-				fRightSliderRect.top 		= where.y - rightHeight/2;
-				fRightSliderRect.bottom 	= fRightSliderRect.top + rightHeight;
+		fLeftSliderRect.top             = where.y - leftHeight/2;
+		fLeftSliderRect.bottom  = fLeftSliderRect.top + leftHeight;
+		fRightSliderRect.top            = where.y - rightHeight/2;
+		fRightSliderRect.bottom         = fRightSliderRect.top + rightHeight;
 
-				// Now clip the location of the slider if out of bounds
-				ClipSliders();
+		// Now clip the location of the slider if out of bounds
+		ClipSliders();
 
-				// Clean up old position
-				BRect updateRect 	= oldLeftRect;
-				updateRect.right 	= oldRightRect.right;
-				Draw(Bounds());
+		// Clean up old position
+		BRect updateRect        = oldLeftRect;
+		updateRect.right        = oldRightRect.right;
+		Draw(Bounds());
 
-				// Draw updated position
-				DrawLeftSlider();
-				DrawRightSlider();
+		// Draw updated position
+		DrawLeftSlider();
+		DrawRightSlider();
 
-				// Update the volumes
-				UpdateVolumes(where);
+		// Update the volumes
+		UpdateVolumes(where);
 
-				// Wait a while for the mouse button to be realeased
-				snooze(100 * 1000);
+		// Wait a while for the mouse button to be realeased
+		snooze(100 * 1000);
 
-				// Is button down?  They are dragging or resizing the cue...
-				// Check to see if button is down
-				Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
-				if (buttons)
-				{
-					//StartMouseWatcher(this);
-					TrackSliders();
-				}
+		// Is button down?  They are dragging or resizing the cue...
+		// Check to see if button is down
+		Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+		if (buttons) {
+			//StartMouseWatcher(this);
+			TrackSliders();
+		}
+	}
+	break;
+
+	// User is dragging one half of the slider
+	case B_SECONDARY_MOUSE_BUTTON:
+	{
+		const BRect bounds = Bounds();
+
+		// Determine area mouse is in for slider drag
+		//
+
+		// Left Side
+		if (where.x <= bounds.Width()/2) {
+			// Get old positions
+			BRect oldRect   = fLeftSliderRect;
+
+			// Move both left slider under mouse
+			const uint32 leftHeight  = fLeftSlider->Bounds().IntegerHeight();
+
+			fLeftSliderRect.top     = where.y - leftHeight/2;
+			fLeftSliderRect.bottom = fLeftSliderRect.top + leftHeight;
+
+			// Now clip the location of the slider if out of bounds
+			ClipLeftSlider();
+
+			// Clean up old position
+			Draw(oldRect);
+
+			// Draw updated position
+			DrawLeftSlider();
+
+			// Update the volume
+			UpdateLeftVolume(where);
+
+			// Wait a while for the mouse button to be realeased
+			snooze(100 * 1000);
+
+			// Is button down?  They are dragging or resizing the cue...
+			// Check to see if button is down
+			Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+			if (buttons) {
+				TrackLeftSlider();
 			}
-			break;
 
-		// User is dragging one half of the slider
-		case B_SECONDARY_MOUSE_BUTTON:
-			{
-				const BRect bounds = Bounds();
+		}
+		// Right Side
+		else{
+			const BRect bounds = Bounds();
 
-				// Determine area mouse is in for slider drag
-				//
+			// Get old positions
+			BRect oldRect = fRightSliderRect;
 
-				// Left Side
-				if (where.x <= bounds.Width()/2)
-				{
-					// Get old positions
-					BRect oldRect 	= fLeftSliderRect;
+			// Move both left and right slider under mouse
+			const uint32 rightHeight = fRightSlider->Bounds().IntegerHeight();
 
-					// Move both left slider under mouse
-					const uint32 leftHeight	 = fLeftSlider->Bounds().IntegerHeight();
+			fRightSliderRect.top            = where.y - rightHeight/2;
+			fRightSliderRect.bottom         = fRightSliderRect.top + rightHeight;
 
-					fLeftSliderRect.top 	= where.y - leftHeight/2;
-					fLeftSliderRect.bottom = fLeftSliderRect.top + leftHeight;
+			// Now clip the location of the slider if out of bounds
+			ClipRightSlider();
 
-					// Now clip the location of the slider if out of bounds
-					ClipLeftSlider();
+			// Clean up old position
+			Draw(oldRect);
 
-					// Clean up old position
-					Draw(oldRect);
+			// Draw updated position
+			DrawRightSlider();
 
-					// Draw updated position
-					DrawLeftSlider();
+			// Update the volume
+			UpdateRightVolume(where);
 
-					// Update the volume
-					UpdateLeftVolume(where);
+			// Wait a while for the mouse button to be realeased
+			snooze(100 * 1000);
 
-					// Wait a while for the mouse button to be realeased
-					snooze(100 * 1000);
-
-					// Is button down?  They are dragging or resizing the cue...
-					// Check to see if button is down
-					Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
-					if (buttons)
-					{
-						TrackLeftSlider();
-					}
-
-				}
-				// Right Side
-				else
-				{
-					const BRect bounds = Bounds();
-
-					// Get old positions
-					BRect oldRect = fRightSliderRect;
-
-					// Move both left and right slider under mouse
-					const uint32 rightHeight = fRightSlider->Bounds().IntegerHeight();
-
-					fRightSliderRect.top 		= where.y - rightHeight/2;
-					fRightSliderRect.bottom 	= fRightSliderRect.top + rightHeight;
-
-					// Now clip the location of the slider if out of bounds
-					ClipRightSlider();
-
-					// Clean up old position
-					Draw(oldRect);
-
-					// Draw updated position
-					DrawRightSlider();
-
-					// Update the volume
-					UpdateRightVolume(where);
-
-					// Wait a while for the mouse button to be realeased
-					snooze(100 * 1000);
-
-					// Is button down?  They are dragging or resizing the cue...
-					// Check to see if button is down
-					Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
-					if (buttons)
-					{
-						TrackRightSlider();
-					}
-				}
+			// Is button down?  They are dragging or resizing the cue...
+			// Check to see if button is down
+			Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
+			if (buttons) {
+				TrackRightSlider();
 			}
-			break;
+		}
+	}
+	break;
 	}
 }
 
@@ -462,48 +457,48 @@ void TLevelsSlider::MouseDown(BPoint where)
 void TLevelsSlider::AttachedToWindow()
 {
 	/*
-	// Update current levels
-	BADCStream adcStream;
-	int32 curADCDevice = 0;
-	if ( adcStream.ADCInput(&curADCDevice) != B_OK)
-		DebugAlert("AudioServer not runnng!");
+	   // Update current levels
+	   BADCStream adcStream;
+	   int32 curADCDevice = 0;
+	   if ( adcStream.ADCInput(&curADCDevice) != B_OK)
+	        DebugAlert("AudioServer not runnng!");
 
-	// Get volume settings
-	BDACStream 	dacStream;
-	float 		volLeft, volRight;
+	   // Get volume settings
+	   BDACStream   dacStream;
+	   float                volLeft, volRight;
 
-	// Input
-	if (fType == kAudioInputSlider)
-		dacStream.GetVolume(B_ADC_IN, &volLeft, &volRight, NULL);
-	// Output
-	else
-		dacStream.GetVolume(B_DAC_OUT, &volLeft, &volRight, NULL);
-	*/
+	   // Input
+	   if (fType == kAudioInputSlider)
+	        dacStream.GetVolume(B_ADC_IN, &volLeft, &volRight, NULL);
+	   // Output
+	   else
+	        dacStream.GetVolume(B_DAC_OUT, &volLeft, &volRight, NULL);
+	 */
 
-	float volLeft 	= 0.0;
-	float volRight	= 0.0;
+	float volLeft   = 0.0;
+	float volRight  = 0.0;
 
 	// Set up slider rects
-	const BRect bounds 			= Bounds();
-	const uint32 sliderWidth 	= fLeftSlider->Bounds().IntegerWidth();
-	const uint32 sliderHeight 	= fLeftSlider->Bounds().IntegerHeight();
-	const uint32 height 		= (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
+	const BRect bounds                      = Bounds();
+	const uint32 sliderWidth        = fLeftSlider->Bounds().IntegerWidth();
+	const uint32 sliderHeight       = fLeftSlider->Bounds().IntegerHeight();
+	const uint32 height             = (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
 
 	// Get pixel location of levels
-	int32 sliderLeft	= height * volLeft;
-	int32 sliderRight 	= height * volRight;
+	int32 sliderLeft        = height * volLeft;
+	int32 sliderRight       = height * volRight;
 
 	sliderLeft  += sliderHeight+kBottomOffset;
 	sliderRight += sliderHeight+kBottomOffset;
 
-	fLeftSliderRect.left 	 = (bounds.Width()/2) - sliderWidth;
-	fLeftSliderRect.right 	 = fLeftSliderRect.left + sliderWidth;
-	fLeftSliderRect.top 	 = bounds.Height() + (-sliderLeft);
+	fLeftSliderRect.left     = (bounds.Width()/2) - sliderWidth;
+	fLeftSliderRect.right    = fLeftSliderRect.left + sliderWidth;
+	fLeftSliderRect.top      = bounds.Height() + (-sliderLeft);
 	fLeftSliderRect.bottom  = fLeftSliderRect.top - sliderHeight;
 
-	fRightSliderRect.left 	 = (bounds.Width()/2);
-	fRightSliderRect.right	 = fRightSliderRect.left + sliderWidth;
-	fRightSliderRect.top 	 = bounds.Height() + (-sliderRight);
+	fRightSliderRect.left    = (bounds.Width()/2);
+	fRightSliderRect.right   = fRightSliderRect.left + sliderWidth;
+	fRightSliderRect.top     = bounds.Height() + (-sliderRight);
 	fRightSliderRect.bottom = fRightSliderRect.top - sliderHeight;
 
 	BView::AttachedToWindow();
@@ -542,8 +537,8 @@ void TLevelsSlider::LoadSliders()
 	if (file.InitCheck())
 		return;
 
-	size_t 		size;
-	BBitmap 	*data;
+	size_t size;
+	BBitmap         *data;
 
 	BResources res(&file);
 
@@ -586,21 +581,19 @@ void TLevelsSlider::ClipSliders()
 
 void TLevelsSlider::ClipLeftSlider()
 {
-	const BRect bounds 	= Bounds();
-	const uint32 height	= fLeftSlider->Bounds().IntegerHeight();
+	const BRect bounds      = Bounds();
+	const uint32 height     = fLeftSlider->Bounds().IntegerHeight();
 
 	// Clip top
-	if ( fLeftSliderRect.top < bounds.top+kTopOffset)
-	{
-		fLeftSliderRect.top 	= bounds.top+kTopOffset;
+	if ( fLeftSliderRect.top < bounds.top+kTopOffset) {
+		fLeftSliderRect.top     = bounds.top+kTopOffset;
 		fLeftSliderRect.bottom = fLeftSliderRect.top + height;
 	}
 
 	// Clip bottom
-	if ( fLeftSliderRect.bottom > bounds.bottom-kBottomOffset)
-	{
+	if ( fLeftSliderRect.bottom > bounds.bottom-kBottomOffset) {
 		fLeftSliderRect.bottom = bounds.bottom-kBottomOffset;
-		fLeftSliderRect.top 	= fLeftSliderRect.bottom - height;
+		fLeftSliderRect.top     = fLeftSliderRect.bottom - height;
 	}
 }
 
@@ -612,21 +605,19 @@ void TLevelsSlider::ClipLeftSlider()
 
 void TLevelsSlider::ClipRightSlider()
 {
-	const BRect bounds 	= Bounds();
-	const uint32 height	= fRightSlider->Bounds().IntegerHeight();
+	const BRect bounds      = Bounds();
+	const uint32 height     = fRightSlider->Bounds().IntegerHeight();
 
 	// Clip top
-	if ( fRightSliderRect.top < bounds.top+kTopOffset)
-	{
-		fRightSliderRect.top 	 = bounds.top+kTopOffset;
+	if ( fRightSliderRect.top < bounds.top+kTopOffset) {
+		fRightSliderRect.top     = bounds.top+kTopOffset;
 		fRightSliderRect.bottom = fRightSliderRect.top + height;
 	}
 
 	// Clip bottom
-	if ( fRightSliderRect.bottom > bounds.bottom-kBottomOffset)
-	{
+	if ( fRightSliderRect.bottom > bounds.bottom-kBottomOffset) {
 		fRightSliderRect.bottom = bounds.bottom-kBottomOffset;
-		fRightSliderRect.top 	 = fRightSliderRect.bottom - height;
+		fRightSliderRect.top     = fRightSliderRect.bottom - height;
 	}
 }
 
@@ -642,26 +633,24 @@ void TLevelsSlider::TrackSliders()
 	BPoint newPt, oldPt;
 
 	// Check to see if button is down
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	GetMouse(&newPt, &buttons, true);
 
-	while(buttons)
-	{
+	while(buttons) {
 		// Idle if in same mouse location
-		if (newPt.y != oldPt.y)
-		{
+		if (newPt.y != oldPt.y) {
 			// Get old positions
-			BRect oldLeftRect 	= fLeftSliderRect;
-			BRect oldRightRect 	= fRightSliderRect;
+			BRect oldLeftRect       = fLeftSliderRect;
+			BRect oldRightRect      = fRightSliderRect;
 
 			// Move both left and right slider under mouse
-			const uint32 leftHeight	 = fLeftSlider->Bounds().IntegerHeight();
+			const uint32 leftHeight  = fLeftSlider->Bounds().IntegerHeight();
 			const uint32 rightHeight = fRightSlider->Bounds().IntegerHeight();
 
-			fLeftSliderRect.top 		= newPt.y - leftHeight/2;
-			fLeftSliderRect.bottom 	= fLeftSliderRect.top + leftHeight;
-			fRightSliderRect.top 		= newPt.y - leftHeight/2;
-			fRightSliderRect.bottom 	= fRightSliderRect.top + rightHeight;
+			fLeftSliderRect.top             = newPt.y - leftHeight/2;
+			fLeftSliderRect.bottom  = fLeftSliderRect.top + leftHeight;
+			fRightSliderRect.top            = newPt.y - leftHeight/2;
+			fRightSliderRect.bottom         = fRightSliderRect.top + rightHeight;
 
 			// Now clip the location of the slider if out of bounds
 			ClipSliders();
@@ -709,22 +698,20 @@ void TLevelsSlider::TrackLeftSlider()
 	BPoint newPt, oldPt;
 
 	// Check to see if button is down
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	GetMouse(&newPt, &buttons, true);
 
-	while(buttons)
-	{
+	while(buttons) {
 		// Idle if in same mouse location
-		if (newPt.y != oldPt.y)
-		{
+		if (newPt.y != oldPt.y) {
 			// Get old positions
-			BRect oldRect 	= fLeftSliderRect;
+			BRect oldRect   = fLeftSliderRect;
 
 			// Move both left and right slider under mouse
-			const uint32 leftHeight	 = fLeftSlider->Bounds().IntegerHeight();
+			const uint32 leftHeight  = fLeftSlider->Bounds().IntegerHeight();
 
-			fLeftSliderRect.top 		= newPt.y - leftHeight/2;
-			fLeftSliderRect.bottom 	= fLeftSliderRect.top + leftHeight;
+			fLeftSliderRect.top             = newPt.y - leftHeight/2;
+			fLeftSliderRect.bottom  = fLeftSliderRect.top + leftHeight;
 
 			// Now clip the location of the slider if out of bounds
 			ClipLeftSlider();
@@ -771,22 +758,20 @@ void TLevelsSlider::TrackRightSlider()
 	BPoint newPt, oldPt;
 
 	// Check to see if button is down
-	uint32 	buttons = 0;
+	uint32 buttons = 0;
 	GetMouse(&newPt, &buttons, true);
 
-	while(buttons)
-	{
+	while(buttons) {
 		// Idle if in same mouse location
-		if (newPt.y != oldPt.y)
-		{
+		if (newPt.y != oldPt.y) {
 			// Get old positions
-			BRect oldRect 	= fRightSliderRect;
+			BRect oldRect   = fRightSliderRect;
 
 			// Move right slider under mouse
 			const uint32 rightHeight = fRightSlider->Bounds().IntegerHeight();
 
-			fRightSliderRect.top 		= newPt.y - rightHeight/2;
-			fRightSliderRect.bottom 	= fRightSliderRect.top + rightHeight;
+			fRightSliderRect.top            = newPt.y - rightHeight/2;
+			fRightSliderRect.bottom         = fRightSliderRect.top + rightHeight;
 
 			// Now clip the location of the slider if out of bounds
 			ClipRightSlider();
@@ -833,14 +818,14 @@ void TLevelsSlider::TrackRightSlider()
 
 void TLevelsSlider::UpdateVolumes(BPoint where)
 {
-	float 		volLeft, volRight;
-	//BDACStream 	dacStream;
+	float volLeft, volRight;
+	//BDACStream    dacStream;
 
 	// Set up slider rects
-	const BRect bounds 			= Bounds();
-	const uint32 sliderWidth 	= fLeftSlider->Bounds().IntegerWidth();
-	const uint32 sliderHeight 	= fLeftSlider->Bounds().IntegerHeight();
-	uint32 height 				= (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
+	const BRect bounds                      = Bounds();
+	const uint32 sliderWidth        = fLeftSlider->Bounds().IntegerWidth();
+	const uint32 sliderHeight       = fLeftSlider->Bounds().IntegerHeight();
+	uint32 height                           = (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
 
 	// Invert where.y position
 	where.y = bounds.bottom - where.y;
@@ -870,17 +855,17 @@ void TLevelsSlider::UpdateVolumes(BPoint where)
 	// Set volumes
 
 	/*
-	// Input
-	if (fType == kAudioInputSlider)
-	{
-		dacStream.SetVolume(B_ADC_IN, volLeft, volRight);
-	}
-	// Output
-	else
-	{
-		dacStream.SetVolume(B_DAC_OUT, volLeft, volRight);
-	}
-	*/
+	   // Input
+	   if (fType == kAudioInputSlider)
+	   {
+	        dacStream.SetVolume(B_ADC_IN, volLeft, volRight);
+	   }
+	   // Output
+	   else
+	   {
+	        dacStream.SetVolume(B_DAC_OUT, volLeft, volRight);
+	   }
+	 */
 }
 
 
@@ -893,8 +878,8 @@ void TLevelsSlider::UpdateVolumes(BPoint where)
 
 void TLevelsSlider::UpdateLeftVolume(BPoint where)
 {
-	float 		volLeft;
-	//BDACStream 	dacStream;
+	float volLeft;
+	//BDACStream    dacStream;
 
 	// Get current settings
 	float oldLeft, oldRight;
@@ -904,10 +889,10 @@ void TLevelsSlider::UpdateLeftVolume(BPoint where)
 	//	dacStream.GetVolume(B_DAC_OUT, &oldLeft, &oldRight, NULL);
 
 	// Set up slider rects
-	const BRect bounds 			= Bounds();
-	const uint32 sliderWidth 	= fLeftSlider->Bounds().IntegerWidth();
-	const uint32 sliderHeight 	= fLeftSlider->Bounds().IntegerHeight();
-	uint32 height 				= (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
+	const BRect bounds                      = Bounds();
+	const uint32 sliderWidth        = fLeftSlider->Bounds().IntegerWidth();
+	const uint32 sliderHeight       = fLeftSlider->Bounds().IntegerHeight();
+	uint32 height                           = (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
 
 	// Invert where.y position
 	where.y = bounds.bottom - where.y;
@@ -919,7 +904,7 @@ void TLevelsSlider::UpdateLeftVolume(BPoint where)
 	if (where.y == 0)
 		where.y++;
 
-	volLeft	 = where.y / height;
+	volLeft  = where.y / height;
 
 	// Protect against clipping
 	if (volLeft > 1.0)
@@ -930,17 +915,17 @@ void TLevelsSlider::UpdateLeftVolume(BPoint where)
 
 	// Set volumes
 	/*
-	// Input
-	if (fType == kAudioInputSlider)
-	{
-		dacStream.SetVolume(B_ADC_IN, volLeft, oldRight);
-	}
-	// Output
-	else
-	{
-		dacStream.SetVolume(B_DAC_OUT, volLeft, oldRight);
-	}
-	*/
+	   // Input
+	   if (fType == kAudioInputSlider)
+	   {
+	        dacStream.SetVolume(B_ADC_IN, volLeft, oldRight);
+	   }
+	   // Output
+	   else
+	   {
+	        dacStream.SetVolume(B_DAC_OUT, volLeft, oldRight);
+	   }
+	 */
 }
 
 
@@ -953,8 +938,8 @@ void TLevelsSlider::UpdateLeftVolume(BPoint where)
 
 void TLevelsSlider::UpdateRightVolume(BPoint where)
 {
-	float 		volRight;
-	//BDACStream 	dacStream;
+	float volRight;
+	//BDACStream    dacStream;
 
 	// Get current settings
 	float oldLeft, oldRight;
@@ -964,10 +949,10 @@ void TLevelsSlider::UpdateRightVolume(BPoint where)
 	//	dacStream.GetVolume(B_DAC_OUT, &oldLeft, &oldRight, NULL);
 
 	// Set up slider rects
-	const BRect bounds 			= Bounds();
-	const uint32 sliderWidth 	= fRightSlider->Bounds().IntegerWidth();
-	const uint32 sliderHeight 	= fRightSlider->Bounds().IntegerHeight();
-	uint32 height 				= (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
+	const BRect bounds                      = Bounds();
+	const uint32 sliderWidth        = fRightSlider->Bounds().IntegerWidth();
+	const uint32 sliderHeight       = fRightSlider->Bounds().IntegerHeight();
+	uint32 height                           = (bounds.Height()-kTopOffset) - (sliderHeight+kBottomOffset);
 
 	// Invert where.y position
 	where.y = bounds.bottom - where.y;
@@ -990,14 +975,14 @@ void TLevelsSlider::UpdateRightVolume(BPoint where)
 
 	// Set volumes
 	/*
-	// Input
-	if (fType == kAudioInputSlider)
-	{
-		dacStream.SetVolume(B_ADC_IN, oldLeft, volRight);
-	}
-	// Output
-	else
-	{
-		dacStream.SetVolume(B_DAC_OUT, oldLeft, volRight);
-	}*/
+	   // Input
+	   if (fType == kAudioInputSlider)
+	   {
+	        dacStream.SetVolume(B_ADC_IN, oldLeft, volRight);
+	   }
+	   // Output
+	   else
+	   {
+	        dacStream.SetVolume(B_DAC_OUT, oldLeft, volRight);
+	   }*/
 }

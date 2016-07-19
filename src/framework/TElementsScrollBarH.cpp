@@ -35,7 +35,7 @@
 //
 
 TElementsScrollBarH::TElementsScrollBarH(BRect frame, const char *name, BView *target, float min, float max ) :
-					BScrollBar( frame, name, target, min, max, B_HORIZONTAL)
+	BScrollBar( frame, name, target, min, max, B_HORIZONTAL)
 {
 
 	// Do default initialization
@@ -64,7 +64,7 @@ TElementsScrollBarH::~TElementsScrollBarH()
 
 void TElementsScrollBarH::Init()
 {
-	// 	Get current scroll value and save it in our tracking variable.
+	//      Get current scroll value and save it in our tracking variable.
 	//	We use this value to scroll the HeaderZone in concert with
 	//	the CueSheetView
 	fLastValue = Value();
@@ -95,25 +95,25 @@ void TElementsScrollBarH::ValueChanged(float newValue)
 	BScrollBar::ValueChanged(newValue);
 
 	/*
-	// Offset the cue channels
+	   // Offset the cue channels
 
-	// We need to offset the TimeLine as well...
-	if (newValue != fLastValue)
-	{
-		if (newValue > fLastValue)
-			fCueSheetWindow->GetTimeline()->ScrollBy(newValue - fLastValue, 0);
-		else
-			fCueSheetWindow->GetTimeline()->ScrollBy(-(fLastValue - newValue), 0);
+	   // We need to offset the TimeLine as well...
+	   if (newValue != fLastValue)
+	   {
+	        if (newValue > fLastValue)
+	                fCueSheetWindow->GetTimeline()->ScrollBy(newValue - fLastValue, 0);
+	        else
+	                fCueSheetWindow->GetTimeline()->ScrollBy(-(fLastValue - newValue), 0);
 
-		// Force a redraw
-		BRect bounds = fCueSheetWindow->GetTimeline()->Bounds();
-		bounds.top = fCueSheetWindow->GetTimeline()->GetIndicatorZone().bottom+1;
-		fCueSheetWindow->GetTimeline()->Invalidate(bounds);
+	        // Force a redraw
+	        BRect bounds = fCueSheetWindow->GetTimeline()->Bounds();
+	        bounds.top = fCueSheetWindow->GetTimeline()->GetIndicatorZone().bottom+1;
+	        fCueSheetWindow->GetTimeline()->Invalidate(bounds);
 
-		// Save value for next compare
-		fLastValue = newValue;
-	}
-	*/
+	        // Save value for next compare
+	        fLastValue = newValue;
+	   }
+	 */
 }
 
 

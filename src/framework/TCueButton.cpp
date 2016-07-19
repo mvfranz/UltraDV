@@ -140,13 +140,12 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 {
 
 	// Check to see if button is down
-	uint32 	buttons = 0;
-	BPoint	point;
+	uint32 buttons = 0;
+	BPoint point;
 
 	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
-	if (buttons && fMouseDown)
-	{
-		// 	If the mouse button is down, they want to drag a cue off the palette
+	if (buttons && fMouseDown) {
+		//      If the mouse button is down, they want to drag a cue off the palette
 		//	and most likely onto the cue sheet.
 		// We use the DragMessage function to achieve this
 		BMessage message(CUE_ICON_DRAG_MSG);
@@ -162,42 +161,41 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 		fMouseDown = false;
 	}
 	// Show button depressed state
-	else
-	{
+	else{
 		// Do nothing if mouse button is depressed
-		uint32 	buttons = 0;
+		uint32 buttons = 0;
 		GetMouse(&where, &buttons, true);
 		if (buttons)
 			return;
 
 		switch (code)
 		{
-			case B_ENTERED_VIEW:
-				{
-					fState = true;
-					Invalidate();
-					BMessage *theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
-					theMessage->AddString("CueName", Name());
-					if (Window())
-						Window()->PostMessage(theMessage);
-					delete theMessage;
-				}
-				break;
+		case B_ENTERED_VIEW:
+		{
+			fState = true;
+			Invalidate();
+			BMessage *theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
+			theMessage->AddString("CueName", Name());
+			if (Window())
+				Window()->PostMessage(theMessage);
+			delete theMessage;
+		}
+		break;
 
-			case B_EXITED_VIEW :
-				{
-					fState = false;
-					Invalidate();
-					BMessage *theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
-					theMessage->AddString("CueName", "");
-					if (Window())
-						Window()->PostMessage(theMessage);
-					delete theMessage;
-				}
-				break;
+		case B_EXITED_VIEW:
+		{
+			fState = false;
+			Invalidate();
+			BMessage *theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
+			theMessage->AddString("CueName", "");
+			if (Window())
+				Window()->PostMessage(theMessage);
+			delete theMessage;
+		}
+		break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 }

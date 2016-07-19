@@ -8,7 +8,7 @@
 //
 //	Desc:	Toolbar view.  Contains the following tool buttons:
 //
-//				-- 	Pointer: Resets cursor to selection cursor
+//				--      Pointer: Resets cursor to selection cursor
 //				--	Contract All:  Contracts all tracks
 //				--	Expand All:  Expands all tracks
 //				--	Razor:  Allows cutting of cues
@@ -47,7 +47,7 @@
 //
 //
 
-TToolbar::TToolbar(BRect bounds, TCueSheetWindow *parent) : BView(bounds, "TooolbarView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP , B_WILL_DRAW)
+TToolbar::TToolbar(BRect bounds, TCueSheetWindow *parent) : BView(bounds, "TooolbarView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW)
 {
 
 	fParent = parent;
@@ -69,11 +69,11 @@ TToolbar::TToolbar(BMessage *data) : BView (data)
 	fParent = NULL;
 
 	//	Find child views
-	fPointerButton 	= (TPointerButton *)FindView("PointerButton");
+	fPointerButton  = (TPointerButton *)FindView("PointerButton");
 	fContractAllButton = (TContractAllButton *)FindView("ContractAllButton");
-	fExpandAllButton 	= (TExpandAllButton *)FindView("ExpandAllButton");
-	fRazorButton 		= (TRazorButton *)FindView("RazorButton");
-	fZoomButton 		= (TZoomButton *)FindView("ZoomButton");
+	fExpandAllButton        = (TExpandAllButton *)FindView("ExpandAllButton");
+	fRazorButton            = (TRazorButton *)FindView("RazorButton");
+	fZoomButton             = (TZoomButton *)FindView("ZoomButton");
 
 	//	Set up buton targets and handlers
 
@@ -96,10 +96,10 @@ TToolbar::~TToolbar()
 //
 //	Perform default initialization tasks
 
-const short kButtonLeftOffset 	= 5;
-const short kButtonTopOffset 	= 2;
-const short kToolButtonWidth	= 16;
-const short kToolButtonHeight	= 16;
+const short kButtonLeftOffset   = 5;
+const short kButtonTopOffset    = 2;
+const short kToolButtonWidth    = 16;
+const short kToolButtonHeight   = 16;
 
 void TToolbar::Init()
 {
@@ -114,7 +114,7 @@ void TToolbar::Init()
 	BBitmap *pointerDn = GetIcon16FromResource("PointerDown");
 	bounds = fParent->Bounds();
 	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset,
-				bounds.top + kButtonTopOffset + kToolButtonHeight );
+	            bounds.top + kButtonTopOffset + kToolButtonHeight );
 	fPointerButton = new TPointerButton(this, bounds, "PointerButton", pointerDn, pointerUp, this);
 	AddChild(fPointerButton);
 	fPointerButton->Show();
@@ -192,16 +192,14 @@ status_t TToolbar::Archive(BMessage *data, bool deep) const
 	// Start by calling inherited archive
 	myErr = BView::Archive(data, deep);
 
-	if (myErr == B_OK)
-	{
+	if (myErr == B_OK) {
 		// Add our class name to the archive
 		data->AddString("class", "TToolbar");
 
 		// Add our member variables to the archive
 
 		// Add attached views
-		if (deep)
-		{
+		if (deep) {
 
 		}
 	}
@@ -263,8 +261,7 @@ void TToolbar::Draw(BRect updateRect)
 
 void TToolbar::AttachedToWindow()
 {
-	if(fParent == NULL)
-	{
+	if(fParent == NULL) {
 		fParent = (TCueSheetWindow *)Window();
 	}
 
@@ -283,5 +280,5 @@ void TToolbar::AttachedToWindow()
 //
 void TToolbar::SetParent(TCueSheetWindow *parent)
 {
- 	fParent = parent;
+	fParent = parent;
 }

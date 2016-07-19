@@ -19,8 +19,8 @@
 
 #include "TTransitionEffect.h"
 
-#include <support/Debug.h>		// for ASSERT()
-#include "TCuePosition.h"		// For class decl
+#include <support/Debug.h>              // for ASSERT()
+#include "TCuePosition.h"               // For class decl
 
 //	Local Constants
 const char kTransitionName[] = "BaseTransition";
@@ -33,8 +33,8 @@ const char kTransitionName[] = "BaseTransition";
 TTransitionEffect::TTransitionEffect(bool transitionIn) : TVisualEffect()
 {
 	//	Offscreen drawing
-	fOffscreenBitmap 	= NULL;
-	fOffscreenView 	= NULL;
+	fOffscreenBitmap        = NULL;
+	fOffscreenView  = NULL;
 
 	//	Are we an In or Out Transition
 	fTransitionIn = transitionIn;
@@ -51,13 +51,12 @@ TTransitionEffect::TTransitionEffect(BMessage* msg) : TVisualEffect(msg)
 TTransitionEffect::~TTransitionEffect()
 {
 	//	Free offscreen
-	if (fOffscreenBitmap)
- 	{
- 		fOffscreenBitmap->Lock();
- 		fOffscreenBitmap->RemoveChild(fOffscreenView);
- 		delete fOffscreenView;
- 		delete fOffscreenBitmap;
- 	}
+	if (fOffscreenBitmap) {
+		fOffscreenBitmap->Lock();
+		fOffscreenBitmap->RemoveChild(fOffscreenView);
+		delete fOffscreenView;
+		delete fOffscreenBitmap;
+	}
 }
 
 
@@ -99,7 +98,7 @@ status_t TTransitionEffect::Archive(BMessage* data, bool deep) const
 
 string TTransitionEffect::Name() const
 {
-	return( string(kTransitionName));
+	return(string(kTransitionName));
 }
 
 
@@ -108,8 +107,8 @@ string TTransitionEffect::Name() const
 //---------------------------------------------------------------------
 //
 //	Return a pointer to a bitmap which is to be used in the tools
-// 	palette. Either the 'up' or 'down' version can be chosen.
-// 	The base class version returns nothing.
+//      palette. Either the 'up' or 'down' version can be chosen.
+//      The base class version returns nothing.
 //
 
 const BBitmap *TTransitionEffect::CueIcon(bool up) const
@@ -153,12 +152,12 @@ void TTransitionEffect::Interpolate(TKeyFrameIterator kf) const
 //---------------------------------------------------------------------
 //
 //	Return a transformed version of 'bits' at 'time'. Caller
-// 	takes ownership of new'd BBitmap return value. Return
-// 	zero if nothing need be done.
+//      takes ownership of new'd BBitmap return value. Return
+//      zero if nothing need be done.
 //
 
 BBitmap *TTransitionEffect::TransformBitmap(uint32 time, const BBitmap* source,
-			const TCuePosition& registration, DisplayQuality quality)
+                                            const TCuePosition& registration, DisplayQuality quality)
 {
 	return 0;
 }
@@ -178,11 +177,10 @@ void TTransitionEffect::InitOffscreen(BRect offRect)
 {
 
 	//	Only create offscreen at first pass
-	if (!fInited)
-	{
+	if (!fInited) {
 		// Create offscreen bitmap and view
-		fOffscreenBitmap 	= new BBitmap(offRect, B_RGB_32_BIT, true);
-		fOffscreenView 	= new BView( fOffscreenBitmap->Bounds(), "TransitionOffscreen", B_FOLLOW_ALL, B_WILL_DRAW);
+		fOffscreenBitmap        = new BBitmap(offRect, B_RGB_32_BIT, true);
+		fOffscreenView  = new BView( fOffscreenBitmap->Bounds(), "TransitionOffscreen", B_FOLLOW_ALL, B_WILL_DRAW);
 
 		// Add child and fill with background color
 		fOffscreenBitmap->Lock();

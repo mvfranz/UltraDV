@@ -36,7 +36,7 @@
 #include <assert.h>
 
 // Constants
-const int32 kDragRectWidth 	= 14;
+const int32 kDragRectWidth      = 14;
 const int32 kDragRectHeight = 14;
 const rgb_color kDkGrey = {100, 100, 100, 255};
 
@@ -48,7 +48,7 @@ const rgb_color kDkGrey = {100, 100, 100, 255};
 //
 
 TElementsView::TElementsView(BRect bounds) : BView(bounds, "ElementsView",
-		B_FOLLOW_ALL|B_FRAME_EVENTS, B_WILL_DRAW)
+	                                           B_FOLLOW_ALL|B_FRAME_EVENTS, B_WILL_DRAW)
 {
 	// Perform default initialization
 	Init();
@@ -80,8 +80,8 @@ void TElementsView::Init()
 
 	// Create Tracker Sorter
 	BRect sorterRect = Bounds();
-	sorterRect.right 	-= kScrollWidth+1;
-	sorterRect.bottom 	-= kScrollHeight+1;
+	sorterRect.right        -= kScrollWidth+1;
+	sorterRect.bottom       -= kScrollHeight+1;
 	fSorter = new TElementsSorter(sorterRect, this);
 	AddChild(fSorter);
 
@@ -120,48 +120,47 @@ void TElementsView::MessageReceived(BMessage *theMessage)
 
 	switch( theMessage->what)
 	{
-		// Mouse moved. Send resize message to parent
-		case MW_MOUSE_MOVED:
-			{
-				BPoint mousePt;
-				if ( theMessage->FindPoint("where", &mousePt) == B_OK)
-				{
-					// Conver mousePt to screen coordinate
-					ConvertToScreen(&mousePt);
+	// Mouse moved. Send resize message to parent
+	case MW_MOUSE_MOVED:
+	{
+		BPoint mousePt;
+		if ( theMessage->FindPoint("where", &mousePt) == B_OK) {
+			// Conver mousePt to screen coordinate
+			ConvertToScreen(&mousePt);
 
-					// Get new window bounds
-					BRect frame = Window()->Frame();
-					frame.right		= mousePt.x;
-					frame.bottom 	= mousePt.y;
+			// Get new window bounds
+			BRect frame = Window()->Frame();
+			frame.right             = mousePt.x;
+			frame.bottom    = mousePt.y;
 
-					// Adjust size to keep mouse centered in DragRect
-					frame.right 	+= kDragRectWidth/2;
-					frame.bottom 	+= kDragRectHeight/2;
+			// Adjust size to keep mouse centered in DragRect
+			frame.right     += kDragRectWidth/2;
+			frame.bottom    += kDragRectHeight/2;
 
-					// Resize
-					Window()->ResizeTo(frame.Width(), frame.Height());
-				}
-			}
-			break;
+			// Resize
+			Window()->ResizeTo(frame.Width(), frame.Height());
+		}
+	}
+	break;
 
-		// A sorter is being dragged.  Adjust scroll bars...
-		case SORTER_RESIZE_MSG:
-			AdjustScrollBars();
-			break;
+	// A sorter is being dragged.  Adjust scroll bars...
+	case SORTER_RESIZE_MSG:
+		AdjustScrollBars();
+		break;
 
-		case SORTER_SELECT_MSG:
-		case SORTER_INVOKE_MSG:
-			fSorter->MessageReceived(theMessage);
-			break;
+	case SORTER_SELECT_MSG:
+	case SORTER_INVOKE_MSG:
+		fSorter->MessageReceived(theMessage);
+		break;
 
-		// Add the ref to our browser
-		case ADD_REF_MSG:
-			fSorter->MessageReceived(theMessage);
-			break;
+	// Add the ref to our browser
+	case ADD_REF_MSG:
+		fSorter->MessageReceived(theMessage);
+		break;
 
-		default:
-			BView::MessageReceived(theMessage);
-			break;
+	default:
+		BView::MessageReceived(theMessage);
+		break;
 
 	}
 }
@@ -203,8 +202,7 @@ void TElementsView::DrawDragRect()
 
 	// Only draw texture if we are active
 
-	if ( Window()->IsActive() )
-	{
+	if ( Window()->IsActive() ) {
 		// Draw shadow dots
 		BPoint startPt, endPt;
 		SetHighColor(kDkGrey);
@@ -219,8 +217,8 @@ void TElementsView::DrawDragRect()
 		endPt.Set(dragRect.right-1, dragRect.top+7);
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	-= 3;
-		endPt.x 	-= 3;
+		startPt.x       -= 3;
+		endPt.x         -= 3;
 		StrokeLine(startPt, endPt);
 
 		// Third Row
@@ -228,12 +226,12 @@ void TElementsView::DrawDragRect()
 		endPt.Set(dragRect.right-1, dragRect.top+10);
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	-= 3;
-		endPt.x 	-= 3;
+		startPt.x       -= 3;
+		endPt.x         -= 3;
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	-= 3;
-		endPt.x 	-= 3;
+		startPt.x       -= 3;
+		endPt.x         -= 3;
 		StrokeLine(startPt, endPt);
 
 		// Bottom Row
@@ -241,16 +239,16 @@ void TElementsView::DrawDragRect()
 		endPt.Set(dragRect.left+4, dragRect.top+13);
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	+= 3;
-		endPt.x 	+= 3;
+		startPt.x       += 3;
+		endPt.x         += 3;
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	+= 3;
-		endPt.x 	+= 3;
+		startPt.x       += 3;
+		endPt.x         += 3;
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	+= 3;
-		endPt.x 	+= 3;
+		startPt.x       += 3;
+		endPt.x         += 3;
 		StrokeLine(startPt, endPt);
 
 		// Draw Hilight dots
@@ -266,8 +264,8 @@ void TElementsView::DrawDragRect()
 		endPt.Set(dragRect.right, dragRect.top+8);
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	-= 3;
-		endPt.x 	-= 3;
+		startPt.x       -= 3;
+		endPt.x         -= 3;
 		StrokeLine(startPt, endPt);
 
 		// Third Row
@@ -275,12 +273,12 @@ void TElementsView::DrawDragRect()
 		endPt.Set(dragRect.right, dragRect.top+11);
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	-= 3;
-		endPt.x 	-= 3;
+		startPt.x       -= 3;
+		endPt.x         -= 3;
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	-= 3;
-		endPt.x 	-= 3;
+		startPt.x       -= 3;
+		endPt.x         -= 3;
 		StrokeLine(startPt, endPt);
 
 		// Bottom Row
@@ -288,16 +286,16 @@ void TElementsView::DrawDragRect()
 		endPt.Set(dragRect.left+5, dragRect.top+14);
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	+= 3;
-		endPt.x 	+= 3;
+		startPt.x       += 3;
+		endPt.x         += 3;
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	+= 3;
-		endPt.x 	+= 3;
+		startPt.x       += 3;
+		endPt.x         += 3;
 		StrokeLine(startPt, endPt);
 
-		startPt.x 	+= 3;
-		endPt.x 	+= 3;
+		startPt.x       += 3;
+		endPt.x         += 3;
 		StrokeLine(startPt, endPt);
 	}
 
@@ -322,8 +320,7 @@ void TElementsView::MouseDown(BPoint where)
 	BRect dragRect;
 	GetDragRect(&dragRect);
 
-	if ( dragRect.Contains(where) )
-	{
+	if ( dragRect.Contains(where) ) {
 		StartMouseWatcher(this);
 	}
 
@@ -402,9 +399,9 @@ void TElementsView::FrameResized(float w,float h)
 
 void TElementsView::GetDragRect(BRect *dragRect)
 {
-	*dragRect 		= Bounds();
-	dragRect->left 	= dragRect->right - kDragRectWidth;
-	dragRect->top 	= dragRect->bottom - kDragRectHeight;
+	*dragRect               = Bounds();
+	dragRect->left  = dragRect->right - kDragRectWidth;
+	dragRect->top   = dragRect->bottom - kDragRectHeight;
 }
 
 
@@ -423,16 +420,16 @@ void TElementsView::AdjustScrollBars()
 	AdjustScrollBar( fHScroll, scrollRect.Width(), 200, scrollArea.Width(), scrollRect.left);
 
 	/*
-	// 	Vertical scrollbar area is total combined height of all channels
-	//	Iterate through all of the channels and calculate height
-	int32 totalHeight = 0;
-	for (int32 index = 0; index < fCueSheetView->GetTotalChannels(); index++)
-	{
-		TCueChannel *theChannel = (TCueChannel *)fCueSheetView->GetChannelList()->ItemAt(index);
-		if (theChannel)
-			totalHeight += theChannel->Bounds().Height();
-	}
-	*/
+	   //   Vertical scrollbar area is total combined height of all channels
+	   //	Iterate through all of the channels and calculate height
+	   int32 totalHeight = 0;
+	   for (int32 index = 0; index < fCueSheetView->GetTotalChannels(); index++)
+	   {
+	        TCueChannel *theChannel = (TCueChannel *)fCueSheetView->GetChannelList()->ItemAt(index);
+	        if (theChannel)
+	                totalHeight += theChannel->Bounds().Height();
+	   }
+	 */
 
 	// Adjust vertical scrollbar
 	//AdjustScrollBar( fVScroll, scrollRect.Height()-(kTimelineHeight+kToolbarHeight+kMenuHeight+10), kTickSpacing, totalHeight+kTimelineHeight+kToolbarHeight+kMenuHeight+1, scrollRect.top);

@@ -26,25 +26,25 @@
 //
 //
 
-	// Variant ala BPictureButton which requires a call to SetHandler()
+// Variant ala BPictureButton which requires a call to SetHandler()
 TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* off,
-		BBitmap* on, BMessage *message, uint32 resizingMode, uint32 flags) :
-		// defaults
-		//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
-		//		flags = B_WILL_DRAW | B_NAVIGABLE
+                                       BBitmap* on, BMessage *message, uint32 resizingMode, uint32 flags) :
+	// defaults
+	//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
+	//		flags = B_WILL_DRAW | B_NAVIGABLE
 	TBitmapButton(bounds, name, off, on, message, B_TWO_STATE_BUTTON, resizingMode, flags),
 	fBeingTracked(false)
 {
 }
 
 TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* off,
-		BBitmap* on, BHandler *handler, BMessage *message, uint32 resizingMode,
-		uint32 flags) :
-		// defaults
-		//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
-		//		flags = B_WILL_DRAW | B_NAVIGABLE
+                                       BBitmap* on, BHandler *handler, BMessage *message, uint32 resizingMode,
+                                       uint32 flags) :
+	// defaults
+	//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
+	//		flags = B_WILL_DRAW | B_NAVIGABLE
 	TBitmapButton(bounds, name, off, on, handler, message, B_TWO_STATE_BUTTON,
-			resizingMode, flags),
+	              resizingMode, flags),
 	fBeingTracked(false)
 {
 }

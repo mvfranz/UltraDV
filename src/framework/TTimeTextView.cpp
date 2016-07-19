@@ -39,11 +39,11 @@
 //
 
 TTimeTextView::TTimeTextView( BHandler *target, int32 messageID, BRect bounds, char *name, uint32 resizing) :
-			   BTextView(bounds, name, bounds, resizing, B_FRAME_EVENTS | B_PULSE_NEEDED)
+	BTextView(bounds, name, bounds, resizing, B_FRAME_EVENTS | B_PULSE_NEEDED)
 
 {
-	fTarget 		= target;
-	fMessageID  	= messageID;
+	fTarget                 = target;
+	fMessageID      = messageID;
 
 	// Perform default initialization
 	Init();
@@ -84,35 +84,35 @@ void TTimeTextView::Init()
 	SetViewColor(kWhite);
 	SetFontAndColor(&theFont, B_FONT_ALL, &kBlack);
 
-	// 	Set up time rects.  We divide the area up into four areas
+	//      Set up time rects.  We divide the area up into four areas
 	//	for hour, minutes, seconds and frames
-	float 	numberWidth;
-	float 	spaceWidth;
+	float numberWidth;
+	float spaceWidth;
 
 	BRect bounds = Bounds();
 
 	numberWidth = StringWidth("00");
 	spaceWidth = StringWidth(":");
 
-	fHoursRect.left 		= bounds.left;
-	fHoursRect.top 		= bounds.top;
-	fHoursRect.right 		= fHoursRect.left + numberWidth;
-	fHoursRect.bottom 		= bounds.bottom;
+	fHoursRect.left                 = bounds.left;
+	fHoursRect.top          = bounds.top;
+	fHoursRect.right                = fHoursRect.left + numberWidth;
+	fHoursRect.bottom               = bounds.bottom;
 
-	fMinutesRect.left 		= fHoursRect.right + spaceWidth;
-	fMinutesRect.top 		= bounds.top;
-	fMinutesRect.right 	= fMinutesRect.left + numberWidth;
-	fMinutesRect.bottom 	= bounds.bottom;
+	fMinutesRect.left               = fHoursRect.right + spaceWidth;
+	fMinutesRect.top                = bounds.top;
+	fMinutesRect.right      = fMinutesRect.left + numberWidth;
+	fMinutesRect.bottom     = bounds.bottom;
 
-	fSecondsRect.left 		= fMinutesRect.right + spaceWidth;
-	fSecondsRect.top 		= bounds.top;
-	fSecondsRect.right 	= fSecondsRect.left + numberWidth;
-	fSecondsRect.bottom 	= bounds.bottom;
+	fSecondsRect.left               = fMinutesRect.right + spaceWidth;
+	fSecondsRect.top                = bounds.top;
+	fSecondsRect.right      = fSecondsRect.left + numberWidth;
+	fSecondsRect.bottom     = bounds.bottom;
 
-	fFramesRect.left 		= fSecondsRect.right + spaceWidth;
-	fFramesRect.top 		= bounds.top;
-	fFramesRect.right 		= bounds.right;
-	fFramesRect.bottom 	= bounds.bottom;
+	fFramesRect.left                = fSecondsRect.right + spaceWidth;
+	fFramesRect.top                 = bounds.top;
+	fFramesRect.right               = bounds.right;
+	fFramesRect.bottom      = bounds.bottom;
 
 	// Select first cell
 	//Select(0,2);
@@ -169,35 +169,25 @@ void TTimeTextView::MouseDown(BPoint where)
 	CheckLastEdit();
 
 	// Determine where the click is
-	if ( fHoursRect.Contains(where) )
-	{
+	if ( fHoursRect.Contains(where) ) {
 		Select(0,2);
 		ScrollToSelection();
 		fCurrentCell = 1;
-	}
-	else if ( fMinutesRect.Contains(where) )
-	{
+	} else if ( fMinutesRect.Contains(where) )   {
 		Select(3,5);
 		ScrollToSelection();
 		fCurrentCell = 2;
-	}
-
-	else if ( fSecondsRect.Contains(where) )
-	{
+	} else if ( fSecondsRect.Contains(where) )   {
 		Select(6,8);
 		ScrollToSelection();
 		fCurrentCell = 3;
-	}
-
-	else if ( fFramesRect.Contains(where) )
-	{
+	} else if ( fFramesRect.Contains(where) )   {
 		Select(9,11);
 		ScrollToSelection();
 		fCurrentCell = 4;
 	}
 	// Default to first cell if all else fails
-	else
-	{
+	else{
 		Select(0,2);
 		ScrollToSelection();
 		fCurrentCell = 1;
@@ -239,11 +229,10 @@ void TTimeTextView::MouseMoved(BPoint where, uint32 code, const BMessage *messag
 
 void TTimeTextView::KeyDown(const char *bytes, int32 numBytes)
 {
-	char 	theChar = *bytes;
+	char theChar = *bytes;
 
 	//	Check for a return or enter
-	if (theChar == B_ENTER || theChar == B_RETURN || theChar == 'r')
-	{
+	if (theChar == B_ENTER || theChar == B_RETURN || theChar == 'r') {
 		// Deselect all
 		Select(0,0);
 
@@ -253,71 +242,69 @@ void TTimeTextView::KeyDown(const char *bytes, int32 numBytes)
 		MakeFocus(false);
 	}
 	// Accept numbers
-	else if( isdigit(theChar) )
-	{
+	else if( isdigit(theChar) ) {
 		/*
-		short	tmpNum;
-		bool	addIt = false;
+		   short	tmpNum;
+		   bool	addIt = false;
 
-		switch (fCurrentCell)
-		{
-			case 1:
-				if (inputNum[0] < 2 || inputNum[0] == 2 && theChar < '4')
-					addIt = true;
-					break;
+		   switch (fCurrentCell)
+		   {
+		        case 1:
+		                if (inputNum[0] < 2 || inputNum[0] == 2 && theChar < '4')
+		                        addIt = true;
+		                        break;
 
-			case 2:
-				if (inputNum[1] < 6)
-					addIt = true;
-					break;
+		        case 2:
+		                if (inputNum[1] < 6)
+		                        addIt = true;
+		                        break;
 
-			case 3:
-				if (inputNum[2] < 6)
-					addIt = true;
-					break;
+		        case 3:
+		                if (inputNum[2] < 6)
+		                        addIt = true;
+		                        break;
 
-			case 4:
-				if (GetCurrentTimeFOrmat() == kMIDI && inputNum[3] < 10)
-					addIt = true;
-				else if (inputNum[3] < 2)
-					addIt = true;
-				else if (inputNum[3] == 2)
-				{
-					switch (GetCurrentTimeFormat())
-					{
+		        case 4:
+		                if (GetCurrentTimeFOrmat() == kMIDI && inputNum[3] < 10)
+		                        addIt = true;
+		                else if (inputNum[3] < 2)
+		                        addIt = true;
+		                else if (inputNum[3] == 2)
+		                {
+		                        switch (GetCurrentTimeFormat())
+		                        {
 
-						case kSMPTE24:
-							if (theChar < '4')
-								addIt = true;
-							break;
+		                                case kSMPTE24:
+		                                        if (theChar < '4')
+		                                                addIt = true;
+		                                        break;
 
-						case kSMPTE25:
-							if (theChar < '5')
-								addIt = true;
-							break;
+		                                case kSMPTE25:
+		                                        if (theChar < '5')
+		                                                addIt = true;
+		                                        break;
 
-						case kSMPTE2997:
-						case kSMPTE30:
-							addIt = true;
-							break;
-					}
-				}
-				break;
-		}
+		                                case kSMPTE2997:
+		                                case kSMPTE30:
+		                                        addIt = true;
+		                                        break;
+		                        }
+		                }
+		                break;
+		   }
 
-		if (addIt)
-		{
-			inputNum[itsCurrentField - 1] *= 10;
-			inputNum[itsCurrentField - 1] += theChar - '0';
-			//DrawEditField();
-		}
-		*/
+		   if (addIt)
+		   {
+		        inputNum[itsCurrentField - 1] *= 10;
+		        inputNum[itsCurrentField - 1] += theChar - '0';
+		        //DrawEditField();
+		   }
+		 */
 
 		BTextView::KeyDown(bytes, numBytes);
 	}
 	// Tab key moves us through the time elements
-	else if( IsTab(theChar) || theChar == '.' )
-	{
+	else if( IsTab(theChar) || theChar == '.' ) {
 		int16 lastCell = fCurrentCell;
 
 		// Deselect all
@@ -327,16 +314,13 @@ void TTimeTextView::KeyDown(const char *bytes, int32 numBytes)
 		CheckLastEdit();
 
 		// Check for shift key
-		if ( IsShiftKeyDown() )
-		{
+		if ( IsShiftKeyDown() ) {
 			// Select the previous cell
 			fCurrentCell--;
 
 			if (fCurrentCell <= 0)
 				fCurrentCell = 4;
-		}
-		else
-		{
+		} else   {
 			// Select the next cell
 			fCurrentCell++;
 
@@ -346,28 +330,28 @@ void TTimeTextView::KeyDown(const char *bytes, int32 numBytes)
 
 		switch (fCurrentCell)
 		{
-			case 1:
-				Select(0,2);
-				ScrollToSelection();
-				break;
+		case 1:
+			Select(0,2);
+			ScrollToSelection();
+			break;
 
-			case 2:
-				Select(3,5);
-				ScrollToSelection();
-				break;
+		case 2:
+			Select(3,5);
+			ScrollToSelection();
+			break;
 
-			case 3:
-				Select(6,8);
-				ScrollToSelection();
-				break;
+		case 3:
+			Select(6,8);
+			ScrollToSelection();
+			break;
 
-			case 4:
-				Select(9,11);
-				ScrollToSelection();
-				break;
+		case 4:
+			Select(9,11);
+			ScrollToSelection();
+			break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 	// Illegal character
@@ -387,21 +371,17 @@ void TTimeTextView::MakeFocus(bool focusState)
 	BTextView::MakeFocus(focusState);
 
 	// Inform target
-	if ( focusState == false)
-	{
-		if (fTarget)
-		{
+	if ( focusState == false) {
+		if (fTarget) {
 			BLooper *looper = fTarget->Looper();
 
-			if ( looper->Lock() )
-			{
+			if ( looper->Lock() ) {
 				CheckLastEdit();
 
 				for (int16 index = 1; index < 5; index++)
 					ConvertToTime(index);
 
-				if (fMessageID)
-				{
+				if (fMessageID) {
 					BMessage *message = new BMessage(fMessageID);
 					message->AddInt32("TheTime", fTime);
 					fTarget->MessageReceived( message);
@@ -432,15 +412,15 @@ void TTimeTextView::MessageReceived(BMessage *message)
 	switch(message->what)
 	{
 
-		// Subvert these messages
-		case B_CUT:
-		case B_PASTE:
-		case B_SELECT_ALL:
-			break;
+	// Subvert these messages
+	case B_CUT:
+	case B_PASTE:
+	case B_SELECT_ALL:
+		break;
 
-		default:
-			BTextView::MessageReceived(message);
-			break;
+	default:
+		BTextView::MessageReceived(message);
+		break;
 	}
 
 	//looper->Unlock();
@@ -480,7 +460,7 @@ bool TTimeTextView::AcceptsPaste(BClipboard *clipboard)
 //
 //
 
-void  TTimeTextView::InsertText(const char *text, int32 length, int32 offset, const text_run_array *runs)
+void TTimeTextView::InsertText(const char *text, int32 length, int32 offset, const text_run_array *runs)
 {
 	BTextView::InsertText(text, length, offset, runs);
 }
@@ -495,15 +475,15 @@ void  TTimeTextView::InsertText(const char *text, int32 length, int32 offset, co
 //	Check to see if character is backspace
 //
 
-bool  TTimeTextView::IsBackspace(char theChar)
+bool TTimeTextView::IsBackspace(char theChar)
 {
 	switch(theChar)
 	{
-		case B_BACKSPACE:
-			return true;
+	case B_BACKSPACE:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -516,18 +496,18 @@ bool  TTimeTextView::IsBackspace(char theChar)
 //	Check to see if character is one of the arrow keys
 //
 
-bool  TTimeTextView::IsArrows(char theChar)
+bool TTimeTextView::IsArrows(char theChar)
 {
 	switch(theChar)
 	{
-		case B_UP_ARROW:
-		case B_LEFT_ARROW:
-		case B_DOWN_ARROW:
-		case B_RIGHT_ARROW:
-			return true;
+	case B_UP_ARROW:
+	case B_LEFT_ARROW:
+	case B_DOWN_ARROW:
+	case B_RIGHT_ARROW:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -539,15 +519,15 @@ bool  TTimeTextView::IsArrows(char theChar)
 //	Check to see if character is the delete key
 //
 
-bool  TTimeTextView::IsDelete(char theChar)
+bool TTimeTextView::IsDelete(char theChar)
 {
 	switch(theChar)
 	{
-		case B_DELETE:
-			return true;
+	case B_DELETE:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -560,15 +540,15 @@ bool  TTimeTextView::IsDelete(char theChar)
 //	Check to see if character is the tab key
 //
 
-bool  TTimeTextView::IsTab(char theChar)
+bool TTimeTextView::IsTab(char theChar)
 {
 	switch(theChar)
 	{
-		case B_TAB:
-			return true;
+	case B_TAB:
+		return true;
 
-		default:
-			return false;
+	default:
+		return false;
 
 	}
 }
@@ -586,107 +566,101 @@ bool  TTimeTextView::IsTab(char theChar)
 
 void TTimeTextView::CheckLastEdit()
 {
-	char 	textBuf[2];
-	int32	tmpNum;
+	char textBuf[2];
+	int32 tmpNum;
 
 	// Check for bad characters and number overflow
 	switch(fCurrentCell)
 	{
-		// Hours
-		case 1:
-			GetText(0, 2, textBuf);
-			if (textBuf[1] == ':')
-				Insert(0, "0", 1);
-			break;
+	// Hours
+	case 1:
+		GetText(0, 2, textBuf);
+		if (textBuf[1] == ':')
+			Insert(0, "0", 1);
+		break;
 
-		// Minutes
-		case 2:
-			{
-				GetText(3, 2, textBuf);
-				if (textBuf[1] == ':')
-					Insert(3, "0", 1);
+	// Minutes
+	case 2:
+	{
+		GetText(3, 2, textBuf);
+		if (textBuf[1] == ':')
+			Insert(3, "0", 1);
 
-				// Get adjusted text
-				GetText(3, 2, textBuf);
-				tmpNum = atoi(textBuf);
+		// Get adjusted text
+		GetText(3, 2, textBuf);
+		tmpNum = atoi(textBuf);
 
-				if (tmpNum > 59)
-				{
-					Delete(3, 5);
-					Insert(3, "59", 2);
-				}
+		if (tmpNum > 59) {
+			Delete(3, 5);
+			Insert(3, "59", 2);
+		}
+	}
+	break;
+
+	// Seconds
+	case 3:
+	{
+		GetText(6, 2, textBuf);
+		if (textBuf[1] == ':')
+			Insert(6, "0", 1);
+
+		// Get adjusted text
+		GetText(6, 2, textBuf);
+		tmpNum = atoi(textBuf);
+
+		if (tmpNum > 59) {
+			Delete(6, 8);
+			Insert(6, "59", 2);
+		}
+	}
+	break;
+
+	case 4:
+	{
+		GetText(8, 2, textBuf);
+		if (textBuf[0] == ':')
+			Insert(9, "0", 1);
+
+		// Get adjusted text
+		GetText(9, 2, textBuf);
+		tmpNum = atoi(textBuf);
+
+		switch (GetCurrentTimeFormat())
+		{
+		case B_TIMECODE_DEFAULT:
+			if (tmpNum > 100) {
+				Delete(9, 12);
+				Insert(9, "99", 2);
 			}
 			break;
 
-		// Seconds
-		case 3:
-			{
-				GetText(6, 2, textBuf);
-				if (textBuf[1] == ':')
-					Insert(6, "0", 1);
-
-				// Get adjusted text
-				GetText(6, 2, textBuf);
-				tmpNum = atoi(textBuf);
-
-				if (tmpNum > 59)
-				{
-					Delete(6, 8);
-					Insert(6, "59", 2);
-				}
+		case B_TIMECODE_24:
+			if (tmpNum > 24) {
+				Delete(9, 12);
+				Insert(9, "24", 2);
 			}
 			break;
 
-		case 4:
-			{
-				GetText(8, 2, textBuf);
-				if (textBuf[0] == ':')
-					Insert(9, "0", 1);
-
-				// Get adjusted text
-				GetText(9, 2, textBuf);
-				tmpNum = atoi(textBuf);
-
-				switch (GetCurrentTimeFormat())
-				{
-					case B_TIMECODE_DEFAULT:
-						if (tmpNum > 100)
-						{
-							Delete(9, 12);
-							Insert(9, "99", 2);
-						}
-						break;
-
-					case B_TIMECODE_24:
-						if (tmpNum > 24)
-						{
-							Delete(9, 12);
-							Insert(9, "24", 2);
-						}
-						break;
-
-					case B_TIMECODE_25:
-						if (tmpNum > 25)
-						{
-							Delete(9, 12);
-							Insert(9, "25", 2);
-						}
-						break;
-
-					case B_TIMECODE_30_DROP_2:
-					case B_TIMECODE_30:
-						if (tmpNum > 30)
-						{
-							Delete(9, 12);
-							Insert(9, "30", 2);
-						}
-						break;
-				}
+		case B_TIMECODE_25:
+			if (tmpNum > 25) {
+				Delete(9, 12);
+				Insert(9, "25", 2);
 			}
 			break;
 
-		default:
+		case B_TIMECODE_30_DROP_2:
+		case B_TIMECODE_30:
+			if (tmpNum > 30) {
+				Delete(9, 12);
+				Insert(9, "30", 2);
+			}
 			break;
+		}
+	}
+	break;
+
+	default:
+		break;
 	}
 
 	ConvertToTime(fCurrentCell);
@@ -705,195 +679,192 @@ void TTimeTextView::CheckLastEdit()
 
 void TTimeTextView::ConvertToTime(int16 theCell)
 {
-	int32 	oldVal, delta;
-	char 	textBuf[12];
-	char	tmpStr[3];
-	int16 	tmpNum;
+	int32 oldVal, delta;
+	char textBuf[12];
+	char tmpStr[3];
+	int16 tmpNum;
 
 	// Fill buffer with current text
 	GetText(0, 11, textBuf);
 	tmpStr[2] = '\n';
 
 	/*
-	// Determine current time format and convert text to time
-	if ( GetCurrentTimeFormat() == kSMPTE30)
-	{
-		char	text[256];
-		bool	changed = false;
-		int16	hours, minutes, seconds, frames;
+	   // Determine current time format and convert text to time
+	   if ( GetCurrentTimeFormat() == kSMPTE30)
+	   {
+	        char	text[256];
+	        bool	changed = false;
+	        int16	hours, minutes, seconds, frames;
 
-		TimeToString(fTime, GetCurrentTimeFormat(), text, false);
+	        TimeToString(fTime, GetCurrentTimeFormat(), text, false);
 
-		// Stick the new value (if it changed) into the string and reverse calc the time
-		switch (theCell)
-		{
-			// Hours
-			case 1:
-				oldVal = ((text[1] - '0') * 10) + (text[2] - '0');
-				if (textBuf[0] != oldVal)
-				{
-					text[1] = textBuf[0] / 10 + '0';
-					textBuf[0] %= 10;
-					text[2] = textBuf[0] + '0';
-					changed = true;
-				}
-				break;
+	        // Stick the new value (if it changed) into the string and reverse calc the time
+	        switch (theCell)
+	        {
+	                // Hours
+	                case 1:
+	                        oldVal = ((text[1] - '0') * 10) + (text[2] - '0');
+	                        if (textBuf[0] != oldVal)
+	                        {
+	                                text[1] = textBuf[0] / 10 + '0';
+	                                textBuf[0] %= 10;
+	                                text[2] = textBuf[0] + '0';
+	                                changed = true;
+	                        }
+	                        break;
 
-			// Minutes
-			case 2:
-				oldVal = ((text[4] - '0') * 10) + (text[5] - '0');
-				if (textBuf[1] != oldVal)
-				{
-					text[4] = textBuf[1] / 10 + '0';
-					textBuf[1] %= 10;
-					text[5] = textBuf[1] + '0';
-					changed = true;
-				}
-				break;
+	                // Minutes
+	                case 2:
+	                        oldVal = ((text[4] - '0') * 10) + (text[5] - '0');
+	                        if (textBuf[1] != oldVal)
+	                        {
+	                                text[4] = textBuf[1] / 10 + '0';
+	                                textBuf[1] %= 10;
+	                                text[5] = textBuf[1] + '0';
+	                                changed = true;
+	                        }
+	                        break;
 
-			// Seconds
-			case 3:
-				oldVal = ((text[7] - '0') * 10) + (text[8] - '0');
-				if (textBuf[2] != oldVal)
-				{
-					text[7] = textBuf[2] / 10 + '0';
-					textBuf[2] %= 10;
-					text[8] = textBuf[2] + '0';
-					changed = true;
-				}
-				break;
+	                // Seconds
+	                case 3:
+	                        oldVal = ((text[7] - '0') * 10) + (text[8] - '0');
+	                        if (textBuf[2] != oldVal)
+	                        {
+	                                text[7] = textBuf[2] / 10 + '0';
+	                                textBuf[2] %= 10;
+	                                text[8] = textBuf[2] + '0';
+	                                changed = true;
+	                        }
+	                        break;
 
-			// Frames
-			case 4:
-				oldVal = ((text[10] - '0') * 10) + (text[11] - '0');
+	                // Frames
+	                case 4:
+	                        oldVal = ((text[10] - '0') * 10) + (text[11] - '0');
 
-				if (textBuf[3] < 2 && text[7] == '0' && text[8] == '0' && text[5] != '0')
-					textBuf[3] = 2;
+	                        if (textBuf[3] < 2 && text[7] == '0' && text[8] == '0' && text[5] != '0')
+	                                textBuf[3] = 2;
 
-				if (textBuf[3] != oldVal)
-				{
-					text[10] = textBuf[3] / 10 + '0';
-					textBuf[3] %= 10;
-					text[11] = textBuf[3] + '0';
-					changed = true;
-				}
-				break;
-		}
+	                        if (textBuf[3] != oldVal)
+	                        {
+	                                text[10] = textBuf[3] / 10 + '0';
+	                                textBuf[3] %= 10;
+	                                text[11] = textBuf[3] + '0';
+	                                changed = true;
+	                        }
+	                        break;
+	        }
 
-		if (changed)
-		{
-			hours = ((text[1] - '0') * 10) + (text[2] - '0');
-			minutes = ((text[4] - '0') * 10) + (text[5] - '0');
-			seconds = ((text[7] - '0') * 10) + (text[8] - '0');
-			frames = ((text[10] - '0') * 10) + (text[11] - '0');
+	        if (changed)
+	        {
+	                hours = ((text[1] - '0') * 10) + (text[2] - '0');
+	                minutes = ((text[4] - '0') * 10) + (text[5] - '0');
+	                seconds = ((text[7] - '0') * 10) + (text[8] - '0');
+	                frames = ((text[10] - '0') * 10) + (text[11] - '0');
 
-			fTime = (long)hours * 3600000L;				// Hours
-			fTime += (long)(minutes / 10) * 600000;		// Ten minutes
-			minutes %= 10;
+	                fTime = (long)hours * 3600000L;				// Hours
+	                fTime += (long)(minutes / 10) * 600000;		// Ten minutes
+	                minutes %= 10;
 
-			if (minutes)
-			{
-				// First minute
-				fTime += 60060.066;
-				fTime += ((double)(minutes - 1) * 59993.326);
-			}
+	                if (minutes)
+	                {
+	                        // First minute
+	                        fTime += 60060.066;
+	                        fTime += ((double)(minutes - 1) * 59993.326);
+	                }
 
-			if (seconds)
-			{
-				// First second
-				if (minutes)
-					fTime += 934;
-				else
-					fTime += 1001;
-				fTime += (long)(seconds - 1) * 1001;
-			}
+	                if (seconds)
+	                {
+	                        // First second
+	                        if (minutes)
+	                                fTime += 934;
+	                        else
+	                                fTime += 1001;
+	                        fTime += (long)(seconds - 1) * 1001;
+	                }
 
-			if (frames >= 2 && !seconds && minutes)
-				frames -= 2;
+	                if (frames >= 2 && !seconds && minutes)
+	                        frames -= 2;
 
-			fTime += ((double)(frames + 0.5) * 33.3667);
-		}
+	                fTime += ((double)(frames + 0.5) * 33.3667);
+	        }
 
-	}
-	else switch (theCell)
-	*/
+	   }
+	   else switch (theCell)
+	 */
 	switch (theCell)
 	{
-		// Hours
-		case 1:
-			oldVal = fTime / 3600000;
+	// Hours
+	case 1:
+		oldVal = fTime / 3600000;
 
-			strncpy(tmpStr, &textBuf[0], 2);
-			tmpNum = atoi(tmpStr);
+		strncpy(tmpStr, &textBuf[0], 2);
+		tmpNum = atoi(tmpStr);
 
-			if (tmpNum != oldVal)
-			{
-				delta = tmpNum - oldVal;
-				fTime += (delta * 3600000);
-			}
+		if (tmpNum != oldVal) {
+			delta = tmpNum - oldVal;
+			fTime += (delta * 3600000);
+		}
+		break;
+
+	// Minutes
+	case 2:
+		// Convert time to minutes
+		oldVal = fTime % 3600000;
+		oldVal /= 60000;
+
+		strncpy(tmpStr, &textBuf[3], 2);
+		tmpNum = atoi(tmpStr);
+
+		if (tmpNum != oldVal) {
+			delta = tmpNum - oldVal;
+			fTime += (delta * 60000);
+		}
+		break;
+
+	// Seconds
+	case 3:
+		oldVal = fTime % 3600000;
+		oldVal %= 60000;
+		oldVal /= 1000;
+
+		strncpy(tmpStr, &textBuf[6], 2);
+		tmpNum = atoi(tmpStr);
+
+		if (tmpNum != oldVal) {
+			delta = tmpNum - oldVal;
+			fTime += (delta * 1000);
+		}
+		break;
+
+	// Frames/100ths
+	case 4:
+		fTime /= 1000;
+		fTime *= 1000;
+
+		strncpy(tmpStr, &textBuf[9], 2);
+		tmpNum = atoi(tmpStr);
+
+		switch (GetCurrentTimeFormat())
+		{
+
+		case B_TIMECODE_DEFAULT:
+			fTime += (tmpNum * 10);
 			break;
 
-		// Minutes
-		case 2:
-			// Convert time to minutes
-			oldVal = fTime % 3600000;
-			oldVal /= 60000;
-
-			strncpy(tmpStr, &textBuf[3], 2);
-			tmpNum = atoi(tmpStr);
-
-			if (tmpNum != oldVal)
-			{
-				delta = tmpNum - oldVal;
-				fTime += (delta * 60000);
-			}
+		case B_TIMECODE_24:
+			fTime += ((tmpNum * 1000 + 12) / 24);
 			break;
 
-		// Seconds
-		case 3:
-			oldVal = fTime % 3600000;
-			oldVal %= 60000;
-			oldVal /= 1000;
-
-			strncpy(tmpStr, &textBuf[6], 2);
-			tmpNum = atoi(tmpStr);
-
-			if (tmpNum != oldVal)
-			{
-				delta = tmpNum - oldVal;
-				fTime += (delta * 1000);
-			}
+		case B_TIMECODE_25:
+			fTime += ((tmpNum * 1000 + 13) / 25);
 			break;
 
-		// Frames/100ths
-		case 4:
-			fTime /= 1000;
-			fTime *= 1000;
-
-			strncpy(tmpStr, &textBuf[9], 2);
-			tmpNum = atoi(tmpStr);
-
-			switch (GetCurrentTimeFormat())
-			{
-
-				case B_TIMECODE_DEFAULT:
-					fTime += (tmpNum * 10);
-					break;
-
-				case B_TIMECODE_24:
-					fTime += ((tmpNum * 1000 + 12) / 24);
-					break;
-
-				case B_TIMECODE_25:
-					fTime += ((tmpNum * 1000 + 13) / 25);
-					break;
-
-				case B_TIMECODE_30_DROP_2:
-				case B_TIMECODE_30:
-					fTime += ((tmpNum * 1000 + 15) / 30);
-					break;
-			}
+		case B_TIMECODE_30_DROP_2:
+		case B_TIMECODE_30:
+			fTime += ((tmpNum * 1000 + 15) / 30);
 			break;
+		}
+		break;
 	}
 }
 
@@ -913,24 +884,24 @@ void TTimeTextView::Reselect()
 {
 	switch (fCurrentCell)
 	{
-		case 1:
-			Select(0,2);
-			break;
+	case 1:
+		Select(0,2);
+		break;
 
-		case 2:
-			Select(3,5);
-			break;
+	case 2:
+		Select(3,5);
+		break;
 
-		case 3:
-			Select(6,8);
-			break;
+	case 3:
+		Select(6,8);
+		break;
 
-		case 4:
-			Select(9,11);
-			break;
+	case 4:
+		Select(9,11);
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 

@@ -48,19 +48,19 @@ TMuseumMenus::TMuseumMenus(BMenuBar* mbar)
 	//	File menu
 	AddFileMenu();
 
-	// 	Edit menu
+	//      Edit menu
 	AddEditMenu();
 
-	// 	Cue Sheet menu
+	//      Cue Sheet menu
 	AddCueSheetMenu();
 
-	// 	Cues menu
+	//      Cues menu
 	AddCueMenu();
 
-	// 	Stage menu
+	//      Stage menu
 	AddStageMenu();
 
-	// 	Capture Menu
+	//      Capture Menu
 	AddCaptureMenu();
 
 	//	Export Menu
@@ -109,9 +109,9 @@ TMuseumMenus::~TMuseumMenus()
 
 bool TMuseumMenus::AddFileMenu()
 {
-	bool  	retVal;
-	char 	accelStr;
-	char	menuStr[256];
+	bool retVal;
+	char accelStr;
+	char menuStr[256];
 
 	//	Get menu string
 	retVal = GetString("FileMenuStrings", kFileMenuItem, menuStr);
@@ -204,9 +204,9 @@ bool TMuseumMenus::AddFileMenu()
 
 bool TMuseumMenus::AddEditMenu()
 {
-	bool  	retVal;
-	char 	accelStr;
-	char	menuStr[256];
+	bool retVal;
+	char accelStr;
+	char menuStr[256];
 
 	//	Create menu
 	retVal = GetString("EditMenuStrings", kEditMenuItem, menuStr);
@@ -270,9 +270,9 @@ bool TMuseumMenus::AddEditMenu()
 
 bool TMuseumMenus::AddCueSheetMenu()
 {
-	bool  	retVal;
-	char 	accelStr;
-	char	menuStr[256];
+	bool retVal;
+	char accelStr;
+	char menuStr[256];
 
 	//	Create menu
 	retVal = GetString("CueSheetMenuStrings", kCueSheetMenuItem, menuStr);
@@ -382,9 +382,9 @@ bool TMuseumMenus::AddCueSheetMenu()
 
 bool TMuseumMenus::AddCueMenu()
 {
-	bool  	retVal;
-	char 	accelStr;
-	char	menuStr[256];
+	bool retVal;
+	char accelStr;
+	char menuStr[256];
 
 	//	Create menu
 	retVal = GetString("CueMenuStrings", kCueMenuItem, menuStr);
@@ -465,9 +465,9 @@ bool TMuseumMenus::AddCueMenu()
 
 bool TMuseumMenus::AddStageMenu()
 {
-	bool  	retVal;
-	char 	accelStr[1];
-	char	menuStr[256];
+	bool retVal;
+	char accelStr[1];
+	char menuStr[256];
 
 	//	Create Menu
 	retVal = GetString("StageMenuStrings", kStageMenuItem, menuStr);
@@ -532,9 +532,9 @@ bool TMuseumMenus::AddStageMenu()
 
 bool TMuseumMenus::AddCaptureMenu()
 {
-	bool  	retVal;
-	char 	accelStr;
-	char	menuStr[256];
+	bool retVal;
+	char accelStr;
+	char menuStr[256];
 
 	//	Create menu
 	retVal = GetString("CaptureMenuStrings", kCaptureMenuItem, menuStr);
@@ -599,9 +599,9 @@ bool TMuseumMenus::AddCaptureMenu()
 
 bool TMuseumMenus::AddExportMenu()
 {
-	bool  	retVal;
-	char 	accelStr;
-	char	menuStr[256];
+	bool retVal;
+	char accelStr;
+	char menuStr[256];
 
 
 	//	Create Menu
@@ -610,19 +610,19 @@ bool TMuseumMenus::AddExportMenu()
 	fMenuBar->AddItem(fExportMenu);
 
 	/*
-	// Capture Video
-	BMenuItem* vidCapItem = new BMenuItem("Capture Video...", new BMessage(CAPTURE_VIDCAP_MSG));
-	vidCapItem->SetTarget(be_app);
-	fCaptureMenu->AddItem(vidCapItem);
+	   // Capture Video
+	   BMenuItem* vidCapItem = new BMenuItem("Capture Video...", new BMessage(CAPTURE_VIDCAP_MSG));
+	   vidCapItem->SetTarget(be_app);
+	   fCaptureMenu->AddItem(vidCapItem);
 
-	// Video Settings
-	BMenuItem* vidSettingsItem = new BMenuItem("Video Settings...", new BMessage(CAPTURE_VIDSETTNGS_MSG));
-	vidSettingsItem->SetTarget(be_app);
-	fCaptureMenu->AddItem(vidSettingsItem);
+	   // Video Settings
+	   BMenuItem* vidSettingsItem = new BMenuItem("Video Settings...", new BMessage(CAPTURE_VIDSETTNGS_MSG));
+	   vidSettingsItem->SetTarget(be_app);
+	   fCaptureMenu->AddItem(vidSettingsItem);
 
-	// Seperator01
-	fCaptureMenu->AddSeparatorItem();
-	*/
+	   // Seperator01
+	   fCaptureMenu->AddSeparatorItem();
+	 */
 
 	return true;
 }
@@ -636,10 +636,10 @@ bool TMuseumMenus::AddExportMenu()
 
 bool TMuseumMenus::AddWindowsMenu()
 {
-	bool  	retVal;
-	char 	accelStr;
-	char 	idStr;
-	char	menuStr[256];
+	bool retVal;
+	char accelStr;
+	char idStr;
+	char menuStr[256];
 
 	//	Create menu
 	retVal = GetString("WindowsMenuStrings", kWindowsMenuItem, menuStr);
@@ -701,10 +701,8 @@ bool TMuseumMenus::AddWindowsMenu()
 
 	// Now check and see if we need to add open documents to the menu
 	BList *cueSheetList = static_cast<MuseumApp *>(be_app)->GetCueSheetList();
-	if (cueSheetList)
-	{
-		for (int32 index = 0; index < cueSheetList->CountItems(); index++)
-		{
+	if (cueSheetList) {
+		for (int32 index = 0; index < cueSheetList->CountItems(); index++) {
 			TCueSheetWindow *theWindow = (TCueSheetWindow *)cueSheetList->ItemAt(index);
 			if (theWindow)
 				AddToWindowsMenu( theWindow->Title(), theWindow->GetID());
@@ -747,11 +745,10 @@ bool TMuseumMenus::AddToWindowsMenu(const char *documentName, int32 documentID)
 bool TMuseumMenus::RemoveDocumentsInWindowsMenu()
 {
 	// Remove all documents
-	while( fWindowsMenu->CountItems() > 7)
-	{
-		 BMenuItem *theItem = fWindowsMenu->RemoveItem( fWindowsMenu->CountItems()-1 );
-		 if (theItem)
-		 	delete theItem;
+	while( fWindowsMenu->CountItems() > 7) {
+		BMenuItem *theItem = fWindowsMenu->RemoveItem( fWindowsMenu->CountItems()-1 );
+		if (theItem)
+			delete theItem;
 	}
 
 	return true;
@@ -771,15 +768,14 @@ bool TMuseumMenus::RemoveDocumentsInWindowsMenu()
 
 void TMuseumMenus::LocateMenus()
 {
-	if (fMenuBar)
-	{
-		fFileMenu 		= (BMenu *)fMenuBar->FindView("File");
-		fEditMenu 		= (BMenu *)fMenuBar->FindView("Edit");
-		fCueSheetMenu 	= (BMenu *)fMenuBar->FindView("Cue Sheet");
-		fCueMenu 		= (BMenu *)fMenuBar->FindView("Cue");
-		fCaptureMenu 	= (BMenu *)fMenuBar->FindView("Capture");
-		fStageMenu 	= (BMenu *)fMenuBar->FindView("Stage");
-		fWindowsMenu 	= (BMenu *)fMenuBar->FindView("Windows");
+	if (fMenuBar) {
+		fFileMenu               = (BMenu *)fMenuBar->FindView("File");
+		fEditMenu               = (BMenu *)fMenuBar->FindView("Edit");
+		fCueSheetMenu   = (BMenu *)fMenuBar->FindView("Cue Sheet");
+		fCueMenu                = (BMenu *)fMenuBar->FindView("Cue");
+		fCaptureMenu    = (BMenu *)fMenuBar->FindView("Capture");
+		fStageMenu      = (BMenu *)fMenuBar->FindView("Stage");
+		fWindowsMenu    = (BMenu *)fMenuBar->FindView("Windows");
 	}
 }
 

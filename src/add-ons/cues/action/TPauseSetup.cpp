@@ -14,47 +14,51 @@
 
 
 TPauseSetup::TPauseSetup(BWindow *parent, BMessage *theMessage) :
-		BWindow(theMessage){
+	BWindow(theMessage)
+{
 
 	fEditor = parent;
 }
 
-TPauseSetup::~TPauseSetup(){
+TPauseSetup::~TPauseSetup()
+{
 }
 
 //
 // Destructor
 //
 
-void TPauseSetup::Init(){
-	
+void TPauseSetup::Init()
+{
+
 }
 
-void TPauseSetup::MessageReceived(BMessage* message){
+void TPauseSetup::MessageReceived(BMessage* message)
+{
 
-	switch(message->what){
-		// User pressed OK button.  
-		case PAUSE_SETUP_MSG:
-		{
-			printf("PAUSE_SETUP_MSG unimplemented in TPauseSetup.cpp\n");
-		}
-		break;
-				
-		case OK_MSG:
-			{
-							
-				// Close dialog
-				Hide();
-			}
-			break;
-			
-		case CANCEL_MSG:
-			Hide();
-			break;
-			
-		default:
-			BWindow::MessageReceived(message);						
-			break;
+	switch(message->what) {
+	// User pressed OK button.
+	case PAUSE_SETUP_MSG:
+	{
+		printf("PAUSE_SETUP_MSG unimplemented in TPauseSetup.cpp\n");
 	}
-	
+	break;
+
+	case OK_MSG:
+	{
+
+		// Close dialog
+		Hide();
+	}
+	break;
+
+	case CANCEL_MSG:
+		Hide();
+		break;
+
+	default:
+		BWindow::MessageReceived(message);
+		break;
+	}
+
 }

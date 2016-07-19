@@ -28,7 +28,7 @@
 static status_t thread_mainthread(void *data)
 {
 	TThread *aThread = (TThread *)data;
-  	return aThread->ThreadMain();
+	return aThread->ThreadMain();
 }
 
 

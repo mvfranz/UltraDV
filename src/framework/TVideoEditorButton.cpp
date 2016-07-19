@@ -34,8 +34,8 @@
 // TODO: eliminate this class and just create a TBitmapButton (mo 8/11/98)
 
 TVideoEditorButton::TVideoEditorButton(BRect bounds, const char *name,
-		BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler,
-		BMessage *message) :
+                                       BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler,
+                                       BMessage *message) :
 	TBitmapButton(bounds, name, offBitmap, onBitmap, handler, message)
 {
 }

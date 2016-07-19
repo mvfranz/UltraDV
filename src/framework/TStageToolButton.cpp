@@ -50,7 +50,7 @@ TStageToolButton::TStageToolButton(TStageToolsView *parent, BRect bounds, const 
 
 	// Store bitmaps
 	fOffBitmap = offBitmap;
-	fOnBitmap 	= onBitmap;
+	fOnBitmap       = onBitmap;
 
 	// Perform default initialization
 	Init();
@@ -118,17 +118,17 @@ void TStageToolButton::MouseDown(BPoint where)
 		DoClick();
 
 	/*
-	//	Only accept mouse down if button is not selected.  This is a tool palette button
-	//	and only one button can be depressed at a time
-	if (fButtonState == false)
-	{
-		fParent->Window()->PostMessage(fMessage, NULL);
-		fButtonState = true;
-	}
+	   //	Only accept mouse down if button is not selected.  This is a tool palette button
+	   //	and only one button can be depressed at a time
+	   if (fButtonState == false)
+	   {
+	        fParent->Window()->PostMessage(fMessage, NULL);
+	        fButtonState = true;
+	   }
 
-	// Force redraw to reflect new state
-	Invalidate();
-	*/
+	   // Force redraw to reflect new state
+	   Invalidate();
+	 */
 }
 
 
@@ -146,33 +146,27 @@ void TStageToolButton::DoClick()
 	// First, set the button state to down and force a redraw...
 	fButtonState = true;
 
-	BRect 	bounds = Bounds();
+	BRect bounds = Bounds();
 	Draw(bounds);
 
 	// Trap mouse while it is down
-	uint32 	buttons;
-	BPoint 	mousePt, savePt;
+	uint32 buttons;
+	BPoint mousePt, savePt;
 	GetMouse(&mousePt, &buttons, true);
 
-	while(buttons)
-	{
+	while(buttons) {
 		GetMouse(&mousePt, &buttons, true);
 
-		if (savePt != mousePt)
-		{
-			if ( bounds.Contains(mousePt) )
-			{
-				if (fButtonState == false)
-				{
+		if (savePt != mousePt) {
+			if ( bounds.Contains(mousePt) ) {
+				if (fButtonState == false) {
 					fButtonState = true;
 					Draw(bounds);
 				}
 			}
 			// If the mouse is outside of the button bounds draw it's up state
-			else
-			{
-				if (fButtonState == true)
-				{
+			else{
+				if (fButtonState == true) {
 					fButtonState = false;
 					Draw(bounds);
 				}
@@ -183,8 +177,7 @@ void TStageToolButton::DoClick()
 
 	}
 
-	if ( bounds.Contains(mousePt) )
-	{
+	if ( bounds.Contains(mousePt) ) {
 		//	Send message to parent and stage
 		fParent->Window()->PostMessage(fMessage, fParent);
 
@@ -208,18 +201,13 @@ void TStageToolButton::DoClick()
 
 void TStageToolButton::Activate(bool theState)
 {
-	if (theState == true)
-	{
-		if (fButtonState == false)
-		{
+	if (theState == true) {
+		if (fButtonState == false) {
 			fButtonState = true;
 			Invalidate();
 		}
-	}
-	else
-	{
-		if (fButtonState == true)
-		{
+	} else   {
+		if (fButtonState == true) {
 			fButtonState = false;
 			Invalidate();
 		}
