@@ -44,7 +44,7 @@
 TAudioEditorToolbar::TAudioEditorToolbar(TAudioEditor *parent, BRect bounds) : BView(bounds, "AudioToolbar", B_FOLLOW_TOP | B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW)
 {
 
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Default Initialization
 	Init();
@@ -231,30 +231,30 @@ void TAudioEditorToolbar::Init()
 	bounds = Bounds();
 	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset, 
 				bounds.top + kButtonTopOffset + kToolButtonHeight );
-	m_PlayButton= new TAudioPlayButton(this, bounds, "AudioPlayButton", playDn, playUp, Window()); 
-	AddChild(m_PlayButton);
-	m_PlayButton->Show();
+	fPlayButton= new TAudioPlayButton(this, bounds, "AudioPlayButton", playDn, playUp, Window()); 
+	AddChild(fPlayButton);
+	fPlayButton->Show();
 	
 	
 	// Create Zoom In Button
 	BBitmap *zoomInUp = GetIcon16FromResource("AudioZoomInUp");
 	BBitmap *zoomInDn = GetIcon16FromResource("AudioZoomInDn");
 	bounds = Bounds();
-	bounds.Set( m_PlayButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset, 
-				m_PlayButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);
-	m_ZoomInButton= new TAudioZoomInButton(this, bounds, "AudioZoomInButton", zoomInDn, zoomInUp, this); 
-	AddChild(m_ZoomInButton);
-	m_ZoomInButton->Show();
+	bounds.Set( fPlayButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset, 
+				fPlayButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);
+	fZoomInButton= new TAudioZoomInButton(this, bounds, "AudioZoomInButton", zoomInDn, zoomInUp, this); 
+	AddChild(fZoomInButton);
+	fZoomInButton->Show();
 	
 	// Create Zoom Out Button
 	BBitmap *zoomOutUp = GetIcon16FromResource("AudioZoomOutUp");
 	BBitmap *zoomOutDn = GetIcon16FromResource("AudioZoomOutDn");
 	bounds = Bounds();
-	bounds.Set( m_ZoomInButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset, 
-				m_ZoomInButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);
-	m_ZoomOutButton= new TAudioZoomOutButton(this, bounds, "AudioZoomInButton", zoomOutDn, zoomOutUp, this); 
-	AddChild(m_ZoomOutButton);
-	m_ZoomOutButton->Show();
+	bounds.Set( fZoomInButton->Frame().right + kButtonLeftOffset, bounds.top + kButtonTopOffset, 
+				fZoomInButton->Frame().right + kToolButtonWidth+kButtonLeftOffset, bounds.top + kButtonTopOffset + kToolButtonHeight);
+	fZoomOutButton= new TAudioZoomOutButton(this, bounds, "AudioZoomInButton", zoomOutDn, zoomOutUp, this); 
+	AddChild(fZoomOutButton);
+	fZoomOutButton->Show();
 			
 }
 

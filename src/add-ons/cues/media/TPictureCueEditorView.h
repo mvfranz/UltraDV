@@ -29,7 +29,7 @@ class TPictureCueEditorView : public BView
 
 	protected:
 
-		BBitmap *m_Bitmap;
+		BBitmap *fBitmap;
 	
 };
 

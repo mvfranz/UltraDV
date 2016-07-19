@@ -43,12 +43,12 @@ class TCueButton: public BView
 		
 		
 		// Member variables
-		bool		m_MouseDown;
-		int16		m_ID;
-		BBitmap		*m_OffBitmap;
-		BBitmap		*m_OnBitmap;
-		BMessage 	*m_Message;
-		bool		m_State;
+		bool		fMouseDown;
+		int16		fID;
+		BBitmap		*fOffBitmap;
+		BBitmap		*fOnBitmap;
+		BMessage 	*fMessage;
+		bool		fState;
 };		
 
 #endif

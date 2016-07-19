@@ -47,11 +47,11 @@ class TSorterBar: public BView
 		void 	Init();
 				
 		// Member variables				
-		SorterType			m_Type;
-		TSorterContainer	*m_Parent;
-		bool				m_IsActive;
-		char 				*m_Title;
-		BRect				m_ResizeRect;
+		SorterType			fType;
+		TSorterContainer	*fParent;
+		bool				fIsActive;
+		char 				*fTitle;
+		BRect				fResizeRect;
 };		
 
 #endif

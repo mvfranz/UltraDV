@@ -61,7 +61,7 @@ class TStageCueMenu : public BPopUpMenu
 		void	UpdateMenu();
 	
 	protected:	
-		TCueView 	*m_Cue;
+		TCueView 	*fCue;
 	
 };
 

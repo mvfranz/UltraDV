@@ -33,7 +33,7 @@ TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* 
 		//		resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP
 		//		flags = B_WILL_DRAW | B_NAVIGABLE
 	TBitmapButton(bounds, name, off, on, message, B_TWO_STATE_BUTTON, resizingMode, flags),
-	m_BeingTracked(false)
+	fBeingTracked(false)
 {
 }
 
@@ -45,7 +45,7 @@ TRadioBitmapButton::TRadioBitmapButton(BRect bounds, const char* name, BBitmap* 
 		//		flags = B_WILL_DRAW | B_NAVIGABLE
 	TBitmapButton(bounds, name, off, on, handler, message, B_TWO_STATE_BUTTON, 
 			resizingMode, flags),
-	m_BeingTracked(false)
+	fBeingTracked(false)
 {
 }
 
@@ -70,7 +70,7 @@ void TRadioBitmapButton::SetValue(int32 value)
 		return;
 
 	// Never let there be an off value set if the control is being tracked
-	if (m_BeingTracked && value == 0)
+	if (fBeingTracked && value == 0)
 		return;
 
 	// Default behavior
@@ -96,9 +96,9 @@ void TRadioBitmapButton::SetValue(int32 value)
 void TRadioBitmapButton::KeyDown(const char* bytes, int32 numBytes)
 {
 	// Set the tracking flag, used in SetValue
-	m_BeingTracked = true;
+	fBeingTracked = true;
 	TBitmapButton::KeyDown(bytes, numBytes);
-	m_BeingTracked = false;
+	fBeingTracked = false;
 }
 
 //---------------------------------------------------------------------
@@ -109,7 +109,7 @@ void TRadioBitmapButton::KeyDown(const char* bytes, int32 numBytes)
 void TRadioBitmapButton::MouseDown(BPoint point)
 {
 	// Set the tracking flag, used in SetValue
-	m_BeingTracked = true;
+	fBeingTracked = true;
 	TBitmapButton::MouseDown(point);
-	m_BeingTracked = false;
+	fBeingTracked = false;
 }

@@ -38,28 +38,28 @@ class TVideoSettingsDialog: public BWindow
 		void	StopCapture();
 		
 		//	Inline
-		inline TVideoPreviewView *PreviewView(){ return m_PreviewView; }
-		inline BParameterWeb 	 *ParameterWeb(){ return m_ParameterWeb; }
+		inline TVideoPreviewView *PreviewView(){ return fPreviewView; }
+		inline BParameterWeb 	 *ParameterWeb(){ return fParameterWeb; }
 		
 		// Member Variables
-		TVideoSettings			m_TempVideoSettings;
+		TVideoSettings			fTempVideoSettings;
 						
 	private:	
 		// Member Functions	
 		void		Init();	
 		
 		// Member Variables
-		TVideoSettingsView		*m_BGView;
-		TVideoSettingsTabView 	*m_TabView;
-		TVideoPreviewView 		*m_PreviewView;
+		TVideoSettingsView		*fBGView;
+		TVideoSettingsTabView 	*fTabView;
+		TVideoPreviewView 		*fPreviewView;
 				
-		BParameterWeb 			*m_ParameterWeb;
+		BParameterWeb 			*fParameterWeb;
 
-		media_node	m_TimeSource;
-		media_node 	m_VideoSource;
+		media_node	fTimeSource;
+		media_node 	fVideoSource;
 		
-		media_output 	m_From;
-		media_input 	m_To;				
+		media_output 	fFrom;
+		media_input 	fTo;				
 };
 
 #endif

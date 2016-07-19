@@ -41,7 +41,7 @@
 TExportTimeView::TExportTimeView(TCueSheetWindow *parent, BRect bounds) : BView(bounds, "ExportTimeView", B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_CueSheetWindow = parent;
+	fCueSheetWindow = parent;
 	
 	// Perform default initialization
 	Init();
@@ -55,7 +55,7 @@ TExportTimeView::TExportTimeView(TCueSheetWindow *parent, BRect bounds) : BView(
 
 TExportTimeView::TExportTimeView(BMessage *data) : BView(data)
 {
-	m_CueSheetWindow = NULL;
+	fCueSheetWindow = NULL;
 	
 	// Perform default initialization
 	Init();		
@@ -225,7 +225,7 @@ void TExportTimeView::DrawInText()
 	SetLowColor(kKhaki);
 
 	char textStr[13];
-	TimeToString(m_CueSheetWindow->GetCueSheetView()->GetExportStartTime(), GetCurrentTimeFormat(), textStr, false);
+	TimeToString(fCueSheetWindow->GetCueSheetView()->GetExportStartTime(), GetCurrentTimeFormat(), textStr, false);
 	DrawString(textStr, drawPt);
 		
 	Looper()->Unlock();
@@ -259,10 +259,10 @@ void TExportTimeView::DrawOutText()
 	SetHighColor(kBlack);
 	SetLowColor(kKhaki);
 	
-	int32 stopTime = m_CueSheetWindow->GetCueSheetView()->GetExportStopTime();
+	int32 stopTime = fCueSheetWindow->GetCueSheetView()->GetExportStopTime();
 	
 	char textStr[13];
-	TimeToString(m_CueSheetWindow->GetCueSheetView()->GetExportStopTime(), GetCurrentTimeFormat(), textStr, false);
+	TimeToString(fCueSheetWindow->GetCueSheetView()->GetExportStopTime(), GetCurrentTimeFormat(), textStr, false);
 	DrawString(textStr, drawPt);
 		
 	Looper()->Unlock();
@@ -321,27 +321,27 @@ void TExportTimeView::ShowProjectSettingDialog(BPoint where)
 {
 		
 	// If we have created the dialog bring it to the front and show it
-	if( m_ProjectSettings)
+	if( fProjectSettings)
 	{
-		if (m_ProjectWindow)
+		if (fProjectWindow)
 		{	
-			m_ProjectWindow->Show();
-			m_ProjectWindow->Activate(true);
+			fProjectWindow->Show();
+			fProjectWindow->Activate(true);
 		}
 	}
 	// Create the Project Settings dialog from a resource archive
 	else
 	{
 		BMessage *theMessage = GetWindowFromResource("ProjectSettingsWindow");
-		m_ProjectWindow = new TProjectSettings(this, m_CueSheetWindow->GetCueSheetView(), theMessage);
+		fProjectWindow = new TProjectSettings(this, fCueSheetWindow->GetCueSheetView(), theMessage);
 							
 		// Move it under the mouse
 		//ConvertToScreen(&where);
-		//m_ProjectWindow->MoveTo(where.x, where.y);
-		CenterWindow(m_ProjectWindow);
+		//fProjectWindow->MoveTo(where.x, where.y);
+		CenterWindow(fProjectWindow);
 	
 		// Show the dialog
-		m_ProjectWindow->Show();		
+		fProjectWindow->Show();		
 	}
 	return;
 }
@@ -361,9 +361,9 @@ void TExportTimeView::ShowProjectSettingDialog(BPoint where)
 
 void TExportTimeView::AttachedToWindow()
 {			
-	if(m_CueSheetWindow == NULL)
+	if(fCueSheetWindow == NULL)
 	{
-		m_CueSheetWindow = (TCueSheetWindow *)Window();		
+		fCueSheetWindow = (TCueSheetWindow *)Window();		
 	}
 	
 	//	PAss up to parent
@@ -380,5 +380,5 @@ void TExportTimeView::AttachedToWindow()
 //
 void TExportTimeView::SetParent(TCueSheetWindow *parent)
 {
- 	m_CueSheetWindow = parent;
+ 	fCueSheetWindow = parent;
 }

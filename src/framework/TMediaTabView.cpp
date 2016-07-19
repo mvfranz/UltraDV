@@ -41,7 +41,7 @@
 //
 
 TMediaTabView::TMediaTabView(BRect bounds) :
-	m_CurrentView(kElementsView),
+	fCurrentView(kElementsView),
 	BView(bounds, "Media", B_FOLLOW_ALL|B_FRAME_EVENTS, 0)
 {
 	// TODO: for internationalization, pull the title, 'Media', from the resource
@@ -76,18 +76,18 @@ void TMediaTabView::Init()
 	// Make sure the button is a square, the same width as the scroll bar,
 	// is high. It's top is one scroll bar height away from the bottom
 	BRect buttBounds(0, 0, kScrollHeight, kScrollHeight);
-	m_buttons[0] = new TRadioBitmapButton(buttBounds, "ListViewButton", up, down, this, 
+	fbuttons[0] = new TRadioBitmapButton(buttBounds, "ListViewButton", up, down, this, 
 										  new BMessage(MEDIA_TAB_LIST_VIEW_MSG), 
 										  B_FOLLOW_LEFT + B_FOLLOW_BOTTOM); 
 	// This button is on by default
-	m_buttons[0]->SetValue(1);
+	fbuttons[0]->SetValue(1);
 
 	// The Thumbnail button goes right next door
 	up   = GetIcon16FromResource("ThumbnailUp");
 	down = GetIcon16FromResource("ThumbnailDown");
 	buttBounds.left = buttBounds.right;
 	buttBounds.right = buttBounds.left + kScrollHeight;
-	m_buttons[1] = new TRadioBitmapButton(buttBounds, "ThumbnailButton", up, down, 
+	fbuttons[1] = new TRadioBitmapButton(buttBounds, "ThumbnailButton", up, down, 
 			this, new BMessage(MEDIA_TAB_THUMBNAIL_VIEW_MSG), B_FOLLOW_LEFT + 
 			B_FOLLOW_BOTTOM); 
 
@@ -96,7 +96,7 @@ void TMediaTabView::Init()
 	down = GetIcon16FromResource("IconViewDown");
 	buttBounds.left = buttBounds.right;
 	buttBounds.right = buttBounds.left + kScrollHeight;
-	m_buttons[2] = new TRadioBitmapButton(buttBounds, "IconViewButton", up, down, 
+	fbuttons[2] = new TRadioBitmapButton(buttBounds, "IconViewButton", up, down, 
 			this, new BMessage(MEDIA_TAB_ICON_VIEW_MSG), B_FOLLOW_LEFT + 
 			B_FOLLOW_BOTTOM); 
 
@@ -149,14 +149,14 @@ void TMediaTabView::MessageReceived(BMessage* message)
 	}
 	if (buttonMsg) 
 	{
-		if (newView != m_CurrentView) 
+		if (newView != fCurrentView) 
 		{
 			// Protect this section of code.
 			Looper()->Lock();
 			
-			DeactivateView(m_CurrentView);
-			m_CurrentView = newView;
-			ActivateView(m_CurrentView);
+			DeactivateView(fCurrentView);
+			fCurrentView = newView;
+			ActivateView(fCurrentView);
 
 			Looper()->Unlock();
 		}
@@ -169,16 +169,16 @@ void TMediaTabView::MessageReceived(BMessage* message)
 	{
 		case SORTER_SELECT_MSG:
 		case SORTER_INVOKE_MSG:
-			if (m_CurrentView == kElementsView)
-				ChildAt(m_CurrentView)->MessageReceived(message);
+			if (fCurrentView == kElementsView)
+				ChildAt(fCurrentView)->MessageReceived(message);
 			return;
 
 		// Some cue is adding an entry_ref to our browser
 		// TODO: include the other two views in this. They can
 		// have a new REF as well.
 		case ADD_REF_MSG:
-			if (m_CurrentView == kElementsView)
-				ChildAt(m_CurrentView)->MessageReceived(message);
+			if (fCurrentView == kElementsView)
+				ChildAt(fCurrentView)->MessageReceived(message);
 			return;
 	}
 				
@@ -252,8 +252,8 @@ void TMediaTabView::ActivateView(EChildID which)
 
 	for (int i = 0; i < 3; i++) 
 	{
-		view->AddChild(m_buttons[i]);
-		m_buttons[i]->MoveTo(pt);
+		view->AddChild(fbuttons[i]);
+		fbuttons[i]->MoveTo(pt);
 		pt.x += kScrollHeight;
 	}
 

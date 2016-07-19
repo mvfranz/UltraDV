@@ -38,20 +38,20 @@
 TCueButton::TCueButton(BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BMessage *message, short ID) : BView(bounds, name, B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap = onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap = onBitmap;
 	
 	// Store message
-	m_Message = message;
+	fMessage = message;
 	
 	// Set Cue ID
-	m_ID = ID;
+	fID = ID;
 	
 	// Default state is off
-	m_State = false;
+	fState = false;
 	
 	// Perform default initialization
 	Init();
@@ -66,8 +66,8 @@ TCueButton::TCueButton(BRect bounds, const char *name, BBitmap *offBitmap, BBitm
 
 TCueButton::~TCueButton()
 {
-	if (m_Message)		
-		delete m_Message;
+	if (fMessage)		
+		delete fMessage;
 }
 
 
@@ -93,11 +93,11 @@ void TCueButton::Init()
 void TCueButton::Draw(BRect updateRect)
 {
 	// Draw proper bitmap state
-	// If m_State is true, draw on bitmap
-	if (m_State)
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+	// If fState is true, draw on bitmap
+	if (fState)
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 	else
-		DrawBitmap(m_OffBitmap, B_ORIGIN);
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 }
 
 
@@ -113,7 +113,7 @@ void TCueButton::MouseDown(BPoint where)
 {
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	m_MouseDown = true; 
+	fMouseDown = true; 
 }
 
 
@@ -144,22 +144,22 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 	BPoint	point;
 					
 	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons);
-	if (buttons && m_MouseDown)
+	if (buttons && fMouseDown)
 	{
 		// 	If the mouse button is down, they want to drag a cue off the palette
 		//	and most likely onto the cue sheet.
 		// We use the DragMessage function to achieve this
 		BMessage message(CUE_ICON_DRAG_MSG);
 		BPoint centerPt( Bounds().Width() / 2, Bounds().Height() / 2 );
-		message.AddInt16("CueIconID", m_ID);
+		message.AddInt16("CueIconID", fID);
 		
 		// Create a copy of the bitmap for dragging
-		BBitmap *dragBitmap = new BBitmap( m_OnBitmap->Bounds(), m_OnBitmap->ColorSpace() );
-		dragBitmap->SetBits( m_OnBitmap->Bits(), m_OnBitmap->BitsLength(), 0, m_OnBitmap->ColorSpace() );
+		BBitmap *dragBitmap = new BBitmap( fOnBitmap->Bounds(), fOnBitmap->ColorSpace() );
+		dragBitmap->SetBits( fOnBitmap->Bits(), fOnBitmap->BitsLength(), 0, fOnBitmap->ColorSpace() );
 		DragMessage(&message, dragBitmap, centerPt);
 		
 		// Set our flag to indicate mouse up happened
-		m_MouseDown = false; 
+		fMouseDown = false; 
 	}
 	// Show button depressed state
 	else
@@ -174,7 +174,7 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 		{
 			case B_ENTERED_VIEW:
 				{
-					m_State = true;
+					fState = true;
 					Invalidate();
 					BMessage *theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 					theMessage->AddString("CueName", Name());
@@ -186,7 +186,7 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage *message 
 				
 			case B_EXITED_VIEW :
 				{
-					m_State = false;
+					fState = false;
 					Invalidate();
 					BMessage *theMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 					theMessage->AddString("CueName", "");

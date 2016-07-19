@@ -34,11 +34,11 @@
 TSorterIconListItem::TSorterIconListItem(uint32 level, bool expanded, BRect bounds, TSorterIcons &theIcons, entry_ref& fileRef) : BListItem(level, expanded)
 {
 	
-	m_EntryRef	= fileRef;
+	fEntryRef	= fileRef;
 		
 	// Make a copy of the icons
-	m_Icons.m_MiniIcon 	= theIcons.m_MiniIcon;
-	m_Icons.m_LargeIcon = theIcons.m_LargeIcon;
+	fIcons.fMiniIcon 	= theIcons.fMiniIcon;
+	fIcons.fLargeIcon = theIcons.fLargeIcon;
 		
 	// Perform default initialization
 	Init();
@@ -102,9 +102,9 @@ void TSorterIconListItem::DrawItem(BView *owner, BRect itemRect, bool drawEveryt
 	
 	// Draw our bitmap
 	BPoint drawPt;
-	drawPt.x = itemRect.right - m_Icons.m_MiniIcon->Bounds().Width();
-	drawPt.y = itemRect.bottom - m_Icons.m_MiniIcon->Bounds().Height();
-	owner->DrawBitmap(m_Icons.m_MiniIcon, drawPt);
+	drawPt.x = itemRect.right - fIcons.fMiniIcon->Bounds().Width();
+	drawPt.y = itemRect.bottom - fIcons.fMiniIcon->Bounds().Height();
+	owner->DrawBitmap(fIcons.fMiniIcon, drawPt);
 	
 	// Is it selected?  If so grey it out...
 	if ( IsSelected())
@@ -120,7 +120,7 @@ void TSorterIconListItem::DrawItem(BView *owner, BRect itemRect, bool drawEveryt
 
 
 /*
-switch(m_Mode)
+switch(fMode)
 	{
 		case kSorterMiniMode:
 			increment =	kSorterMiniHeight + kSorterRowSpacer;

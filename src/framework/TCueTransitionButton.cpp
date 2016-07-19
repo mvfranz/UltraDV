@@ -42,7 +42,7 @@ TCueTransitionButton::TCueTransitionButton( TCueView *parent, BRect bounds, cons
 											 TChannelCueButton(parent, bounds, name, offBitmap, onBitmap, handler, flags)
 {
 
-	m_TransitionIn = transitionIn;
+	fTransitionIn = transitionIn;
 }
 
 
@@ -54,7 +54,7 @@ TCueTransitionButton::TCueTransitionButton( TCueView *parent, BRect bounds, cons
 
 TCueTransitionButton::TCueTransitionButton(const TCueTransitionButton *theButton) : TChannelCueButton(theButton)
 {
-	m_TransitionIn = theButton->m_TransitionIn;
+	fTransitionIn = theButton->fTransitionIn;
 }
 
 
@@ -67,7 +67,7 @@ TCueTransitionButton::TCueTransitionButton(const TCueTransitionButton *theButton
 TCueTransitionButton::TCueTransitionButton(BMessage *data) : TChannelCueButton(data)
 {
 	// Find our member variables in the BMessage
-	data->FindBool("TransitionIn", &m_TransitionIn);
+	data->FindBool("TransitionIn", &fTransitionIn);
 }
 
 //---------------------------------------------------------------------
@@ -121,7 +121,7 @@ status_t TCueTransitionButton::Archive(BMessage *data, bool deep) const
 		data->AddString("class", "TCueTransitionButton");
 		
 		// Add our member variables to the BMessage
-		data->AddBool("TransitionIn", m_TransitionIn);
+		data->AddBool("TransitionIn", fTransitionIn);
 
 	}
 	
@@ -144,20 +144,20 @@ status_t TCueTransitionButton::Archive(BMessage *data, bool deep) const
 
 void TCueTransitionButton::AttachedToWindow()
 {			
-	if (m_Cue == NULL)
+	if (fCue == NULL)
 	{
-		m_Cue 		= (TCueView *)Parent();		
-		m_Handler 	= m_Cue;
+		fCue 		= (TCueView *)Parent();		
+		fHandler 	= fCue;
 		
-		if (m_TransitionIn)
+		if (fTransitionIn)
 		{
-			m_OffBitmap = GetAppIcons()->m_TransitionIn;
-			m_OnBitmap  = GetAppIcons()->m_TransitionIn;
+			fOffBitmap = GetAppIcons()->fTransitionIn;
+			fOnBitmap  = GetAppIcons()->fTransitionIn;
 		}
 		else
 		{
-			m_OffBitmap = GetAppIcons()->m_TransitionOut;
-			m_OnBitmap  = GetAppIcons()->m_TransitionOut;		
+			fOffBitmap = GetAppIcons()->fTransitionOut;
+			fOnBitmap  = GetAppIcons()->fTransitionOut;		
 		}
 	}	
 	
@@ -189,8 +189,8 @@ void TCueTransitionButton::MessageReceived(BMessage *message)
 				BBitmap *onBitmap = GetAppIcons()->GetIconByName(namePtr);
 				if (offBitmap)
 				{
-					m_OffBitmap = offBitmap;
-					m_OnBitmap  = onBitmap;
+					fOffBitmap = offBitmap;
+					fOnBitmap  = onBitmap;
 					Invalidate();
 				}
 				
@@ -224,12 +224,12 @@ void TCueTransitionButton::MouseDown(BPoint where)
 	BMessage *message = new BMessage(TRANSITION_BUTTON_MSG);
 	BPoint menuPt( Frame().right, Frame().top);
 	message->AddPoint("MenuPoint", menuPt); 
-	message->AddBool("TransitionIn", m_TransitionIn); 
-	m_Cue->Window()->PostMessage(message, m_Cue);
+	message->AddBool("TransitionIn", fTransitionIn); 
+	fCue->Window()->PostMessage(message, fCue);
 	delete message;
 			
 	// Restore and invalidate
-	m_MouseDown = false; 
+	fMouseDown = false; 
 
 }
 

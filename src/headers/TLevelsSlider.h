@@ -63,11 +63,11 @@ class TLevelsSlider : public BView
 		void 	UpdateRightVolume(BPoint where);
 				
 		// Member Varibles
-		AudioSliderType m_Type;
-		BRect			m_LeftSliderRect;
-		BRect			m_RightSliderRect;
-		BBitmap 		*m_LeftSlider;
-		BBitmap 		*m_RightSlider;
+		AudioSliderType fType;
+		BRect			fLeftSliderRect;
+		BRect			fRightSliderRect;
+		BBitmap 		*fLeftSlider;
+		BBitmap 		*fRightSlider;
 };
 
 #endif

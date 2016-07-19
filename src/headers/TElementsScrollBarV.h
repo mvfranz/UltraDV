@@ -46,8 +46,8 @@ class TElementsScrollBarV : public BScrollBar
 		void Init();
 		
 		// Member Variables
-		TElementsSorter	*m_Parent;		
-		float			m_LastValue;
+		TElementsSorter	*fParent;		
+		float			fLastValue;
 		
 };
 

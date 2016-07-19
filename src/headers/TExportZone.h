@@ -68,17 +68,17 @@ class TExportZone: public BView
 		void 	TrackZone(BPoint mousePt);
 						
 		// Member variables
-		TCueSheetWindow	*m_CueSheetWindow;
-		BRect			m_ExportChannel;
+		TCueSheetWindow	*fCueSheetWindow;
+		BRect			fExportChannel;
 		
-		BBitmap			*m_InMarker;
-		BBitmap			*m_OutMarker;
-		BRect			m_InRect;
-		BRect			m_OutRect;
+		BBitmap			*fInMarker;
+		BBitmap			*fOutMarker;
+		BRect			fInRect;
+		BRect			fOutRect;
 		
-		thread_id		m_MouseTracker;
+		thread_id		fMouseTracker;
 		
-		ExportDragType	m_DragType;				
+		ExportDragType	fDragType;				
 };
 
 #endif

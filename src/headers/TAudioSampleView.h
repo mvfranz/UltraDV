@@ -40,15 +40,15 @@ class TAudioSampleView: public BView
 		void 	ApplyToSource();
 						
 		// Member variables
-		TAudioSettingsTabView	*m_Parent;
-		BMenuField 				*m_RateMenuField;
-		BMenuField 				*m_DepthMenuField;
-		BMenuField 				*m_TypeMenuField;
-		TAudioLevelsView		*m_AudioLevelsView;
-		BBox					*m_VolumeBox;
+		TAudioSettingsTabView	*fParent;
+		BMenuField 				*fRateMenuField;
+		BMenuField 				*fDepthMenuField;
+		BMenuField 				*fTypeMenuField;
+		TAudioLevelsView		*fAudioLevelsView;
+		BBox					*fVolumeBox;
 		
-		TLevelsSlider		*m_InputSlider;
-		TLevelsSlider		*m_OutputSlider;				
+		TLevelsSlider		*fInputSlider;
+		TLevelsSlider		*fOutputSlider;				
 };	
 
 // Messages

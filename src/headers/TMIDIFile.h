@@ -38,17 +38,17 @@ class TMIDIFile : public BFile
 		int32		ReadType0(TMIDIConductor *condTrack, TMIDITrack *dataTrack);
 		
 		// Inlines
-		inline int32	GetTotalTracks() { return m_Header.numTracks; }
+		inline int32	GetTotalTracks() { return fHeader.numTracks; }
 					
 		// Member Variables
 		// gzr: to do... Figure out why we have malloc problem
-		//void			*m_DiskBuffer;		// RAM buffer to hold a track at a time 
-		char			m_DiskBuffer[BUFF_SIZE];		// RAM buffer to hold a track at a time 
-		int32			m_BufferLocation;	// Current diskBuffer position
-		int32			m_BufferSize;		// Current buffer size
-		int32			m_BufferRemainder;	// Remainder of track to be read in
-		HeaderChunk		m_Header;			// Copy of the files header chunk
-		MidiChunkHeader	m_MidiChunkHeader;	// Chunk header of current chunk
+		//void			*fDiskBuffer;		// RAM buffer to hold a track at a time 
+		char			fDiskBuffer[BUFF_SIZE];		// RAM buffer to hold a track at a time 
+		int32			fBufferLocation;	// Current diskBuffer position
+		int32			fBufferSize;		// Current buffer size
+		int32			fBufferRemainder;	// Remainder of track to be read in
+		HeaderChunk		fHeader;			// Copy of the files header chunk
+		MidiChunkHeader	fMidiChunkHeader;	// Chunk header of current chunk
 	
 
 	protected:

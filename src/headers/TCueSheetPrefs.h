@@ -30,8 +30,8 @@ class TCueSheetPrefs
 		void	Init();
 		
 		// Member Varibles
-		timecode_type	m_Timescale;
-		TVideoSettings	m_VideoSettings;
+		timecode_type	fTimescale;
+		TVideoSettings	fVideoSettings;
 		
 	private:
 

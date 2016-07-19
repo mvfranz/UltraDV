@@ -38,7 +38,7 @@
 
 TElementsTrackerView::TElementsTrackerView(BRect bounds, TElementsView *parent) : BView(bounds, "ElementsTrackerView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Perform default initialization
 	Init();

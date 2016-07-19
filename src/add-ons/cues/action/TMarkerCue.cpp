@@ -95,42 +95,42 @@ void TMarkerCue::Init()
 {	
 		
 	// Set up default duration
-	m_Duration = 1000;
+	fDuration = 1000;
 	
 	// Set up default settings
-	m_IsSelected	= false;
-	m_IsLocked 		= false;	
-	m_LowColor 		= kWhite;	
-	m_HighColor 	= kBlack;	
-	m_IsPrepared 	= false;
-	m_IsPlaying 	= false;
+	fIsSelected	= false;
+	fIsLocked 		= false;	
+	fLowColor 		= kWhite;	
+	fHighColor 	= kBlack;	
+	fIsPrepared 	= false;
+	fIsPlaying 	= false;
 	
 	// Marker cues have no duration
-	m_HasDuration 		= false;
+	fHasDuration 		= false;
 	
-	m_CanStretch 		= true;		// true if cue is stretchable
-	m_CanWindow 		= false;	// true if cue can window into file
-	m_CanLoop 			= false;	// true if cue can loop
-	m_CanEnvelope 		= false;	// true if cue can volume envelope
-	m_IsVisible 		= false;	// true if cue is visual
-	m_CanCrop 			= false;	// true if cue can visual crop
-	m_CanTransition 	= false;	// true if cue can transition
-	m_CanPath 			= false;	// true if cue can path
-	m_HasEditor 		= false;	// true if cue has internal editor
+	fCanStretch 		= true;		// true if cue is stretchable
+	fCanWindow 		= false;	// true if cue can window into file
+	fCanLoop 			= false;	// true if cue can loop
+	fCanEnvelope 		= false;	// true if cue can volume envelope
+	fIsVisible 		= false;	// true if cue is visual
+	fCanCrop 			= false;	// true if cue can visual crop
+	fCanTransition 	= false;	// true if cue can transition
+	fCanPath 			= false;	// true if cue can path
+	fHasEditor 		= false;	// true if cue has internal editor
 			
 	// Default initialization
 	TCueView::Init();
 			
 	// Add the cue to the cue channel
-	if ( m_Channel->CanInsertCue(this, m_InsertPoint, true))
+	if ( fChannel->CanInsertCue(this, fInsertPoint, true))
 	{
-		m_Channel->AddChild(this);
-		m_Channel->InsertCue(this, m_InsertPoint, m_InsertTime);		
+		fChannel->AddChild(this);
+		fChannel->InsertCue(this, fInsertPoint, fInsertTime);		
 		Select();								
 	}
 	
 	// We are now fully instantiated
-	m_IsInstantiated = true;
+	fIsInstantiated = true;
 
 }
 
@@ -344,7 +344,7 @@ void TMarkerCue::LoadCueIcon()
 	{
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
 		area.OffsetBy(kResizeZoneWidth+5, 0);		
-		m_CueIcon = new TBitmapView(area, "MarkerCue",cueIcon, false);
-		AddChild(m_CueIcon);		
+		fCueIcon = new TBitmapView(area, "MarkerCue",cueIcon, false);
+		AddChild(fCueIcon);		
 	}	
 }

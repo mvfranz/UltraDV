@@ -35,7 +35,7 @@ class TVideoEditorShuttle: public BView
 				
 										
 		// Member variables
-		TVideoEditor	*m_Editor;
+		TVideoEditor	*fEditor;
 };		
 
 #endif

@@ -36,10 +36,10 @@ class TAudioSettingsView: public BView
 		void 	Init();
 		
 		// Member variables
-		TAudioSettingsDialog 	*m_Parent;
+		TAudioSettingsDialog 	*fParent;
 		
-		BButton			*m_CancelButton;
-		BButton			*m_OKButton;
+		BButton			*fCancelButton;
+		BButton			*fOKButton;
 		
 };
 

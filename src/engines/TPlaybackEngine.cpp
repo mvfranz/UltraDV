@@ -48,27 +48,27 @@ const int16	kMsecsPerSecond = 1000;
 TPlaybackEngine::TPlaybackEngine(TCueSheetView *cueSheet) : BMediaNode("PlaybackEngine")
 {				
 	//	Stash parent cue sheet
-	m_CueSheet = cueSheet;
+	fCueSheet = cueSheet;
 	
 	//	Set up member variables
-	m_TimeToQuit	= false;
-	m_IsPlaying 	= false;
-	m_IsStopping	= false;
+	fTimeToQuit	= false;
+	fIsPlaying 	= false;
+	fIsStopping	= false;
 		
 	//	Create our port
-	m_Port = create_port(1, "PlaybackEnginePort");
+	fPort = create_port(1, "PlaybackEnginePort");
 			
 	//	Create port service thread
-	m_ServiceThread = spawn_thread(service_routine, "PlaybackEngine:Service", B_NORMAL_PRIORITY, this);
-	resume_thread(m_ServiceThread);	
+	fServiceThread = spawn_thread(service_routine, "PlaybackEngine:Service", B_NORMAL_PRIORITY, this);
+	resume_thread(fServiceThread);	
 	
 	//	Create run thread
 	int runPrio = suggest_thread_priority(B_VIDEO_PLAYBACK, 30, 1000, 1000);
-	m_RunThread = spawn_thread(run_routine, "PlaybackEngine::Run", runPrio, this);	
-	resume_thread(m_RunThread);
+	fRunThread = spawn_thread(run_routine, "PlaybackEngine::Run", runPrio, this);	
+	resume_thread(fRunThread);
 
 	//	Set up time source
-	bool retVal = BMediaRoster::Roster()->GetSystemTimeSource(&m_TimeSource);
+	bool retVal = BMediaRoster::Roster()->GetSystemTimeSource(&fTimeSource);
 		
 }
 
@@ -83,17 +83,17 @@ TPlaybackEngine::TPlaybackEngine(TCueSheetView *cueSheet) : BMediaNode("Playback
 TPlaybackEngine::~TPlaybackEngine()
 {
 	//	Signal threads to quit
-	m_TimeToQuit = true;
+	fTimeToQuit = true;
 	
 	//	Quit service thread
-	if (write_port_etc(m_Port, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
-		kill_thread(m_ServiceThread);
+	if (write_port_etc(fPort, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
+		kill_thread(fServiceThread);
 	
 	status_t result;
-	wait_for_thread(m_ServiceThread, &result);
+	wait_for_thread(fServiceThread, &result);
 
 	//	Wait for Run thread
-	wait_for_thread(m_RunThread, &result);		
+	wait_for_thread(fRunThread, &result);		
 }
 
 
@@ -118,15 +118,15 @@ void TPlaybackEngine::Start(bigtime_t performance_time)
 	
 	//	Set our first time flag.  We use this to track prerolls that start at an
 	//	odd time withing the cue sheet, such as 1023, 3044, etc.
-	m_FirstTime = true;
+	fFirstTime = true;
 	
 	// Start Ticker	
-	if (m_Ticker)
-		m_Ticker->Start();
+	if (fTicker)
+		fTicker->Start();
 	else
 	{
 		// Create ticker
-		m_Ticker = new TTicker( GetFPSValue( GetCurrentTimeFormat() ), "playbackTick", B_REAL_TIME_PRIORITY);
+		fTicker = new TTicker( GetFPSValue( GetCurrentTimeFormat() ), "playbackTick", B_REAL_TIME_PRIORITY);
 		
 		// Reconnect all chasers to ticker port
 		ReconnectAll();
@@ -135,25 +135,25 @@ void TPlaybackEngine::Start(bigtime_t performance_time)
 		SetTimecode( GetCurrentTimeFormat() );	
 		
 		// Begin playback
-		m_Ticker->Start();
+		fTicker->Start();
 	}
 	*/
 	
 	//	Are we playing?  If so, ignore play request
-	if (m_IsPlaying)
+	if (fIsPlaying)
 		return;
 		
 	//	Seek time source
 	status_t retVal;
-	retVal = BMediaRoster::Roster()->SeekNode(m_TimeSource, performance_time);
-	retVal = BMediaRoster::Roster()->StartNode(m_TimeSource, performance_time);
+	retVal = BMediaRoster::Roster()->SeekNode(fTimeSource, performance_time);
+	retVal = BMediaRoster::Roster()->StartNode(fTimeSource, performance_time);
 	
-	//	Get m_LastTime and convert to milliseconds
-	m_LastTime = TimeSource()->Now();
-	m_LastTime /= 1000;
+	//	Get fLastTime and convert to milliseconds
+	fLastTime = TimeSource()->Now();
+	fLastTime /= 1000;
 	
 	//	Start TimeSource at current time
-	m_IsPlaying = true;
+	fIsPlaying = true;
 
 			
 	return;
@@ -168,11 +168,11 @@ void TPlaybackEngine::Start(bigtime_t performance_time)
 void TPlaybackEngine::Stop(bigtime_t performance_time, bool immediate)
 {
 	//	Are we playing?
-	if (m_IsPlaying)
+	if (fIsPlaying)
 	{		
-		m_IsPlaying = false;
+		fIsPlaying = false;
 		
-		status_t retVal = BMediaRoster::Roster()->StopNode(m_TimeSource, performance_time);		
+		status_t retVal = BMediaRoster::Roster()->StopNode(fTimeSource, performance_time);		
 	}
 }
 
@@ -187,9 +187,9 @@ void TPlaybackEngine::Stop(bigtime_t performance_time, bool immediate)
 void TPlaybackEngine::Pause()
 {
 	//	Are we playing?
-	if (m_IsPlaying)
+	if (fIsPlaying)
 	{
-		m_IsPlaying = false;
+		fIsPlaying = false;
 		
 	}
 }
@@ -203,7 +203,7 @@ void TPlaybackEngine::Pause()
 
 void TPlaybackEngine::Resume()
 {
-	if (!m_IsPlaying)
+	if (!fIsPlaying)
 	{
 		//Play();
 	}
@@ -280,11 +280,11 @@ void TPlaybackEngine::Preroll( uint32 startTime, uint32 endTime)
 	for (int32 listIndex = 0; listIndex < kPlaybackItems; listIndex++)
 	{
 		// Free list
-		if ( m_PlaybackVector[listIndex] )
-			delete m_PlaybackVector[listIndex];	
+		if ( fPlaybackVector[listIndex] )
+			delete fPlaybackVector[listIndex];	
 		
 		// Set to NULL
-		m_PlaybackVector[listIndex] = 0;
+		fPlaybackVector[listIndex] = 0;
 	}
 	
 	// Increment by a millisecond
@@ -293,16 +293,16 @@ void TPlaybackEngine::Preroll( uint32 startTime, uint32 endTime)
 	int32		arrayIndex;
 	
 	// Reset array index
-	m_ArrayIndex = 0;
+	fArrayIndex = 0;
 	
 	// Iterate from start to end.  Increment by milliseconds...
 	for ( currentTime = startTime, arrayIndex = 0; currentTime < endTime; currentTime += incrementor, arrayIndex++)
 	{			
 		// 	Start building the playback list.  Go through all channels 
 		//	and check for valid cues
-		for ( int32 index = 0; index < m_CueSheet->GetTotalChannels(); index++)
+		for ( int32 index = 0; index < fCueSheet->GetTotalChannels(); index++)
 		{
-			TCueChannel *theChannel = (TCueChannel *)m_CueSheet->GetChannelList()->ItemAt(index);
+			TCueChannel *theChannel = (TCueChannel *)fCueSheet->GetChannelList()->ItemAt(index);
 			
 			// We have a valid channel.  Get cue at this time slice...
 			if (theChannel)
@@ -319,15 +319,15 @@ void TPlaybackEngine::Preroll( uint32 startTime, uint32 endTime)
 						theCue->Preroll(currentTime);
 					}
 					
-					if ( m_PlaybackVector[arrayIndex] == NULL)
+					if ( fPlaybackVector[arrayIndex] == NULL)
 					{										
 						// Create a list to store pointer in 
-						m_PlaybackVector[arrayIndex] = new BList();
-						m_PlaybackVector[arrayIndex]->AddItem(theCue);
+						fPlaybackVector[arrayIndex] = new BList();
+						fPlaybackVector[arrayIndex]->AddItem(theCue);
 					}
 					else
 					{
-						m_PlaybackVector[arrayIndex]->AddItem(theCue);
+						fPlaybackVector[arrayIndex]->AddItem(theCue);
 					}
 				}				
 			}			
@@ -348,7 +348,7 @@ void TPlaybackEngine::Preroll( uint32 startTime, uint32 endTime)
 
 port_id TPlaybackEngine::ControlPort() const
 {
-	return m_Port;
+	return fPort;
 }
 
 
@@ -393,14 +393,14 @@ status_t TPlaybackEngine::service_routine(void * data)
 
 void TPlaybackEngine::ServiceRoutine()
 {
-	while (!m_TimeToQuit)
+	while (!fTimeToQuit)
 	{
 		//	Read message
 		status_t 		err  = 0;
 		int32 			code = 0;
 		char 			msg[B_MEDIA_MESSAGE_SIZE];
 		
-		err = read_port_etc(m_Port, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);		
+		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);		
 		
 		if (err == B_TIMED_OUT) 
 			continue;
@@ -447,40 +447,40 @@ void TPlaybackEngine::RunRoutine()
 {
 	uint32 curTime;
 	
-	while(!m_TimeToQuit)
+	while(!fTimeToQuit)
 	{
 		snooze(20*1000);
 	
 		//	We are stopping.  Inform media_server
-		if (m_IsStopping == true)
+		if (fIsStopping == true)
 		{
-			m_IsStopping 	= false;
-			m_IsPlaying		= false;	
+			fIsStopping 	= false;
+			fIsPlaying		= false;	
 		}
 		
 		//	Update current time
-		if (m_IsPlaying)
+		if (fIsPlaying)
 		{			
 			curTime = TimeSource()->Now();
 			
 			//	Convert to milliseconds
 			curTime /= 1000;
 			
-			uint32 diff = curTime - m_LastTime;			
+			uint32 diff = curTime - fLastTime;			
 			
-			uint32 newTime = m_CueSheet->GetCurrentTime() + diff;
+			uint32 newTime = fCueSheet->GetCurrentTime() + diff;
 			
 			//	Stop playback if we are past our duration
-			if(newTime > m_CueSheet->StartTime() + m_CueSheet->Duration())
+			if(newTime > fCueSheet->StartTime() + fCueSheet->Duration())
 			{
-				newTime = m_CueSheet->StartTime() + m_CueSheet->Duration();
+				newTime = fCueSheet->StartTime() + fCueSheet->Duration();
 				Stop(0, true);				
 			}
 			
-			m_CueSheet->SetCurrentTime(newTime);
-			m_LastTime = curTime;
+			fCueSheet->SetCurrentTime(newTime);
+			fLastTime = curTime;
 			
-			//printf("Current Time: %.4f\n", (double)m_CueSheet->GetCurrentTime()/1000000.);
+			//printf("Current Time: %.4f\n", (double)fCueSheet->GetCurrentTime()/1000000.);
 		}
 	}
 }

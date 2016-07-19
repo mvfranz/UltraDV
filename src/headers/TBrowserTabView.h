@@ -29,7 +29,7 @@ class TBrowserTabView : public BTabView
 								
 		static	BArchivable*	Instantiate(BMessage*);
 		status_t				Archive(BMessage*, bool deep=true) const;
-		// status_t	Perform(perform_code d, void *arg);
+		// status_t	Perform(perforfcode d, void *arg);
 
 		void 		WindowActivated(bool state);
 
@@ -77,7 +77,7 @@ class TBrowserTabView : public BTabView
 		void Init();		
 		
 		// Member Variables
-		//TElementsView *m_ElementsView;
+		//TElementsView *fElementsView;
 };
 
 #endif

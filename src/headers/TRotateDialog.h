@@ -36,7 +36,7 @@ class TRotateDialog : public BWindow
 		void 	MessageReceived(BMessage* message);	
 		
 		//	Accessor Functions
-		bool	GetRealtimePreview(){ return m_RealtimePreview; }
+		bool	GetRealtimePreview(){ return fRealtimePreview; }
 		
 	private:
 	
@@ -46,19 +46,19 @@ class TRotateDialog : public BWindow
 		void 	UpdateCue();
 		
 		// Member Variables		
-		TVisualCue 			*m_Cue;
-		BView				*m_BackView;
-		TRotateSlider		*m_Slider;
-		TNumberTextControl 	*m_RotateText;
-		BCheckBox			*m_UpdateCheckbox;
+		TVisualCue 			*fCue;
+		BView				*fBackView;
+		TRotateSlider		*fSlider;
+		TNumberTextControl 	*fRotateText;
+		BCheckBox			*fUpdateCheckbox;
 		
-		float				m_SavedRotation;
-		float				m_LastRotation;
-		bool				m_RealtimePreview;
+		float				fSavedRotation;
+		float				fLastRotation;
+		bool				fRealtimePreview;
 		
-		BButton 			*m_OKButton;
-		BButton 			*m_ApplyButton;
-		BButton 			*m_CancelButton;
+		BButton 			*fOKButton;
+		BButton 			*fApplyButton;
+		BButton 			*fCancelButton;
 	
 };
 

@@ -42,8 +42,8 @@ TTimeTextView::TTimeTextView( BHandler *target, int32 messageID, BRect bounds, c
 			   BTextView(bounds, name, bounds, resizing, B_FRAME_EVENTS | B_PULSE_NEEDED)
 					  
 {		
-	m_Target 		= target;
-	m_MessageID  	= messageID;
+	fTarget 		= target;
+	fMessageID  	= messageID;
 	
 	// Perform default initialization
 	Init();
@@ -70,7 +70,7 @@ TTimeTextView::~TTimeTextView()
 
 void TTimeTextView::Init()
 {		
-	m_IsLocked = false;
+	fIsLocked = false;
 	
 	SetTextRect(Bounds());
 	SetAlignment(B_ALIGN_CENTER);
@@ -94,30 +94,30 @@ void TTimeTextView::Init()
 	numberWidth = StringWidth("00");
 	spaceWidth = StringWidth(":");
 	
-	m_HoursRect.left 		= bounds.left;
-	m_HoursRect.top 		= bounds.top;
-	m_HoursRect.right 		= m_HoursRect.left + numberWidth;
-	m_HoursRect.bottom 		= bounds.bottom;
+	fHoursRect.left 		= bounds.left;
+	fHoursRect.top 		= bounds.top;
+	fHoursRect.right 		= fHoursRect.left + numberWidth;
+	fHoursRect.bottom 		= bounds.bottom;
 	
-	m_MinutesRect.left 		= m_HoursRect.right + spaceWidth;
-	m_MinutesRect.top 		= bounds.top;
-	m_MinutesRect.right 	= m_MinutesRect.left + numberWidth;
-	m_MinutesRect.bottom 	= bounds.bottom;
+	fMinutesRect.left 		= fHoursRect.right + spaceWidth;
+	fMinutesRect.top 		= bounds.top;
+	fMinutesRect.right 	= fMinutesRect.left + numberWidth;
+	fMinutesRect.bottom 	= bounds.bottom;
 	
-	m_SecondsRect.left 		= m_MinutesRect.right + spaceWidth;
-	m_SecondsRect.top 		= bounds.top;
-	m_SecondsRect.right 	= m_SecondsRect.left + numberWidth;
-	m_SecondsRect.bottom 	= bounds.bottom;
+	fSecondsRect.left 		= fMinutesRect.right + spaceWidth;
+	fSecondsRect.top 		= bounds.top;
+	fSecondsRect.right 	= fSecondsRect.left + numberWidth;
+	fSecondsRect.bottom 	= bounds.bottom;
 	
-	m_FramesRect.left 		= m_SecondsRect.right + spaceWidth;
-	m_FramesRect.top 		= bounds.top;
-	m_FramesRect.right 		= bounds.right;
-	m_FramesRect.bottom 	= bounds.bottom;
+	fFramesRect.left 		= fSecondsRect.right + spaceWidth;
+	fFramesRect.top 		= bounds.top;
+	fFramesRect.right 		= bounds.right;
+	fFramesRect.bottom 	= bounds.bottom;
 	
 	// Select first cell
 	//Select(0,2);
 	//ScrollToSelection();
-	m_CurrentCell = 1;
+	fCurrentCell = 1;
 
 }
 
@@ -158,7 +158,7 @@ void TTimeTextView::MouseDown(BPoint where)
 {
 		
 	// Do nothing if locked
-	if (m_IsLocked)
+	if (fIsLocked)
 		return;	
 		
 	// Deselect all	
@@ -169,38 +169,38 @@ void TTimeTextView::MouseDown(BPoint where)
 	CheckLastEdit();
 			
 	// Determine where the click is
-	if ( m_HoursRect.Contains(where) ) 
+	if ( fHoursRect.Contains(where) ) 
 	{
 		Select(0,2);
 		ScrollToSelection();
-		m_CurrentCell = 1;
+		fCurrentCell = 1;
 	}
-	else if ( m_MinutesRect.Contains(where) ) 
+	else if ( fMinutesRect.Contains(where) ) 
 	{
 		Select(3,5);
 		ScrollToSelection();	
-		m_CurrentCell = 2;
+		fCurrentCell = 2;
 	}
 
-	else if ( m_SecondsRect.Contains(where) ) 
+	else if ( fSecondsRect.Contains(where) ) 
 	{
 		Select(6,8);
 		ScrollToSelection();
-		m_CurrentCell = 3;
+		fCurrentCell = 3;
 	}
 
-	else if ( m_FramesRect.Contains(where) ) 
+	else if ( fFramesRect.Contains(where) ) 
 	{
 		Select(9,11);
 		ScrollToSelection();
-		m_CurrentCell = 4;
+		fCurrentCell = 4;
 	}
 	// Default to first cell if all else fails
 	else
 	{
 		Select(0,2);
 		ScrollToSelection();
-		m_CurrentCell = 1;
+		fCurrentCell = 1;
 	}
 
 	//BTextView::MouseDown(where);	
@@ -259,7 +259,7 @@ void TTimeTextView::KeyDown(const char *bytes, int32 numBytes)
 		short	tmpNum;
 		bool	addIt = false;
 
-		switch (m_CurrentCell)
+		switch (fCurrentCell)
 		{
 			case 1:
 				if (inputNum[0] < 2 || inputNum[0] == 2 && theChar < '4')
@@ -318,7 +318,7 @@ void TTimeTextView::KeyDown(const char *bytes, int32 numBytes)
 	// Tab key moves us through the time elements
 	else if( IsTab(theChar) || theChar == '.' )
 	{
-		int16 lastCell = m_CurrentCell;
+		int16 lastCell = fCurrentCell;
 		
 		// Deselect all
 		Select(0,0);		
@@ -330,21 +330,21 @@ void TTimeTextView::KeyDown(const char *bytes, int32 numBytes)
 		if ( IsShiftKeyDown() )
 		{
 			// Select the previous cell
-			m_CurrentCell--;
+			fCurrentCell--;
 			
-			if (m_CurrentCell <= 0)
-				m_CurrentCell = 4;			
+			if (fCurrentCell <= 0)
+				fCurrentCell = 4;			
 		}
 		else
 		{
 			// Select the next cell
-			m_CurrentCell++;
+			fCurrentCell++;
 		
-			if (m_CurrentCell > 4)
-				m_CurrentCell = 1;
+			if (fCurrentCell > 4)
+				fCurrentCell = 1;
 		}
 			
-		switch (m_CurrentCell)
+		switch (fCurrentCell)
 		{
 			case 1:
 				Select(0,2);
@@ -389,9 +389,9 @@ void TTimeTextView::MakeFocus(bool focusState)
 	// Inform target
 	if ( focusState == false)
 	{
-		if (m_Target)
+		if (fTarget)
 		{
-			BLooper *looper = m_Target->Looper();
+			BLooper *looper = fTarget->Looper();
 			
 			if ( looper->Lock() )
 			{
@@ -400,11 +400,11 @@ void TTimeTextView::MakeFocus(bool focusState)
 				for (int16 index = 1; index < 5; index++)
 					ConvertToTime(index);
 				
-				if (m_MessageID)
+				if (fMessageID)
 				{
-					BMessage *message = new BMessage(m_MessageID);
-					message->AddInt32("TheTime", m_Time);
-					m_Target->MessageReceived( message);
+					BMessage *message = new BMessage(fMessageID);
+					message->AddInt32("TheTime", fTime);
+					fTarget->MessageReceived( message);
 					looper->Unlock();
 					delete message;
 				}
@@ -590,7 +590,7 @@ void TTimeTextView::CheckLastEdit()
 	int32	tmpNum;
 	
 	// Check for bad characters and number overflow
-	switch(m_CurrentCell)
+	switch(fCurrentCell)
 	{
 		// Hours
 		case 1:
@@ -689,7 +689,7 @@ void TTimeTextView::CheckLastEdit()
 			break;
 	}
 	
-	ConvertToTime(m_CurrentCell);
+	ConvertToTime(fCurrentCell);
 }
 
 
@@ -722,7 +722,7 @@ void TTimeTextView::ConvertToTime(int16 theCell)
 		bool	changed = false;
 		int16	hours, minutes, seconds, frames;
 				
-		TimeToString(m_Time, GetCurrentTimeFormat(), text, false);
+		TimeToString(fTime, GetCurrentTimeFormat(), text, false);
 		
 		// Stick the new value (if it changed) into the string and reverse calc the time
 		switch (theCell) 
@@ -787,31 +787,31 @@ void TTimeTextView::ConvertToTime(int16 theCell)
 			seconds = ((text[7] - '0') * 10) + (text[8] - '0');
 			frames = ((text[10] - '0') * 10) + (text[11] - '0');
 			
-			m_Time = (long)hours * 3600000L;				// Hours
-			m_Time += (long)(minutes / 10) * 600000;		// Ten minutes
+			fTime = (long)hours * 3600000L;				// Hours
+			fTime += (long)(minutes / 10) * 600000;		// Ten minutes
 			minutes %= 10;
 			
 			if (minutes) 
 			{
 				// First minute
-				m_Time += 60060.066;			
-				m_Time += ((double)(minutes - 1) * 59993.326);
+				fTime += 60060.066;			
+				fTime += ((double)(minutes - 1) * 59993.326);
 			}
 			
 			if (seconds) 
 			{
 				// First second
 				if (minutes)
-					m_Time += 934;					
+					fTime += 934;					
 				else
-					m_Time += 1001;
-				m_Time += (long)(seconds - 1) * 1001;
+					fTime += 1001;
+				fTime += (long)(seconds - 1) * 1001;
 			}
 			
 			if (frames >= 2 && !seconds && minutes)
 				frames -= 2;
 				
-			m_Time += ((double)(frames + 0.5) * 33.3667);
+			fTime += ((double)(frames + 0.5) * 33.3667);
 		}
 		
 	} 
@@ -821,7 +821,7 @@ void TTimeTextView::ConvertToTime(int16 theCell)
 	{
 		// Hours
 		case 1:				
-			oldVal = m_Time / 3600000;			
+			oldVal = fTime / 3600000;			
 			
 			strncpy(tmpStr, &textBuf[0], 2);		
 			tmpNum = atoi(tmpStr);
@@ -829,14 +829,14 @@ void TTimeTextView::ConvertToTime(int16 theCell)
 			if (tmpNum != oldVal) 
 			{
 				delta = tmpNum - oldVal;
-				m_Time += (delta * 3600000);
+				fTime += (delta * 3600000);
 			}
 			break;
 			
 		// Minutes
 		case 2:				
 			// Convert time to minutes
-			oldVal = m_Time % 3600000;			
+			oldVal = fTime % 3600000;			
 			oldVal /= 60000;
 									
 			strncpy(tmpStr, &textBuf[3], 2);		
@@ -845,13 +845,13 @@ void TTimeTextView::ConvertToTime(int16 theCell)
 			if (tmpNum != oldVal) 
 			{
 				delta = tmpNum - oldVal;
-				m_Time += (delta * 60000);
+				fTime += (delta * 60000);
 			}
 			break;
 			
 		// Seconds
 		case 3:				
-			oldVal = m_Time % 3600000;
+			oldVal = fTime % 3600000;
 			oldVal %= 60000;
 			oldVal /= 1000;
 			
@@ -861,14 +861,14 @@ void TTimeTextView::ConvertToTime(int16 theCell)
 			if (tmpNum != oldVal) 
 			{
 				delta = tmpNum - oldVal;
-				m_Time += (delta * 1000);
+				fTime += (delta * 1000);
 			}
 			break;
 			
 		// Frames/100ths
 		case 4:				
-			m_Time /= 1000;
-			m_Time *= 1000;
+			fTime /= 1000;
+			fTime *= 1000;
 			
 			strncpy(tmpStr, &textBuf[9], 2);		
 			tmpNum = atoi(tmpStr);
@@ -877,20 +877,20 @@ void TTimeTextView::ConvertToTime(int16 theCell)
 			{
 			
 				case B_TIMECODE_DEFAULT:
-					m_Time += (tmpNum * 10);
+					fTime += (tmpNum * 10);
 					break;
 					
 				case B_TIMECODE_24:
-					m_Time += ((tmpNum * 1000 + 12) / 24);
+					fTime += ((tmpNum * 1000 + 12) / 24);
 					break;
 					
 				case B_TIMECODE_25:
-					m_Time += ((tmpNum * 1000 + 13) / 25);
+					fTime += ((tmpNum * 1000 + 13) / 25);
 					break;
 					
 				case B_TIMECODE_30_DROP_2:					
 				case B_TIMECODE_30:
-					m_Time += ((tmpNum * 1000 + 15) / 30);
+					fTime += ((tmpNum * 1000 + 15) / 30);
 					break;
 			}
 			break;
@@ -911,7 +911,7 @@ void TTimeTextView::ConvertToTime(int16 theCell)
 
 void TTimeTextView::Reselect()
 {
-	switch (m_CurrentCell)
+	switch (fCurrentCell)
 	{
 		case 1:
 			Select(0,2);
@@ -946,7 +946,7 @@ void TTimeTextView::LockText()
 {
 	MakeFocus(false);
 	Select(0,0);
-	m_IsLocked = true;
+	fIsLocked = true;
 }
 
 
@@ -959,6 +959,6 @@ void TTimeTextView::LockText()
 
 void TTimeTextView::UnlockText()
 {
-	m_IsLocked = false;
+	fIsLocked = false;
 	
 }

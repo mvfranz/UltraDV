@@ -29,7 +29,7 @@ class TPaletteStatusView: public BView
 		
 			
 		// Member variables
-		char m_Text[256];				
+		char fText[256];				
 };
 
 #define UPDATE_STATUS_TEXT_MSG	'upST'

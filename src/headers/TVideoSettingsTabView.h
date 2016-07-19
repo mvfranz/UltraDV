@@ -35,16 +35,16 @@ class TVideoSettingsTabView : public BTabView
 		
 	
 		// Inlines
-		inline TVideoSettingsView *GetParent(){ return m_Parent; }
+		inline TVideoSettingsView *GetParent(){ return fParent; }
 	private:
 		// Member Functions
 		void Init();		
 		
 		// Member Variables
-		TVideoSettingsView		*m_Parent;
-		TVideoCompressionView 	*m_CompressionView;
-		TVideoImageView 		*m_ImageView;
-		TVideoSourceView 		*m_SourceView;
+		TVideoSettingsView		*fParent;
+		TVideoCompressionView 	*fCompressionView;
+		TVideoImageView 		*fImageView;
+		TVideoSourceView 		*fSourceView;
 };
 
 #endif

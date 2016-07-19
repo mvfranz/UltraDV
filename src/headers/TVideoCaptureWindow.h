@@ -32,7 +32,7 @@ class TVideoCaptureWindow: public BWindow
 		virtual void	MessageReceived(BMessage* message);	
 		
 		// Accessor Functions
-		inline TStatusView	*GetStatusBar(){ return m_StatusBar; }
+		inline TStatusView	*GetStatusBar(){ return fStatusBar; }
 		
 	private:	
 		// Member Functions
@@ -41,17 +41,17 @@ class TVideoCaptureWindow: public BWindow
 		void	Record();
 				
 		// Member Variables
-		TVideoCaptureToolbar 	*m_Toolbar;
-		TVideoCaptureView 		*m_VidCapView;
-		TStatusView				*m_StatusBar;
+		TVideoCaptureToolbar 	*fToolbar;
+		TVideoCaptureView 		*fVidCapView;
+		TStatusView				*fStatusBar;
 	
-		BParameterWeb 		*m_ParameterWeb;
+		BParameterWeb 		*fParameterWeb;
 
-		media_node			m_TimeSource;
-		media_node 			m_VideoSource;
+		media_node			fTimeSource;
+		media_node 			fVideoSource;
 		
-		media_output 		m_From;
-		media_input 		m_To;		
+		media_output 		fFrom;
+		media_input 		fTo;		
 };
 
 // Capture Messages

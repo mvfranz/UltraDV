@@ -47,7 +47,7 @@
 
 TCueChannelHeader::TCueChannelHeader(BRect bounds, TCueChannel *channel) : BView(bounds, "CueChannelHeader", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW)
 {
-	m_Channel = channel;
+	fChannel = channel;
 	
 	// Perform default initialization
 	Init();
@@ -62,14 +62,14 @@ TCueChannelHeader::TCueChannelHeader(BRect bounds, TCueChannel *channel) : BView
 
 TCueChannelHeader::TCueChannelHeader(BMessage *message) : BView(message)
 {
-	m_Channel = NULL;
+	fChannel = NULL;
 	
 	//	Find child views
-	m_Name			= (TChannelNameView *)FindView("ChannelName");
-	m_SoloButton	= (TSoloButton *)FindView("SoloButton");
-	m_MuteButton	= (TMuteButton *)FindView("MuteButton");
-	m_ExpandButton	= (TExpandButton *)FindView("ExpandButton");
-	m_LockButton	= (TLockButton *)FindView("LockButton");	
+	fName			= (TChannelNameView *)FindView("ChannelName");
+	fSoloButton	= (TSoloButton *)FindView("SoloButton");
+	fMuteButton	= (TMuteButton *)FindView("MuteButton");
+	fExpandButton	= (TExpandButton *)FindView("ExpandButton");
+	fLockButton	= (TLockButton *)FindView("LockButton");	
 }
 
 //---------------------------------------------------------------------
@@ -105,64 +105,64 @@ void TCueChannelHeader::Init()
 	SetViewColor(B_TRANSPARENT_32_BIT);
 	
 	// Set highlight state to off
-	m_IsHighlighted = false;
+	fIsHighlighted = false;
 	
 	// Create label text
 	BRect bounds(kNameOffset, kNameOffset, Bounds().right-kNameOffset, kNameOffset*3);	
-	sprintf( IDStr, " [%d]", m_Channel->GetID() );	
-	strcpy(nameStr, m_Channel->GetName()); 
+	sprintf( IDStr, " [%d]", fChannel->GetID() );	
+	strcpy(nameStr, fChannel->GetName()); 
 	strcat(nameStr, IDStr);
-	m_Name = new TChannelNameView(m_Channel, bounds, "ChannelName", nameStr);
-	AddChild(m_Name);
-	m_Name->SetViewColor(kHeaderGrey);
-	m_Name->SetHighColor(kBlack);
-	m_Name->SetLowColor(kHeaderGrey);
-	m_Name->Show();
+	fName = new TChannelNameView(fChannel, bounds, "ChannelName", nameStr);
+	AddChild(fName);
+	fName->SetViewColor(kHeaderGrey);
+	fName->SetHighColor(kBlack);
+	fName->SetLowColor(kHeaderGrey);
+	fName->Show();
 		
 	// Set target
 	TCueSheetWindow *theTarget = static_cast<MuseumApp *>(be_app)->GetCueSheet();
 		
 	// Create Mute button
-	BBitmap *muteUp = GetAppIcons()->m_MuteUp;
-	BBitmap *muteDn = GetAppIcons()->m_MuteDown;
-	BRect textBounds = m_Name->Bounds();
+	BBitmap *muteUp = GetAppIcons()->fMuteUp;
+	BBitmap *muteDn = GetAppIcons()->fMuteDown;
+	BRect textBounds = fName->Bounds();
 	bounds.Set( kButtonLeftOffset, textBounds.bottom + kButtonTopOffset, kButtonWidth+kButtonLeftOffset, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
-	m_MuteButton = new TMuteButton(m_Channel, bounds, "MuteButton", muteUp, muteDn, theTarget); 
-	AddChild(m_MuteButton);
-	m_MuteButton->Show();	
+	fMuteButton = new TMuteButton(fChannel, bounds, "MuteButton", muteUp, muteDn, theTarget); 
+	AddChild(fMuteButton);
+	fMuteButton->Show();	
 	
 	// Create Solo button
 	// Place it to the right of the Mute button
-	BBitmap *soloUp = GetAppIcons()->m_SoloUp;
-	BBitmap *soloDn = GetAppIcons()->m_SoloDown;
-	BRect buttonBounds = m_MuteButton->Frame();
+	BBitmap *soloUp = GetAppIcons()->fSoloUp;
+	BBitmap *soloDn = GetAppIcons()->fSoloDown;
+	BRect buttonBounds = fMuteButton->Frame();
 	bounds.Set( buttonBounds.right + kButtonLeftOffset, textBounds.bottom + kButtonTopOffset, 
 				kButtonWidth+kButtonLeftOffset+buttonBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
-	m_SoloButton = new TSoloButton(m_Channel, bounds, "SoloButton", soloUp, soloDn, theTarget); 
-	AddChild(m_SoloButton);
-	m_SoloButton->Show();	
+	fSoloButton = new TSoloButton(fChannel, bounds, "SoloButton", soloUp, soloDn, theTarget); 
+	AddChild(fSoloButton);
+	fSoloButton->Show();	
 	
 	// Create Expand button
 	// Place it to the right of the Solo button
-	BBitmap *expand = GetAppIcons()->m_Expand;
-	BBitmap *contract = GetAppIcons()->m_Contract;	
-	BRect expandBounds = m_SoloButton->Frame();
+	BBitmap *expand = GetAppIcons()->fExpand;
+	BBitmap *contract = GetAppIcons()->fContract;	
+	BRect expandBounds = fSoloButton->Frame();
 	bounds.Set( expandBounds.right + kButtonLeftOffset, textBounds.bottom + kButtonTopOffset, 
 				kButtonWidth+kButtonLeftOffset+expandBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
-	m_ExpandButton = new TExpandButton(m_Channel, bounds, "ExpandButton", expand, contract, theTarget); 
-	AddChild(m_ExpandButton);
-	m_ExpandButton->Show();		
+	fExpandButton = new TExpandButton(fChannel, bounds, "ExpandButton", expand, contract, theTarget); 
+	AddChild(fExpandButton);
+	fExpandButton->Show();		
 	
 	// Create Lock button
 	// Place it to the right of the Expand button	
-	BBitmap *unlock = GetAppIcons()->m_UnlockDark;
-	BBitmap *lock 	= GetAppIcons()->m_LockDark;
-	BRect lockBounds = m_ExpandButton->Frame();
+	BBitmap *unlock = GetAppIcons()->fUnlockDark;
+	BBitmap *lock 	= GetAppIcons()->fLockDark;
+	BRect lockBounds = fExpandButton->Frame();
 	bounds.Set( lockBounds.right + kButtonLeftOffset, textBounds.bottom + kButtonTopOffset, 
 				kButtonWidth+kButtonLeftOffset+lockBounds.right, (textBounds.bottom + kButtonTopOffset + kButtonHeight) -1 );
-	m_LockButton = new TLockButton(m_Channel, bounds, "LockButton", unlock, lock, theTarget); 
-	AddChild(m_LockButton);
-	m_LockButton->Show();		
+	fLockButton = new TLockButton(fChannel, bounds, "LockButton", unlock, lock, theTarget); 
+	AddChild(fLockButton);
+	fLockButton->Show();		
 
 }
 
@@ -240,7 +240,7 @@ void TCueChannelHeader::Draw(BRect updateRect)
 	PushState();
 	
 	// Draw main area
-	//if (m_IsHighlighted)
+	//if (fIsHighlighted)
 	//	SetHighColor(kLightGrey);
 	//else
 	//	SetHighColor(kSteelBlue);
@@ -293,7 +293,7 @@ void TCueChannelHeader::MouseDown(BPoint where)
 	uint32 buttons = 0; 
 	BPoint point, oldPt;
 	
-	const BRect	bounds = m_Channel->Bounds();
+	const BRect	bounds = fChannel->Bounds();
 		
 	// Check for mouse down
 	Window()->CurrentMessage()->FindInt32("buttons", (long *)&buttons); 
@@ -303,7 +303,7 @@ void TCueChannelHeader::MouseDown(BPoint where)
 	{ 			
 		// They must be moving the channel...
 		BMessage message(CHANNEL_DRAG_MSG);
-		message.AddPointer("ChannelView", m_Channel);
+		message.AddPointer("ChannelView", fChannel);
 				
 		// Center the rect within the mouse for a better drag appearence		
 		DragMessage(&message, bounds);					
@@ -343,13 +343,13 @@ void TCueChannelHeader::MessageReceived(BMessage *message)
 						uint32 insertTime = PixelsToTime( where.x, GetCurrentTimeFormat(), GetCurrentResolution());
 						
 						// Check for collisions with other cues
-						if ( m_Channel->CanInsertCue( cueView, insertTime, true) )
+						if ( fChannel->CanInsertCue( cueView, insertTime, true) )
 						{													
 							// Remove cue from old location
-							m_Channel->RemoveCue(cueView);
+							fChannel->RemoveCue(cueView);
 							
 							// Insert cue into channel at new location							
-							m_Channel->InsertCue(cueView, insertTime);
+							fChannel->InsertCue(cueView, insertTime);
 						}
 					}
 				}
@@ -366,10 +366,10 @@ void TCueChannelHeader::MessageReceived(BMessage *message)
 					if (&insertChannel)
 					{					
 						// Make sure we aren't dragging the channel back into itself
-						if (insertChannel != m_Channel)									
+						if (insertChannel != fChannel)									
 						{
 							// Now insert it into the CueSheets list of channels at the right spot
-							m_Channel->GetCueSheet()->DragInsertChannel(insertChannel, m_Channel);
+							fChannel->GetCueSheet()->DragInsertChannel(insertChannel, fChannel);
 						}
 					}
 				}
@@ -378,13 +378,13 @@ void TCueChannelHeader::MessageReceived(BMessage *message)
 						
 		// Highlight header to indicate cue icon entering channel
 		case CUE_ICON_DRAG_IN_MSG:	
-			m_IsHighlighted = true;
+			fIsHighlighted = true;
 			Invalidate();				
 			break;
 			
 		// Unhighlight header to indicate cue icon leaving channel
 		case CUE_ICON_DRAG_OUT_MSG:
-			m_IsHighlighted = false;
+			fIsHighlighted = false;
 			Invalidate();
 			break;	
 			
@@ -409,9 +409,9 @@ void TCueChannelHeader::MessageReceived(BMessage *message)
 
 void TCueChannelHeader::AttachedToWindow()
 {			
-	if(m_Channel == NULL)
+	if(fChannel == NULL)
 	{
-		//m_Channel = (TCueChannel *)Parent();		
+		//fChannel = (TCueChannel *)Parent();		
 	}
 	
 	//	Pass up to parent
@@ -427,7 +427,7 @@ void TCueChannelHeader::AttachedToWindow()
 //---------------------------------------------------------------------
 //
 //	Set the text string to the new channel name.  We are assuming that 
-//	the channel's m_Name memeber variable has already been set.
+//	the channel's fName memeber variable has already been set.
 //
 
 void TCueChannelHeader::UpdateChannelName()
@@ -440,10 +440,10 @@ void TCueChannelHeader::UpdateChannelName()
 	looper->Lock();
 	
 	// Set label text
-	sprintf( IDStr, " [%d]", m_Channel->GetID() );	
-	strcpy(nameStr, m_Channel->GetName()); 
+	sprintf( IDStr, " [%d]", fChannel->GetID() );	
+	strcpy(nameStr, fChannel->GetName()); 
 	strcat(nameStr, IDStr);
-	m_Name->SetText(nameStr);
+	fName->SetText(nameStr);
 	
 	looper->Unlock();
 }
@@ -459,12 +459,12 @@ void TCueChannelHeader::UpdateChannelName()
 
 void TCueChannelHeader::SetChannel(TCueChannel *channel)
 {
-	m_Channel = channel;
+	fChannel = channel;
 	
 	//	Update children
-	m_Name->SetChannel(channel);
-	m_SoloButton->SetChannel(channel);
-	m_MuteButton->SetChannel(channel);	
-	m_ExpandButton->SetChannel(channel);
-	m_LockButton->SetChannel(channel);			
+	fName->SetChannel(channel);
+	fSoloButton->SetChannel(channel);
+	fMuteButton->SetChannel(channel);	
+	fExpandButton->SetChannel(channel);
+	fLockButton->SetChannel(channel);			
 }

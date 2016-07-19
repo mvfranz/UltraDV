@@ -44,8 +44,8 @@ TTimeText::TTimeText(BHandler *target, int32 messageID, BRect bounds, char *name
 			  BView(bounds, name, resizing, B_WILL_DRAW)
 {	
 
-	m_Target 		= target;
-	m_MessageID  	= messageID;	
+	fTarget 		= target;
+	fMessageID  	= messageID;	
 	
 	Init();
 }
@@ -63,8 +63,8 @@ TTimeText::TTimeText(const TTimeText *theText) :
 			  BView(theText->Bounds(), theText->Name(), theText->ResizingMode(), B_WILL_DRAW)
 {	
 
-	m_Target 		= theText->m_Target;
-	m_MessageID  	= theText->m_MessageID;	
+	fTarget 		= theText->fTarget;
+	fMessageID  	= theText->fMessageID;	
 	
 	Init();
 }
@@ -85,23 +85,23 @@ TTimeText::TTimeText(BMessage *data) : BView(data)
 	rgb_color	*color;
 	BFont 		*font;
 
-	data->FindInt32("MessageID", &m_MessageID);		
-	data->FindFloat("TextSize", &m_TextSize);		
+	data->FindInt32("MessageID", &fMessageID);		
+	data->FindFloat("TextSize", &fTextSize);		
 
 	data->FindData("Font", B_ANY_TYPE, (const void **)&font, &numBytes);
-	m_Font = *font;
+	fFont = *font;
 	
 	data->FindData("Color", B_RGB_COLOR_TYPE, (const void **)&color, &numBytes);
-	m_Color = *color;
+	fColor = *color;
 	
 	// Set up our key stroke counter
-	m_KeyCount = 0;
+	fKeyCount = 0;
 	
 	// Set up font
-   	SetFont(&m_Font);
+   	SetFont(&fFont);
    	
    	// Perform default initialization
-	sprintf(m_Text, "00:00:00:00");
+	sprintf(fText, "00:00:00:00");
 	
 	// 	Set up time rects.  We divide the area up into four areas
 	//	for hour, minutes, seconds and frames
@@ -117,36 +117,36 @@ TTimeText::TTimeText(BMessage *data) : BView(data)
 				
 	// Get text drawing location
 	float startX;
-	float width = m_Font.StringWidth(m_Text);
+	float width = fFont.StringWidth(fText);
 	font_height fh;
-	m_Font.GetHeight(&fh);	
+	fFont.GetHeight(&fh);	
 	startX = (bounds.right - width)/2;
 	
 	numberWidth = StringWidth("00");
 	spaceWidth 	= StringWidth(":");
 	
-	m_HoursRect.left 		= bounds.left;
-	m_HoursRect.top 		= bounds.top;
-	m_HoursRect.right 		= m_HoursRect.left + startX + numberWidth;
-	m_HoursRect.bottom 		= bounds.bottom;
+	fHoursRect.left 		= bounds.left;
+	fHoursRect.top 		= bounds.top;
+	fHoursRect.right 		= fHoursRect.left + startX + numberWidth;
+	fHoursRect.bottom 		= bounds.bottom;
 	
-	m_MinutesRect.left 		= m_HoursRect.right + spaceWidth;
-	m_MinutesRect.top 		= bounds.top;
-	m_MinutesRect.right 	= m_MinutesRect.left + numberWidth;
-	m_MinutesRect.bottom 	= bounds.bottom;
+	fMinutesRect.left 		= fHoursRect.right + spaceWidth;
+	fMinutesRect.top 		= bounds.top;
+	fMinutesRect.right 	= fMinutesRect.left + numberWidth;
+	fMinutesRect.bottom 	= bounds.bottom;
 	
-	m_SecondsRect.left 		= m_MinutesRect.right + spaceWidth;
-	m_SecondsRect.top 		= bounds.top;
-	m_SecondsRect.right 	= m_SecondsRect.left + numberWidth;
-	m_SecondsRect.bottom 	= bounds.bottom;
+	fSecondsRect.left 		= fMinutesRect.right + spaceWidth;
+	fSecondsRect.top 		= bounds.top;
+	fSecondsRect.right 	= fSecondsRect.left + numberWidth;
+	fSecondsRect.bottom 	= bounds.bottom;
 	
-	m_FramesRect.left 		= m_SecondsRect.right + spaceWidth;
-	m_FramesRect.top 		= bounds.top;
-	m_FramesRect.right 		= bounds.right;
-	m_FramesRect.bottom 	= bounds.bottom;
+	fFramesRect.left 		= fSecondsRect.right + spaceWidth;
+	fFramesRect.top 		= bounds.top;
+	fFramesRect.right 		= bounds.right;
+	fFramesRect.bottom 	= bounds.bottom;
 	
 	// Set cell to none
-	m_CurrentCell = 0;
+	fCurrentCell = 0;
 }
 
 
@@ -160,12 +160,12 @@ TTimeText::~TTimeText()
 {
  
 	//	Free offscreen and view
-	if (m_OffscreenBitmap)
+	if (fOffscreenBitmap)
  	{
- 		m_OffscreenBitmap->Lock();	
- 		m_OffscreenBitmap->RemoveChild(m_OffscreenView);
- 		delete m_OffscreenView;	
- 		delete m_OffscreenBitmap;	
+ 		fOffscreenBitmap->Lock();	
+ 		fOffscreenBitmap->RemoveChild(fOffscreenView);
+ 		delete fOffscreenView;	
+ 		delete fOffscreenBitmap;	
  	}
 	
 }
@@ -181,26 +181,26 @@ TTimeText::~TTimeText()
 void TTimeText::Init()
 {
 	// Set up our key stroke counter
-	m_KeyCount = 0;
+	fKeyCount = 0;
 	
 	//	Create offscreen bitmap and view
-	m_OffscreenBitmap 	= new BBitmap(Bounds(), B_CMAP8, true);
-	m_OffscreenView 	= new BView( m_OffscreenBitmap->Bounds(), "OffscreenView", B_FOLLOW_ALL, B_WILL_DRAW);
+	fOffscreenBitmap 	= new BBitmap(Bounds(), B_CMAP8, true);
+	fOffscreenView 	= new BView( fOffscreenBitmap->Bounds(), "OffscreenView", B_FOLLOW_ALL, B_WILL_DRAW);
 	
 	// Add child and fill with background color
-	if ( m_OffscreenBitmap->Lock() )
+	if ( fOffscreenBitmap->Lock() )
 	{
-		m_OffscreenBitmap->AddChild(m_OffscreenView);
-		m_OffscreenView->SetViewColor(kBlack);
-		m_OffscreenView->SetLowColor(ViewColor());		
-		m_OffscreenView->FillRect(m_OffscreenView->Bounds());
-		m_OffscreenView->SetFont(&m_Font);
-		m_OffscreenView->Sync();
-		m_OffscreenBitmap->Unlock();
+		fOffscreenBitmap->AddChild(fOffscreenView);
+		fOffscreenView->SetViewColor(kBlack);
+		fOffscreenView->SetLowColor(ViewColor());		
+		fOffscreenView->FillRect(fOffscreenView->Bounds());
+		fOffscreenView->SetFont(&fFont);
+		fOffscreenView->Sync();
+		fOffscreenBitmap->Unlock();
 	}
 			
 	// Perform default initialization
-	sprintf(m_Text, "00:00:00:00");
+	sprintf(fText, "00:00:00:00");
 		
 	// 	Set up time rects.  We divide the area up into four areas
 	//	for hour, minutes, seconds and frames
@@ -210,39 +210,39 @@ void TTimeText::Init()
 	// Get text drawing location
 	BRect bounds = Bounds();
 	float startX;
-	float width = m_Font.StringWidth(m_Text);
+	float width = fFont.StringWidth(fText);
 	startX = (bounds.right - width)/2;
-	m_DrawPt.x = bounds.left + 2;
-	m_DrawPt.y = (bounds.Height() / 2) + 8;
+	fDrawPt.x = bounds.left + 2;
+	fDrawPt.y = (bounds.Height() / 2) + 8;
 	
 	numberWidth = StringWidth("00");
 	spaceWidth 	= StringWidth(":");
 	
-	m_HoursRect.left 		= bounds.left;
-	m_HoursRect.top 		= bounds.top;
-	m_HoursRect.right 		= m_HoursRect.left + startX + numberWidth;
-	m_HoursRect.bottom 		= bounds.bottom;
+	fHoursRect.left 		= bounds.left;
+	fHoursRect.top 		= bounds.top;
+	fHoursRect.right 		= fHoursRect.left + startX + numberWidth;
+	fHoursRect.bottom 		= bounds.bottom;
 	
-	m_MinutesRect.left 		= m_HoursRect.right + spaceWidth;
-	m_MinutesRect.top 		= bounds.top;
-	m_MinutesRect.right 	= m_MinutesRect.left + numberWidth;
-	m_MinutesRect.bottom 	= bounds.bottom;
+	fMinutesRect.left 		= fHoursRect.right + spaceWidth;
+	fMinutesRect.top 		= bounds.top;
+	fMinutesRect.right 	= fMinutesRect.left + numberWidth;
+	fMinutesRect.bottom 	= bounds.bottom;
 	
-	m_SecondsRect.left 		= m_MinutesRect.right + spaceWidth;
-	m_SecondsRect.top 		= bounds.top;
-	m_SecondsRect.right 	= m_SecondsRect.left + numberWidth;
-	m_SecondsRect.bottom 	= bounds.bottom;
+	fSecondsRect.left 		= fMinutesRect.right + spaceWidth;
+	fSecondsRect.top 		= bounds.top;
+	fSecondsRect.right 	= fSecondsRect.left + numberWidth;
+	fSecondsRect.bottom 	= bounds.bottom;
 	
-	m_FramesRect.left 		= m_SecondsRect.right + spaceWidth;
-	m_FramesRect.top 		= bounds.top;
-	m_FramesRect.right 		= bounds.right;
-	m_FramesRect.bottom 	= bounds.bottom;
+	fFramesRect.left 		= fSecondsRect.right + spaceWidth;
+	fFramesRect.top 		= bounds.top;
+	fFramesRect.right 		= bounds.right;
+	fFramesRect.bottom 	= bounds.bottom;
 	
 	// Set cell to none
-	m_CurrentCell = 0;
+	fCurrentCell = 0;
 	
 	// Set time to 0
-	m_Time = 0;
+	fTime = 0;
 }
 
 
@@ -285,10 +285,10 @@ status_t TTimeText::Archive(BMessage *data, bool deep) const
 		data->AddString("class", "TTimeText");
 		
 		// Add our member variables to the BMessage
-		data->AddInt32("MessageID", m_MessageID);		
-		data->AddFloat("TextSize", m_TextSize);		
-		data->AddData("Font", B_ANY_TYPE, &m_Font, sizeof(BFont) );
-		data->AddData("Color", B_RGB_COLOR_TYPE, &m_Color, sizeof(rgb_color) );
+		data->AddInt32("MessageID", fMessageID);		
+		data->AddFloat("TextSize", fTextSize);		
+		data->AddData("Font", B_ANY_TYPE, &fFont, sizeof(BFont) );
+		data->AddData("Color", B_RGB_COLOR_TYPE, &fColor, sizeof(rgb_color) );
 	}
 	
 	Looper()->Unlock();
@@ -311,26 +311,26 @@ void TTimeText::Draw(BRect updateRect)
 {
 	if (LockLooper())
 	{	
-		if ( m_OffscreenView->LockLooper())
+		if ( fOffscreenView->LockLooper())
 		{
-			m_OffscreenView->PushState();
+			fOffscreenView->PushState();
 			
 			// Clear out old text
-			m_OffscreenView->SetHighColor(m_OffscreenView->ViewColor());
-			m_OffscreenView->FillRect( m_OffscreenView->Bounds() );
+			fOffscreenView->SetHighColor(fOffscreenView->ViewColor());
+			fOffscreenView->FillRect( fOffscreenView->Bounds() );
 			
 			// Draw Text
-			m_OffscreenView->SetHighColor(m_Color);	
-			m_OffscreenView->DrawString(m_Text, m_DrawPt);
-			m_OffscreenView->Sync();
+			fOffscreenView->SetHighColor(fColor);	
+			fOffscreenView->DrawString(fText, fDrawPt);
+			fOffscreenView->Sync();
 			
-			m_OffscreenView->PopState();
+			fOffscreenView->PopState();
 			
-			m_OffscreenView->UnlockLooper();
+			fOffscreenView->UnlockLooper();
 		}
 		
 		//	Copy offscreen bitmap to view
-		DrawBitmap(m_OffscreenBitmap);
+		DrawBitmap(fOffscreenBitmap);
 		
 		UnlockLooper();
 	}
@@ -353,56 +353,56 @@ void TTimeText::MouseDown(BPoint where)
 		MakeFocus(true);
 	
 	// Reset key counter
-	m_KeyCount = 0;
+	fKeyCount = 0;
 	
 	// Verify last entry
 	CheckLastEdit();
 
 	// Determine where the click is
-	if ( m_HoursRect.Contains(where) ) 
+	if ( fHoursRect.Contains(where) ) 
 	{
-		if (m_CurrentCell != 1)
+		if (fCurrentCell != 1)
 		{
 			InvertCurrentCell();
-			InvertRect(m_HoursRect);
-			m_CurrentCell = 1;
+			InvertRect(fHoursRect);
+			fCurrentCell = 1;
 		}
 	}
-	else if ( m_MinutesRect.Contains(where) ) 
+	else if ( fMinutesRect.Contains(where) ) 
 	{
-		if (m_CurrentCell != 2)
+		if (fCurrentCell != 2)
 		{
 			InvertCurrentCell();
-			InvertRect(m_MinutesRect);
-			m_CurrentCell = 2;
-		}
-	}
-
-	else if ( m_SecondsRect.Contains(where) ) 
-	{
-		if (m_CurrentCell != 3)
-		{
-			InvertCurrentCell();
-			InvertRect(m_SecondsRect);
-			m_CurrentCell = 3;
+			InvertRect(fMinutesRect);
+			fCurrentCell = 2;
 		}
 	}
 
-	else if ( m_FramesRect.Contains(where) ) 
+	else if ( fSecondsRect.Contains(where) ) 
 	{
-		if (m_CurrentCell != 4)
+		if (fCurrentCell != 3)
 		{
 			InvertCurrentCell();
-			InvertRect(m_FramesRect);
-			m_CurrentCell = 4;
+			InvertRect(fSecondsRect);
+			fCurrentCell = 3;
+		}
+	}
+
+	else if ( fFramesRect.Contains(where) ) 
+	{
+		if (fCurrentCell != 4)
+		{
+			InvertCurrentCell();
+			InvertRect(fFramesRect);
+			fCurrentCell = 4;
 		}
 	}
 	// Default to first cell if all else fails
 	else
 	{
 		InvertCurrentCell();
-		InvertRect(m_HoursRect);
-		m_CurrentCell = 1;
+		InvertRect(fHoursRect);
+		fCurrentCell = 1;
 	}
 	*/		
 	BView::MouseDown(where);	
@@ -442,9 +442,9 @@ void TTimeText::KeyDown(const char *bytes, int32 numBytes)
 	char theChar = *bytes;
 			
 	// Increment our counter
-	m_KeyCount++;
-	if (m_KeyCount > 2)
-		m_KeyCount = 1;
+	fKeyCount++;
+	if (fKeyCount > 2)
+		fKeyCount = 1;
 		
 	//	Check for a return or enter 
 	if (theChar == B_ENTER || theChar == B_RETURN || theChar == 'r')
@@ -512,9 +512,9 @@ void TTimeText::MakeFocus(bool focusState)
 	// If we are out of focus, deselect cells
 	if (focusState == false)
 	{		
-		if (m_Target)
+		if (fTarget)
 		{
-			BLooper *looper = m_Target->Looper();
+			BLooper *looper = fTarget->Looper();
 			
 			if ( looper->Lock() )
 			{
@@ -524,16 +524,16 @@ void TTimeText::MakeFocus(bool focusState)
 				for (int16 index = kHoursCell; index < kTotalCells; index++)
 					ConvertToTime(index);
 				
-				BMessage *message = new BMessage(m_MessageID);
-				message->AddInt32("TheTime", m_Time);
-				m_Target->MessageReceived( message);
+				BMessage *message = new BMessage(fMessageID);
+				message->AddInt32("TheTime", fTime);
+				fTarget->MessageReceived( message);
 				looper->Unlock();
 				delete message;
 			}			
 		}
 		
 		InvertCurrentCell();
-		m_CurrentCell = 0;
+		fCurrentCell = 0;
 		
 	}
 	// We are getting focus	
@@ -566,7 +566,7 @@ void TTimeText::MessageReceived(BMessage *theMessage)
 				// Don't allow negative times to slip through
 				if (theTime >= 0)
 				{
-					TimeToString(theTime, GetCurrentTimeFormat(), m_Text, false);
+					TimeToString(theTime, GetCurrentTimeFormat(), fText, false);
 					Draw(Bounds());										
 				}
 			}
@@ -592,15 +592,15 @@ void TTimeText::MessageReceived(BMessage *theMessage)
 void TTimeText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_color theColor)
 {
 	// Update our member variables
-	m_Font 	= theFont;
-	m_Color = theColor;
+	fFont 	= theFont;
+	fColor = theColor;
 	
-	if ( m_OffscreenView->LockLooper())
+	if ( fOffscreenView->LockLooper())
 	{
-		m_OffscreenView->SetFont(&m_Font);
-   		m_OffscreenView->SetHighColor(m_Color);
-   		m_OffscreenView->SetLowColor(m_OffscreenView->ViewColor());
-   		m_OffscreenView->UnlockLooper();
+		fOffscreenView->SetFont(&fFont);
+   		fOffscreenView->SetHighColor(fColor);
+   		fOffscreenView->SetLowColor(fOffscreenView->ViewColor());
+   		fOffscreenView->UnlockLooper();
    	}	   	
 }
 
@@ -614,7 +614,7 @@ void TTimeText::SetFontAndColor(BFont *theFont, uint32 properties, rgb_color the
 
 void TTimeText::SetText(char *theText)
 {
-	sprintf(m_Text, theText);
+	sprintf(fText, theText);
 	
 	if (LockLooper())
 	{
@@ -635,52 +635,52 @@ void TTimeText::UpdateCurrentCell(char theChar)
 {
 		
 	BRect updateRect;
-	updateRect.left 	= m_HoursRect.left;
-	updateRect.top 		= m_HoursRect.top;
-	updateRect.right 	= m_FramesRect.right;
-	updateRect.bottom 	= m_FramesRect.bottom;
+	updateRect.left 	= fHoursRect.left;
+	updateRect.top 		= fHoursRect.top;
+	updateRect.right 	= fFramesRect.right;
+	updateRect.bottom 	= fFramesRect.bottom;
 	
 	
-	switch(m_CurrentCell)
+	switch(fCurrentCell)
 	{
 		case kHoursCell:
 			{
-				if (m_KeyCount == 1)
-					strcpy( &m_Text[0], "0");
+				if (fKeyCount == 1)
+					strcpy( &fText[0], "0");
 				else
-					m_Text[0] 	= m_Text[1];
+					fText[0] 	= fText[1];
 					
-				m_Text[1] 	= theChar;
+				fText[1] 	= theChar;
 			
-				//Invalidate(m_HoursRect);
+				//Invalidate(fHoursRect);
 				Invalidate(updateRect);
 			}
 			break;
 			
 		case kMinutesCell:
 			{
-				if (m_KeyCount == 1)
-					strcpy( &m_Text[3], "0");
+				if (fKeyCount == 1)
+					strcpy( &fText[3], "0");
 				else
-					m_Text[3] 	= m_Text[4];
+					fText[3] 	= fText[4];
 					
-				m_Text[4] 	= theChar;
+				fText[4] 	= theChar;
 			
-				//Invalidate(m_MinutesRect);
+				//Invalidate(fMinutesRect);
 				Invalidate(updateRect);
 			}
 			break;
 			
 		case kSecondsCell:
 			{
-				if (m_KeyCount == 1)
-					strcpy( &m_Text[6], "0");
+				if (fKeyCount == 1)
+					strcpy( &fText[6], "0");
 				else
-					m_Text[6] 	= m_Text[7];
+					fText[6] 	= fText[7];
 					
-				m_Text[7] 	= theChar;
+				fText[7] 	= theChar;
 			
-				//Invalidate(m_SecondsRect);
+				//Invalidate(fSecondsRect);
 				Invalidate(updateRect);
 			}
 			break;
@@ -688,14 +688,14 @@ void TTimeText::UpdateCurrentCell(char theChar)
 		// Set the frames to the entered value
 		case kFramesCell:
 			{				
-				if (m_KeyCount == 1)
-					strcpy( &m_Text[9], "0");
+				if (fKeyCount == 1)
+					strcpy( &fText[9], "0");
 				else
-					m_Text[9] 	= m_Text[10];
+					fText[9] 	= fText[10];
 					
-				m_Text[10] 	= theChar;
+				fText[10] 	= theChar;
 					
-				//Invalidate(m_FramesRect);
+				//Invalidate(fFramesRect);
 				Invalidate(updateRect);
 			}
 			break;
@@ -719,41 +719,41 @@ void TTimeText::CheckLastEdit()
 	int32	tmpNum;
 	
 	// Check for bad characters and number overflow
-	switch(m_CurrentCell)
+	switch(fCurrentCell)
 	{
 		case kHoursCell:
-			strncpy(textBuf, &m_Text[0], 2);
+			strncpy(textBuf, &fText[0], 2);
 			break;
 			
 		case kMinutesCell:
 			{
-				strncpy(textBuf, &m_Text[3], 2);
+				strncpy(textBuf, &fText[3], 2);
 
 				tmpNum = atoi(textBuf);
 				
 				if (tmpNum > 59)
-					strncpy(&m_Text[3], "59", 2);
+					strncpy(&fText[3], "59", 2);
 			
-				Invalidate(m_MinutesRect);
+				Invalidate(fMinutesRect);
 			}
 			break;
 			
 		case kSecondsCell:
 			{
-				strncpy(textBuf, &m_Text[6], 2);
+				strncpy(textBuf, &fText[6], 2);
 				
 				tmpNum = atoi(textBuf);
 				
 				if (tmpNum > 59)
-					strncpy(&m_Text[6], "59", 2);
+					strncpy(&fText[6], "59", 2);
 
-				Invalidate(m_SecondsRect);
+				Invalidate(fSecondsRect);
 			}			
 			break;
 					
 		case kFramesCell:
 			{
-				strncpy(textBuf, &m_Text[9], 2);
+				strncpy(textBuf, &fText[9], 2);
 				
 				tmpNum = atoi(textBuf);
 
@@ -761,26 +761,26 @@ void TTimeText::CheckLastEdit()
 				{
 					case B_TIMECODE_DEFAULT:
 						if (tmpNum > 100)
-							strncpy(&m_Text[9], "99", 2);
+							strncpy(&fText[9], "99", 2);
 						break;
 					
 					case B_TIMECODE_24:
 						if (tmpNum > 24)
-							strncpy(&m_Text[9], "24", 2);
+							strncpy(&fText[9], "24", 2);
 						break;
 						
 					case B_TIMECODE_25:
 						if (tmpNum > 25)
-							strncpy(&m_Text[9], "25", 2);
+							strncpy(&fText[9], "25", 2);
 						break;
 						
 					case B_TIMECODE_30_DROP_2:
 					case B_TIMECODE_30:						
 						if (tmpNum > 30)
-							strncpy(&m_Text[9], "30", 2);
+							strncpy(&fText[9], "30", 2);
 						break;																
 				}					
-				Invalidate(m_FramesRect);							
+				Invalidate(fFramesRect);							
 			}
 			break;
 			
@@ -788,7 +788,7 @@ void TTimeText::CheckLastEdit()
 			break;
 	}
 		
-	ConvertToTime(m_CurrentCell);
+	ConvertToTime(fCurrentCell);
 }
 
 
@@ -895,7 +895,7 @@ void TTimeText::LockText()
 {
 	//MakeFocus(false);
 	//Select(0,0);
-	m_IsLocked = true;
+	fIsLocked = true;
 }
 
 
@@ -908,7 +908,7 @@ void TTimeText::LockText()
 
 void TTimeText::UnlockText()
 {
-	m_IsLocked = false;	
+	fIsLocked = false;	
 }
 
 
@@ -921,22 +921,22 @@ void TTimeText::UnlockText()
 
 void TTimeText::InvertCurrentCell()
 {
-	switch(m_CurrentCell)
+	switch(fCurrentCell)
 	{
 		case 1:
-			InvertRect(m_HoursRect);
+			InvertRect(fHoursRect);
 			break;
 
 		case 2:
-			InvertRect(m_MinutesRect);
+			InvertRect(fMinutesRect);
 			break;
 
 		case 3:
-			InvertRect(m_SecondsRect);
+			InvertRect(fSecondsRect);
 			break;
 
 		case 4:
-			InvertRect(m_FramesRect);
+			InvertRect(fFramesRect);
 			break;
 			
 		default:
@@ -955,7 +955,7 @@ void TTimeText::InvertCurrentCell()
 void TTimeText::DecrementCell()
 {
 	// Reset key counter
-	m_KeyCount = 0;
+	fKeyCount = 0;
 	
 	// Verify last text entry as valid
 	CheckLastEdit();
@@ -964,11 +964,11 @@ void TTimeText::DecrementCell()
 	InvertCurrentCell();
 
 	// Select the previous cell			
-	m_CurrentCell--;
+	fCurrentCell--;
 			
 	// Check for overflow
-	if (m_CurrentCell <= 0)
-		m_CurrentCell = 4;			
+	if (fCurrentCell <= 0)
+		fCurrentCell = 4;			
 
 	// Select new cell
 	InvertCurrentCell();
@@ -986,7 +986,7 @@ void TTimeText::DecrementCell()
 void TTimeText::IncrementCell()
 {
 	// Reset key counter
-	m_KeyCount = 0;
+	fKeyCount = 0;
 
 	// Verify last text entry as valid
 	CheckLastEdit();
@@ -995,11 +995,11 @@ void TTimeText::IncrementCell()
 	InvertCurrentCell();
 
 	// Select the next cell
-	m_CurrentCell++;
+	fCurrentCell++;
 
 	// Check for overflow
-	if (m_CurrentCell > 4)
-		m_CurrentCell = 1;						
+	if (fCurrentCell > 4)
+		fCurrentCell = 1;						
 	
 	// Clean up old cell
 	InvertCurrentCell();
@@ -1023,7 +1023,7 @@ void TTimeText::ConvertToTime(int16 theCell)
 	int16 	tmpNum;
 	
 	// Fill buffer with current text
-	strncpy(textBuf, m_Text, 12);
+	strncpy(textBuf, fText, 12);
 	tmpStr[2] = '\n';
 			
 	/*
@@ -1034,7 +1034,7 @@ void TTimeText::ConvertToTime(int16 theCell)
 		bool	changed = false;
 		int16	hours, minutes, seconds, frames;
 				
-		TimeToString(m_Time, GetCurrentTimeFormat(), text, false);
+		TimeToString(fTime, GetCurrentTimeFormat(), text, false);
 		
 		// Stick the new value (if it changed) into the string and reverse calc the time
 		switch (theCell) 
@@ -1099,31 +1099,31 @@ void TTimeText::ConvertToTime(int16 theCell)
 			seconds = ((text[7] - '0') * 10) + (text[8] - '0');
 			frames = ((text[10] - '0') * 10) + (text[11] - '0');
 			
-			m_Time = (long)hours * 3600000L;				// Hours
-			m_Time += (long)(minutes / 10) * 600000;		// Ten minutes
+			fTime = (long)hours * 3600000L;				// Hours
+			fTime += (long)(minutes / 10) * 600000;		// Ten minutes
 			minutes %= 10;
 			
 			if (minutes) 
 			{
 				// First minute
-				m_Time += 60060.066;			
-				m_Time += ((double)(minutes - 1) * 59993.326);
+				fTime += 60060.066;			
+				fTime += ((double)(minutes - 1) * 59993.326);
 			}
 			
 			if (seconds) 
 			{
 				// First second
 				if (minutes)
-					m_Time += 934;					
+					fTime += 934;					
 				else
-					m_Time += 1001;
-				m_Time += (long)(seconds - 1) * 1001;
+					fTime += 1001;
+				fTime += (long)(seconds - 1) * 1001;
 			}
 			
 			if (frames >= 2 && !seconds && minutes)
 				frames -= 2;
 				
-			m_Time += ((double)(frames + 0.5) * 33.3667);
+			fTime += ((double)(frames + 0.5) * 33.3667);
 		}
 		
 	} 
@@ -1133,7 +1133,7 @@ void TTimeText::ConvertToTime(int16 theCell)
 	{
 		// Hours
 		case 1:				
-			oldVal = m_Time / 3600000;			
+			oldVal = fTime / 3600000;			
 			
 			strncpy(tmpStr, &textBuf[0], 2);		
 			tmpNum = atoi(tmpStr);
@@ -1141,14 +1141,14 @@ void TTimeText::ConvertToTime(int16 theCell)
 			if (tmpNum != oldVal) 
 			{
 				delta = tmpNum - oldVal;
-				m_Time += (delta * 3600000);
+				fTime += (delta * 3600000);
 			}
 			break;
 			
 		// Minutes
 		case 2:				
 			// Convert time to minutes
-			oldVal = m_Time % 3600000;			
+			oldVal = fTime % 3600000;			
 			oldVal /= 60000;
 									
 			strncpy(tmpStr, &textBuf[3], 2);		
@@ -1157,13 +1157,13 @@ void TTimeText::ConvertToTime(int16 theCell)
 			if (tmpNum != oldVal) 
 			{
 				delta = tmpNum - oldVal;
-				m_Time += (delta * 60000);
+				fTime += (delta * 60000);
 			}
 			break;
 			
 		// Seconds
 		case 3:				
-			oldVal = m_Time % 3600000;
+			oldVal = fTime % 3600000;
 			oldVal %= 60000;
 			oldVal /= 1000;
 			
@@ -1173,14 +1173,14 @@ void TTimeText::ConvertToTime(int16 theCell)
 			if (tmpNum != oldVal) 
 			{
 				delta = tmpNum - oldVal;
-				m_Time += (delta * 1000);
+				fTime += (delta * 1000);
 			}
 			break;
 			
 		// Frames/100ths
 		case 4:				
-			m_Time /= 1000;
-			m_Time *= 1000;
+			fTime /= 1000;
+			fTime *= 1000;
 			
 			strncpy(tmpStr, &textBuf[9], 2);		
 			tmpNum = atoi(tmpStr);
@@ -1189,20 +1189,20 @@ void TTimeText::ConvertToTime(int16 theCell)
 			{
 			
 				case B_TIMECODE_DEFAULT:
-					m_Time += (tmpNum * 10);
+					fTime += (tmpNum * 10);
 					break;
 					
 				case B_TIMECODE_24:
-					m_Time += ((tmpNum * 1000 + 12) / 24);
+					fTime += ((tmpNum * 1000 + 12) / 24);
 					break;
 					
 				case B_TIMECODE_25:
-					m_Time += ((tmpNum * 1000 + 13) / 25);
+					fTime += ((tmpNum * 1000 + 13) / 25);
 					break;
 					
 				case B_TIMECODE_30_DROP_2:					
 				case B_TIMECODE_30:
-					m_Time += ((tmpNum * 1000 + 15) / 30);
+					fTime += ((tmpNum * 1000 + 15) / 30);
 					break;
 			}
 			break;
@@ -1225,5 +1225,5 @@ int32 TTimeText::GetTime()
 		ConvertToTime(index);
 	}
 		
-	return m_Time;
+	return fTime;
 }

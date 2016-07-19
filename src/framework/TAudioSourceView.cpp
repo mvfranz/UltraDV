@@ -60,38 +60,38 @@ void TAudioSourceView::Init()
 	SetViewColor(kBeGrey); 
 	
 	// Locate view items
-	m_DeviceMenuField 	= (BMenuField *)FindView("DeviceMenuField");
-	m_InputMenuField 	= (BMenuField *)FindView("InputMenuField");
-	m_VolumeBox			= (BBox *)FindView("VolumeBox");
+	fDeviceMenuField 	= (BMenuField *)FindView("DeviceMenuField");
+	fInputMenuField 	= (BMenuField *)FindView("InputMenuField");
+	fVolumeBox			= (BBox *)FindView("VolumeBox");
 	
 	// Set up Input Slider
 	BView *inputView = (BView *)FindView("InputView");
-	m_InputSlider = new TLevelsSlider(inputView->Frame(), kAudioInputSlider);
-	m_VolumeBox->AddChild(m_InputSlider);
-	m_VolumeBox->RemoveChild(inputView);
+	fInputSlider = new TLevelsSlider(inputView->Frame(), kAudioInputSlider);
+	fVolumeBox->AddChild(fInputSlider);
+	fVolumeBox->RemoveChild(inputView);
 	delete inputView;
-	m_InputSlider->Show();
+	fInputSlider->Show();
 
 	// Set up Output Slider
 	BView *outputView = (BView *)FindView("OutputView");
-	m_OutputSlider = new TLevelsSlider(outputView->Frame(), kAudioOutputSlider);
-	m_VolumeBox->AddChild(m_OutputSlider);
-	m_VolumeBox->RemoveChild(outputView);
+	fOutputSlider = new TLevelsSlider(outputView->Frame(), kAudioOutputSlider);
+	fVolumeBox->AddChild(fOutputSlider);
+	fVolumeBox->RemoveChild(outputView);
 	delete outputView;
-	m_OutputSlider->Show();
+	fOutputSlider->Show();
 	
 	// Set up level indicator
 	BView 	*levelsView = (BMenuField *)FindView("LevelsView");
-	m_AudioLevelsView = new TAudioLevelsView(levelsView->Frame());
-	m_VolumeBox->RemoveChild(levelsView);
+	fAudioLevelsView = new TAudioLevelsView(levelsView->Frame());
+	fVolumeBox->RemoveChild(levelsView);
 	delete levelsView;
-	m_VolumeBox->AddChild(m_AudioLevelsView);
+	fVolumeBox->AddChild(fAudioLevelsView);
 
 	// Setup menus
 	BMenu *theMenu;
 	
 	// Setup Device menu
-	theMenu = m_DeviceMenuField->Menu();
+	theMenu = fDeviceMenuField->Menu();
 	if (theMenu)
 	{
 		// None
@@ -103,7 +103,7 @@ void TAudioSourceView::Init()
 	}
 	
 	// Setup Input menu
-	theMenu = m_InputMenuField->Menu();
+	theMenu = fInputMenuField->Menu();
 	if (theMenu)
 	{
 		// None
@@ -232,7 +232,7 @@ void TAudioSourceView::AttachedToWindow()
 	//
 	
 	// Device Menu
-	BMenu *deviceMenu = m_DeviceMenuField->Menu();
+	BMenu *deviceMenu = fDeviceMenuField->Menu();
 	if (deviceMenu)
 	{
 		BMenuItem *defaultItem = deviceMenu->FindItem(DEVICE_DEFAULT_MSG);
@@ -240,7 +240,7 @@ void TAudioSourceView::AttachedToWindow()
 	}
 	
 	// Input Menu
-	BMenu *inputMenu = m_InputMenuField->Menu();
+	BMenu *inputMenu = fInputMenuField->Menu();
 	if (inputMenu)
 	{
 		BMenuItem *noneItem = inputMenu->FindItem(SOURCE_NONE_MSG);

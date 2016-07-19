@@ -49,7 +49,7 @@
 TScaleDialog::TScaleDialog(TVisualCue *theCue, BMessage *theMessage) : BWindow(theMessage)
 {
 	//	Save reference to PictureCue
-	m_Cue = theCue;
+	fCue = theCue;
 	
 	// Default initialization
 	Init();
@@ -76,48 +76,48 @@ TScaleDialog::~TScaleDialog()
 void TScaleDialog::Init()
 {
 	//	Get Aspect ratio
-	BRect aspectRect = m_Cue->GetArea();
+	BRect aspectRect = fCue->GetArea();
 	
-	m_AspectWidth 	= aspectRect.Width()  / aspectRect.Height();
-	m_AspectHeight	= aspectRect.Height() / aspectRect.Width();
+	fAspectWidth 	= aspectRect.Width()  / aspectRect.Height();
+	fAspectHeight	= aspectRect.Height() / aspectRect.Width();
 	
 	//	Get current dimensions
-	m_SavedScale = m_Cue->GetScale();
+	fSavedScale = fCue->GetScale();
 	
 	//	Maintain aspect ratio
-	m_AspectRatio = true;
+	fAspectRatio = true;
 	
 	//	Set units to pixels
-	m_WidthUnitType  = kUnitsPixels;
-	m_HeightUnitType = kUnitsPixels;
+	fWidthUnitType  = kUnitsPixels;
+	fHeightUnitType = kUnitsPixels;
 	
 	//
 	// Get dialog items			
 	//
 	
-	m_BackView = (BView *)FindView("ScaleView");
+	fBackView = (BView *)FindView("ScaleView");
 	
 	//	Get TextControls and swap them out for our own
 	//
 	
 	//	Width
 	BTextControl *widthControl	= (BTextControl *)FindView("WidthTextControl");
-	m_WidthText = new TNumberTextControl( widthControl->Frame(), widthControl->Label(), widthControl->Name(), 
+	fWidthText = new TNumberTextControl( widthControl->Frame(), widthControl->Label(), widthControl->Name(), 
 									  NULL, new BMessage(SCALE_WIDTH_TEXT_MSG));
-	m_WidthText->SetDivider(widthControl->Divider());
-	m_WidthText->TextView()->SetMaxBytes(4);
-	m_BackView->RemoveChild(widthControl);
-	m_BackView->AddChild(m_WidthText);
+	fWidthText->SetDivider(widthControl->Divider());
+	fWidthText->TextView()->SetMaxBytes(4);
+	fBackView->RemoveChild(widthControl);
+	fBackView->AddChild(fWidthText);
 	delete widthControl;
 		
 	//	Height
 	BTextControl *heightControl	= (BTextControl *)FindView("HeightTextControl");
-	m_HeightText = new TNumberTextControl( heightControl->Frame(), heightControl->Label(), heightControl->Name(), 
+	fHeightText = new TNumberTextControl( heightControl->Frame(), heightControl->Label(), heightControl->Name(), 
 									  NULL, new BMessage(SCALE_HEIGHT_TEXT_MSG));	
-	m_HeightText->SetDivider(heightControl->Divider());
-	m_HeightText->TextView()->SetMaxBytes(4);
-	m_BackView->RemoveChild(heightControl);
-	m_BackView->AddChild(m_HeightText);
+	fHeightText->SetDivider(heightControl->Divider());
+	fHeightText->TextView()->SetMaxBytes(4);
+	fBackView->RemoveChild(heightControl);
+	fBackView->AddChild(fHeightText);
 	delete heightControl;
 	
 	//
@@ -126,11 +126,11 @@ void TScaleDialog::Init()
 	
 	BMenu *theMenu;
 	
-	m_WidthMenu	 = (BMenuField *)FindView("WidthMenu");
-	m_HeightMenu = (BMenuField *)FindView("HeightMenu");
+	fWidthMenu	 = (BMenuField *)FindView("WidthMenu");
+	fHeightMenu = (BMenuField *)FindView("HeightMenu");
 	
 	//	Width Menu
-	theMenu = m_WidthMenu->Menu();
+	theMenu = fWidthMenu->Menu();
 	if (theMenu)
 	{
 		// Pixels
@@ -153,7 +153,7 @@ void TScaleDialog::Init()
 	}
 	
 	//	Height Menu
-	theMenu = m_HeightMenu->Menu();
+	theMenu = fHeightMenu->Menu();
 	if (theMenu)
 	{
 		// Pixels
@@ -176,26 +176,26 @@ void TScaleDialog::Init()
 	}
 				
 	//	Get checkboxes
-	m_AspectCheck 	= (BCheckBox *)FindView("AspectCheck");
+	fAspectCheck 	= (BCheckBox *)FindView("AspectCheck");
 	
 	//	Get buttons
-	m_OKButton 		= (BButton *)FindView("OKButton");
-	m_ApplyButton	= (BButton *)FindView("ApplyButton");
-	m_CancelButton	= (BButton *)FindView("CancelButton");
+	fOKButton 		= (BButton *)FindView("OKButton");
+	fApplyButton	= (BButton *)FindView("ApplyButton");
+	fCancelButton	= (BButton *)FindView("CancelButton");
 	
 	//
 	//	Set controls
 	//
 	
 	//	Width and Height
-	BRect drawArea = m_Cue->GetScaledArea();
+	BRect drawArea = fCue->GetScaledArea();
 	
 	char numText[4];
 	sprintf(numText, "%d", drawArea.IntegerWidth() + 1);
-	m_WidthText->SetText(numText);
+	fWidthText->SetText(numText);
 
 	sprintf(numText, "%d", drawArea.IntegerHeight() + 1);
-	m_HeightText->SetText(numText);
+	fHeightText->SetText(numText);
 	
 }
 
@@ -216,7 +216,7 @@ void TScaleDialog::MessageReceived(BMessage* message)
 	{
 		//	Aspect ratio checkbox
 		case SCALE_ASPECT_MSG:
-			m_AspectRatio = m_AspectCheck->Value();
+			fAspectRatio = fAspectCheck->Value();
 			break;
 			
 		
@@ -228,7 +228,7 @@ void TScaleDialog::MessageReceived(BMessage* message)
 				float height = GetNewHeight();
 				
 				BPoint newScale(width, height);
-				m_Cue->SetScale(newScale);
+				fCue->SetScale(newScale);
 				
 				UpdateCue();
 			}
@@ -238,18 +238,18 @@ void TScaleDialog::MessageReceived(BMessage* message)
 		case SCALE_WIDTH_TEXT_MSG:
 			{
 				//	Get text value
-				const char *numStr = m_WidthText->Text();
+				const char *numStr = fWidthText->Text();
 				int32 theVal = atoi(numStr);
 				
 				//	Do we need to maintain aspect ratio?
-				if (m_AspectRatio)
+				if (fAspectRatio)
 				{
 					//	Get width text value
-					const char *numText = m_WidthText->Text();
+					const char *numText = fWidthText->Text();
 					float width = atof(numText);
 						
 					//	Get width in pixels
-					switch(m_WidthUnitType)
+					switch(fWidthUnitType)
 					{
 						case kUnitsPixels:
 							break;
@@ -268,10 +268,10 @@ void TScaleDialog::MessageReceived(BMessage* message)
 					}
 					
 					//	Calculate new height in pixels
-					int32 newHeight = width / m_AspectWidth;
+					int32 newHeight = width / fAspectWidth;
 					
 					//	Set the new height
-					switch(m_HeightUnitType)
+					switch(fHeightUnitType)
 					{
 						case kUnitsPixels:
 							break;
@@ -296,11 +296,11 @@ void TScaleDialog::MessageReceived(BMessage* message)
 		case SCALE_HEIGHT_TEXT_MSG:
 			{
 				//	Get text value
-				const char *numStr = m_HeightText->Text();
+				const char *numStr = fHeightText->Text();
 				int16 theVal = atoi(numStr);
 				
 				//	Do we need to maintain aspect ratio?
-				if (m_AspectRatio)
+				if (fAspectRatio)
 				{
 					//	Set height to same aspect ratio
 				
@@ -310,37 +310,37 @@ void TScaleDialog::MessageReceived(BMessage* message)
 		
 		//	Covert width to pixels
 		case SCALE_W_PIXELS_MSG:
-			m_WidthUnitType = kUnitsPixels;
+			fWidthUnitType = kUnitsPixels;
 			ConvertWidthToPixels();
 			break;
 			
 		//	Covert width to inches
 		case SCALE_W_INCHES_MSG:
-			m_WidthUnitType = kUnitsInches;
+			fWidthUnitType = kUnitsInches;
 			ConvertWidthToInches();
 			break;
 			
 		//	Covert width to percent
 		case SCALE_W_PERCENT_MSG:
-			m_WidthUnitType = kUnitsPercent;
+			fWidthUnitType = kUnitsPercent;
 			ConvertWidthToPercent();
 			break;
 		
 		//	Covert height to pixels
 		case SCALE_H_PIXELS_MSG:
-			m_HeightUnitType = kUnitsPixels;
+			fHeightUnitType = kUnitsPixels;
 			ConvertHeightToPixels();
 			break;
 			
 		//	Covert height to inches
 		case SCALE_H_INCHES_MSG:
-			m_HeightUnitType = kUnitsInches;
+			fHeightUnitType = kUnitsInches;
 			ConvertHeightToInches();
 			break;
 			
 		//	Covert height to percent
 		case SCALE_H_PERCENT_MSG:
-			m_HeightUnitType = kUnitsPercent;
+			fHeightUnitType = kUnitsPercent;
 			ConvertHeightToPercent();
 			break;
 			
@@ -359,9 +359,9 @@ void TScaleDialog::MessageReceived(BMessage* message)
 				BPoint newScale(width, height);
 				
 				//	Determine if cue scale needs to be updated
-				if (newScale != m_SavedScale)
+				if (newScale != fSavedScale)
 				{
-					m_Cue->SetScale(newScale);
+					fCue->SetScale(newScale);
 				
 					// Inform stage to redraw
 					UpdateCue();
@@ -369,7 +369,7 @@ void TScaleDialog::MessageReceived(BMessage* message)
 								
 				//	Inform cue we are gone
 				BMessage *theMessage = new BMessage(SCALE_CLOSE_MSG);
-				m_Cue->MessageReceived(theMessage);
+				fCue->MessageReceived(theMessage);
 				delete theMessage;
 		
 				// Close the dialog 
@@ -384,12 +384,12 @@ void TScaleDialog::MessageReceived(BMessage* message)
 				Hide();
 				
 				//	Get current dimensions
-				BPoint curScale	= m_Cue->GetScale();
+				BPoint curScale	= fCue->GetScale();
 
 				//	Restore to saved settings
-				if (curScale != m_SavedScale)
+				if (curScale != fSavedScale)
 				{
-					m_Cue->SetScale(curScale);
+					fCue->SetScale(curScale);
 				
 					// Inform stage to redraw
 					UpdateCue();
@@ -398,7 +398,7 @@ void TScaleDialog::MessageReceived(BMessage* message)
 					
 				//	Inform cue we are gone
 				BMessage *theMessage = new BMessage(SCALE_CLOSE_MSG);
-				m_Cue->MessageReceived(theMessage);
+				fCue->MessageReceived(theMessage);
 				delete theMessage;
 				
 				//	Close dialog
@@ -429,11 +429,11 @@ void TScaleDialog::MessageReceived(BMessage* message)
 void TScaleDialog::ConvertWidthToPixels()
 {
 	//	Get width
-	BRect drawArea = m_Cue->GetScaledArea();
+	BRect drawArea = fCue->GetScaledArea();
 	
 	char numText[4];
 	sprintf(numText, "%d", drawArea.IntegerWidth() + 1);
-	m_WidthText->SetText(numText);
+	fWidthText->SetText(numText);
 }
 
 //-------------------------------------------------------------------
@@ -445,11 +445,11 @@ void TScaleDialog::ConvertWidthToPixels()
 void TScaleDialog::ConvertWidthToInches()
 {
 	//	Get width
-	BRect drawArea = m_Cue->GetScaledArea();
+	BRect drawArea = fCue->GetScaledArea();
 	
 	char numText[4];
 	sprintf(numText, "%f", (drawArea.Width() + 1) / 72);
-	m_WidthText->SetText(numText);
+	fWidthText->SetText(numText);
 }
 
 //-------------------------------------------------------------------
@@ -461,15 +461,15 @@ void TScaleDialog::ConvertWidthToInches()
 void TScaleDialog::ConvertWidthToPercent()
 {
 	//	Get width
-	BRect originalArea 	= m_Cue->GetArea();
-	BRect scaleArea 	= m_Cue->GetScaledArea();
+	BRect originalArea 	= fCue->GetArea();
+	BRect scaleArea 	= fCue->GetScaledArea();
 	
 	float percent 	 = scaleArea.Width() / originalArea.Width();
 	int32 percentInt = percent * 100; 
 	 
 	char numText[4];
 	sprintf(numText, "%d", percentInt);
-	m_WidthText->SetText(numText);
+	fWidthText->SetText(numText);
 }
 
 
@@ -482,11 +482,11 @@ void TScaleDialog::ConvertWidthToPercent()
 void TScaleDialog::ConvertHeightToPixels()
 {
 	//	Get width
-	BRect drawArea = m_Cue->GetScaledArea();
+	BRect drawArea = fCue->GetScaledArea();
 	
 	char numText[4];
 	sprintf(numText, "%d", drawArea.IntegerHeight() + 1);
-	m_HeightText->SetText(numText);
+	fHeightText->SetText(numText);
 }
 
 //-------------------------------------------------------------------
@@ -498,11 +498,11 @@ void TScaleDialog::ConvertHeightToPixels()
 void TScaleDialog::ConvertHeightToInches()
 {
 	//	Get width
-	BRect drawArea = m_Cue->GetScaledArea();
+	BRect drawArea = fCue->GetScaledArea();
 	
 	char numText[4];
 	sprintf(numText, "%f", (drawArea.Height() + 1) / 72);
-	m_HeightText->SetText(numText);
+	fHeightText->SetText(numText);
 }
 
 //-------------------------------------------------------------------
@@ -514,15 +514,15 @@ void TScaleDialog::ConvertHeightToInches()
 void TScaleDialog::ConvertHeightToPercent()
 {
 	//	Get width
-	BRect originalArea 	= m_Cue->GetArea();
-	BRect scaleArea 	= m_Cue->GetScaledArea();
+	BRect originalArea 	= fCue->GetArea();
+	BRect scaleArea 	= fCue->GetScaledArea();
 	
 	float percent 	 = scaleArea.Height() / originalArea.Height();
 	int32 percentInt = percent * 100; 
 	 
 	char numText[4];
 	sprintf(numText, "%d", percentInt);
-	m_HeightText->SetText(numText);
+	fHeightText->SetText(numText);
 }
 
 
@@ -535,14 +535,14 @@ void TScaleDialog::ConvertHeightToPercent()
 
 void TScaleDialog::UpdateCue()
 {
-	if (m_Cue->IsOnStage())
+	if (fCue->IsOnStage())
 	{
 		TStageWindow *theStage	= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
 		TStageView 	 *stageView = theStage->GetStageView();
 		
 		theStage->Lock();
-		stageView->StageDraw( m_Cue->GetDrawArea(), GetCurrentTime());
-		stageView->Draw( m_Cue->GetDrawArea());
+		stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
+		stageView->Draw( fCue->GetDrawArea());
 		theStage->Unlock();
 	}		
 }
@@ -559,14 +559,14 @@ float TScaleDialog::GetNewWidth()
 {
 	float retVal = 0.0;
 	
-	const BRect scaleArea = m_Cue->GetScaledArea();
-	const BRect area 	  = m_Cue->GetArea();
+	const BRect scaleArea = fCue->GetScaledArea();
+	const BRect area 	  = fCue->GetArea();
 	
-	const char *numStr = m_WidthText->Text();
+	const char *numStr = fWidthText->Text();
 	const float theVal = atof(numStr);
 
 	//	Calculate return value as a percent
-	switch(m_WidthUnitType)
+	switch(fWidthUnitType)
 	{
 		case kUnitsPixels:
 			retVal = theVal / area.Width();
@@ -603,14 +603,14 @@ float TScaleDialog::GetNewHeight()
 {
 	float retVal = 0.0;
 	
-	const BRect scaleArea = m_Cue->GetScaledArea();
-	const BRect area 	  = m_Cue->GetArea();
+	const BRect scaleArea = fCue->GetScaledArea();
+	const BRect area 	  = fCue->GetArea();
 	
-	const char *numStr = m_HeightText->Text();
+	const char *numStr = fHeightText->Text();
 	const float theVal = atof(numStr);
 
 	//	Calculate return value as a percent
-	switch(m_WidthUnitType)
+	switch(fWidthUnitType)
 	{
 		case kUnitsPixels:
 			retVal = theVal / area.Height();

@@ -37,8 +37,8 @@ class TVideoEditorTransport: public BView
 				
 										
 		// Member variables
-		TVideoEditor	*m_Editor;
-		BRect			m_SliderRect;
+		TVideoEditor	*fEditor;
+		BRect			fSliderRect;
 };		
 
 #endif

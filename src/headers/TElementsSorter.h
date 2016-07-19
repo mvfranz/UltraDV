@@ -46,7 +46,7 @@ class TElementsSorter: public BView
 		// Member variables	
 		
 		// Inlines
-		BList *GetSorterList(){ return m_SorterList; }
+		BList *GetSorterList(){ return fSorterList; }
 		
 	private:				
 		// Member functions
@@ -72,20 +72,20 @@ class TElementsSorter: public BView
 		status_t 	HandleVolume(entry_ref &ref, struct stat &st, BDirectory &dir);
 		
 		// Member variables		
-		TElementsView		*m_Parent;
+		TElementsView		*fParent;
 		
-		TSorterContainer	*m_IconSorter;		
-		TSorterContainer	*m_NameSorter;
-		TSorterContainer	*m_DateSorter;
-		TSorterContainer	*m_PathSorter;
-		TSorterContainer	*m_TypeSorter;
-		TSorterContainer	*m_DurationSorter;
-		TSorterContainer	*m_SizeSorter;
-		TSorterContainer	*m_AudioInfoSorter;
-		TSorterContainer	*m_VideoInfoSorter;
+		TSorterContainer	*fIconSorter;		
+		TSorterContainer	*fNameSorter;
+		TSorterContainer	*fDateSorter;
+		TSorterContainer	*fPathSorter;
+		TSorterContainer	*fTypeSorter;
+		TSorterContainer	*fDurationSorter;
+		TSorterContainer	*fSizeSorter;
+		TSorterContainer	*fAudioInfoSorter;
+		TSorterContainer	*fVideoInfoSorter;
 		
-		int16				m_LastSorterClicked;
-		BList 				*m_SorterList;
+		int16				fLastSorterClicked;
+		BList 				*fSorterList;
 };		
 
 #endif

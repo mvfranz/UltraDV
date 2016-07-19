@@ -45,7 +45,7 @@ TAddChannel::TAddChannel(BRect bounds, TCueSheetView *theCueSheet) : BWindow( bo
 {
 	
 	// Save channel
-	m_CueSheet = theCueSheet;
+	fCueSheet = theCueSheet;
 
 	// Default initialization
 	Init();
@@ -72,7 +72,7 @@ TAddChannel::~TAddChannel()
 void TAddChannel::Init()
 {
 	// Get total number of channels
-	int32 numChannels = m_CueSheet->GetTotalChannels();
+	int32 numChannels = fCueSheet->GetTotalChannels();
 	char numStr[10];
 	sprintf(numStr, "%d", numChannels);
 	
@@ -84,24 +84,24 @@ void TAddChannel::Init()
 	
 	// Create background view
 	bounds.OffsetTo(0,0);
-	m_BackView = new BView(bounds, "InsertChannelView", B_FOLLOW_ALL, B_WILL_DRAW);
-	m_BackView->SetViewColor(kGrey);
-	AddChild(m_BackView);
+	fBackView = new BView(bounds, "InsertChannelView", B_FOLLOW_ALL, B_WILL_DRAW);
+	fBackView->SetViewColor(kGrey);
+	AddChild(fBackView);
 	
 	// Insert Text Control
-	bounds = m_BackView->Bounds();
+	bounds = fBackView->Bounds();
 	BRect textBounds;
 	textBounds.Set(bounds.left+10, bounds.top+10, bounds.left+75, bounds.top+29);
-	m_AddChannelText = new TNumberTextControl(textBounds, "Insert", "InsertChannel", "1", new BMessage(ADD_CHANNEL_MSG)); 
-	m_AddChannelText->SetDivider(29);
-	m_BackView->AddChild(m_AddChannelText); 
+	fAddChannelText = new TNumberTextControl(textBounds, "Insert", "InsertChannel", "1", new BMessage(ADD_CHANNEL_MSG)); 
+	fAddChannelText->SetDivider(29);
+	fBackView->AddChild(fAddChannelText); 
 	
 	// After Text Control
-	bounds = m_BackView->Bounds();
+	bounds = fBackView->Bounds();
 	textBounds.Set(bounds.left+81, bounds.top+10, bounds.left+231, bounds.top+29);
-	m_AfterChannelText = new TNumberTextControl(textBounds, "Channel(s) After Channel", "AfterChannel", numStr, new BMessage(AFTER_CHANNEL_MSG)); 
-	m_AfterChannelText->SetDivider(114);
-	m_BackView->AddChild(m_AfterChannelText); 	
+	fAfterChannelText = new TNumberTextControl(textBounds, "Channel(s) After Channel", "AfterChannel", numStr, new BMessage(AFTER_CHANNEL_MSG)); 
+	fAfterChannelText->SetDivider(114);
+	fBackView->AddChild(fAfterChannelText); 	
 	
 	// OK and Cancel buttons
 	
@@ -113,13 +113,13 @@ void TAddChannel::Init()
 	const BRect okFrame( bounds.right - 90, bounds.bottom - 35, bounds.right - 30, bounds.bottom - 55);
 	
 	// Create the Cancel button
-	m_CancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	m_BackView->AddChild(m_CancelButton);
+	fCancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	fBackView->AddChild(fCancelButton);
 	
 	// Create the OK button
-	m_OKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	m_BackView->AddChild(m_OKButton);
-	m_OKButton->MakeDefault(true);
+	fOKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	fBackView->AddChild(fOKButton);
+	fOKButton->MakeDefault(true);
 	
 }
 
@@ -143,15 +143,15 @@ void TAddChannel::MessageReceived(BMessage* message)
 		case OK_MSG:
 			{
 				// Get total number of channels
-				int32 numChannels = m_CueSheet->GetTotalChannels();
+				int32 numChannels = fCueSheet->GetTotalChannels();
 				char numStr[10];
 				sprintf(numStr, "%d", numChannels);
 		
 				// Get total number of channels the user wants to add
-				int32 newChannels = atoi(m_AddChannelText->Text());
+				int32 newChannels = atoi(fAddChannelText->Text());
 				
 				// Get the channel after which the insertion should occur			
-				int32 afterChannel = atoi(m_AfterChannelText->Text());
+				int32 afterChannel = atoi(fAfterChannelText->Text());
 								
 				// Send message to cue sheet view
 				if (afterChannel > 0 && afterChannel <= numChannels)
@@ -184,16 +184,16 @@ void TAddChannel::MessageReceived(BMessage* message)
 		case AFTER_CHANNEL_MSG:
 			{     			
      			// Get total number of channels
-				int32 numChannels = m_CueSheet->GetTotalChannels();
+				int32 numChannels = fCueSheet->GetTotalChannels();
 				char numStr[10];
 				sprintf(numStr, "%d", numChannels);
 				
      			// 	If the after channel is greater than total channels,
      			//	correct the user input
-				int32 theNum = atoi( m_AfterChannelText->Text());
+				int32 theNum = atoi( fAfterChannelText->Text());
 				
 				if (theNum > numChannels)
-     				m_AfterChannelText->SetText(numStr);    
+     				fAfterChannelText->SetText(numStr);    
      		}
 			break;
 			

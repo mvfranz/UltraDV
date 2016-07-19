@@ -66,7 +66,7 @@ void TPaletteStatusView::Init()
 	BRect area = Bounds();
 	
 	// Set up status text
-	strcpy(m_Text, "");
+	strcpy(fText, "");
 				
 }
 
@@ -88,7 +88,7 @@ void TPaletteStatusView::MessageReceived(BMessage* message)
 		case UPDATE_STATUS_TEXT_MSG:
 			char *theStr;
 			message->FindString((const char *)"CueName",(const char**) &theStr);
-			strcpy(m_Text, theStr);	
+			strcpy(fText, theStr);	
 			Invalidate();
 			break;
 			
@@ -140,7 +140,7 @@ void TPaletteStatusView::Draw(BRect updateRect)
 	SetHighColor(kBlack);
 	SetLowColor(kBlueGrey);
 	endPt.Set( Bounds().left+5, (Bounds().Height() / 2) + 4 );
-	DrawString(m_Text, endPt); 
+	DrawString(fText, endPt); 
 	
 	// Restore environment
 	PopState();

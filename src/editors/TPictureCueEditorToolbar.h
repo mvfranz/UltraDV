@@ -35,9 +35,9 @@ class TPictureCueEditorToolbar: public BView
 		void Init();
 		
 		// Member Variables						
-		TBitmapButton 	*m_DurationButton;
-		BRect 					m_DurationRect;
-		TCueView				*m_Cue;
+		TBitmapButton 	*fDurationButton;
+		BRect 					fDurationRect;
+		TCueView				*fCue;
 };
 
 // Messages

@@ -41,29 +41,29 @@ class TTransition
 		void 	DrawData(uint32 theTime, BView *offView);
 		
 		// Inlines
-		inline bool		IsDone(){ return m_IsDone; }
+		inline bool		IsDone(){ return fIsDone; }
 		
 	private:
 		// Member Functions		
 		
 				
 		// Member Variables
-		bool				m_IsDone;
-		bool				m_IsTransitionIn;
-		bool				m_IsTransitionOut;
-		TStageView			*m_Stage;
-		TVisualCue			*m_SrcView;
-		BView 				*m_MaskView;
-		BView				*m_DstView;
-		BRegion				m_TransitionRegion;
-		BRect				m_SrcRect;		
-		BRect				m_DstRect;
-		int16				m_ID;
-		uint32				m_Duration;
-		uint32				m_StartTime;
-		BBitmap				*m_SrcBitmap;
-		BBitmap				*m_DstBitmap;
-		TransitionCallback	m_TransitionCallback;
+		bool				fIsDone;
+		bool				fIsTransitionIn;
+		bool				fIsTransitionOut;
+		TStageView			*fStage;
+		TVisualCue			*fSrcView;
+		BView 				*fMaskView;
+		BView				*fDstView;
+		BRegion				fTransitionRegion;
+		BRect				fSrcRect;		
+		BRect				fDstRect;
+		int16				fID;
+		uint32				fDuration;
+		uint32				fStartTime;
+		BBitmap				*fSrcBitmap;
+		BBitmap				*fDstBitmap;
+		TransitionCallback	fTransitionCallback;
 
 };
 

@@ -44,7 +44,7 @@ TDeleteChannel::TDeleteChannel(BRect bounds, TCueSheetView *theCueSheet) : BWind
 {
 	
 	// Save channel
-	m_CueSheet = theCueSheet;
+	fCueSheet = theCueSheet;
 
 	// Default initialization
 	Init();
@@ -71,7 +71,7 @@ TDeleteChannel::~TDeleteChannel()
 void TDeleteChannel::Init()
 {
 	// Get total number of channels
-	int32 numChannels = m_CueSheet->GetTotalChannels();
+	int32 numChannels = fCueSheet->GetTotalChannels();
 	char numStr[10];
 	sprintf(numStr, "%d", numChannels);
 	
@@ -83,24 +83,24 @@ void TDeleteChannel::Init()
 	
 	// Create background view
 	bounds.OffsetTo(0,0);
-	m_BackView = new BView(bounds, "DeleteChannelView", B_FOLLOW_ALL, B_WILL_DRAW);
-	m_BackView->SetViewColor(kGrey);
-	AddChild(m_BackView);
+	fBackView = new BView(bounds, "DeleteChannelView", B_FOLLOW_ALL, B_WILL_DRAW);
+	fBackView->SetViewColor(kGrey);
+	AddChild(fBackView);
 	
 	// Delete Text Control
-	bounds = m_BackView->Bounds();
+	bounds = fBackView->Bounds();
 	BRect textBounds;
 	textBounds.Set(bounds.left+10, bounds.top+10, bounds.left+75, bounds.top+29);
-	m_DeleteChannelText = new TNumberTextControl(textBounds, "Delete", "DeleteChannel", "1", new BMessage(DELETE_THECHANNEL_MSG)); 
-	m_DeleteChannelText->SetDivider(29);
-	m_BackView->AddChild(m_DeleteChannelText); 
+	fDeleteChannelText = new TNumberTextControl(textBounds, "Delete", "DeleteChannel", "1", new BMessage(DELETE_THECHANNEL_MSG)); 
+	fDeleteChannelText->SetDivider(29);
+	fBackView->AddChild(fDeleteChannelText); 
 	
 	// After Text Control
-	bounds = m_BackView->Bounds();
+	bounds = fBackView->Bounds();
 	textBounds.Set(bounds.left+81, bounds.top+10, bounds.left+231, bounds.top+29);
-	m_AfterChannelText = new TNumberTextControl(textBounds, "Channel(s) After Channel", "AfterChannel", "1", new BMessage(DELETE_AFTER_CHANNEL_MSG)); 
-	m_AfterChannelText->SetDivider(114);
-	m_BackView->AddChild(m_AfterChannelText); 	
+	fAfterChannelText = new TNumberTextControl(textBounds, "Channel(s) After Channel", "AfterChannel", "1", new BMessage(DELETE_AFTER_CHANNEL_MSG)); 
+	fAfterChannelText->SetDivider(114);
+	fBackView->AddChild(fAfterChannelText); 	
 	
 	// OK and Cancel buttons
 	
@@ -112,13 +112,13 @@ void TDeleteChannel::Init()
 	const BRect okFrame( bounds.right - 90, bounds.bottom - 35, bounds.right - 30, bounds.bottom - 55);
 	
 	// Create the Cancel button
-	m_CancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	m_BackView->AddChild(m_CancelButton);
+	fCancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	fBackView->AddChild(fCancelButton);
 	
 	// Create the OK button
-	m_OKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	m_BackView->AddChild(m_OKButton);
-	m_OKButton->MakeDefault(true);
+	fOKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	fBackView->AddChild(fOKButton);
+	fOKButton->MakeDefault(true);
 		
 }
 
@@ -143,15 +143,15 @@ void TDeleteChannel::MessageReceived(BMessage* message)
 		case OK_MSG:
 			{
 				// Get total number of channels
-				int32 numChannels = m_CueSheet->GetTotalChannels();
+				int32 numChannels = fCueSheet->GetTotalChannels();
 				char numStr[10];
 				sprintf(numStr, "%d", numChannels);
 		
 				// Get total number of channels the user wants to delete
-				int32 deleteChannels = atoi(m_DeleteChannelText->Text());
+				int32 deleteChannels = atoi(fDeleteChannelText->Text());
 				
 				// Get the channel after which the insertion should occur			
-				int32 afterChannel = atoi(m_AfterChannelText->Text());
+				int32 afterChannel = atoi(fAfterChannelText->Text());
 								
 				// Send message to cue sheet view
 				if (afterChannel > 0 && afterChannel <= numChannels)
@@ -177,16 +177,16 @@ void TDeleteChannel::MessageReceived(BMessage* message)
 		case DELETE_THECHANNEL_MSG:
 			{     			
      			// Get total number of channels
-				int32 numChannels = m_CueSheet->GetTotalChannels();
+				int32 numChannels = fCueSheet->GetTotalChannels();
 				char numStr[10];
 				sprintf(numStr, "%d", numChannels);
 				
      			// 	If the after channel is greater than total channels,
      			//	correct the user input
-				int32 theNum = atoi( m_AfterChannelText->Text());
+				int32 theNum = atoi( fAfterChannelText->Text());
 				
 				if (theNum > numChannels)
-     				m_AfterChannelText->SetText(numStr);    
+     				fAfterChannelText->SetText(numStr);    
      		}
 			break;
 			
@@ -195,16 +195,16 @@ void TDeleteChannel::MessageReceived(BMessage* message)
 		case DELETE_AFTER_CHANNEL_MSG:
 			{     			
      			// Get total number of channels
-				int32 numChannels = m_CueSheet->GetTotalChannels();
+				int32 numChannels = fCueSheet->GetTotalChannels();
 				char numStr[10];
 				sprintf(numStr, "%d", numChannels);
 				
      			// 	If the after channel is greater than total channels,
      			//	correct the user input
-				int32 theNum = atoi( m_AfterChannelText->Text());
+				int32 theNum = atoi( fAfterChannelText->Text());
 				
 				if (theNum > numChannels)
-     				m_AfterChannelText->SetText(numStr);    
+     				fAfterChannelText->SetText(numStr);    
      		}
 			break;
 						

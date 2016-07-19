@@ -99,8 +99,8 @@ void TTransportPaletteView::Init()
 	onBitmap = GetTransportButton("RewindEndUp");
 		
    	// Create button
-   	m_StartButton = new TBitmapButton( buttonRect, "StartButton", offBitmap, onBitmap, this, new BMessage(START_BUTTON_MSG), true);
-	AddChild(m_StartButton);
+   	fStartButton = new TBitmapButton( buttonRect, "StartButton", offBitmap, onBitmap, this, new BMessage(START_BUTTON_MSG), true);
+	AddChild(fStartButton);
 	
 
     // Play Button
@@ -116,8 +116,8 @@ void TTransportPaletteView::Init()
 	onBitmap  = GetTransportButton("PlayDown");
 	
 	// Create button
-	m_PlayButton = new TBitmapButton(buttonRect, "PlayButton", offBitmap, onBitmap, this, new BMessage(PLAY_BUTTON_MSG), true);
-	AddChild(m_PlayButton);
+	fPlayButton = new TBitmapButton(buttonRect, "PlayButton", offBitmap, onBitmap, this, new BMessage(PLAY_BUTTON_MSG), true);
+	AddChild(fPlayButton);
 
 	
     // Pause Button
@@ -132,8 +132,8 @@ void TTransportPaletteView::Init()
 	onBitmap = GetTransportButton("PauseUp");
 	
 	// Create button
-	m_PauseButton = new TBitmapButton(buttonRect, "PauseButton", offBitmap, onBitmap, this, new BMessage(PAUSE_BUTTON_MSG), true);
-	AddChild(m_PauseButton);
+	fPauseButton = new TBitmapButton(buttonRect, "PauseButton", offBitmap, onBitmap, this, new BMessage(PAUSE_BUTTON_MSG), true);
+	AddChild(fPauseButton);
 		
 	// FF To End Button
     //
@@ -147,8 +147,8 @@ void TTransportPaletteView::Init()
 	onBitmap = GetTransportButton("FFEndUp");
 	
 	// Create button
-	m_EndButton = new TBitmapButton(buttonRect, "EndButton", offBitmap, onBitmap, this, new BMessage(END_BUTTON_MSG), true);
-	AddChild(m_EndButton);
+	fEndButton = new TBitmapButton(buttonRect, "EndButton", offBitmap, onBitmap, this, new BMessage(END_BUTTON_MSG), true);
+	AddChild(fEndButton);
 	
 
     //
@@ -170,8 +170,8 @@ void TTransportPaletteView::Init()
 	onBitmap 	= GetTransportButton("RewindUp");
 	
 	// Create button
-	m_RewindButton = new TBitmapButton(buttonRect, "RewindButton", offBitmap, onBitmap, this, new BMessage(REWIND_BUTTON_MSG), true);
-	AddChild(m_RewindButton);
+	fRewindButton = new TBitmapButton(buttonRect, "RewindButton", offBitmap, onBitmap, this, new BMessage(REWIND_BUTTON_MSG), true);
+	AddChild(fRewindButton);
 	
 	// FF Button
     //
@@ -185,8 +185,8 @@ void TTransportPaletteView::Init()
 	onBitmap 	= GetTransportButton("FFUp");
 
 	// Create button
-	m_FFButton = new TBitmapButton(buttonRect, "FFButton", offBitmap, onBitmap, this, new BMessage(FF_BUTTON_MSG), true);
-	AddChild(m_FFButton);
+	fFFButton = new TBitmapButton(buttonRect, "FFButton", offBitmap, onBitmap, this, new BMessage(FF_BUTTON_MSG), true);
+	AddChild(fFFButton);
 	
 	
 	//	
@@ -208,21 +208,21 @@ void TTransportPaletteView::Init()
 	textBounds.OffsetBy(52, 42);
 		
 	//	Create text
-	m_TransportText = new TTimeText(this, 0, textBounds, "TransportTextView", B_FOLLOW_LEFT);
-	AddChild(m_TransportText);
+	fTransportText = new TTimeText(this, 0, textBounds, "TransportTextView", B_FOLLOW_LEFT);
+	AddChild(fTransportText);
 	
 	BFont theFont(be_fixed_font);
 	theFont.SetSize(kTransportFontSize);
-	m_TransportText->SetFontAndColor(&theFont, B_FONT_ALL, kGreen);
+	fTransportText->SetFontAndColor(&theFont, B_FONT_ALL, kGreen);
 	
 	//	Fine tune text draw pt
 	BPoint drawPt;
-	m_TransportText->GetDrawPoint(&drawPt);
+	fTransportText->GetDrawPoint(&drawPt);
 	drawPt.y -= 4;
-	m_TransportText->SetDrawPoint(&drawPt);
+	fTransportText->SetDrawPoint(&drawPt);
 
-	m_TransportText->Show(); 
-	m_TransportText->Invalidate();
+	fTransportText->Show(); 
+	fTransportText->Invalidate();
 	
 	// Restore settings
 	SetFont(&saveFont);       	
@@ -239,9 +239,9 @@ void TTransportPaletteView::Draw(BRect updateRect)
 {
 	TBitmapView::Draw(updateRect);
 	
-	if (m_TransportText)
+	if (fTransportText)
 	{
-		m_TransportText->Draw(updateRect);
+		fTransportText->Draw(updateRect);
 	}		
 }
 
@@ -266,7 +266,7 @@ void TTransportPaletteView::MessageReceived(BMessage *message)
 				char text[12];
 				uint32 theTime = message->FindInt32("TheTime");
 				TimeToString(theTime, GetCurrentTimeFormat(), text, false);
-				m_TransportText->SetText(text);
+				fTransportText->SetText(text);
 			}
 			break;
 										

@@ -36,7 +36,7 @@ class TVideoSettingsSlider : public TMuseumSlider
 		
 	private:
 		//	Member Variables
-		//TVideoSettingsView *m_Parent;
+		//TVideoSettingsView *fParent;
 	
 	protected:
 	

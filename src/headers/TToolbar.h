@@ -48,12 +48,12 @@ class TToolbar: public BView
 		// Member Functions
 						
 		// Member variables
-		TCueSheetWindow		*m_Parent;
-		TPointerButton		*m_PointerButton;
-		TContractAllButton	*m_ContractAllButton;
-		TExpandAllButton	*m_ExpandAllButton;
-		TRazorButton		*m_RazorButton;
-		TZoomButton			*m_ZoomButton;
+		TCueSheetWindow		*fParent;
+		TPointerButton		*fPointerButton;
+		TContractAllButton	*fContractAllButton;
+		TExpandAllButton	*fExpandAllButton;
+		TRazorButton		*fRazorButton;
+		TZoomButton			*fZoomButton;
 };
 
 #endif

@@ -49,10 +49,10 @@ TAudioCue::TAudioCue(int16 id, TCueChannel *parent, BRect bounds, uint32 startTi
 		   TCueView(id, parent, bounds, startTime, "AudioCue")
 {	
 	// Init member variables 
-	m_Editor		= NULL;
-	m_PreviewBitmap	= NULL;
-	m_SoundFile		= NULL;
-	m_Sound			= NULL;
+	fEditor		= NULL;
+	fPreviewBitmap	= NULL;
+	fSoundFile		= NULL;
+	fSound			= NULL;
 				
 	// Load audio file
 	ShowPanel();
@@ -69,10 +69,10 @@ TAudioCue::TAudioCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect bo
 	TCueView(id, parent, bounds, startTime, "AudioCue")
 {	
 	// Init member variables 
-	m_Editor		= NULL;
-	m_PreviewBitmap	= NULL;
-	m_SoundFile		= NULL;
-	m_Sound			= NULL;
+	fEditor		= NULL;
+	fPreviewBitmap	= NULL;
+	fSoundFile		= NULL;
+	fSound			= NULL;
 		
 	//
 	// Attempt to load data file
@@ -133,23 +133,23 @@ TAudioCue::TAudioCue(BMessage *theMessage) : TCueView(theMessage)
 TAudioCue::~TAudioCue()
 {	
 	// Clean up old preview
-	if (m_PreviewBitmap)
+	if (fPreviewBitmap)
 	{		
-		delete m_PreviewBitmap;
+		delete fPreviewBitmap;
 	}
 				
 	// Close and free soundfile
-	if (m_SoundFile)
+	if (fSoundFile)
 	{
-		delete m_SoundFile;
+		delete fSoundFile;
 	}
 			
 	// Close editor
-	if ( m_EditorOpen && m_Editor)
+	if ( fEditorOpen && fEditor)
 	{
-		m_Editor->Hide();
-		m_Editor->Lock();
-		m_Editor->Quit();
+		fEditor->Hide();
+		fEditor->Lock();
+		fEditor->Quit();
 	}
 }
 
@@ -164,54 +164,54 @@ TAudioCue::~TAudioCue()
 void TAudioCue::Init()
 {		
 	// Set up member variables
-	m_UpdatePreview = true;
+	fUpdatePreview = true;
 		
 	// Set up default duration
-	m_Duration = GetDefaultLength();
+	fDuration = GetDefaultLength();
 		
 	// Adjust cue length based on duration
-	ResizeTo( TimeToPixels( (m_Duration), GetCurrentTimeFormat(), GetCurrentResolution()), Bounds().Height());
+	ResizeTo( TimeToPixels( (fDuration), GetCurrentTimeFormat(), GetCurrentResolution()), Bounds().Height());
 	
 	// Get sound attrubutes
 	InitSoundfileAttributes();
 
 	// Editor is closed
-	m_EditorOpen = false;
+	fEditorOpen = false;
 	
 	// Set up default settings	
-	m_IsLocked 			= false;	
-	m_IsSelected 		= false;	
-	m_LowColor 			= kWhite;	
-	m_HighColor 		= kBlack;	
-	m_IsPrepared 		= false;
-	m_IsPlaying 		= false;	
-	m_IsVisible			= false;	
-	m_HasDuration 		= true;					
-	m_CanLoop			= true;
-	m_CanStretch		= true;		
-	m_CanEnvelope		= true;
-	m_HasEditor 		= true;		
-	m_CanWindow			= true;
-	m_CanTransition		= false;
-	m_CanPath			= false;
+	fIsLocked 			= false;	
+	fIsSelected 		= false;	
+	fLowColor 			= kWhite;	
+	fHighColor 		= kBlack;	
+	fIsPrepared 		= false;
+	fIsPlaying 		= false;	
+	fIsVisible			= false;	
+	fHasDuration 		= true;					
+	fCanLoop			= true;
+	fCanStretch		= true;		
+	fCanEnvelope		= true;
+	fHasEditor 		= true;		
+	fCanWindow			= true;
+	fCanTransition		= false;
+	fCanPath			= false;
 		
 	// Default initialization
 	TCueView::Init();
 	
-	// Set cues m_File to point to the m_SoundFile
-	m_File = (BFile *)1;
+	// Set cues fFile to point to the fSoundFile
+	fFile = (BFile *)1;
 
 	//	Get pointer to CueSheet AudioEngine
-	m_AudioEngine = m_Channel->GetCueSheet()->GetParent()->GetAudioEngine();
+	fAudioEngine = fChannel->GetCueSheet()->GetParent()->GetAudioEngine();
 	
 	// Add the cue to the cue channel
-	if ( m_Channel->CanInsertCue(this, m_InsertTime, true))
+	if ( fChannel->CanInsertCue(this, fInsertTime, true))
 	{
-		m_Channel->InsertCue(this, m_InsertTime);		
+		fChannel->InsertCue(this, fInsertTime);		
 		Select();
 		
 		// We are now fully instantiated
-		m_IsInstantiated = true;
+		fIsInstantiated = true;
 	}
 }
 
@@ -283,7 +283,7 @@ void TAudioCue::Draw(BRect updateRect)
 	TCueView::Draw(updateRect);
 	
 	//	Determine drawing state	
-	switch (m_CueDisplayMode)
+	switch (fCueDisplayMode)
 	{
 		case kCueControls:
 			break;
@@ -291,27 +291,27 @@ void TAudioCue::Draw(BRect updateRect)
 		case kCueContents:
 			{
 				// Do we need to update the preview contents?
-				if (m_UpdatePreview)
+				if (fUpdatePreview)
 				{
 					// Clean up old preview
-					if (m_PreviewBitmap)
+					if (fPreviewBitmap)
 					{
-						m_PreviewBitmap->Lock();
-						BView *oldView = m_PreviewBitmap->ChildAt(0);
-						m_PreviewBitmap->RemoveChild(oldView);
+						fPreviewBitmap->Lock();
+						BView *oldView = fPreviewBitmap->ChildAt(0);
+						fPreviewBitmap->RemoveChild(oldView);
 						delete oldView;
-						delete m_PreviewBitmap;
+						delete fPreviewBitmap;
 					}
 							
 					// Create preview bitmap the size of the view
 					BRect bounds = Bounds();
 					bounds.right -= (kResizeZoneWidth+2)*2;
 					bounds.InsetBy(0, 1);
-					m_PreviewBitmap = new BBitmap( bounds, B_CMAP8, true);
+					fPreviewBitmap = new BBitmap( bounds, B_CMAP8, true);
 					
 					// Create preview view
 					BView *previewView = new BView(bounds, "PreviewView", B_FOLLOW_ALL, 0);
-					m_PreviewBitmap->AddChild(previewView);
+					fPreviewBitmap->AddChild(previewView);
 					
 					// Draw waveform into bitmap
 					CreatePreview(previewView);
@@ -319,12 +319,12 @@ void TAudioCue::Draw(BRect updateRect)
 					previewView->Sync();
 					previewView->Looper()->Unlock();
 								
-					m_UpdatePreview = false;
+					fUpdatePreview = false;
 				}
 				
 				// Draw update into view
-				BPoint drawPt(m_LResizeZone.right+2, 1);
-				DrawBitmap(m_PreviewBitmap, drawPt);
+				BPoint drawPt(fLResizeZone.right+2, 1);
+				DrawBitmap(fPreviewBitmap, drawPt);
 			}
 			break;
 									
@@ -364,14 +364,14 @@ void TAudioCue::CreatePreview(BView *previewView)
 	float viewMiddle = previewView->Bounds().Height() / 2;
 		
 	// Don't draw past end of file
-	if (m_SamplesPerPixel * (bounds.left + 1) < m_NumSamples)
+	if (fSamplesPerPixel * (bounds.left + 1) < fNumSamples)
 	{												
 		// Create buffer the size of the number of pixels per sample * the sounds frame size	
-		int32 bufferSize = m_SamplesPerPixel * m_SoundFile->FrameSize();	
+		int32 bufferSize = fSamplesPerPixel * fSoundFile->FrameSize();	
 		char *soundBuffer = (char *)malloc(bufferSize);
 		
 		// Rewind the buffer and seek to proper frame position
-		off_t seekVal = m_SoundFile->SeekToFrame( bounds.left * bufferSize);
+		off_t seekVal = fSoundFile->SeekToFrame( bounds.left * bufferSize);
 		if ( seekVal >= 0 )
 		{
 			// reset our horizontal position		
@@ -381,11 +381,11 @@ void TAudioCue::CreatePreview(BView *previewView)
 			for (int32 currentPos = bounds.left; currentPos < bounds.right; currentPos++) 
 			{
 				// Exit if we have passed the end of the file		
-				if ( m_SamplesPerPixel * (currentPos + 1) >= m_NumSamples)		
+				if ( fSamplesPerPixel * (currentPos + 1) >= fNumSamples)		
 					break;
 								
 				// Read data into buffer
-				status_t framesRead = m_SoundFile->ReadFrames(soundBuffer, bufferSize);
+				status_t framesRead = fSoundFile->ReadFrames(soundBuffer, bufferSize);
 				
 				// Go through each sample at this pixel and find the high and low points			
 				int32 low, high;
@@ -395,11 +395,11 @@ void TAudioCue::CreatePreview(BView *previewView)
 				// Make sure we have some data
 				if (framesRead > 0)
 				{									 			
-					if ( m_SampleSize == 1)
+					if ( fSampleSize == 1)
 					{
 						// Go through each sample at this pixel and find the high and low points				
 						char *ptr 	= (char *)soundBuffer;
-						int32 endPt =  m_SamplesPerPixel * m_NumChannels;
+						int32 endPt =  fSamplesPerPixel * fNumChannels;
 						
 						for (int32 index = 0; index < framesRead; index++) 
 						{
@@ -417,7 +417,7 @@ void TAudioCue::CreatePreview(BView *previewView)
 					else
 					{
 						int16 *ptr 	= (int16 *)soundBuffer;
-						int32 endPt =  m_SamplesPerPixel * m_NumChannels;
+						int32 endPt =  fSamplesPerPixel * fNumChannels;
 		
 						for (int32 index = 0; index < framesRead; index++) 
 						{
@@ -487,7 +487,7 @@ void TAudioCue::MessageReceived(BMessage *message)
 		case B_OK:
 		case B_REFS_RECEIVED:
 			{
-				m_Panel->Hide();
+				fPanel->Hide();
 				
 				// Attempt to load audio file
 				if ( LoadAudioFile(message) )
@@ -521,10 +521,10 @@ void TAudioCue::ResolutionChanged( int16 theFormat, int16 theResolution)
 	TCueView::ResolutionChanged(theFormat, theResolution);
 		
 	// Update samples per pixel
-	m_SamplesPerPixel = m_NumSamples / Bounds().Width() + 1;	
+	fSamplesPerPixel = fNumSamples / Bounds().Width() + 1;	
 		
 	// Create new preview
-	m_UpdatePreview = true;
+	fUpdatePreview = true;
 }
 
 
@@ -546,7 +546,7 @@ void TAudioCue::ShowPanel()
  		
  	// 	Create messenger to send panel messages to our channel.  We cannot send it to 
 	//  ourself as we are not part of the view heirarchy.
- 	BMessenger *messenger = new BMessenger( m_Channel,  ((MuseumApp *)be_app)->GetCueSheet());
+ 	BMessenger *messenger = new BMessenger( fChannel,  ((MuseumApp *)be_app)->GetCueSheet());
  		
  	// Create message containing pointer to ourself
 	BMessage *message = new BMessage();
@@ -556,7 +556,7 @@ void TAudioCue::ShowPanel()
  	TRefFilter *refFilter = new TRefFilter(kAudioFilter);
 
  	// Construct a file panel and set it to modal
- 	m_Panel = new BFilePanel( B_OPEN_PANEL, messenger, NULL, B_FILE_NODE, false, message, refFilter, true, true );
+ 	fPanel = new BFilePanel( B_OPEN_PANEL, messenger, NULL, B_FILE_NODE, false, message, refFilter, true, true );
  
  	// Set it to application's home directory
  	app_info appInfo;
@@ -564,11 +564,11 @@ void TAudioCue::ShowPanel()
  	BEntry entry(&appInfo.ref);
  	BDirectory parentDir;
  	entry.GetParent(&parentDir);
- 	m_Panel->SetPanelDirectory(&parentDir);
+ 	fPanel->SetPanelDirectory(&parentDir);
  		
 	// Center Panel
-	CenterWindow(m_Panel->Window());
-	m_Panel->Show();
+	CenterWindow(fPanel->Window());
+	fPanel->Show();
 	
 	// Clean up
 	delete messenger;
@@ -587,15 +587,15 @@ void TAudioCue::ShowPanel()
 
 void TAudioCue::HidePanel()
 {
-	if(m_Panel)
+	if(fPanel)
 	{
 		// Clean up any RefFilters
-		TRefFilter *theFilter = static_cast<TRefFilter *>( m_Panel->RefFilter() );
+		TRefFilter *theFilter = static_cast<TRefFilter *>( fPanel->RefFilter() );
 		if (theFilter)
 			delete theFilter;
 			
-		delete m_Panel;
-		m_Panel = NULL;
+		delete fPanel;
+		fPanel = NULL;
 	}
 	
 	TCueView::HidePanel();
@@ -611,17 +611,17 @@ void TAudioCue::HidePanel()
 
 bool TAudioCue::LoadAudioFile(BMessage *message)
 {
-	message->FindRef("refs", 0, &m_FileRef);
+	message->FindRef("refs", 0, &fFileRef);
 	
 	// Resolve possible symlink...
-	BEntry entry(&m_FileRef, true);
-	entry.GetRef(&m_FileRef);
+	BEntry entry(&fFileRef, true);
+	entry.GetRef(&fFileRef);
 	
 	// Create BFile from ref...
-	m_SoundFile = new BSoundFile(&m_FileRef, B_READ_ONLY);
+	fSoundFile = new BSoundFile(&fFileRef, B_READ_ONLY);
 		
 	// Determine the file type
-	switch( m_SoundFile->FileFormat() )
+	switch( fSoundFile->FileFormat() )
 	{
 		case B_AIFF_FILE:
 			break;
@@ -652,12 +652,12 @@ void TAudioCue::OpenEditor()
 {
 
 	// If editor is already open, bring it to front
-	if (m_EditorOpen)
+	if (fEditorOpen)
 	{
-		if (m_Editor)
+		if (fEditor)
 		{	
-			m_Editor->Show();
-			m_Editor->Activate(true);
+			fEditor->Show();
+			fEditor->Activate(true);
 		}
 	}
 	else
@@ -665,15 +665,15 @@ void TAudioCue::OpenEditor()
 				
 		float maxWidthHeight = kAudioEditorHeight+kAudioToolbarHeight+kTimelineHeight;
 		BRect bounds(50, 50, 300, 50+maxWidthHeight);
-		m_Editor = new TAudioEditor(bounds, &m_FileRef, this);
+		fEditor = new TAudioEditor(bounds, &fFileRef, this);
 	
-		if (m_Editor)
+		if (fEditor)
 		{
-			m_EditorOpen = true;
-			m_Editor->Show();
+			fEditorOpen = true;
+			fEditor->Show();
 		}
 		else
-			m_EditorOpen = false;
+			fEditorOpen = false;
 	}
 }
 
@@ -690,14 +690,14 @@ void TAudioCue::OpenEditor()
 
 void TAudioCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = GetAppIcons()->m_AudioUpIcon;
+	BBitmap *cueIcon = GetAppIcons()->fAudioUpIcon;
 
 	if (cueIcon)
 	{
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
 		area.OffsetBy(kResizeZoneWidth+5, 0);		
-		m_CueIcon = new TBitmapView(area, "CueIcon", cueIcon, false);
-		AddChild(m_CueIcon);		
+		fCueIcon = new TBitmapView(area, "CueIcon", cueIcon, false);
+		AddChild(fCueIcon);		
 	}
 
 	//	Pass up to parent
@@ -716,12 +716,12 @@ void TAudioCue::LoadCueIcon()
 int32 TAudioCue::GetDefaultLength()
 {
 	// Get total channels
-	int32 numChannels = m_SoundFile->CountChannels();	
+	int32 numChannels = fSoundFile->CountChannels();	
 					
 	// Determine number of samples
-	int32 numSamples = ( m_SoundFile->CountFrames() * m_SoundFile->FrameSize() ) / numChannels;
+	int32 numSamples = ( fSoundFile->CountFrames() * fSoundFile->FrameSize() ) / numChannels;
 
-	return ((double)numSamples * 1000) / m_SoundFile->SamplingRate();
+	return ((double)numSamples * 1000) / fSoundFile->SamplingRate();
 }
 
 //---------------------------------------------------------------------
@@ -733,16 +733,16 @@ int32 TAudioCue::GetDefaultLength()
 void TAudioCue::InitSoundfileAttributes()
 {
 	// Get total channels
-	m_NumChannels = m_SoundFile->CountChannels();	
+	fNumChannels = fSoundFile->CountChannels();	
 					
 	// Determine number of samples
-	m_NumSamples = ( m_SoundFile->CountFrames() * m_SoundFile->FrameSize() ) / m_NumChannels;
+	fNumSamples = ( fSoundFile->CountFrames() * fSoundFile->FrameSize() ) / fNumChannels;
 	
 	// Determine samples per pixel
-	m_SamplesPerPixel = m_NumSamples / Bounds().IntegerWidth() + 1;	
+	fSamplesPerPixel = fNumSamples / Bounds().IntegerWidth() + 1;	
 	
 	// Get sample size
-	m_SampleSize = m_SoundFile->SampleSize();	
+	fSampleSize = fSoundFile->SampleSize();	
 }
 
 
@@ -773,13 +773,13 @@ void TAudioCue::PlayCue(uint32 theTime)
 	TCueView::PlayCue(theTime);
 	
 	//	Create the BSound
-	m_Sound = new BSound(&m_FileRef);
-	if(m_Sound->InitCheck() == B_OK)
+	fSound = new BSound(&fFileRef);
+	if(fSound->InitCheck() == B_OK)
 	{
 		//	Start playback at time in microseconds
-		m_AudioEngine->SetVolume(1.0);
-		m_PlaybackID = m_AudioEngine->StartPlaying(m_Sound);
-		m_Sound->ReleaseRef();
+		fAudioEngine->SetVolume(1.0);
+		fPlaybackID = fAudioEngine->StartPlaying(fSound);
+		fSound->ReleaseRef();
 	}		
 }
 
@@ -795,13 +795,13 @@ void TAudioCue::StopCue(uint32 theTime)
 	TCueView::StopCue(theTime);
 	
 	//	Stop playback at time in microseconds
-	if (m_AudioEngine->IsPlaying(m_PlaybackID))
+	if (fAudioEngine->IsPlaying(fPlaybackID))
 	{
-		m_AudioEngine->StopPlaying(m_PlaybackID);
+		fAudioEngine->StopPlaying(fPlaybackID);
 		
 		//	Purge the file entry_ref to deallocate the BSound object
-		m_Sound->ReleaseRef();
-		m_Sound = NULL;				
+		fSound->ReleaseRef();
+		fSound = NULL;				
 	}		
 }
 
@@ -858,13 +858,13 @@ void TAudioCue::HandlePlayback(uint32 theTime)
 void TAudioCue::Contract(bool force)
 {
 	if (force)
-		m_IsExpanded = true;
+		fIsExpanded = true;
 		
 	// Do nothing if we are already contracted
-	if (m_IsExpanded == false)
+	if (fIsExpanded == false)
 		return;
 
-	m_UpdatePreview = true;
+	fUpdatePreview = true;
 	
 	TCueView::Contract();
 }
@@ -881,13 +881,13 @@ void TAudioCue::Expand(bool force)
 {
 	
 	if (force)
-		m_IsExpanded = false;
+		fIsExpanded = false;
 
 	// Do nothing if we are already contracted
-	if (m_IsExpanded == true)
+	if (fIsExpanded == true)
 		return;
 
-	m_UpdatePreview = true;
+	fUpdatePreview = true;
 	
 	TCueView::Expand();
 }

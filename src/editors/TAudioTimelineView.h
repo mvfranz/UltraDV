@@ -34,7 +34,7 @@ class TAudioTimelineView: public BView
 		void 	SetTimelineViewBounds(BRect bounds);
 		
 		// Accessor Functions
-		inline BRect GetIndicatorZone(){ return m_IndicatorZone; }
+		inline BRect GetIndicatorZone(){ return fIndicatorZone; }
 		
 		// Member Variables
 		
@@ -48,12 +48,12 @@ class TAudioTimelineView: public BView
 		void 	ClipIndicatorRect();
 						
 		// Member variables
-		TAudioEditor	*m_AudioEditor;
-		BRect			m_IndicatorZone;
-		BPoint			m_LastTick;
-		BBitmap			*m_Indicator;
-		//BBitmap		*m_Offscreen;
-		BRect			m_IndicatorRect;
+		TAudioEditor	*fAudioEditor;
+		BRect			fIndicatorZone;
+		BPoint			fLastTick;
+		BBitmap			*fIndicator;
+		//BBitmap		*fOffscreen;
+		BRect			fIndicatorRect;
 		
 };
 

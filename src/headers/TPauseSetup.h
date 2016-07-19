@@ -36,7 +36,7 @@ class TPauseSetup : public BWindow {
 	private:
 		void Init();
 		
-		TPauseSetup *m_Editor;
+		TPauseSetup *fEditor;
 
 //		Show();
 //		Activate();

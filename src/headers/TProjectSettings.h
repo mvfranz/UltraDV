@@ -38,20 +38,20 @@ class TProjectSettings : public BWindow
 		void 	GetDialogSettings();
 		
 		// Member Variables
-		TCueSheetTimeView 	*m_Parent;	
-		TCueSheetView 		*m_CueSheet;
+		TCueSheetTimeView 	*fParent;	
+		TCueSheetView 		*fCueSheet;
 		
-		BRadioButton		*m_RealTimeButton;
-		BRadioButton		*m_24FPSButton;
-		BRadioButton		*m_25FPSButton;
-		BRadioButton		*m_2997FPSButton;
-		BRadioButton		*m_30FPSButton;
+		BRadioButton		*fRealTimeButton;
+		BRadioButton		*f24FPSButton;
+		BRadioButton		*f25FPSButton;
+		BRadioButton		*f2997FPSButton;
+		BRadioButton		*f30FPSButton;
 		
-		BTextControl		*m_StartTime;
-		BTextControl		*m_Duration;
-		BTextControl		*m_EndTime;					
+		BTextControl		*fStartTime;
+		BTextControl		*fDuration;
+		BTextControl		*fEndTime;					
 		
-		int16				m_TimeFormat;
+		int16				fTimeFormat;
 };
 
 #endif

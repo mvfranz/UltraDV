@@ -44,22 +44,22 @@ class TTimeTextView : public BTextView
 		void UnlockText();
 		
 		// Member Variables
-		int32		m_Time;
+		int32		fTime;
 		
 	private:
 		
 		// Member variables
-		BHandler 	*m_Target;
-		int32 		m_MessageID;
-		float		m_TextSize;		// Default text point
-		BFont		m_Font;			// Default font
-		rgb_color	m_Color;		// Default color
-		BRect		m_HoursRect;
-		BRect		m_MinutesRect;
-		BRect		m_SecondsRect;
-		BRect		m_FramesRect;
-		int16		m_CurrentCell;
-		bool		m_IsLocked;
+		BHandler 	*fTarget;
+		int32 		fMessageID;
+		float		fTextSize;		// Default text point
+		BFont		fFont;			// Default font
+		rgb_color	fColor;		// Default color
+		BRect		fHoursRect;
+		BRect		fMinutesRect;
+		BRect		fSecondsRect;
+		BRect		fFramesRect;
+		int16		fCurrentCell;
+		bool		fIsLocked;
 		
 	
 	protected:

@@ -39,17 +39,17 @@
 TRazorButton::TRazorButton(TToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap = onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap = onBitmap;
 		
 	// Store target and handler
-	m_Handler = handler;
+	fHandler = handler;
 	
 	// Perform default initialization
 	Init();
@@ -64,10 +64,10 @@ TRazorButton::TRazorButton(TToolbar *parent, BRect bounds, const char *name, BBi
 TRazorButton::TRazorButton(BMessage *data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
- 	m_OffBitmap = GetIcon16FromResource("RazorDown");
-	m_OnBitmap  = GetIcon16FromResource("RazorUp");
+ 	fOffBitmap = GetIcon16FromResource("RazorDown");
+	fOnBitmap  = GetIcon16FromResource("RazorUp");
 	
 }
 
@@ -80,8 +80,8 @@ TRazorButton::TRazorButton(BMessage *data) : BView(data)
 TRazorButton::~TRazorButton()
 {
 	// Free data
-	delete m_OffBitmap;
-	delete m_OnBitmap;
+	delete fOffBitmap;
+	delete fOnBitmap;
 }
 
 
@@ -159,11 +159,11 @@ status_t TRazorButton::Archive(BMessage *data, bool deep) const
 
 void TRazorButton::Draw(BRect updateRect)
 {
-	// Draw proper bitmap state, if m_State is true, draw on bitmap
-	if (m_MouseDown)
-		DrawBitmap(m_OffBitmap, B_ORIGIN);		
+	// Draw proper bitmap state, if fState is true, draw on bitmap
+	if (fMouseDown)
+		DrawBitmap(fOffBitmap, B_ORIGIN);		
 	else
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
 
 
@@ -183,15 +183,15 @@ void TRazorButton::MouseDown(BPoint where)
 	
 	// Create and send message to channel and header		
 	//BMessage *message = new BMessage(CHANNEL_EXPAND_MSG);
-	//(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, m_Channel);
+	//(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
 	//delete message;
 		
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	if (m_MouseDown)
-		m_MouseDown = false; 
+	if (fMouseDown)
+		fMouseDown = false; 
 	else
-		m_MouseDown = true; 
+		fMouseDown = true; 
 		
 	Invalidate(); 
 }
@@ -207,10 +207,10 @@ void TRazorButton::MouseDown(BPoint where)
 
 void TRazorButton::AttachedToWindow()
 {			
-	if(m_Parent == NULL)
+	if(fParent == NULL)
 	{
-		m_Parent 	= (TToolbar *)Parent();
-		m_Handler 	= (TToolbar *)Parent();					
+		fParent 	= (TToolbar *)Parent();
+		fHandler 	= (TToolbar *)Parent();					
 	}
 	
 	//	Pass up to parent

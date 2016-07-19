@@ -42,9 +42,9 @@ const int16 kResizeZoneWidth 	= 5;
 
 TSorterBar::TSorterBar(BRect bounds, char *title, TSorterContainer *parent, SorterType theType) : BView(bounds, "SorterBarView", B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
 {
-	m_Parent 	= parent;
-	m_Title 	= title;
-	m_Type		= theType;
+	fParent 	= parent;
+	fTitle 	= title;
+	fType		= theType;
 		
 	// Perform default initialization
 	Init();
@@ -75,11 +75,11 @@ void TSorterBar::Init()
 	SetViewColor(B_TRANSPARENT_32_BIT);
 
 	// Set up resize rect
-	m_ResizeRect = Bounds();
-	m_ResizeRect.left = m_ResizeRect.right - kResizeZoneWidth;
+	fResizeRect = Bounds();
+	fResizeRect.left = fResizeRect.right - kResizeZoneWidth;
 	
 	// We are inactive
-	m_IsActive = false;
+	fIsActive = false;
 }
 
 
@@ -113,7 +113,7 @@ void TSorterBar::MessageReceived(BMessage *theMessage)
 		
 		case SORTER_REFS_MSG:
 			//refMessage->AddRef("FileRef", &theRef);
-			//m_IconSorter->MessageReceived(refMessage);	
+			//fIconSorter->MessageReceived(refMessage);	
 			break;
 
 		default:
@@ -162,7 +162,7 @@ void TSorterBar::Draw(BRect updateRect)
 	StrokeLine(endPt);
 	
 	// Right side divider
-	if ( m_Type != kIconSorter)
+	if ( fType != kIconSorter)
 	{
 		SetHighColor(kMediumGrey);
 		MovePenTo(Bounds().right-1, Bounds().top+1);
@@ -175,19 +175,19 @@ void TSorterBar::Draw(BRect updateRect)
 	}
 	
 	// Draw name if not an icon sorter
-	if ( m_Type != kIconSorter)
+	if ( fType != kIconSorter)
 	{
 		// Draw title left justified and centered vertically
 		SetHighColor(kBlack);	
 		BFont theFont(be_plain_font);
 		SetFont(&theFont);
 		SetFontSize(10);
-		float strWidth = theFont.StringWidth(m_Title);
+		float strWidth = theFont.StringWidth(fTitle);
 		BPoint textPt( Bounds().left + kSorterTextOffset, ( Bounds().Height()/2) + 3 );	
-		DrawString(m_Title, textPt);
+		DrawString(fTitle, textPt);
 		
 		// If we are active, underline title
-		if (m_IsActive)
+		if (fIsActive)
 		{
 			SetHighColor(kBlack);
 			BPoint startPt(textPt.x-1, textPt.y+1);
@@ -212,12 +212,12 @@ void TSorterBar::Draw(BRect updateRect)
 void TSorterBar::MouseDown(BPoint where)
 {
 	// Do nothing if IconSorter
-	if (m_Type == kIconSorter)
+	if (fType == kIconSorter)
 		return;
 		
 	// Check to see if mouseDown is in our resize zone.  If so resize and inform
 	// parent as we are doing so	
-	if ( m_ResizeRect.Contains(where))
+	if ( fResizeRect.Contains(where))
 	{
 		// Launch mouse tracking thread
 		StartMouseWatcher(this);
@@ -235,7 +235,7 @@ void TSorterBar::MouseDown(BPoint where)
 		
 		// Tell parent we were clicked
 		BMessage *theMessage = new BMessage(SORTER_CLICK_MSG);
-		m_Parent->MessageReceived(theMessage);
+		fParent->MessageReceived(theMessage);
 		delete theMessage;
 	}
 }
@@ -277,8 +277,8 @@ void TSorterBar::MouseMoved( BPoint where, uint32 code, const BMessage *a_messag
 void TSorterBar::FrameMoved(BPoint new_position)
 {
 	//  Update the resize zone
-	m_ResizeRect = Bounds();
-	m_ResizeRect.left = m_ResizeRect.right - kResizeZoneWidth;
+	fResizeRect = Bounds();
+	fResizeRect.left = fResizeRect.right - kResizeZoneWidth;
 }
 
 //---------------------------------------------------------------------
@@ -291,8 +291,8 @@ void TSorterBar::FrameMoved(BPoint new_position)
 void TSorterBar::FrameResized(float new_width, float new_height)
 {
 	//  Update the resize zone
-	m_ResizeRect = Bounds();
-	m_ResizeRect.left = m_ResizeRect.right - kResizeZoneWidth;
+	fResizeRect = Bounds();
+	fResizeRect.left = fResizeRect.right - kResizeZoneWidth;
 	
 	// Redraw
 	Draw(Bounds());
@@ -313,7 +313,7 @@ void TSorterBar::FrameResized(float new_width, float new_height)
 
 void TSorterBar::MakeActive(bool theState)
 {
-	m_IsActive = theState;
+	fIsActive = theState;
 	
 	// Force redraw	
 	Invalidate();

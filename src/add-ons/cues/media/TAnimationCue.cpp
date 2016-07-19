@@ -80,60 +80,60 @@ void TAnimationCue::Init()
 {	
 
 	// Set up default duration in milliseconds
-	m_Duration = 1000;
+	fDuration = 1000;
 
 	// Set up default settings
-	m_IsLocked 		= false;
+	fIsLocked 		= false;
 	
-	m_IsSelected 	= false;
+	fIsSelected 	= false;
 	
-	m_LowColor 		= kWhite;	
-	m_HighColor 	= kBlack;	
-	m_IsPrepared 	= false;
-	m_IsPlaying 	= false;
+	fLowColor 		= kWhite;	
+	fHighColor 	= kBlack;	
+	fIsPrepared 	= false;
+	fIsPlaying 	= false;
 	
-	m_HasDuration 	= true;
+	fHasDuration 	= true;
 	
 	/*
-	bool			m_CanStretch;			// true if cue is stretchable
-	bool			m_CanWindow;			// true if cue can window into file
-	bool			m_CanLoop;				// true if cue can loop
-	bool			m_CanEnvelope;			// true if cue can volume envelope
-	bool			m_HasDuration;			// true if cue has a duration
-	bool			m_IsVisible;			// true if cue is visual
-	bool			m_CanCrop;				// true if cue can visual crop
-	bool			m_CanTransition;		// true if cue can transition
-	bool			m_CanTransitionOut;		// true if cue can transition out
-	bool			m_CanPath;				// true if cue can path
-	bool			m_HasEditor;			// true if cue has internal editor
+	bool			fCanStretch;			// true if cue is stretchable
+	bool			fCanWindow;			// true if cue can window into file
+	bool			fCanLoop;				// true if cue can loop
+	bool			fCanEnvelope;			// true if cue can volume envelope
+	bool			fHasDuration;			// true if cue has a duration
+	bool			fIsVisible;			// true if cue is visual
+	bool			fCanCrop;				// true if cue can visual crop
+	bool			fCanTransition;		// true if cue can transition
+	bool			fCanTransitionOut;		// true if cue can transition out
+	bool			fCanPath;				// true if cue can path
+	bool			fHasEditor;			// true if cue has internal editor
 		
-	BRect			m_OriginalArea;			// Visual size of untouched image
-	BRect			m_Area;					// Total visual area (in stage coords).
-	BRect			m_CroppedArea;			// Crop area (in itsArea coords).
+	BRect			fOriginalArea;			// Visual size of untouched image
+	BRect			fArea;					// Total visual area (in stage coords).
+	BRect			fCroppedArea;			// Crop area (in itsArea coords).
 	*/
 	
 	// Default initialization
 	TVisualCue::Init();
 	
 	// Add the cue to the cue channel
-	if ( m_Channel->CanInsertCue(this, m_InsertTime, true))
+	if ( fChannel->CanInsertCue(this, fInsertTime, true))
 	{
-		m_Channel->InsertCue(this, m_InsertTime);		
+		fChannel->InsertCue(this, fInsertTime);		
 		Select();
 		
 		// We are now fully instantiated
-		m_IsInstantiated = true;
+		fIsInstantiated = true;
 	}
 	
 	// Set expanded status
-	if (m_Channel->IsExpanded())
+	if (fChannel->IsExpanded())
 	{
-		m_IsExpanded = false;
+		fIsExpanded = false;
 		Expand();
 	}
 	else
 	{
-		m_IsExpanded = true;
+		fIsExpanded = true;
 		Contract();		
 	}	
 }
@@ -326,14 +326,14 @@ void TAnimationCue::OpenEditor()
 
 void TAnimationCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = GetAppIcons()->m_AnimationUpIcon;
+	BBitmap *cueIcon = GetAppIcons()->fAnimationUpIcon;
 
 	if (cueIcon)
 	{
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
 		area.OffsetBy(kResizeZoneWidth+5, 0);		
-		m_CueIcon = new TBitmapView(area, "AnimationBitmap", cueIcon, false);
-		AddChild(m_CueIcon);		
+		fCueIcon = new TBitmapView(area, "AnimationBitmap", cueIcon, false);
+		AddChild(fCueIcon);		
 	}
 
 	//	Pass up to parent

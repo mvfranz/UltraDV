@@ -105,7 +105,7 @@ void TStageTextView::MouseDown(BPoint where)
 	}
 	
 	// Update the rects
-	m_ChannelCue->SetArea(Frame());
+	fChannelCue->SetArea(Frame());
 }
 
 

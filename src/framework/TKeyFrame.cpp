@@ -26,22 +26,22 @@
 //
 
 TKeyFrame::TKeyFrame() :
-	m_time(0),
-	m_state(0)
+	ftime(0),
+	fstate(0)
 {}
 
 TKeyFrame::~TKeyFrame()
 {
-	delete m_state;
+	delete fstate;
 }
 
 TKeyFrame::TKeyFrame(const TKeyFrame& rhs) :
-	m_time(rhs.m_time)
+	ftime(rhs.ftime)
 {
-	if (rhs.m_state)
-		m_state = rhs.m_state->NewCopy();
+	if (rhs.fstate)
+		fstate = rhs.fstate->NewCopy();
 	else
-		m_state = rhs.m_state;
+		fstate = rhs.fstate;
 }
 
 //---------------------------------------------------------------------
@@ -52,14 +52,14 @@ TKeyFrame::TKeyFrame(const TKeyFrame& rhs) :
 
 bool TKeyFrame::operator<(const TKeyFrame& rhs)
 {
-	if (m_time < rhs.m_time)
+	if (ftime < rhs.ftime)
 		return true;
-	else if (m_time == rhs.m_time && m_state->LessThan(rhs.m_state))
+	else if (ftime == rhs.ftime && fstate->LessThan(rhs.fstate))
 		return true;
 	return false;
 }
 
 bool TKeyFrame::operator==(const TKeyFrame& rhs)
 {
-	return m_time == rhs.m_time && m_state->Equals(rhs.m_state);
+	return ftime == rhs.ftime && fstate->Equals(rhs.fstate);
 }

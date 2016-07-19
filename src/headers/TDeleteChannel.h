@@ -35,14 +35,14 @@ class TDeleteChannel : public BWindow
 		virtual void			Init();		
 		
 		// Member Variables
-		TCueSheetView		*m_CueSheet;
-		BView				*m_BackView;
-		BStringView			*m_AddText;
-		TNumberTextControl 	*m_DeleteChannelText;
-		TNumberTextControl 	*m_AfterChannelText;
+		TCueSheetView		*fCueSheet;
+		BView				*fBackView;
+		BStringView			*fAddText;
+		TNumberTextControl 	*fDeleteChannelText;
+		TNumberTextControl 	*fAfterChannelText;
 		
-		BButton 			*m_OKButton;
-		BButton 			*m_CancelButton;
+		BButton 			*fOKButton;
+		BButton 			*fCancelButton;
 	
 };
 

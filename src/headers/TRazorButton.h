@@ -39,11 +39,11 @@ class TRazorButton: public BView
 		void 	Init();
 				
 		// Member variables
-		TToolbar	*m_Parent;
-		BHandler	*m_Handler;
-		bool		m_MouseDown;
-		BBitmap		*m_OffBitmap;
-		BBitmap		*m_OnBitmap;
+		TToolbar	*fParent;
+		BHandler	*fHandler;
+		bool		fMouseDown;
+		BBitmap		*fOffBitmap;
+		BBitmap		*fOnBitmap;
 		
 };		
 

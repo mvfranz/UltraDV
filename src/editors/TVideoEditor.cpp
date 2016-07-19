@@ -65,11 +65,11 @@ bool video_dac_writer(void* arg, char* buf, size_t count, void *header );
 TVideoEditor::TVideoEditor(entry_ref *theRef, TMovieCue *theCue, BMessage *message) : BWindow(message)
 {				
 	// Save file ref
-	m_FileRef = *theRef;
+	fFileRef = *theRef;
 	
 	// Set up member varibles
-	m_MovieCue 		= theCue;
-	m_FileSavePanel = NULL;
+	fMovieCue 		= theCue;
+	fFileSavePanel = NULL;
 		
 	// 	Set up indicator flag specifying whether or not this file is a new capture
 	//	or a previuosly saved file.  If a file originates from the /boot/var/tmp
@@ -85,10 +85,10 @@ TVideoEditor::TVideoEditor(entry_ref *theRef, TMovieCue *theCue, BMessage *messa
 	BEntry entry(path.Path()); 
 	entry.GetNodeRef(&nref);
 	         
-	if ( m_FileRef.directory == nref.node)
-		m_NewFile = true;
+	if ( fFileRef.directory == nref.node)
+		fNewFile = true;
 	else
-		m_NewFile = false;
+		fNewFile = false;
 		
 	Init();
 }
@@ -105,16 +105,16 @@ TVideoEditor::~TVideoEditor()
 	
 	// Exit from all threads
 	status_t status;
-	m_IsPlaying = false;
-	m_IsLooping = false;
+	fIsPlaying = false;
+	fIsLooping = false;
 	
 	// Clean up
-	if (m_DisplayBitmap)
-		delete m_DisplayBitmap;
+	if (fDisplayBitmap)
+		delete fDisplayBitmap;
 		
 	// Inform cue that we have been closed
-	if (m_MovieCue)
-		m_MovieCue->SetEditorOpen(false);
+	if (fMovieCue)
+		fMovieCue->SetEditorOpen(false);
 }
 
 
@@ -128,8 +128,8 @@ void TVideoEditor::Init()
 {		
 	
 	// Init member variables
-	m_IsPlaying = false;
-	m_IsLooping = false;
+	fIsPlaying = false;
+	fIsLooping = false;
 	
 	//
 	// Locate Views
@@ -142,61 +142,61 @@ void TVideoEditor::Init()
 	BRect mbarRect 	= Bounds();
 	mbarRect.bottom = mbarRect.top+kMenuHeight;
 	BMenuBar *mbar 	= new BMenuBar(mbarRect, "mbar");
-	m_EditorMenu 	= new TVideoEditorMenus(mbar, this);	
+	fEditorMenu 	= new TVideoEditorMenus(mbar, this);	
 	AddChild(mbar);
 	
 	// Backgrounds
-	m_BGView = (BView *)FindView("VideoEditorBGView");
-	m_ControlsBGView = (BView *)FindView("VideoEditorControlsBGView");
+	fBGView = (BView *)FindView("VideoEditorBGView");
+	fControlsBGView = (BView *)FindView("VideoEditorControlsBGView");
 
 	// VideoEditorView	
 	BView *editView = (BView *)FindView("VideoEditorView");
 	tmpMessage = new BMessage();
 	editView->Archive(tmpMessage, false);
-	m_EditorView = new TVideoEditorView(this, tmpMessage);
+	fEditorView = new TVideoEditorView(this, tmpMessage);
 	delete tmpMessage;
-	m_BGView->RemoveChild(editView);
+	fBGView->RemoveChild(editView);
 	delete editView;
-	m_BGView->AddChild(m_EditorView);
-	//m_EditorView->Show();
+	fBGView->AddChild(fEditorView);
+	//fEditorView->Show();
 	
 	// ControlView
 	BView *tmpControlsView = FindView("VideoEditorControlsView");
 	tmpMessage = new BMessage();
 	tmpControlsView->Archive(tmpMessage, false);	
-	m_ControlsView = new TVideoEditorControlsView(tmpMessage);
+	fControlsView = new TVideoEditorControlsView(tmpMessage);
 	delete tmpMessage;
-	m_ControlsBGView->AddChild(m_ControlsView);
-	m_ControlsView->Show();
+	fControlsBGView->AddChild(fControlsView);
+	fControlsView->Show();
 	
 	// TextViews
 	BView *inTextView = FindView("InTextView");
-	m_InText = new TVideoEditorText(NULL, (int32)NULL, inTextView->Frame(), "InTextView", B_FOLLOW_TOP|B_FOLLOW_LEFT); 
+	fInText = new TVideoEditorText(NULL, (int32)NULL, inTextView->Frame(), "InTextView", B_FOLLOW_TOP|B_FOLLOW_LEFT); 
 	retVal = tmpControlsView->RemoveChild(inTextView);
 	delete inTextView;
-	m_ControlsView->AddChild(m_InText);
-	m_InText->Show();
+	fControlsView->AddChild(fInText);
+	fInText->Show();
 	
 	BView *outTextView 	= FindView("OutTextView");
-	m_OutText 	= new TVideoEditorText(NULL, (int32)NULL, outTextView->Frame(), "OutTextView", B_FOLLOW_TOP|B_FOLLOW_LEFT); 
+	fOutText 	= new TVideoEditorText(NULL, (int32)NULL, outTextView->Frame(), "OutTextView", B_FOLLOW_TOP|B_FOLLOW_LEFT); 
 	tmpControlsView->RemoveChild(outTextView);
 	delete outTextView;
-	m_ControlsView->AddChild(m_OutText);
-	m_OutText->Show();
+	fControlsView->AddChild(fOutText);
+	fOutText->Show();
 	
 	BView *durTxtView = FindView("DurationTextView");
-	m_DurationText 	= new TVideoEditorText(NULL, (int32)NULL, durTxtView->Frame(), "DurationTextView", B_FOLLOW_TOP|B_FOLLOW_LEFT); 
+	fDurationText 	= new TVideoEditorText(NULL, (int32)NULL, durTxtView->Frame(), "DurationTextView", B_FOLLOW_TOP|B_FOLLOW_LEFT); 
 	tmpControlsView->RemoveChild(durTxtView);
 	delete durTxtView;
-	m_ControlsView->AddChild(m_DurationText);
-	m_DurationText->Show();
+	fControlsView->AddChild(fDurationText);
+	fDurationText->Show();
 	
 	BView *timeTextView = FindView("TimeTextView");
-	m_TimeText 	= new TVideoEditorText( NULL, (int32)NULL, timeTextView->Frame(), "TimeTextView", B_FOLLOW_TOP|B_FOLLOW_LEFT); 
+	fTimeText 	= new TVideoEditorText( NULL, (int32)NULL, timeTextView->Frame(), "TimeTextView", B_FOLLOW_TOP|B_FOLLOW_LEFT); 
 	tmpControlsView->RemoveChild(timeTextView);
 	delete timeTextView;
-	m_ControlsView->AddChild(m_TimeText);
-	m_TimeText->Show();
+	fControlsView->AddChild(fTimeText);
+	fTimeText->Show();
 	
 	// Buttons
 	SetupControlButtons();
@@ -205,43 +205,43 @@ void TVideoEditor::Init()
 	BView *shuttleView = FindView("ShuttleView");
 	tmpMessage = new BMessage();
 	shuttleView->Archive(tmpMessage, false);	
-	m_Shuttle = new TVideoEditorShuttle(this, tmpMessage);
+	fShuttle = new TVideoEditorShuttle(this, tmpMessage);
 	delete tmpMessage;
-	m_ControlsView->AddChild(m_Shuttle);
-	m_Shuttle->Show();
+	fControlsView->AddChild(fShuttle);
+	fShuttle->Show();
 	
 	// Create transport
 	BView *transportView = FindView("TransportView");
 	tmpMessage = new BMessage();
 	transportView->Archive(tmpMessage, false);	
-	m_Transport = new TVideoEditorTransport(this, tmpMessage);
+	fTransport = new TVideoEditorTransport(this, tmpMessage);
 	delete tmpMessage;
-	m_ControlsView->AddChild(m_Transport);
-	m_Transport->Show();
+	fControlsView->AddChild(fTransport);
+	fTransport->Show();
 
 	// Free temp views	
-	m_ControlsBGView->RemoveChild(tmpControlsView);
+	fControlsBGView->RemoveChild(tmpControlsView);
 	delete tmpControlsView;
 
 	//	Init tracking variables
-	m_CurrentVideoFrame = 0;
+	fCurrentVideoFrame = 0;
 
 	//	Get pointer to cue's RIFFReader
-	m_Reader = m_MovieCue->RIFFReader();
+	fReader = fMovieCue->RIFFReader();
 	
 	//	Get pointer to codecs
-	m_AudioCodec = m_MovieCue->AudioCodec();
-	m_VideoCodec = m_MovieCue->VideoCodec();
+	fAudioCodec = fMovieCue->AudioCodec();
+	fVideoCodec = fMovieCue->VideoCodec();
 
 	//	Get AVIHeader
-	AVIHeader *header = m_Reader->GetAVIHeader();
+	AVIHeader *header = fReader->GetAVIHeader();
 
 	//	Create offscreen
 	BRect movieRect( 0, 0, header->Width-1, header->Height-1); 
-	m_DisplayBitmap = new BBitmap(movieRect, B_RGB32);
+	fDisplayBitmap = new BBitmap(movieRect, B_RGB32);
 		
 	//	Load first frame into display	
-	AVIVideoFrame *theFrame = (AVIVideoFrame *)m_Reader->GetVideoFrameList()->ItemAt(m_CurrentVideoFrame);
+	AVIVideoFrame *theFrame = (AVIVideoFrame *)fReader->GetVideoFrameList()->ItemAt(fCurrentVideoFrame);
 	if (!theFrame)
 	{
 		printf("AVIProducer::INVALID FRAME!\n");
@@ -249,7 +249,7 @@ void TVideoEditor::Init()
 	}
 		
 	//	Decode frame
-	retVal = m_VideoCodec->DecodeFrame(theFrame, m_DisplayBitmap->Bits(), B_RGB32);
+	retVal = fVideoCodec->DecodeFrame(theFrame, fDisplayBitmap->Bits(), B_RGB32);
 	if (!retVal)
 	{
 		printf("AVIProducer::DecodeFrame FAILURE!\n");
@@ -263,8 +263,8 @@ void TVideoEditor::Init()
 	SetupTextItems();
 	
 	//	Show the video display
-	m_EditorView->Show();
-	m_EditorView->Invalidate();
+	fEditorView->Show();
+	fEditorView->Invalidate();
 	
 }
 
@@ -384,11 +384,11 @@ void TVideoEditor::MessageReceived(BMessage* message)
 
 void TVideoEditor::Play()
 {		
-	if (m_IsPlaying)
+	if (fIsPlaying)
 		return;
 		
 	// Set playback flag to true
-	m_IsPlaying = true;
+	fIsPlaying = true;
 		
 }	
 
@@ -404,10 +404,10 @@ void TVideoEditor::Stop()
 {		
 	status_t status;
 	
-	if (m_IsPlaying)
+	if (fIsPlaying)
 	{
 		// Set playback flag to true
-		m_IsPlaying = false;				
+		fIsPlaying = false;				
 	}
 }	
 
@@ -435,23 +435,23 @@ void TVideoEditor::StepBack()
 	Stop();
 		
 	// Protect against underflow
-	if (m_CurrentVideoFrame == 0)
+	if (fCurrentVideoFrame == 0)
 		return;
 				
 	// Decrement frame and redraw
-	m_CurrentVideoFrame--;
+	fCurrentVideoFrame--;
 		
 	// Load frame
-	if ( LoadAndDecode(m_CurrentVideoFrame, m_DisplayBitmap) == true)
+	if ( LoadAndDecode(fCurrentVideoFrame, fDisplayBitmap) == true)
 	{	
 		// Draw frame
 		Lock();
-		m_EditorView->DisplayFrame(m_DisplayBitmap);
-		m_EditorView->Sync();
+		fEditorView->DisplayFrame(fDisplayBitmap);
+		fEditorView->Sync();
 		Unlock();
 	
 		// Update time	
-		//m_Time->SetText(  );
+		//fTime->SetText(  );
 	}
 }	
 
@@ -468,26 +468,26 @@ void TVideoEditor::StepForward()
 	Stop();
 		
 	// Increment frame and redraw
-	m_CurrentVideoFrame++;
+	fCurrentVideoFrame++;
 	
 	// Protect against overflow
-	if ( m_CurrentVideoFrame >= m_Reader->VideoFrameCount())
+	if ( fCurrentVideoFrame >= fReader->VideoFrameCount())
 	{
-		m_CurrentVideoFrame--;
+		fCurrentVideoFrame--;
 		return;
 	}
 
 	// Load frame
-	if ( LoadAndDecode(m_CurrentVideoFrame, m_DisplayBitmap) == true)
+	if ( LoadAndDecode(fCurrentVideoFrame, fDisplayBitmap) == true)
 	{	
 		// Draw frame
 		Lock();
-		m_EditorView->DisplayFrame(m_DisplayBitmap);
-		m_EditorView->Sync();
+		fEditorView->DisplayFrame(fDisplayBitmap);
+		fEditorView->Sync();
 		Unlock();
 	
 		// Update time	
-		//m_Time->SetText(  );
+		//fTime->SetText(  );
 	}
 
 }	
@@ -504,22 +504,22 @@ void TVideoEditor::SeekStart()
 	Stop();
 	
 	// Set currentFrame to start
-	m_CurrentVideoFrame = 0;
-	m_CurrentTime 		= 0;
+	fCurrentVideoFrame = 0;
+	fCurrentTime 		= 0;
 	
 	// Load frame
-	if ( LoadAndDecode(m_CurrentVideoFrame, m_DisplayBitmap) == true)
+	if ( LoadAndDecode(fCurrentVideoFrame, fDisplayBitmap) == true)
 	{	
 		// Draw frame
 		Lock();
-		m_EditorView->DisplayFrame(m_DisplayBitmap);
-		m_EditorView->Sync();
+		fEditorView->DisplayFrame(fDisplayBitmap);
+		fEditorView->Sync();
 		Unlock();
 	
 		// Update time text
 		//char tmpText[13];
-		//TimeToString(m_CurrentTime, m_VideoChunk.frame_rate, tmpText, false);
-		//m_TimeText->SetText(tmpText);
+		//TimeToString(fCurrentTime, fVideoChunk.frame_rate, tmpText, false);
+		//fTimeText->SetText(tmpText);
 	}	
 }	
 
@@ -536,21 +536,21 @@ void TVideoEditor::SeekEnd()
 	Stop();
 	
 	//	Go to last frame
-	m_CurrentVideoFrame = m_Reader->VideoFrameCount() - 1;
+	fCurrentVideoFrame = fReader->VideoFrameCount() - 1;
 	
 	// Load frame
-	if ( LoadAndDecode(m_CurrentVideoFrame, m_DisplayBitmap) == true)
+	if ( LoadAndDecode(fCurrentVideoFrame, fDisplayBitmap) == true)
 	{	
 		// Draw frame
 		Lock();
-		m_EditorView->DisplayFrame(m_DisplayBitmap);
-		m_EditorView->Sync();
+		fEditorView->DisplayFrame(fDisplayBitmap);
+		fEditorView->Sync();
 		Unlock();
 	
 		// Update time text
 		//char tmpText[13];
-		//TimeToString(m_CurrentTime, m_VideoChunk.frame_rate, tmpText, false);
-		//m_TimeText->SetText(tmpText);
+		//TimeToString(fCurrentTime, fVideoChunk.frame_rate, tmpText, false);
+		//fTimeText->SetText(tmpText);
 	}	
 }	
 
@@ -563,10 +563,10 @@ void TVideoEditor::SeekEnd()
 
 void TVideoEditor::SetLooping()
 {		
-	if (m_IsLooping)
-		m_IsLooping = false;
+	if (fIsLooping)
+		fIsLooping = false;
 	else
-		m_IsLooping = true;
+		fIsLooping = true;
 }
 
 
@@ -611,30 +611,30 @@ void TVideoEditor::SetupTextItems()
 	smallFont.SetSize(10);
 	
 	//	Get AVIHeader
-	AVIHeader *header = m_Reader->GetAVIHeader();
+	AVIHeader *header = fReader->GetAVIHeader();
 	const uint32 mSecsPerFrame = header->TimeBetweenFrames / 1000;
 	const uint32 duration 	   = header->TotalNumberOfFrames * mSecsPerFrame;
 	
 	// In Time
-	m_InText->SetFontAndColor(&smallFont, 0, kGreen);
-	m_InText->SetText("00:00:00:00");
+	fInText->SetFontAndColor(&smallFont, 0, kGreen);
+	fInText->SetText("00:00:00:00");
 		
 	// Out Time
-	m_OutText->SetFontAndColor(&smallFont, 0, kGreen);
+	fOutText->SetFontAndColor(&smallFont, 0, kGreen);
 	TimeToString(duration, header->DataRate, tmpText, false);
-	m_OutText->SetText(tmpText);
+	fOutText->SetText(tmpText);
 	
 	// Duration
-	m_DurationText->SetFontAndColor(&smallFont, 0, kGreen);
+	fDurationText->SetFontAndColor(&smallFont, 0, kGreen);
 	TimeToString(duration, header->DataRate, tmpText, false);
-	m_DurationText->SetText(tmpText);
+	fDurationText->SetText(tmpText);
 	
 	// TimeText
 	BFont timeFont(be_bold_font);
 	timeFont.SetSize(20);
-	m_TimeText->SetFontAndColor(&timeFont, 0, kGreen);
-	TimeToString(m_CurrentTime, header->DataRate, tmpText, false);
-	m_TimeText->SetText("00:00:00:00");
+	fTimeText->SetFontAndColor(&timeFont, 0, kGreen);
+	TimeToString(fCurrentTime, header->DataRate, tmpText, false);
+	fTimeText->SetText("00:00:00:00");
 }
 
 //-------------------------------------------------------------------
@@ -654,110 +654,110 @@ void TVideoEditor::SetupControlButtons()
 	offBitmap = GetIcon16FromResource("VEInUp");
 	onBitmap  = GetIcon16FromResource("VEInDown");
 	BView *inButton = FindView("InButtonView");
-	m_InButton 	= new TBitmapButton(inButton->Frame(), "InButton", offBitmap, onBitmap, this, new BMessage(VE_IN_MSG));
+	fInButton 	= new TBitmapButton(inButton->Frame(), "InButton", offBitmap, onBitmap, this, new BMessage(VE_IN_MSG));
 	tmpControlsView->RemoveChild(inButton);
 	delete inButton;
-	m_ControlsView->AddChild(m_InButton);
+	fControlsView->AddChild(fInButton);
 	
 	// Out button
 	offBitmap = GetIcon16FromResource("VEOutUp");
 	onBitmap = GetIcon16FromResource("VEOutDown");
 	BView *outButton = FindView("OutButtonView");
-	m_OutButton 	= new TBitmapButton(outButton->Frame(), "OutButton", offBitmap, onBitmap, this, new BMessage(VE_OUT_MSG));
+	fOutButton 	= new TBitmapButton(outButton->Frame(), "OutButton", offBitmap, onBitmap, this, new BMessage(VE_OUT_MSG));
 	tmpControlsView->RemoveChild(outButton);
 	delete outButton;
-	m_ControlsView->AddChild(m_OutButton);
-	m_OutButton->Show();
+	fControlsView->AddChild(fOutButton);
+	fOutButton->Show();
 
 	// Volume button
 	offBitmap = GetIcon16FromResource("VEVolumeUp");
 	onBitmap = GetIcon16FromResource("VEVolumeDown");
 	BView *volButton = FindView("VolumeButtonView");
-	m_VolumeButton = new TBitmapButton(volButton->Frame(), "VolumeButton", offBitmap, onBitmap, this, new BMessage(VE_VOLUME_MSG));
+	fVolumeButton = new TBitmapButton(volButton->Frame(), "VolumeButton", offBitmap, onBitmap, this, new BMessage(VE_VOLUME_MSG));
 	tmpControlsView->RemoveChild(volButton);
 	delete volButton;
-	m_ControlsView->AddChild(m_VolumeButton);
-	m_VolumeButton->Show();	
+	fControlsView->AddChild(fVolumeButton);
+	fVolumeButton->Show();	
 	
 	// Start button
 	offBitmap = GetIcon16FromResource("VEStartUp");
 	onBitmap = GetIcon16FromResource("VEStartDown");
 	BView *startButton = FindView("StartButtonView");
-	m_StartButton = new TBitmapButton(startButton->Frame(), "StartButton", offBitmap, onBitmap, this, new BMessage(VE_START_MSG));
+	fStartButton = new TBitmapButton(startButton->Frame(), "StartButton", offBitmap, onBitmap, this, new BMessage(VE_START_MSG));
 	tmpControlsView->RemoveChild(startButton);
 	delete startButton;
-	m_ControlsView->AddChild(m_StartButton);
-	m_StartButton->Show();	
+	fControlsView->AddChild(fStartButton);
+	fStartButton->Show();	
 	
 	// End button
 	offBitmap = GetIcon16FromResource("VEEndUp");
 	onBitmap = GetIcon16FromResource("VEEndDown");
 	BView *endButton = FindView("EndButtonView");
-	m_EndButton = new TBitmapButton(endButton->Frame(), "EndButton", offBitmap, onBitmap, this, new BMessage(VE_END_MSG));
+	fEndButton = new TBitmapButton(endButton->Frame(), "EndButton", offBitmap, onBitmap, this, new BMessage(VE_END_MSG));
 	tmpControlsView->RemoveChild(endButton);
 	delete endButton;
-	m_ControlsView->AddChild(m_EndButton);
-	m_EndButton->Show();
+	fControlsView->AddChild(fEndButton);
+	fEndButton->Show();
 	
 	// FrameBack button
 	offBitmap = GetIcon16FromResource("VEStepBackUp");
 	onBitmap  = GetIcon16FromResource("VEStepBackDown");
 	BView *backButton = FindView("FrameBackButtonView");
-	m_FrameBackButton = new TBitmapButton(backButton->Frame(), "FrameBack", offBitmap, onBitmap, this, new BMessage(VE_FB_MSG));
+	fFrameBackButton = new TBitmapButton(backButton->Frame(), "FrameBack", offBitmap, onBitmap, this, new BMessage(VE_FB_MSG));
 	tmpControlsView->RemoveChild(backButton);
 	delete backButton;
-	m_ControlsView->AddChild(m_FrameBackButton);
-	m_FrameBackButton->Show();		
+	fControlsView->AddChild(fFrameBackButton);
+	fFrameBackButton->Show();		
 
 	// FrameForward button
 	offBitmap = GetIcon16FromResource("VEStepForwardUp");
 	onBitmap  = GetIcon16FromResource("VEStepForwardDown");
 	BView *forwardButton = FindView("FrameForwardButtonView");
-	m_FrameForwardButton = new TBitmapButton(forwardButton->Frame(), "FrameForward", offBitmap, onBitmap, this, new BMessage(VE_FF_MSG));
+	fFrameForwardButton = new TBitmapButton(forwardButton->Frame(), "FrameForward", offBitmap, onBitmap, this, new BMessage(VE_FF_MSG));
 	tmpControlsView->RemoveChild(forwardButton);
 	delete forwardButton;
-	m_ControlsView->AddChild(m_FrameForwardButton);
-	m_FrameForwardButton->Show();		
+	fControlsView->AddChild(fFrameForwardButton);
+	fFrameForwardButton->Show();		
 	
 	// Play button
 	offBitmap = GetIcon16FromResource("VEPlayUp");
 	onBitmap = GetIcon16FromResource("VEPlayDown");
 	BView *playButton = FindView("PlayButtonView");
-	m_PlayButton = new TBitmapButton(playButton->Frame(), "PlayButton", offBitmap, onBitmap, this, new BMessage(VE_PLAY_MSG));
+	fPlayButton = new TBitmapButton(playButton->Frame(), "PlayButton", offBitmap, onBitmap, this, new BMessage(VE_PLAY_MSG));
 	tmpControlsView->RemoveChild(playButton);
 	delete playButton;
-	m_ControlsView->AddChild(m_PlayButton);
-	m_PlayButton->Show();		
+	fControlsView->AddChild(fPlayButton);
+	fPlayButton->Show();		
 
 	// Loop button
 	offBitmap = GetIcon16FromResource("VELoopUp");
 	onBitmap = GetIcon16FromResource("VELoopDown");
 	BView *loopButton = FindView("LoopButtonView");
-	m_LoopButton = new TBitmapButton(loopButton->Frame(), "LoopButton", offBitmap, onBitmap, this, new BMessage(VE_LOOP_MSG));
+	fLoopButton = new TBitmapButton(loopButton->Frame(), "LoopButton", offBitmap, onBitmap, this, new BMessage(VE_LOOP_MSG));
 	tmpControlsView->RemoveChild(loopButton);
 	delete loopButton;
-	m_ControlsView->AddChild(m_LoopButton);
-	m_LoopButton->Show();		
+	fControlsView->AddChild(fLoopButton);
+	fLoopButton->Show();		
 
 	// Mark button
 	offBitmap = GetIcon16FromResource("VEMarkUp");
 	onBitmap = GetIcon16FromResource("VEMarkDown");
 	BView *markButton = FindView("MarkButtonView");
-	m_MarkButton = new TBitmapButton(markButton->Frame(), "MarkButton", offBitmap, onBitmap, this, new BMessage(VE_MARK_MSG));
+	fMarkButton = new TBitmapButton(markButton->Frame(), "MarkButton", offBitmap, onBitmap, this, new BMessage(VE_MARK_MSG));
 	tmpControlsView->RemoveChild(markButton);
 	delete markButton;
-	m_ControlsView->AddChild(m_MarkButton);
-	m_MarkButton->Show();		
+	fControlsView->AddChild(fMarkButton);
+	fMarkButton->Show();		
 
 	// Goto button
 	offBitmap = GetIcon16FromResource("VEJumpUp");
 	onBitmap = GetIcon16FromResource("VEJumpDown");
 	BView *gotoButton = FindView("GotoButtonView");
-	m_GotoButton = new TBitmapButton(gotoButton->Frame(), "GotoButton", offBitmap, onBitmap, this, new BMessage(VE_JUMP_MSG));
+	fGotoButton = new TBitmapButton(gotoButton->Frame(), "GotoButton", offBitmap, onBitmap, this, new BMessage(VE_JUMP_MSG));
 	tmpControlsView->RemoveChild(gotoButton);
 	delete gotoButton;
-	m_ControlsView->AddChild(m_GotoButton);
-	m_GotoButton->Show();	
+	fControlsView->AddChild(fGotoButton);
+	fGotoButton->Show();	
 	
 	// Detach button
 	//offBitmap = GetIcon16FromResource("VEDetachUp");
@@ -765,11 +765,11 @@ void TVideoEditor::SetupControlButtons()
 	offBitmap = GetIcon16FromResource("VEJumpUp");
 	onBitmap = GetIcon16FromResource("VEJumpDown");
 	BView *detachButton = FindView("DetachButtonView");
-	m_DetachButton = new TBitmapButton(detachButton->Frame(), "DetachButton", offBitmap, onBitmap, this, new BMessage(VE_DETACH_MSG));
+	fDetachButton = new TBitmapButton(detachButton->Frame(), "DetachButton", offBitmap, onBitmap, this, new BMessage(VE_DETACH_MSG));
 	tmpControlsView->RemoveChild(detachButton);
 	delete detachButton;
-	m_ControlsView->AddChild(m_DetachButton);
-	m_DetachButton->Show();	
+	fControlsView->AddChild(fDetachButton);
+	fDetachButton->Show();	
 }
 
 //---------------------------------------------------------------------
@@ -799,7 +799,7 @@ bool TVideoEditor::QuitRequested()
 {
 	bool retVal = true;
 	
-	if ( m_NewFile == true)
+	if ( fNewFile == true)
 	{
 		// Ask user to save file
 		int32 userVal = SaveAlert();
@@ -821,7 +821,7 @@ bool TVideoEditor::QuitRequested()
 			case 2:
 				{
 					ShowFileSavePanel();
-					m_IsClosing = true;
+					fIsClosing = true;
 					retVal = false;
 				}
 				break;
@@ -832,10 +832,10 @@ bool TVideoEditor::QuitRequested()
 	}
 	
 	// Delete temp file if necessary
-	if (retVal && m_NewFile)
+	if (retVal && fNewFile)
 	{
 		// Delete temp file
-		BEntry entry(&m_FileRef);
+		BEntry entry(&fFileRef);
 		
 		if ( entry.InitCheck() == B_OK)
 			entry.Remove();		
@@ -865,15 +865,15 @@ void TVideoEditor::ShowFileSavePanel()
 	// 	If the panel has already been constructed, show the panel
 	// 	Otherwise, create the panel.  We do need to reset it's messenger to 
 	//	point at the correct window
-	if (m_FileSavePanel)
+	if (fFileSavePanel)
 	{
-		m_FileSavePanel->SetTarget(messenger);
-		m_FileSavePanel->Show();
+		fFileSavePanel->SetTarget(messenger);
+		fFileSavePanel->Show();
 	}
 	else
 	{
 		// Construct a file panel and set it to modal
-	 	m_FileSavePanel = new BFilePanel( B_SAVE_PANEL, &messenger, NULL, B_FILE_NODE, false, NULL, NULL, true, true );
+	 	fFileSavePanel = new BFilePanel( B_SAVE_PANEL, &messenger, NULL, B_FILE_NODE, false, NULL, NULL, true, true );
 	 
 	 	// Set it to application's home directory
 	 	app_info appInfo;
@@ -881,13 +881,13 @@ void TVideoEditor::ShowFileSavePanel()
 	 	BEntry entry(&appInfo.ref);
 	 	BDirectory parentDir;
 	 	entry.GetParent(&parentDir);
-	 	m_FileSavePanel->SetPanelDirectory(&parentDir);
+	 	fFileSavePanel->SetPanelDirectory(&parentDir);
 	 		
 		// Center Panel
-		CenterWindow(m_FileSavePanel->Window());
+		CenterWindow(fFileSavePanel->Window());
 	}
 			
-	m_FileSavePanel->Show();
+	fFileSavePanel->Show();
 }
 
 
@@ -935,7 +935,7 @@ void TVideoEditor::Save(BMessage *message)
 	BDirectory saveDir(&theRef);
 													
 	// Save out data
-	if (m_NewFile == false)
+	if (fNewFile == false)
 	{
 		// Create the file.
 		BFile *saveFile = new BFile();
@@ -952,10 +952,10 @@ void TVideoEditor::Save(BMessage *message)
 		info.SetType("video/raw");
 		
 		// Set icons
-		BBitmap *smallIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_MovieIcon16;
+		BBitmap *smallIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fMovieIcon16;
 		info.SetIcon( smallIcon, B_MINI_ICON);	
 		
-		BBitmap *largeIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_MovieIcon32;	
+		BBitmap *largeIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fMovieIcon32;	
 		info.SetIcon( largeIcon, B_LARGE_ICON);
 		
 		// Clean up 
@@ -966,7 +966,7 @@ void TVideoEditor::Save(BMessage *message)
 	else
 	{	
 		// Get entry of source data
-		BEntry entry(&m_FileRef);
+		BEntry entry(&fFileRef);
 		
 		// Move data from temp to new location
 		BDirectory moveDir(&theRef);
@@ -976,7 +976,7 @@ void TVideoEditor::Save(BMessage *message)
 		entry.Rename(theString); 
 		
 		// Update newFile flag
-		m_NewFile = false;
+		fNewFile = false;
 		
 		// Get updated entry_ref
 		entry_ref newRef;
@@ -994,7 +994,7 @@ void TVideoEditor::Save(BMessage *message)
 	// Set window title to new filename
 	SetTitle(theString);
 	
-	if (m_IsClosing)
+	if (fIsClosing)
 		Quit();
 }
 
@@ -1090,7 +1090,7 @@ bool TVideoEditor::LoadAndDecode(uint32 frameNum, BBitmap *bitmap)
 	bool retVal = false;
 	
 	//	Load first frame into display	
-	AVIVideoFrame *theFrame = (AVIVideoFrame *)m_Reader->GetVideoFrameList()->ItemAt(frameNum);
+	AVIVideoFrame *theFrame = (AVIVideoFrame *)fReader->GetVideoFrameList()->ItemAt(frameNum);
 	if (!theFrame)
 	{
 		printf("AVIProducer::INVALID FRAME! %d\n", frameNum);
@@ -1098,7 +1098,7 @@ bool TVideoEditor::LoadAndDecode(uint32 frameNum, BBitmap *bitmap)
 	}
 		
 	//	Decode frame
-	retVal = m_VideoCodec->DecodeFrame(theFrame, m_DisplayBitmap->Bits(), B_RGB32);
+	retVal = fVideoCodec->DecodeFrame(theFrame, fDisplayBitmap->Bits(), B_RGB32);
 	if (!retVal)
 	{
 		printf("AVIProducer::DecodeFrame FAILURE!\n");

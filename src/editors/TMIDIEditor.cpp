@@ -38,7 +38,7 @@
 TMIDIEditor::TMIDIEditor(BRect bounds, TMIDICue *theCue): BWindow(bounds, "MIDI Mixer", B_DOCUMENT_WINDOW, 0,0)
 {
 	// Save cue
-	m_MIDICue = theCue;
+	fMIDICue = theCue;
 
 	// Default initialization
 	Init();
@@ -55,7 +55,7 @@ TMIDIEditor::~TMIDIEditor()
 {
 	
 	// Inform cue that we have been closed
-	m_MIDICue->SetEditorOpen(false);	
+	fMIDICue->SetEditorOpen(false);	
 	
 }
 
@@ -74,24 +74,24 @@ void TMIDIEditor::Init()
 	BRect bgRect   	= Bounds();
 	bgRect.right   	-= (B_V_SCROLL_BAR_WIDTH+1);
 	bgRect.bottom  	-= (B_H_SCROLL_BAR_HEIGHT+1);
-	m_Background = new BView(bgRect, "Container", B_FOLLOW_ALL, B_WILL_DRAW);
-	AddChild(m_Background);
-	m_Background->SetViewColor(kWhite);
-	m_Background->Show();	
+	fBackground = new BView(bgRect, "Container", B_FOLLOW_ALL, B_WILL_DRAW);
+	AddChild(fBackground);
+	fBackground->SetViewColor(kWhite);
+	fBackground->Show();	
 	
 				
 	// Create editor view.
 	BRect audioBounds = Bounds();
 	audioBounds.bottom -= -(B_H_SCROLL_BAR_HEIGHT+1); 
-	m_EditorView = new TMIDIEditorView(this, audioBounds);
-	m_Background->AddChild(m_EditorView);
-	m_EditorView->Show();
+	fEditorView = new TMIDIEditorView(this, audioBounds);
+	fBackground->AddChild(fEditorView);
+	fEditorView->Show();
 	
 	// Horizontal	Scroll Bar
 	BRect scrollRect = Bounds();
 	scrollRect.Set(scrollRect.left, scrollRect.bottom-B_H_SCROLL_BAR_HEIGHT, scrollRect.right-B_V_SCROLL_BAR_WIDTH, scrollRect.bottom);
-	m_HScroll = new BScrollBar(scrollRect, "HMIDIScroll", m_Background, 0, 1000, B_HORIZONTAL);
-	AddChild(m_HScroll);	
+	fHScroll = new BScrollBar(scrollRect, "HMIDIScroll", fBackground, 0, 1000, B_HORIZONTAL);
+	AddChild(fHScroll);	
 		
 	// Set minimum window size and then open it to max	
 	SetSizeLimits(100, 600, 500, 500);
@@ -101,7 +101,7 @@ void TMIDIEditor::Init()
 	//
 	
 	// Get number of tracks in General MIDI file
-	//m_TotalTracks = m_MIDICue->GetMidiFile()->GetTotalTracks();
+	//fTotalTracks = fMIDICue->GetMidiFile()->GetTotalTracks();
 	
 	// Test: Get name of track 1...
 	

@@ -48,9 +48,9 @@ class TMovieCue : public TVisualCue
 		// Member Variables
 				
 		// Accessor Functions		
-		inline TRIFFReader *RIFFReader(){ return m_Reader; }
-		inline TAudioCodec *AudioCodec(){ return m_AudioCodec; }
-		inline TVideoCodec *VideoCodec(){ return m_VideoCodec; }
+		inline TRIFFReader *RIFFReader(){ return fReader; }
+		inline TAudioCodec *AudioCodec(){ return fAudioCodec; }
+		inline TVideoCodec *VideoCodec(){ return fVideoCodec; }
 		
 	private:
 		// Member Functions
@@ -75,15 +75,15 @@ class TMovieCue : public TVisualCue
 		void		HidePanel();
 				
 		// Member Variables
-		TVideoEditor 	*m_Editor;
+		TVideoEditor 	*fEditor;
 		
-		TRIFFReader		*m_Reader;		
-		TAudioCodec		*m_AudioCodec;
-		TVideoCodec		*m_VideoCodec;
+		TRIFFReader		*fReader;		
+		TAudioCodec		*fAudioCodec;
+		TVideoCodec		*fVideoCodec;
 		
-		uint32			m_MSecsPerFrame;
-		uint32 			m_CurrentVideoFrame;
-		uint32 			m_CurrentAudioFrame;
+		uint32			fMSecsPerFrame;
+		uint32 			fCurrentVideoFrame;
+		uint32 			fCurrentAudioFrame;
 };
 
 #endif

@@ -53,5 +53,5 @@ TCueSheetPrefs::~TCueSheetPrefs()
 
 void TCueSheetPrefs::Init()
 {
-	m_Timescale = B_TIMECODE_24;
+	fTimescale = B_TIMECODE_24;
 }

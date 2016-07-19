@@ -25,7 +25,7 @@ class	TTransitionMenuLooper : public BLooper
 		void	MessageReceived(BMessage *message);
 		
 	private:
-		TVisualCue	*m_CueView;
+		TVisualCue	*fCueView;
 	
 	protected:
 

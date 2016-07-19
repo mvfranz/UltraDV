@@ -40,17 +40,17 @@
 TStageToolButton::TStageToolButton(TStageToolsView *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BMessage *message) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Save message
-	m_Message = message;
+	fMessage = message;
 	
 	// button state flag
-	m_ButtonState = false;
+	fButtonState = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap 	= onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap 	= onBitmap;
 			
 	// Perform default initialization
 	Init();
@@ -66,11 +66,11 @@ TStageToolButton::TStageToolButton(TStageToolsView *parent, BRect bounds, const 
 TStageToolButton::~TStageToolButton()
 {
 	//	Free data
-	delete m_OffBitmap;
-	delete m_OnBitmap;
+	delete fOffBitmap;
+	delete fOnBitmap;
 	
 	//	Free message
-	delete m_Message;
+	delete fMessage;
 }
 
 
@@ -96,11 +96,11 @@ void TStageToolButton::Init()
 
 void TStageToolButton::Draw(BRect updateRect)
 {	
-	// Draw proper bitmap state, if m_State is true, draw on bitmap
-	if (m_ButtonState)
-		DrawBitmap(m_OffBitmap, B_ORIGIN);		
+	// Draw proper bitmap state, if fState is true, draw on bitmap
+	if (fButtonState)
+		DrawBitmap(fOffBitmap, B_ORIGIN);		
 	else
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
 
 
@@ -114,16 +114,16 @@ void TStageToolButton::Draw(BRect updateRect)
 
 void TStageToolButton::MouseDown(BPoint where)
 {
-	if (m_ButtonState == false)
+	if (fButtonState == false)
 		DoClick();
 		
 	/*
 	//	Only accept mouse down if button is not selected.  This is a tool palette button
 	//	and only one button can be depressed at a time
-	if (m_ButtonState == false)
+	if (fButtonState == false)
 	{	
-		m_Parent->Window()->PostMessage(m_Message, NULL);
-		m_ButtonState = true; 
+		fParent->Window()->PostMessage(fMessage, NULL);
+		fButtonState = true; 
 	}
 		
 	// Force redraw to reflect new state
@@ -144,7 +144,7 @@ void TStageToolButton::DoClick()
 	
 	// We will always be in the up position when we start.
 	// First, set the button state to down and force a redraw...
-	m_ButtonState = true;	
+	fButtonState = true;	
 	
 	BRect 	bounds = Bounds();
 	Draw(bounds); 
@@ -162,18 +162,18 @@ void TStageToolButton::DoClick()
 		{
 			if ( bounds.Contains(mousePt) )
 			{
-				if (m_ButtonState == false)
+				if (fButtonState == false)
 				{
-					m_ButtonState = true;
+					fButtonState = true;
 					Draw(bounds);	
 				}
 			}
 			// If the mouse is outside of the button bounds draw it's up state
 			else 
 			{
-				if (m_ButtonState == true)
+				if (fButtonState == true)
 				{
-					m_ButtonState = false;
+					fButtonState = false;
 					Draw(bounds);
 				}
 			} 			
@@ -186,10 +186,10 @@ void TStageToolButton::DoClick()
 	if ( bounds.Contains(mousePt) )
 	{
 		//	Send message to parent and stage
-		m_Parent->Window()->PostMessage(m_Message, m_Parent);
+		fParent->Window()->PostMessage(fMessage, fParent);
 		
 		MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
-		theApp->GetCueSheet()->GetStage()->PostMessage(m_Message, theApp->GetCueSheet()->GetStage()->GetStageView());
+		theApp->GetCueSheet()->GetStage()->PostMessage(fMessage, theApp->GetCueSheet()->GetStage()->GetStageView());
 				
 		//	Draw
 		Draw(bounds);
@@ -210,17 +210,17 @@ void TStageToolButton::Activate(bool theState)
 {	
 	if (theState == true)
 	{
-		if (m_ButtonState == false)
+		if (fButtonState == false)
 		{
-			m_ButtonState = true;
+			fButtonState = true;
 			Invalidate();
 		}
 	}
 	else
 	{
-		if (m_ButtonState == true)
+		if (fButtonState == true)
 		{
-			m_ButtonState = false;
+			fButtonState = false;
 			Invalidate();
 		}
 	}			

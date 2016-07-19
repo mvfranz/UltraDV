@@ -98,12 +98,12 @@ void TActionCuePaletteView::Init()
 	cueRect.Set( kCueButtonOffset, kCueButtonOffset, kCueIconWidth+kCueButtonOffset-1, kCueIconHeight+kCueButtonOffset-1);
 	
 	// Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->m_ActionIcon;
-// ABH	onBitmap 	= GetAppIcons()->m_ActionIcon;
+// ABH	offBitmap 	= GetAppIcons()->fActionIcon;
+// ABH	onBitmap 	= GetAppIcons()->fActionIcon;
 	
 	// Create button
-	m_ActionCueButton = new TCueButton(cueRect, "ActionCue", offBitmap, onBitmap, new BMessage(ACTION_CUE_MSG), kActionCue);
-	AddChild(m_ActionCueButton);
+	fActionCueButton = new TCueButton(cueRect, "ActionCue", offBitmap, onBitmap, new BMessage(ACTION_CUE_MSG), kActionCue);
+	AddChild(fActionCueButton);
          
     
     //
@@ -114,12 +114,12 @@ void TActionCuePaletteView::Init()
 	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
 
     // Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->m_ButtonIcon;
-// ABH	onBitmap 	= GetAppIcons()->m_ButtonIcon;
+// ABH	offBitmap 	= GetAppIcons()->fButtonIcon;
+// ABH	onBitmap 	= GetAppIcons()->fButtonIcon;
 
 	// Create button
-	m_ButtonCueButton = new TCueButton(cueRect, "ButtonCue", offBitmap, onBitmap, new BMessage(BUTTON_CUE_MSG), kButtonCue);
-	AddChild(m_ButtonCueButton);
+	fButtonCueButton = new TCueButton(cueRect, "ButtonCue", offBitmap, onBitmap, new BMessage(BUTTON_CUE_MSG), kButtonCue);
+	AddChild(fButtonCueButton);
 	
 	
     // CD Cue
@@ -130,12 +130,12 @@ void TActionCuePaletteView::Init()
 	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
 	
     // Load bitmaps
-//ABH 	offBitmap 	= GetAppIcons()->m_CDIcon;
-//ABH	onBitmap 	= GetAppIcons()->m_CDIcon;
+//ABH 	offBitmap 	= GetAppIcons()->fCDIcon;
+//ABH	onBitmap 	= GetAppIcons()->fCDIcon;
 
 	// Create button
-	m_CDCueButton = new TCueButton(cueRect, "CDCue", offBitmap, onBitmap, new BMessage(CD_CUE_MSG), kCDCue);
-	AddChild(m_CDCueButton);
+	fCDCueButton = new TCueButton(cueRect, "CDCue", offBitmap, onBitmap, new BMessage(CD_CUE_MSG), kCDCue);
+	AddChild(fCDCueButton);
 	
     
     // Control Cue
@@ -146,12 +146,12 @@ void TActionCuePaletteView::Init()
 	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
     
     // Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->m_ControlIcon;
-// ABH	onBitmap 	= GetAppIcons()->m_ControlIcon;
+// ABH	offBitmap 	= GetAppIcons()->fControlIcon;
+// ABH	onBitmap 	= GetAppIcons()->fControlIcon;
 
 	// Create button
-	m_ControlCueButton = new TCueButton(cueRect, "ControlCue", offBitmap, onBitmap, new BMessage(CONTROL_CUE_MSG), kControlCue);
-	AddChild(m_ControlCueButton);
+	fControlCueButton = new TCueButton(cueRect, "ControlCue", offBitmap, onBitmap, new BMessage(CONTROL_CUE_MSG), kControlCue);
+	AddChild(fControlCueButton);
 	
     
     // Marker Cue
@@ -162,12 +162,12 @@ void TActionCuePaletteView::Init()
 	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
 				 
     // Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->m_MarkerIcon;
-// ABH	onBitmap 	= GetAppIcons()->m_MarkerIcon;
+// ABH	offBitmap 	= GetAppIcons()->fMarkerIcon;
+// ABH	onBitmap 	= GetAppIcons()->fMarkerIcon;
 	
 	// Create button
-	m_MarkerCueButton = new TCueButton(cueRect, "", offBitmap, onBitmap, new BMessage(MARKER_CUE_MSG), kMarkerCue);
-	AddChild(m_MarkerCueButton);
+	fMarkerCueButton = new TCueButton(cueRect, "", offBitmap, onBitmap, new BMessage(MARKER_CUE_MSG), kMarkerCue);
+	AddChild(fMarkerCueButton);
 	
 	
     
@@ -179,12 +179,12 @@ void TActionCuePaletteView::Init()
 	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
 				 			 
     // Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->m_PauseIcon;
-// ABH	onBitmap 	= GetAppIcons()->m_PauseIcon;
+// ABH	offBitmap 	= GetAppIcons()->fPauseIcon;
+// ABH	onBitmap 	= GetAppIcons()->fPauseIcon;
 	
 	// Create button
-	m_PauseCueButton = new TCueButton(cueRect, "PauseCue", offBitmap, onBitmap, new BMessage(PAUSE_CUE_MSG), kPauseCue);
-	AddChild(m_PauseCueButton);
+	fPauseCueButton = new TCueButton(cueRect, "PauseCue", offBitmap, onBitmap, new BMessage(PAUSE_CUE_MSG), kPauseCue);
+	AddChild(fPauseCueButton);
 
 
     // Video Cue
@@ -195,12 +195,12 @@ void TActionCuePaletteView::Init()
 	cueRect.bottom 	= cueRect.top+kCueIconHeight-1;
 
 	// Load bitmaps
-// ABH	offBitmap 	= GetAppIcons()->m_VideoIcon;
-// ABH	onBitmap 	= GetAppIcons()->m_VideoIcon;
+// ABH	offBitmap 	= GetAppIcons()->fVideoIcon;
+// ABH	onBitmap 	= GetAppIcons()->fVideoIcon;
 	
 	// Create button
-	m_VideoCueButton = new TCueButton(cueRect, "VideoCue", offBitmap, onBitmap, new BMessage(VIDEO_CUE_MSG), kVideoCue);
-	AddChild(m_VideoCueButton);
+	fVideoCueButton = new TCueButton(cueRect, "VideoCue", offBitmap, onBitmap, new BMessage(VIDEO_CUE_MSG), kVideoCue);
+	AddChild(fVideoCueButton);
        	
 }
 

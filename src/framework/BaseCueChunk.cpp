@@ -15,9 +15,9 @@
 BaseCueChunk::BaseCueChunk(){
 	printf("BaseCueChunk: call to incomplete constructor - fix me\n");
 	CueID = 0; // fix this
-	// should set m_CueID ??
+	// should set fCueID ??
 	startTime = 0; // fix this
-	// m_startTime ??S
+	// fstartTime ??S
 	
 }
 

@@ -19,7 +19,7 @@ class PackerApp : public BApplication
 	
 		void ReadyToRun();
 		
-		BTranslatorRoster *m_TranslationRoster;
+		BTranslatorRoster *fTranslationRoster;
 		
 	private:
 		// Member Functions

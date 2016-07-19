@@ -36,17 +36,17 @@
 TAudioPlayButton::TAudioPlayButton(TAudioEditorToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Save handler
-	m_Handler = handler;
+	fHandler = handler;
 	
 	// button state flag
-	m_ButtonState = false;
+	fButtonState = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap = onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap = onBitmap;
 			
 	// Perform default initialization
 	Init();
@@ -62,8 +62,8 @@ TAudioPlayButton::TAudioPlayButton(TAudioEditorToolbar *parent, BRect bounds, co
 TAudioPlayButton::~TAudioPlayButton()
 {
 	// Free data
-	delete m_OffBitmap;
-	delete m_OnBitmap;
+	delete fOffBitmap;
+	delete fOnBitmap;
 }
 
 
@@ -89,11 +89,11 @@ void TAudioPlayButton::Init()
 
 void TAudioPlayButton::Draw(BRect updateRect)
 {
-	// Draw proper bitmap state, if m_State is true, draw on bitmap
-	if (m_ButtonState)
-		DrawBitmap(m_OffBitmap, B_ORIGIN);		
+	// Draw proper bitmap state, if fState is true, draw on bitmap
+	if (fButtonState)
+		DrawBitmap(fOffBitmap, B_ORIGIN);		
 	else
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
 
 
@@ -110,23 +110,23 @@ void TAudioPlayButton::MouseDown(BPoint where)
 	
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	if (m_ButtonState)
+	if (fButtonState)
 	{
 		// Tell sound to stop
 		BMessage *message = new BMessage(AUDIO_STOP_BUTTON_MSG);
-		//m_Parent->Window()->PostMessage(message, m_Handler);
-		m_Parent->Window()->PostMessage(message, NULL);
+		//fParent->Window()->PostMessage(message, fHandler);
+		fParent->Window()->PostMessage(message, NULL);
 		delete message;				
-		m_ButtonState = false; 
+		fButtonState = false; 
 	}
 	else
 	{	
 		// Tell sound to play
 		BMessage *message = new BMessage(AUDIO_PLAY_BUTTON_MSG);
-		//m_Parent->Window()->PostMessage(message, m_Handler);
-		m_Parent->Window()->PostMessage(message, NULL);
+		//fParent->Window()->PostMessage(message, fHandler);
+		fParent->Window()->PostMessage(message, NULL);
 		delete message;
-		m_ButtonState = true; 
+		fButtonState = true; 
 	}
 		
 	// Force redraw to reflect new state

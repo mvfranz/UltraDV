@@ -78,14 +78,14 @@ void TStageTools::Init()
 	// Create status bar
 	BRect bounds = Bounds();
 	bounds.top = bounds.bottom - kStatusRectHeight;
-	m_ToolsStatusView = new TStatusView(bounds);
-	AddChild(m_ToolsStatusView);
+	fToolsStatusView = new TStatusView(bounds);
+	AddChild(fToolsStatusView);
 	
 	// Create StageToolsView and add it to the window
 	BRect viewRect = Bounds();
 	viewRect.bottom -= kStatusRectHeight;
-	m_ToolsView = new TStageToolsView(this, viewRect);
-	AddChild(m_ToolsView);
+	fToolsView = new TStageToolsView(this, viewRect);
+	AddChild(fToolsView);
 	
 	Unlock();
 }
@@ -108,7 +108,7 @@ void TStageTools::MessageReceived(BMessage* message)
 		// 	Update the status bar to diplay name of media cue
 		//	Inform stage that current tool has been changed
 		case UPDATE_STATUS_TEXT_MSG:
-			m_ToolsStatusView->MessageReceived(message);			
+			fToolsStatusView->MessageReceived(message);			
 			static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->PostMessage(message, static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->GetStageView());
 			break;
 			

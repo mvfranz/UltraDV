@@ -573,7 +573,7 @@ void AdjustScrollBar( BScrollBar *scrollBar, float page, float pageStep, float t
 
 	scrollBar->SetSteps(pageStep, pageStep*4);
 	
-	//m_VScroll->SetSteps(kTickSpacing, kTickSpacing*4);		
+	//fVScroll->SetSteps(kTickSpacing, kTickSpacing*4);		
 }
 
 
@@ -584,7 +584,7 @@ void AdjustScrollBar( BScrollBar *scrollBar, float page, float pageStep, float t
 //	Duration
 //---------------------------------------------------------------------
 //
-//	Return m_Duration
+//	Return fDuration
 //
 
 uint32 Duration()
@@ -605,7 +605,7 @@ uint32 Duration()
 //	GetCurrentTime
 //---------------------------------------------------------------------
 //
-//	Return m_CurrentTime 
+//	Return fCurrentTime 
 //
 
 uint32 GetCurrentTime()
@@ -626,7 +626,7 @@ uint32 GetCurrentTime()
 //	StartTime
 //---------------------------------------------------------------------
 //
-//	Return m_StartTime 
+//	Return fStartTime 
 //
 
 uint32 StartTime()
@@ -647,7 +647,7 @@ uint32 StartTime()
 //	GetCurrentResolution
 //---------------------------------------------------------------------
 //
-//	Return m_Resolution 
+//	Return fResolution 
 //
 
 short GetCurrentResolution()
@@ -670,7 +670,7 @@ short GetCurrentResolution()
 //	GetCurrentTimeFormat
 //---------------------------------------------------------------------
 //
-//	Return m_TimeFormat 
+//	Return fTimeFormat 
 //
 
 timecode_type GetCurrentTimeFormat()

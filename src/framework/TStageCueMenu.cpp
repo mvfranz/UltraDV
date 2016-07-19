@@ -40,7 +40,7 @@ TStageCueMenu::TStageCueMenu(TVisualCue *target) : BPopUpMenu("StageCueMenu")
 {
 	BMessage *menuMessage;
 		
-	m_Cue = target;
+	fCue = target;
 	
 	// Create "Lock/Unlock"	
 	menuMessage = new BMessage(STAGE_CUE_LOCK_MSG);
@@ -251,7 +251,7 @@ void TStageCueMenu::UpdateMenu()
 	BMenu *subMenu = drawingItem->Submenu();
 		
 	// Set drawing mode check
-	switch( m_Cue->GetDrawingMode())
+	switch( fCue->GetDrawingMode())
 	{
 		case B_OP_COPY:
 			theItem = subMenu->FindItem(STAGE_CUE_COPY_MSG);

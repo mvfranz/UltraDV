@@ -46,12 +46,12 @@ class TRecordPrefsDialog: public BWindow
 		
 	
 		// Member Variables
-		BView 			*m_PrefsView;		
-		BRadioButton	*m_CaptureToDiskRadio;
-		BRadioButton	*m_CaptureToRAMRadio;		
-		BMenuField		*m_SwapDiskMenu;
-		BCheckBox 		*m_PostCompressCheckbox;
-		BList 			m_VolumeList;
+		BView 			*fPrefsView;		
+		BRadioButton	*fCaptureToDiskRadio;
+		BRadioButton	*fCaptureToRAMRadio;		
+		BMenuField		*fSwapDiskMenu;
+		BCheckBox 		*fPostCompressCheckbox;
+		BList 			fVolumeList;
 						
 		
 };

@@ -38,15 +38,15 @@ class TNumberBevelTextView : public BView
 		void MessageReceived(BMessage *message);
 		
 		// Accessor Functions
-		inline TNumberTextView *TextView(){ return m_TextView; }
+		inline TNumberTextView *TextView(){ return fTextView; }
 		
 	private:
 		// Member Functions
 		void Init();
 		
 		// Member variables
-		TNumberTextView	*m_TextView;
-		BMessage		*m_Message;
+		TNumberTextView	*fTextView;
+		BMessage		*fMessage;
 	
 	protected:
 	

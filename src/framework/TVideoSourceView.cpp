@@ -43,7 +43,7 @@
 
 TVideoSourceView::TVideoSourceView(TVideoSettingsTabView *parent, BMessage *archive) : BView(archive)
 {
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Perform default initialization
 	Init();
@@ -74,19 +74,19 @@ void TVideoSourceView::Init()
 	SetViewColor(kBeGrey);
 
 	// Locate view items
-	m_DigitizerMenuField 	= (BMenuField *)FindView("DigitizerMenuField");
-	m_InputMenuField 		= (BMenuField *)FindView("InputMenuField");
-	m_FormatMenuField 		= (BMenuField *)FindView("FormatMenuField");
+	fDigitizerMenuField 	= (BMenuField *)FindView("DigitizerMenuField");
+	fInputMenuField 		= (BMenuField *)FindView("InputMenuField");
+	fFormatMenuField 		= (BMenuField *)FindView("FormatMenuField");
 		
-	m_GammaCorrectionCheckBox 	= (BCheckBox *)FindView("GammaCorrectionCheckBox");	
-	m_LumaCoringCheckBox 		= (BCheckBox *)FindView("LumaCoringCheckBox");
-	m_ErrorDiffusionCheckBox 	= (BCheckBox *)FindView("ErrorDiffusionCheckBox");	
-	m_LumaCombCheckBox 			= (BCheckBox *)FindView("LumaCombCheckBox");
-	m_ChromaCombCheckBox 		= (BCheckBox *)FindView("ChromaCombCheckBox");
+	fGammaCorrectionCheckBox 	= (BCheckBox *)FindView("GammaCorrectionCheckBox");	
+	fLumaCoringCheckBox 		= (BCheckBox *)FindView("LumaCoringCheckBox");
+	fErrorDiffusionCheckBox 	= (BCheckBox *)FindView("ErrorDiffusionCheckBox");	
+	fLumaCombCheckBox 			= (BCheckBox *)FindView("LumaCombCheckBox");
+	fChromaCombCheckBox 		= (BCheckBox *)FindView("ChromaCombCheckBox");
 	
 	//	Set up  preview view bounds.  Use attached view in BBox to set up size
 	BView *previewView	= (BView *)FindView("PreviewView");
-	m_PreviewRect = previewView->Frame();
+	fPreviewRect = previewView->Frame();
 	RemoveChild(previewView);
 	delete previewView;
 
@@ -94,27 +94,27 @@ void TVideoSourceView::Init()
 	//	Setup checkboxes
 	//
 	
-	VideoFilters theFilters = m_Parent->GetParent()->GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Filters;
+	VideoFilters theFilters = fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoSourceSettings.fFilters;
 	
-	m_GammaCorrectionCheckBox->SetMessage(new BMessage(msg_gamma));
-	m_GammaCorrectionCheckBox->SetTarget(m_Parent->GetParent());
-	m_GammaCorrectionCheckBox->SetValue(theFilters.m_GammaCorrection);
+	fGammaCorrectionCheckBox->SetMessage(new BMessage(msg_gamma));
+	fGammaCorrectionCheckBox->SetTarget(fParent->GetParent());
+	fGammaCorrectionCheckBox->SetValue(theFilters.fGammaCorrection);
 	
-	m_LumaCoringCheckBox->SetMessage(new BMessage(msg_coring));
-	m_LumaCoringCheckBox->SetTarget(m_Parent->GetParent());
-	m_LumaCoringCheckBox->SetValue(theFilters.m_LumaCoring);
+	fLumaCoringCheckBox->SetMessage(new BMessage(msg_coring));
+	fLumaCoringCheckBox->SetTarget(fParent->GetParent());
+	fLumaCoringCheckBox->SetValue(theFilters.fLumaCoring);
 
-	m_ErrorDiffusionCheckBox->SetMessage(new BMessage(msg_error_diffusion));
-	m_ErrorDiffusionCheckBox->SetTarget(m_Parent->GetParent());
-	m_ErrorDiffusionCheckBox->SetValue(theFilters.m_ErrorDiffusion);
+	fErrorDiffusionCheckBox->SetMessage(new BMessage(msg_error_diffusion));
+	fErrorDiffusionCheckBox->SetTarget(fParent->GetParent());
+	fErrorDiffusionCheckBox->SetValue(theFilters.fErrorDiffusion);
 	
-	m_LumaCombCheckBox->SetMessage(new BMessage(msg_luma_comb));
-	m_LumaCombCheckBox->SetTarget(m_Parent->GetParent());
-	m_LumaCombCheckBox->SetValue(theFilters.m_LumaComb);
+	fLumaCombCheckBox->SetMessage(new BMessage(msg_luma_comb));
+	fLumaCombCheckBox->SetTarget(fParent->GetParent());
+	fLumaCombCheckBox->SetValue(theFilters.fLumaComb);
 	
-	m_ChromaCombCheckBox->SetMessage(new BMessage(msg_chroma_comb));
-	m_ChromaCombCheckBox->SetTarget(m_Parent->GetParent());
-	m_ChromaCombCheckBox->SetValue(theFilters.m_ChromaComb);
+	fChromaCombCheckBox->SetMessage(new BMessage(msg_chroma_comb));
+	fChromaCombCheckBox->SetTarget(fParent->GetParent());
+	fChromaCombCheckBox->SetValue(theFilters.fChromaComb);
 	  
 			
 	//
@@ -124,7 +124,7 @@ void TVideoSourceView::Init()
 	BMenu *theMenu;
 	
 	// Setup Digitizer menu
-	theMenu = m_DigitizerMenuField->Menu();
+	theMenu = fDigitizerMenuField->Menu();
 	if (theMenu)
 	{
 		//theMenu->AddItem(new BMenuItem("Autodetect",new BMessage(msg_auto_brand)));
@@ -151,14 +151,14 @@ void TVideoSourceView::Init()
 		theMenu->AddItem(new BMenuItem("Osprey 100",new BMessage(msg_osprey_100)));
 			
 		// Set the target 
-		theMenu->SetTargetForItems(m_Parent->GetParent());
+		theMenu->SetTargetForItems(fParent->GetParent());
 		
 		// Select the proper item
 		SetDigitizerMenuItem(theMenu);		
 	}
 	
 	// Setup Input menu
-	theMenu = m_InputMenuField->Menu();
+	theMenu = fInputMenuField->Menu();
 	if (theMenu)
 	{
 		theMenu->AddItem(new BMenuItem("Composite",new BMessage(msg_composite)));
@@ -168,7 +168,7 @@ void TVideoSourceView::Init()
 		theMenu->AddItem(new BMenuItem("Camera",new BMessage(msg_camera)));
 		
 		// Set the target 
-		theMenu->SetTargetForItems(m_Parent->GetParent());
+		theMenu->SetTargetForItems(fParent->GetParent());
 
 		// Select the proper item
 		SetInputMenuItem(theMenu);		
@@ -176,7 +176,7 @@ void TVideoSourceView::Init()
 	}
 	
 	// Setup Format menu
-	theMenu = m_FormatMenuField->Menu();
+	theMenu = fFormatMenuField->Menu();
 	if (theMenu)
 	{
 		theMenu->AddItem(new BMenuItem("NTSC-M",new BMessage(msg_ntsc_m)));
@@ -186,7 +186,7 @@ void TVideoSourceView::Init()
 		theMenu->AddItem(new BMenuItem("SECAM",new BMessage(msg_secam)));
 	
 		// Set the target 
-		theMenu->SetTargetForItems(m_Parent->GetParent());
+		theMenu->SetTargetForItems(fParent->GetParent());
 
 		// Select the first item
 		theMenu->FindItem(msg_ntsc_m)->SetMarked(true);	
@@ -212,12 +212,12 @@ void TVideoSourceView::AttachedToWindow()
 	
 	//	Get pointer to previewView and attach to BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");		
-	TVideoPreviewView *previewView = m_Parent->GetParent()->GetParent()->PreviewView();	
+	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();	
 	if (previewView)
 	{
 		previewBox->AddChild(previewView);
-		previewView->MoveTo(m_PreviewRect.left, m_PreviewRect.top);
-		previewView->ResizeTo(m_PreviewRect.Width(), m_PreviewRect.Height());
+		previewView->MoveTo(fPreviewRect.left, fPreviewRect.top);
+		previewView->ResizeTo(fPreviewRect.Width(), fPreviewRect.Height());
 		previewView->Show();
 	}
 	
@@ -237,7 +237,7 @@ void TVideoSourceView::DetachedFromWindow()
 	
 	//	Get pointer to previewView and detach from BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");		
-	TVideoPreviewView *previewView = m_Parent->GetParent()->GetParent()->PreviewView();	
+	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();	
 	if (previewView)
 	{
 		previewView->Hide();
@@ -263,20 +263,20 @@ void TVideoSourceView::ApplyToSource()
 {			
 	BMenu *theMenu;
 	
-	theMenu = m_DigitizerMenuField->Menu();
-	m_Parent->GetParent()->MessageReceived(theMenu->FindMarked()->Message());
+	theMenu = fDigitizerMenuField->Menu();
+	fParent->GetParent()->MessageReceived(theMenu->FindMarked()->Message());
 	
-	theMenu = m_InputMenuField->Menu();
-	m_Parent->GetParent()->MessageReceived(theMenu->FindMarked()->Message());	
+	theMenu = fInputMenuField->Menu();
+	fParent->GetParent()->MessageReceived(theMenu->FindMarked()->Message());	
 	
-	theMenu = m_FormatMenuField->Menu();
-	m_Parent->GetParent()->MessageReceived(theMenu->FindMarked()->Message());
+	theMenu = fFormatMenuField->Menu();
+	fParent->GetParent()->MessageReceived(theMenu->FindMarked()->Message());
 	
-	m_GammaCorrectionCheckBox->Invoke();
-	m_LumaCoringCheckBox->Invoke();
-	m_ErrorDiffusionCheckBox->Invoke();
-	m_LumaCombCheckBox->Invoke();
-	m_ChromaCombCheckBox->Invoke();
+	fGammaCorrectionCheckBox->Invoke();
+	fLumaCoringCheckBox->Invoke();
+	fErrorDiffusionCheckBox->Invoke();
+	fLumaCombCheckBox->Invoke();
+	fChromaCombCheckBox->Invoke();
 }
 
 
@@ -294,7 +294,7 @@ void TVideoSourceView::ApplyToSource()
 void TVideoSourceView::SetDigitizerMenuItem(BMenu *theMenu)
 {				
 	// Switch based on 
-	switch( m_Parent->GetParent()->GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer)
+	switch( fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer)
 	{
 		case kHauppaugePhilips:
 			theMenu->FindItem(msg_turbotv_philips)->SetMarked(true);
@@ -397,7 +397,7 @@ void TVideoSourceView::SetDigitizerMenuItem(BMenu *theMenu)
 void TVideoSourceView::SetInputMenuItem(BMenu *theMenu)
 {				
 	// Switch based on 
-	switch( m_Parent->GetParent()->GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Input)
+	switch( fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoSourceSettings.fInput)
 	{
 		case kComposite:
 			theMenu->FindItem(msg_composite)->SetMarked(true);

@@ -378,7 +378,7 @@ bool GetCursorFromResource(const char *theResource, Cursor *theCursor)
 
 TMuseumIcons *GetAppIcons()
 {
-	return static_cast<MuseumApp *>(be_app)->m_MuseumIcons;
+	return static_cast<MuseumApp *>(be_app)->fMuseumIcons;
 }
 
 

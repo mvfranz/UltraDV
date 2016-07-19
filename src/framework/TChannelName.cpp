@@ -36,7 +36,7 @@ TChannelName::TChannelName(BMessage *theMessage, TCueChannel *theChannel) : BWin
 {
 	
 	// Save channel
-	m_Channel = theChannel;
+	fChannel = theChannel;
 
 	// Default initialization
 	Init();
@@ -63,10 +63,10 @@ TChannelName::~TChannelName()
 void TChannelName::Init()
 {
 	// Set edit text to display name ChannelNameText
-	m_TextParent = FindView("ChannelNameView");
-	m_TextView = (BTextControl *)m_TextParent->FindView("ChannelNameText");
-	m_TextView->SetText(m_Channel->GetName());
-	m_TextView->MakeFocus(true);		
+	fTextParent = FindView("ChannelNameView");
+	fTextView = (BTextControl *)fTextParent->FindView("ChannelNameText");
+	fTextView->SetText(fChannel->GetName());
+	fTextView->MakeFocus(true);		
 }
 
 
@@ -87,7 +87,7 @@ void TChannelName::MessageReceived(BMessage* message)
 	{
 		// User pressed OK button.  Update channel name with text in control field
 		case OK_MSG:
-			m_Channel->SetChannelName( m_TextView->Text() );
+			fChannel->SetChannelName( fTextView->Text() );
 			Lock();
 			Quit();
 			break;

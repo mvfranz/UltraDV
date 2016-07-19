@@ -36,7 +36,7 @@ class TCueSheetTimeView: public BView
 		void 	SetParent(TCueSheetWindow *parent);
 		
 		// Member variables	
-		bool	m_ProjectSettings;
+		bool	fProjectSettings;
 		
 	private:				
 		// Member functions
@@ -45,8 +45,8 @@ class TCueSheetTimeView: public BView
 		void 	ShowProjectSettingDialog(BPoint where);
 				
 		// Member variables
-		TProjectSettings 	*m_ProjectWindow;
-		TCueSheetWindow		*m_CueSheetWindow;
+		TProjectSettings 	*fProjectWindow;
+		TCueSheetWindow		*fCueSheetWindow;
 };		
 
 #endif

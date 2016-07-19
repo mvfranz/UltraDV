@@ -56,17 +56,17 @@ public:
 		// supported MIME types. NOTE: Force the subclasses to
 		// fill in these functions...
 	typedef TTypeVector::const_iterator TTypeIterator;
-	TTypeIterator FirstType() const		{ return sm_types.begin(); }
-	TTypeIterator EndOfTypes() const	{ return sm_types.end(); }
+	TTypeIterator FirstType() const		{ return sftypes.begin(); }
+	TTypeIterator EndOfTypes() const	{ return sftypes.end(); }
 		// A good default file name for the cue type. Default
 		// is ""
-	virtual string DefaultFileName() const { return sm_defaultName; };
+	virtual string DefaultFileName() const { return sfdefaultName; };
 
 		// Return a pointer to a bitmap which is to be used in the media
 		// palette. Either the 'up' or 'down' version can be chosen.
 		// Default is '0', for no icon is available.
 	virtual const BBitmap* CueIcon(bool up) const 
-			{ return up? sm_upIcon : sm_downIcon; }
+			{ return up? sfupIcon : sfdownIcon; }
 		// Return a brief descriptive string for the cue type. Used in
 		// the media palette.
 	virtual string Description() const;
@@ -74,10 +74,10 @@ public:
 		// These return information about the cue: does it generate visible
 		// data to display on the stage? Does it produce sound during 
 		// playback? Defaults are all 'false'
-	virtual bool IsVisual()	const	{ return sm_isVisual; }
-	virtual bool IsAudible() const	{ return sm_isAudible; }
+	virtual bool IsVisual()	const	{ return sfisVisual; }
+	virtual bool IsAudible() const	{ return sfisAudible; }
 		// Can it be widened?
-	virtual bool CanStretch() const	{ return sm_canStretch; }
+	virtual bool CanStretch() const	{ return sfcanStretch; }
 	
 		// Attach to the indicated file. Returns the expected Be error codes.
 	status_t SetTo(const entry_ref& ref);
@@ -121,29 +121,29 @@ public:
 protected:
 	// Class data
 		// Contains all the MIME types supported by this class
-	static TTypeVector sm_types;
+	static TTypeVector sftypes;
 		// The default file name
-	static string sm_defaultName;
+	static string sfdefaultName;
 		// The 'up' and 'down' cue icons
-	static BBitmap* sm_upIcon;
-	static BBitmap* sm_downIcon;
+	static BBitmap* sfupIcon;
+	static BBitmap* sfdownIcon;
 		// Type information
-	static bool sm_isVisual;
-	static bool sm_isAudible;
-	static bool sm_canStretch;
+	static bool sfisVisual;
+	static bool sfisAudible;
+	static bool sfcanStretch;
 		
 	// Specific Object Data
 		// The supporting file
-	entry_ref m_entryRef;
+	entry_ref fentryRef;
 
 	// Methods
 		// All subclasses must define and call this function from 
 		// their constructors. The method must define all the 
-		// constant TCueData class members; they all start with 'sm_'
+		// constant TCueData class members; they all start with 'sf'
 	virtual void InitializeStaticMembers() = 0;
 	
 private:
-	// Name used for m_entryRef in a message
+	// Name used for fentryRef in a message
 	static const char* kRefTagName;
 	
 	// Hide the copy ctor and assignment op.

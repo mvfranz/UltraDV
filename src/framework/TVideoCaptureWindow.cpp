@@ -68,15 +68,15 @@ TVideoCaptureWindow::~TVideoCaptureWindow()
 	BMediaRoster *roster = BMediaRoster::Roster();
 	
 	//	Stop timesource
-	status_t retVal = roster->StopNode(m_TimeSource, 0, true);
+	status_t retVal = roster->StopNode(fTimeSource, 0, true);
 
 	//	Close running connections
-	roster->StopNode(m_From.node, 0, true);
-	roster->StopNode(m_To.node, 0, true);
-	roster->Disconnect(m_From.node.node, m_From.source, m_To.node.node, m_To.destination);
-	roster->ReleaseNode(m_From.node);
-	roster->ReleaseNode(m_To.node);
-	roster->ReleaseNode(m_TimeSource);
+	roster->StopNode(fFrom.node, 0, true);
+	roster->StopNode(fTo.node, 0, true);
+	roster->Disconnect(fFrom.node.node, fFrom.source, fTo.node.node, fTo.destination);
+	roster->ReleaseNode(fFrom.node);
+	roster->ReleaseNode(fTo.node);
+	roster->ReleaseNode(fTimeSource);
 	
 	// Exit from all threads
 	status_t status;
@@ -95,26 +95,26 @@ void TVideoCaptureWindow::Init()
 	// Create tool bar
 	BRect bounds = Bounds();
 	bounds.bottom = bounds.top + kVidCapToolbarHeight;
-	m_Toolbar = new TVideoCaptureToolbar(bounds);
-	AddChild(m_Toolbar);
+	fToolbar = new TVideoCaptureToolbar(bounds);
+	AddChild(fToolbar);
 	
 	//  Create VidCap View
 	BRect vidCapRect = Bounds();
-	vidCapRect.top = m_Toolbar->Frame().bottom;
+	vidCapRect.top = fToolbar->Frame().bottom;
 	vidCapRect.bottom -= kStatusRectHeight;
-	m_VidCapView = new TVideoCaptureView(vidCapRect, this);
-	AddChild(m_VidCapView);
+	fVidCapView = new TVideoCaptureView(vidCapRect, this);
+	AddChild(fVidCapView);
 	
 	// Create Statusbar
 	BRect statusRect = Bounds();
 	statusRect.top = statusRect.bottom - kStatusRectHeight ;
-	m_StatusBar = new TStatusView(statusRect);
-	AddChild(m_StatusBar);
+	fStatusBar = new TStatusView(statusRect);
+	AddChild(fStatusBar);
 		
 	// Set status text
 	BMessage *textMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 	textMessage->AddString("StatusText", "Ready to Capture...");
-	m_StatusBar->MessageReceived(textMessage);
+	fStatusBar->MessageReceived(textMessage);
 	delete textMessage;
 	
 	
@@ -132,20 +132,20 @@ void TVideoCaptureWindow::Init()
 	}
 
 	//	Register VideoPreviewView node and get output
-	mediaRoster->RegisterNode(m_VidCapView);
+	mediaRoster->RegisterNode(fVidCapView);
 					
 	//	Get TimeSource
-	status_t err = mediaRoster->GetTimeSource(&m_TimeSource);
+	status_t err = mediaRoster->GetTimeSource(&fTimeSource);
 	if (err < B_OK) 
 	{
 		//error("Can't get TimeSource!", err);
 		printf("Can't get TimeSource!\n");
 		return;
 	}
-	printf("TimeSource found: %d (%x)\n", m_TimeSource.node, m_TimeSource.port);
+	printf("TimeSource found: %d (%x)\n", fTimeSource.node, fTimeSource.port);
 	
 	//	Find video source
-	err = mediaRoster->GetVideoInput(&m_VideoSource);
+	err = mediaRoster->GetVideoInput(&fVideoSource);
 	if (err < B_OK) 
 	{		
 		//error("Can't find the video input!", err);
@@ -153,11 +153,11 @@ void TVideoCaptureWindow::Init()
 		be_app->PostMessage(B_QUIT_REQUESTED);
 		return;
 	}
-	printf("input found: %d (%x)\n", m_VideoSource.node, m_VideoSource.port);
+	printf("input found: %d (%x)\n", fVideoSource.node, fVideoSource.port);
 
 	//	Find output from video source
 	int32 cnt = 0;
-	err = mediaRoster->GetFreeOutputsFor(m_VideoSource, &m_From, 1, &cnt, B_MEDIA_RAW_VIDEO);
+	err = mediaRoster->GetFreeOutputsFor(fVideoSource, &fFrom, 1, &cnt, B_MEDIA_RAW_VIDEO);
 	if (err < 0 || cnt < 1) 
 	{
 		//error("The video input is busy!", err);
@@ -167,7 +167,7 @@ void TVideoCaptureWindow::Init()
 	}
 	
 	//	Get parameter web for video source
-	err = mediaRoster->GetParameterWebFor(m_VideoSource, &m_ParameterWeb);
+	err = mediaRoster->GetParameterWebFor(fVideoSource, &fParameterWeb);
 	if (err != B_OK) 	
 	{
 		printf("Unable to get VideoSource ParameterWeb!\n");
@@ -177,7 +177,7 @@ void TVideoCaptureWindow::Init()
 
 	//	Find free input
 	cnt = 0;
-	err = mediaRoster->GetFreeInputsFor(m_VidCapView->Node(), &m_To, 1, &cnt, B_MEDIA_RAW_VIDEO);
+	err = mediaRoster->GetFreeInputsFor(fVidCapView->Node(), &fTo, 1, &cnt, B_MEDIA_RAW_VIDEO);
 	if (err < 0 || cnt < 1) 
 	{
 		//error("The video output is busy!", err);
@@ -189,7 +189,7 @@ void TVideoCaptureWindow::Init()
 	media_format format;
 	format.type = B_MEDIA_RAW_VIDEO;
 	format.u.raw_video = media_raw_video_format::wildcard;
-	err = mediaRoster->Connect(m_From.source, m_To.destination, &format, &m_From, &m_To);
+	err = mediaRoster->Connect(fFrom.source, fTo.destination, &format, &fFrom, &fTo);
 	if (err < B_OK) 
 	{
 		//error("Couldn't connect video input to video display!", err);
@@ -198,7 +198,7 @@ void TVideoCaptureWindow::Init()
 	}
 
 	//	Set time source for output node
-	err = mediaRoster->SetTimeSourceFor( m_VidCapView->Node().node, m_TimeSource.node);
+	err = mediaRoster->SetTimeSourceFor( fVidCapView->Node().node, fTimeSource.node);
 	if (err < B_OK) 
 	{
 		//error("Couldn't set TimeSource for video display!", err);
@@ -207,7 +207,7 @@ void TVideoCaptureWindow::Init()
 	}
 
 	//	Set time source for video input
-	err = mediaRoster->SetTimeSourceFor( m_VideoSource.node, m_TimeSource.node);
+	err = mediaRoster->SetTimeSourceFor( fVideoSource.node, fTimeSource.node);
 	if (err < B_OK) 
 	{
 		//error("Couldn't set TimeSource for video input!", err);
@@ -217,10 +217,10 @@ void TVideoCaptureWindow::Init()
 
 	//	Start them
 	bigtime_t start_delay = 0;
-	mediaRoster->GetStartLatencyFor(m_TimeSource, &start_delay);
+	mediaRoster->GetStartLatencyFor(fTimeSource, &start_delay);
 	start_delay += estimate_max_scheduling_latency(find_thread(NULL));
 
-	BTimeSource *source = BMediaRoster::Roster()->MakeTimeSourceFor(m_TimeSource);
+	BTimeSource *source = BMediaRoster::Roster()->MakeTimeSourceFor(fTimeSource);
 	bool running = source->IsRunning();
 	printf("running: %s\n", running ? "true" : "false");
 	bigtime_t perf = source->Now() + start_delay;
@@ -229,21 +229,21 @@ void TVideoCaptureWindow::Init()
 
 	printf("perf = %.4f real = %.4f\n", (double)perf/1000000., (double)real/1000000.);
 	
-	err = mediaRoster->StartNode(m_VidCapView->Node(), perf);
+	err = mediaRoster->StartNode(fVidCapView->Node(), perf);
 	if (err < B_OK) 
 	{
 		printf("Couldn't start video displayer!\n");
 		return;
 	}
 	
-	err = mediaRoster->StartNode(m_VideoSource, perf);
+	err = mediaRoster->StartNode(fVideoSource, perf);
 	if (err < B_OK) 
 	{
 		printf("Couldn't start video input!\n");
 		return;
 	}
 		
-	err = mediaRoster->StartNode(m_TimeSource, real);
+	err = mediaRoster->StartNode(fTimeSource, real);
 	if (err < B_OK) 
 	{
 		//error("Couldn't start TimeSource!", err);
@@ -259,46 +259,46 @@ void TVideoCaptureWindow::Init()
 	{
 		// Get cue sheet prefs
 		TCueSheetPrefs *thePrefs = theApp->GetCueSheet()->GetCueSheetPrefs();
-		TVideoSettings	vidSettings = thePrefs->m_VideoSettings;
+		TVideoSettings	vidSettings = thePrefs->fVideoSettings;
 						
 		// VideoImageSettings		
-		m_VideoSource->VideoControls()->SetBrightness( vidSettings.m_VideoImageSettings.m_BrightnessValue);
-		m_VideoSource->VideoControls()->SetContrast(vidSettings.m_VideoImageSettings.m_ContrastValue);
-		m_VideoSource->VideoControls()->SetHue(vidSettings.m_VideoImageSettings.m_HueValue);
-		m_VideoSource->VideoControls()->SetSaturation(vidSettings.m_VideoImageSettings.m_SaturationValue);
+		fVideoSource->VideoControls()->SetBrightness( vidSettings.fVideoImageSettings.fBrightnessValue);
+		fVideoSource->VideoControls()->SetContrast(vidSettings.fVideoImageSettings.fContrastValue);
+		fVideoSource->VideoControls()->SetHue(vidSettings.fVideoImageSettings.fHueValue);
+		fVideoSource->VideoControls()->SetSaturation(vidSettings.fVideoImageSettings.fSaturationValue);
 		
 		//
 		// VideoSourceSettings
 		//
 		
-		//VideoDigitizer	m_Digitizer;
+		//VideoDigitizer	fDigitizer;
 		
 		// VideoInput
-		switch(vidSettings.m_VideoSourceSettings.m_Input)
+		switch(vidSettings.fVideoSourceSettings.fInput)
 		{
 			case kComposite:
-				m_VideoSource->VideoMux()->SetSource(B_COMPOSITE_0);
-				m_VideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
+				fVideoSource->VideoMux()->SetSource(B_COMPOSITE_0);
+				fVideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
 				break;	
 					
 			case kTuner:
-				m_VideoSource->VideoMux()->SetSource(B_TUNER_0);
-				m_VideoSource->AudioMux()->SetSource(B_TUNER_AUDIO_0);
+				fVideoSource->VideoMux()->SetSource(B_TUNER_0);
+				fVideoSource->AudioMux()->SetSource(B_TUNER_AUDIO_0);
 				break;
 						
 			case kSVideo:
-				m_VideoSource->VideoMux()->SetSource(B_SVIDEO_0);
-				m_VideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
+				fVideoSource->VideoMux()->SetSource(B_SVIDEO_0);
+				fVideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
 				break;
 						
 			case kColorBars:
-				m_VideoSource->VideoMux()->SetSource(B_COLOR_BARS);
-				m_VideoSource->AudioMux()->SetSource(B_MUTE_AUDIO);
+				fVideoSource->VideoMux()->SetSource(B_COLOR_BARS);
+				fVideoSource->AudioMux()->SetSource(B_MUTE_AUDIO);
 				break;	
 					
 			case kCamera:
-				m_VideoSource->VideoMux()->SetSource(B_COMPOSITE_1);
-				m_VideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
+				fVideoSource->VideoMux()->SetSource(B_COMPOSITE_1);
+				fVideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
 				break;
 			
 			default:
@@ -306,40 +306,40 @@ void TVideoCaptureWindow::Init()
 		}		
 		
 		// VideoFormat
-		switch(vidSettings.m_VideoSourceSettings.m_Format)
+		switch(vidSettings.fVideoSourceSettings.fFormat)
 		{
 			case kNTSC_M:
-				m_VideoSource->SetVideoFormat(B_NTSC_M);
+				fVideoSource->SetVideoFormat(B_NTSC_M);
 				break;
 				
 			case kNTSC_J:
-				m_VideoSource->SetVideoFormat(B_NTSC_J);
+				fVideoSource->SetVideoFormat(B_NTSC_J);
 				break;
 				
 			case kPAL_BG:
-				m_VideoSource->SetVideoFormat(B_PAL_M);
+				fVideoSource->SetVideoFormat(B_PAL_M);
 				break;
 				
 			case kPAL_I:
-				m_VideoSource->SetVideoFormat(B_PAL_N);
+				fVideoSource->SetVideoFormat(B_PAL_N);
 				break;
 				
 			case kSECAM:
-				m_VideoSource->SetVideoFormat(B_SECAM);
+				fVideoSource->SetVideoFormat(B_SECAM);
 				break;
 			
 			default:
-				m_VideoSource->SetVideoFormat(B_NTSC_M);
+				fVideoSource->SetVideoFormat(B_NTSC_M);
 				break;
 		
 		}
 			
 		// VideoFilters
-		m_VideoSource->VideoControls()->SetGammaCorrectionRemoval(vidSettings.m_VideoSourceSettings.m_Filters.m_GammaCorrection);
-		m_VideoSource->VideoControls()->SetLumaCoring(vidSettings.m_VideoSourceSettings.m_Filters.m_LumaCoring);
-		m_VideoSource->VideoControls()->SetChromaCombFilter(vidSettings.m_VideoSourceSettings.m_Filters.m_ChromaComb);
-		m_VideoSource->VideoControls()->SetLumaCombFilter(vidSettings.m_VideoSourceSettings.m_Filters.m_LumaComb);
-		m_VideoSource->VideoControls()->SetErrorDiffusion(vidSettings.m_VideoSourceSettings.m_Filters.m_ErrorDiffusion);
+		fVideoSource->VideoControls()->SetGammaCorrectionRemoval(vidSettings.fVideoSourceSettings.fFilters.fGammaCorrection);
+		fVideoSource->VideoControls()->SetLumaCoring(vidSettings.fVideoSourceSettings.fFilters.fLumaCoring);
+		fVideoSource->VideoControls()->SetChromaCombFilter(vidSettings.fVideoSourceSettings.fFilters.fChromaComb);
+		fVideoSource->VideoControls()->SetLumaCombFilter(vidSettings.fVideoSourceSettings.fFilters.fLumaComb);
+		fVideoSource->VideoControls()->SetErrorDiffusion(vidSettings.fVideoSourceSettings.fFilters.fErrorDiffusion);
 	}
 	*/
 }
@@ -362,22 +362,22 @@ void TVideoCaptureWindow::MessageReceived(BMessage* message)
 	{
 		//	Pass message on to view...
 		case VIDCAP_RECORD_MSG:
-			m_VidCapView->MessageReceived(message);
+			fVidCapView->MessageReceived(message);
 			break;
 			/*
-			if(m_IsRecording)
+			if(fIsRecording)
 			{
-				m_IsRecording = false;
+				fIsRecording = false;
 				
 				// Update status bar
 				BMessage *textMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 				textMessage->AddString("StatusText", "Ready to Capture...");
-				m_StatusBar->MessageReceived(textMessage);
+				fStatusBar->MessageReceived(textMessage);
 				delete textMessage;
 			}
 			else
 			{
-				m_IsRecording = true;
+				fIsRecording = true;
 				Record();			
 			}			
 			break;*/

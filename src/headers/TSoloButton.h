@@ -43,11 +43,11 @@ class TSoloButton: public BView
 		
 		
 		// Member variables
-		TCueChannel	*m_Channel;
-		BHandler	*m_Handler;
-		bool		m_MouseDown;
-		BBitmap		*m_OffBitmap;
-		BBitmap		*m_OnBitmap;
+		TCueChannel	*fChannel;
+		BHandler	*fHandler;
+		bool		fMouseDown;
+		BBitmap		*fOffBitmap;
+		BBitmap		*fOnBitmap;
 		
 };		
 

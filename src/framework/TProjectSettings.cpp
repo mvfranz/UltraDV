@@ -41,8 +41,8 @@ TProjectSettings::TProjectSettings(TCueSheetTimeView *parent, TCueSheetView *cue
 {
 	
 	// Save parent view and cue sheet
-	m_Parent = parent;
-	m_CueSheet = cueSheet;
+	fParent = parent;
+	fCueSheet = cueSheet;
 	
 	// Default initialization
 	Init();
@@ -58,7 +58,7 @@ TProjectSettings::TProjectSettings(TCueSheetTimeView *parent, TCueSheetView *cue
 TProjectSettings::~TProjectSettings()
 {
 	// Tell parent we have been destructed
-	m_Parent->m_ProjectSettings = false;
+	fParent->fProjectSettings = false;
 }
 
 
@@ -71,60 +71,60 @@ TProjectSettings::~TProjectSettings()
 void TProjectSettings::Init()
 {
 	// Tell parent we have been constructed
-	m_Parent->m_ProjectSettings = true;
+	fParent->fProjectSettings = true;
 		
 	// Get dialog items	
-	m_RealTimeButton 	= (BRadioButton *)FindView("RealTime");
-	m_24FPSButton 		= (BRadioButton *)FindView("24FPS");
-	m_25FPSButton 		= (BRadioButton *)FindView("25FPS");
-	m_2997FPSButton 	= (BRadioButton *)FindView("2997FPS");
-	m_30FPSButton 		= (BRadioButton *)FindView("30FPS");
+	fRealTimeButton 	= (BRadioButton *)FindView("RealTime");
+	f24FPSButton 		= (BRadioButton *)FindView("24FPS");
+	f25FPSButton 		= (BRadioButton *)FindView("25FPS");
+	f2997FPSButton 	= (BRadioButton *)FindView("2997FPS");
+	f30FPSButton 		= (BRadioButton *)FindView("30FPS");
 		
-	m_StartTime = (BTextControl *)FindView("StartTime");
-	m_Duration 	= (BTextControl *)FindView("Duration");
-	m_EndTime 	= (BTextControl *)FindView("EndTime");
+	fStartTime = (BTextControl *)FindView("StartTime");
+	fDuration 	= (BTextControl *)FindView("Duration");
+	fEndTime 	= (BTextControl *)FindView("EndTime");
 	
 	// Set up time values
 	char timeStr[256];
-	TimeToString(m_CueSheet->StartTime(), m_CueSheet->GetTimeFormat(), timeStr, false);
-	m_StartTime->SetText(timeStr);
+	TimeToString(fCueSheet->StartTime(), fCueSheet->GetTimeFormat(), timeStr, false);
+	fStartTime->SetText(timeStr);
 	
-	TimeToString(m_CueSheet->Duration(), m_CueSheet->GetTimeFormat(), timeStr, false);
-	m_Duration->SetText(timeStr);
+	TimeToString(fCueSheet->Duration(), fCueSheet->GetTimeFormat(), timeStr, false);
+	fDuration->SetText(timeStr);
 	
-	TimeToString( m_CueSheet->Duration() - m_CueSheet->StartTime(), m_CueSheet->GetTimeFormat(), timeStr, false);
-	m_EndTime->SetText(timeStr);
+	TimeToString( fCueSheet->Duration() - fCueSheet->StartTime(), fCueSheet->GetTimeFormat(), timeStr, false);
+	fEndTime->SetText(timeStr);
 	
 	// Set to current project settings
-	m_TimeFormat = GetCurrentTimeFormat();
-	switch(m_TimeFormat)
+	fTimeFormat = GetCurrentTimeFormat();
+	switch(fTimeFormat)
 	{
 		//case B_TIMECODE_30_DROP_2:
-		//	m_RealTimeButton->SetValue(1);
+		//	fRealTimeButton->SetValue(1);
 		//	break;
 			
 		case B_TIMECODE_24:
-			m_24FPSButton->SetValue(1);
+			f24FPSButton->SetValue(1);
 			break;
 			
 		case B_TIMECODE_25:
-			m_25FPSButton->SetValue(1);
+			f25FPSButton->SetValue(1);
 			break;
 			
 		case B_TIMECODE_30_DROP_2:
-			m_2997FPSButton->SetValue(1);
+			f2997FPSButton->SetValue(1);
 			break;
 			
 		case B_TIMECODE_30:
-			m_30FPSButton->SetValue(1);
+			f30FPSButton->SetValue(1);
 			break;
 	
 		default:
-			m_RealTimeButton->SetValue(1);
+			fRealTimeButton->SetValue(1);
 			break;
 	}
 		
-	m_StartTime->MakeFocus(true);		
+	fStartTime->MakeFocus(true);		
 }
 
 
@@ -152,23 +152,23 @@ void TProjectSettings::MessageReceived(BMessage* message)
 			break;
 		
 		case RT_BUTTON_MSG:
-			m_TimeFormat = B_TIMECODE_30_DROP_2;
+			fTimeFormat = B_TIMECODE_30_DROP_2;
 			break;
 			
 		case TWOFOUR_BUTTON_MSG:
-			m_TimeFormat = B_TIMECODE_24;
+			fTimeFormat = B_TIMECODE_24;
 			break;
 			
 		case TWOFIVE_BUTTON_MSG:
-			m_TimeFormat = B_TIMECODE_25;
+			fTimeFormat = B_TIMECODE_25;
 			break;
 			
 		case TWONINE_BUTTON_MSG:
-			m_TimeFormat = B_TIMECODE_30_DROP_2;
+			fTimeFormat = B_TIMECODE_30_DROP_2;
 			break;
 			
 		case THIRTY_BUTTON_MSG:
-			m_TimeFormat = B_TIMECODE_30;
+			fTimeFormat = B_TIMECODE_30;
 			break;
 	
 		default:
@@ -190,7 +190,7 @@ void TProjectSettings::GetDialogSettings()
 {
 	// Set cue sheet's TimeFormat based on user changes
 	BMessage *message = new BMessage(TIMEFORMAT_CHANGED_MSG);
-	short format = m_TimeFormat;
+	short format = fTimeFormat;
 	message->AddInt16("TimeFormat", format);
 	TCueSheetWindow *theWindow = static_cast<MuseumApp *>(be_app)->GetCueSheet();
 	TCueSheetView *theView = theWindow->GetCueSheetView();

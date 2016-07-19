@@ -36,8 +36,8 @@ class TVideoSettingsView: public BView
 		// Member variables	
 		
 		// Inlines
-		TVideoSettingsDialog 	*GetParent(){ return m_Parent; }		
-		//BVideoSource 			*GetVideoSource(){ return m_VideoSource; }
+		TVideoSettingsDialog 	*GetParent(){ return fParent; }		
+		//BVideoSource 			*GetVideoSource(){ return fVideoSource; }
 		
 	private:				
 		// Member functions
@@ -47,18 +47,18 @@ class TVideoSettingsView: public BView
 		void 	Shutdown();
 				
 		// Member variables
-		TVideoSettingsDialog 	*m_Parent;		
-		BButton					*m_CancelButton;
-		BButton					*m_OKButton;
+		TVideoSettingsDialog 	*fParent;		
+		BButton					*fCancelButton;
+		BButton					*fOKButton;
 		
-		BParameterWeb 			*m_ParameterWeb;
+		BParameterWeb 			*fParameterWeb;
 		
-		BParameter				*m_VideoInputParam;
-		BParameter				*m_AudioInputParam;
-		BParameter				*m_BrightnessParam;
-		BParameter				*m_ContrastParam;
-		BParameter				*m_SaturationParam;
-		BParameter				*m_HueParam;
+		BParameter				*fVideoInputParam;
+		BParameter				*fAudioInputParam;
+		BParameter				*fBrightnessParam;
+		BParameter				*fContrastParam;
+		BParameter				*fSaturationParam;
+		BParameter				*fHueParam;
 		
 		
 };		

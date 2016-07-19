@@ -36,11 +36,11 @@ class TRotateSlider : public TSlider
 		
 	private:
 		//	Member Variables
-		TRotateDialog		*m_Dialog;
-		TNumberTextControl 	*m_TextControl;
-		TVisualCue			*m_Cue;
-		TStageWindow 		*m_Stage;
-		TStageView 	 		*m_StageView;
+		TRotateDialog		*fDialog;
+		TNumberTextControl 	*fTextControl;
+		TVisualCue			*fCue;
+		TStageWindow 		*fStage;
+		TStageView 	 		*fStageView;
 	
 	protected:
 	

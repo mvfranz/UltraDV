@@ -29,14 +29,14 @@
 
 TPreviewUpdater::TPreviewUpdater(BHandler *theTarget, BMessage *theMessage, uint32 theInterval)
 {
-	m_Target 	= theTarget;
-	m_Message 	= theMessage;
-	m_Interval 	= theInterval;
+	fTarget 	= theTarget;
+	fMessage 	= theMessage;
+	fInterval 	= theInterval;
 	
 	BLooper *theLooper = theTarget->Looper();
 	
 	status_t myErr;
-	m_Messenger = new BMessenger(m_Target, NULL, &myErr);
+	fMessenger = new BMessenger(fTarget, NULL, &myErr);
 	
 	if (myErr != B_OK)
 	{
@@ -57,11 +57,11 @@ TPreviewUpdater::TPreviewUpdater(BHandler *theTarget, BMessage *theMessage, uint
 	}
 	
 	// Spawn timer thread	
-	m_TimerThread = spawn_thread( start_timer, "GenericTimer", B_NORMAL_PRIORITY, (void *)this);
+	fTimerThread = spawn_thread( start_timer, "GenericTimer", B_NORMAL_PRIORITY, (void *)this);
 	
-	if( m_TimerThread != B_NO_MORE_THREADS && m_TimerThread != B_NO_MEMORY)
+	if( fTimerThread != B_NO_MORE_THREADS && fTimerThread != B_NO_MEMORY)
 	{
-		resume_thread(m_TimerThread);
+		resume_thread(fTimerThread);
 	}				       	
 		
 }
@@ -75,13 +75,13 @@ TPreviewUpdater::TPreviewUpdater(BHandler *theTarget, BMessage *theMessage, uint
 
 TPreviewUpdater::~TPreviewUpdater()
 {
-	kill_thread(m_TimerThread);
+	kill_thread(fTimerThread);
 	
-	if (m_Message)
-		delete m_Message;
+	if (fMessage)
+		delete fMessage;
 		
-	if (m_Messenger)	
-		delete m_Messenger;
+	if (fMessenger)	
+		delete fMessenger;
 }
 
 
@@ -97,20 +97,20 @@ int32 TPreviewUpdater::Timer()
 {			
 	while( true )
 	{
-		snooze(m_Interval);
+		snooze(fInterval);
 		
 		// Is window still alive?  If not, exit.
-		if ( m_Messenger->LockTarget() )
+		if ( fMessenger->LockTarget() )
 		{
        		BLooper *myLooper; 
-       		BHandler *myHandler = m_Messenger->Target(&myLooper); 
+       		BHandler *myHandler = fMessenger->Target(&myLooper); 
        		myLooper->Unlock(); 
        		
-       		m_Messenger->SendMessage(m_Message);
-			//m_Target->Looper()->Lock();
-       		//m_Target->MessageReceived(m_Message);
-       		//m_Target->Looper()->Unlock();       		
-       		//static_cast<TVideoPreviewView *>(m_Target)->UpdateVideo();
+       		fMessenger->SendMessage(fMessage);
+			//fTarget->Looper()->Lock();
+       		//fTarget->MessageReceived(fMessage);
+       		//fTarget->Looper()->Unlock();       		
+       		//static_cast<TVideoPreviewView *>(fTarget)->UpdateVideo();
    		}  
 		else
 		{

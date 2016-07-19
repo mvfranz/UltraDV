@@ -65,7 +65,7 @@ void TStatusView::Init()
 	BRect area = Bounds();
 	
 	// Set up status text
-	strcpy(m_Text, "");
+	strcpy(fText, "");
 				
 }
 
@@ -87,7 +87,7 @@ void TStatusView::MessageReceived(BMessage* message)
 		case UPDATE_STATUS_TEXT_MSG:
 			char *theStr;
 			message->FindString("StatusText",(const char **) &theStr);
-			strcpy(m_Text, theStr);	
+			strcpy(fText, theStr);	
 			Invalidate();
 			break;
 			
@@ -139,7 +139,7 @@ void TStatusView::Draw(BRect updateRect)
 	SetHighColor(kBlack);
 	SetLowColor(kBlueGrey);
 	endPt.Set( Bounds().left+5, (Bounds().Height() / 2) + 4 );
-	DrawString(m_Text, endPt); 
+	DrawString(fText, endPt); 
 	
 	// Restore environment
 	PopState();

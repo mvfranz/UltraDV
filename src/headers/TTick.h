@@ -31,10 +31,10 @@ class TTick
 {
 
 	public:	
-		bigtime_t		m_Time;
-		uint64			m_Number;
-		bigtime_t		m_Period;
-		TTimecode		m_Timecode;
+		bigtime_t		fTime;
+		uint64			fNumber;
+		bigtime_t		fPeriod;
+		TTimecode		fTimecode;
 		
 		// Operators used for sorting chronologically
 		bool		operator<(const TTick&) const;
@@ -43,8 +43,8 @@ class TTick
 	
 };
 
-inline bool TTick::operator<(const TTick& t) const { return(m_Time < t.m_Time); }
-inline bool TTick::operator==(const TTick& t) const { return(m_Time == t.m_Time); }
-inline bool TTick::operator>(const TTick& t) const { return(m_Time > t.m_Time); }
+inline bool TTick::operator<(const TTick& t) const { return(fTime < t.fTime); }
+inline bool TTick::operator==(const TTick& t) const { return(fTime == t.fTime); }
+inline bool TTick::operator>(const TTick& t) const { return(fTime > t.fTime); }
 
 #endif

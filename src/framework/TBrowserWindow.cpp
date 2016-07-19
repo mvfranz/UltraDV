@@ -73,11 +73,11 @@ void TBrowserWindow::Init()
 	// MediaTabView	
 	BRect bounds = Bounds(); 
 	
-	m_BrowserTabView = new TBrowserTabView(bounds, "MediaTabView"); 
-	ASSERT(m_BrowserTabView);
-	m_BrowserTabView->SetViewColor(kBeGrey); 
+	fBrowserTabView = new TBrowserTabView(bounds, "MediaTabView"); 
+	ASSERT(fBrowserTabView);
+	fBrowserTabView->SetViewColor(kBeGrey); 
 	
-	AddChild(m_BrowserTabView);
+	AddChild(fBrowserTabView);
 	
 	// Show window
 	//Show();
@@ -99,12 +99,12 @@ void TBrowserWindow::MessageReceived(BMessage* message)
 	{
 		case SORTER_SELECT_MSG:
 		case SORTER_INVOKE_MSG:
-			m_BrowserTabView->MessageReceived(message);
+			fBrowserTabView->MessageReceived(message);
 			break;		
 			
 		// Some cue is adding an entry_ref to our browser
 		case ADD_REF_MSG:
-			m_BrowserTabView->MessageReceived(message);
+			fBrowserTabView->MessageReceived(message);
 			break;
 			
 		default:

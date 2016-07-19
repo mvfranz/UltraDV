@@ -79,16 +79,16 @@ void TMediaCuePalette::Init()
 	// Create MediaCueView and add it to the window
 	BRect viewRect = Bounds();
 	viewRect.bottom -= kStatusRectHeight;
-	m_CueView = new TMediaCuePaletteView(viewRect);
+	fCueView = new TMediaCuePaletteView(viewRect);
 	
 	// Add view to frame
-	AddChild(m_CueView);
+	AddChild(fCueView);
 	
 	// Create status bar
 	BRect bounds = Bounds();
 	bounds.top = bounds.bottom - kStatusRectHeight;
-	m_CueStatusView = new TPaletteStatusView(bounds);
-	AddChild(m_CueStatusView);
+	fCueStatusView = new TPaletteStatusView(bounds);
+	AddChild(fCueStatusView);
 	
 	Unlock();
 	
@@ -111,7 +111,7 @@ void TMediaCuePalette::MessageReceived(BMessage* message)
 	{
 		// Update the status bar to diplay name of media cue
 		case UPDATE_STATUS_TEXT_MSG:
-			m_CueStatusView->MessageReceived(message);
+			fCueStatusView->MessageReceived(message);
 			break;
 			
 		default:

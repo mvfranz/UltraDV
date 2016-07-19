@@ -90,38 +90,38 @@ class	TMIDITrack : public BList
 		void	Reset();
 		
 		// Member variables
-		//DrumMapPtr	m_DrumMaps;
-		bool		m_Muted;
-		bool		m_Soloed;
-		bool		m_DrumTrack;
-		int16		m_Device;
-		int16		m_Bank;
-		int16		m_Program;
-		int16		m_Channel;
-		int16		m_Octave;
-		int16		m_Volume;
-		int16		m_Pan;
-		int16		m_Reverb;
-		int16		m_Chorus;
-		int16		m_SrcPBRange;
-		int16		m_DstPBRange;
-		int16		m_SrcDrumMap;
-		int16		m_DstDrumMap;
+		//DrumMapPtr	fDrumMaps;
+		bool		fMuted;
+		bool		fSoloed;
+		bool		fDrumTrack;
+		int16		fDevice;
+		int16		fBank;
+		int16		fProgram;
+		int16		fChannel;
+		int16		fOctave;
+		int16		fVolume;
+		int16		fPan;
+		int16		fReverb;
+		int16		fChorus;
+		int16		fSrcPBRange;
+		int16		fDstPBRange;
+		int16		fSrcDrumMap;
+		int16		fDstDrumMap;
 		
-		int16		m_NoteOn;
-		int16		m_LastVol;
+		int16		fNoteOn;
+		int16		fLastVol;
 		
 		
 	protected:
-		TMIDICue	*m_Cue;
+		TMIDICue	*fCue;
 		
-		char		m_TrackName[256];	
+		char		fTrackName[256];	
 	
 		// Playtime instance variables
-		int32		m_CurrentEvent;
-		int32		m_CurrentDelta;
+		int32		fCurrentEvent;
+		int32		fCurrentDelta;
 	
-		BList		*m_ExternalData;
+		BList		*fExternalData;
 
 	
 		

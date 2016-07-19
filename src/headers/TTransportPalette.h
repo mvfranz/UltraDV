@@ -34,7 +34,7 @@ class TTransportPalette: public BWindow, public BMediaNode
 		BMediaAddOn	 *AddOn( int32 * internal_id) const;
 
 		// Accessor Functions
-		TTransportPaletteView	*GetTransportPaletteView(){ return m_TransportView; }
+		TTransportPaletteView	*GetTransportPaletteView(){ return fTransportView; }
 	private:
 		// Member functions
 		void		Init();
@@ -46,16 +46,16 @@ class TTransportPalette: public BWindow, public BMediaNode
 
 
 		// Member variables
-		TTransportPaletteView	*m_TransportView;
+		TTransportPaletteView	*fTransportView;
 		
-		bool			m_TimeToQuit;
-		bool			m_IsPlaying;
-		bool			m_IsStopping;
+		bool			fTimeToQuit;
+		bool			fIsPlaying;
+		bool			fIsStopping;
 
-		port_id 		m_Port;
+		port_id 		fPort;
 		
-		thread_id		m_ServiceThread;
-		thread_id		m_RunThread;		
+		thread_id		fServiceThread;
+		thread_id		fRunThread;		
 
 		
 };

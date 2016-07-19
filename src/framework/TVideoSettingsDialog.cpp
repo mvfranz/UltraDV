@@ -41,7 +41,7 @@
 TVideoSettingsDialog::TVideoSettingsDialog(BRect bounds) : BWindow( bounds, "Video Settings", B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_H_RESIZABLE|B_NOT_V_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE) 
 {			
 	//	Defaults
-	m_ParameterWeb = NULL;
+	fParameterWeb = NULL;
 	
 	Init();
 }
@@ -58,16 +58,16 @@ TVideoSettingsDialog::~TVideoSettingsDialog()
 	//	Close running connections
 	BMediaRoster *roster = BMediaRoster::Roster();
 	
-	roster->StopNode(m_From.node, 0, true);
-	roster->StopNode(m_To.node, 0, true);
-	roster->Disconnect(m_From.node.node, m_From.source, m_To.node.node, m_To.destination);
-	roster->ReleaseNode(m_From.node);
-	roster->ReleaseNode(m_To.node);
-	roster->ReleaseNode(m_TimeSource);
+	roster->StopNode(fFrom.node, 0, true);
+	roster->StopNode(fTo.node, 0, true);
+	roster->Disconnect(fFrom.node.node, fFrom.source, fTo.node.node, fTo.destination);
+	roster->ReleaseNode(fFrom.node);
+	roster->ReleaseNode(fTo.node);
+	roster->ReleaseNode(fTimeSource);
 
 	//	Stop our VideoNode
-	//m_PreviewView->RemoveSelf();
-	//delete m_PreviewView;
+	//fPreviewView->RemoveSelf();
+	//delete fPreviewView;
 }
 
 
@@ -94,11 +94,11 @@ void TVideoSettingsDialog::Init()
 
 	//	Create VideoPreviewView node and get output
 	BRect previewBounds(0, 0, 100, 100);
-	m_PreviewView = new TVideoPreviewView(previewBounds, this);
-	mediaRoster->RegisterNode(m_PreviewView);
+	fPreviewView = new TVideoPreviewView(previewBounds, this);
+	mediaRoster->RegisterNode(fPreviewView);
 					
 	//	Get TimeSource
-	status_t err = mediaRoster->GetTimeSource(&m_TimeSource);
+	status_t err = mediaRoster->GetTimeSource(&fTimeSource);
 	if (err < B_OK) 
 	{
 		//error("Can't get TimeSource!", err);
@@ -106,10 +106,10 @@ void TVideoSettingsDialog::Init()
 		be_app->PostMessage(B_QUIT_REQUESTED);
 		return;
 	}
-	printf("TimeSource found: %d (%x)\n", m_TimeSource.node, m_TimeSource.port);
+	printf("TimeSource found: %d (%x)\n", fTimeSource.node, fTimeSource.port);
 	
 	//	Find video source
-	err = mediaRoster->GetVideoInput(&m_VideoSource);
+	err = mediaRoster->GetVideoInput(&fVideoSource);
 	if (err < B_OK) 
 	{		
 		//error("Can't find the video input!", err);
@@ -117,11 +117,11 @@ void TVideoSettingsDialog::Init()
 		be_app->PostMessage(B_QUIT_REQUESTED);
 		return;
 	}
-	printf("input found: %d (%x)\n", m_VideoSource.node, m_VideoSource.port);
+	printf("input found: %d (%x)\n", fVideoSource.node, fVideoSource.port);
 
 	//	Find output from video source
 	int32 cnt = 0;
-	err = mediaRoster->GetFreeOutputsFor(m_VideoSource, &m_From, 1, &cnt, B_MEDIA_RAW_VIDEO);
+	err = mediaRoster->GetFreeOutputsFor(fVideoSource, &fFrom, 1, &cnt, B_MEDIA_RAW_VIDEO);
 	if (err < 0 || cnt < 1) 
 	{
 		//error("The video input is busy!", err);
@@ -131,7 +131,7 @@ void TVideoSettingsDialog::Init()
 	}
 	
 	//	Get parameter web for video source
-	err = mediaRoster->GetParameterWebFor(m_VideoSource, &m_ParameterWeb);
+	err = mediaRoster->GetParameterWebFor(fVideoSource, &fParameterWeb);
 	if (err != B_OK) 	
 	{
 		printf("Unable to get VideoSource ParameterWeb!\n");
@@ -141,7 +141,7 @@ void TVideoSettingsDialog::Init()
 
 	//	Find free input
 	cnt = 0;
-	err = mediaRoster->GetFreeInputsFor(m_PreviewView->Node(), &m_To, 1, &cnt, B_MEDIA_RAW_VIDEO);
+	err = mediaRoster->GetFreeInputsFor(fPreviewView->Node(), &fTo, 1, &cnt, B_MEDIA_RAW_VIDEO);
 	if (err < 0 || cnt < 1) 
 	{
 		//error("The video output is busy!", err);
@@ -154,7 +154,7 @@ void TVideoSettingsDialog::Init()
 	media_format format;
 	format.type = B_MEDIA_RAW_VIDEO;
 	format.u.raw_video = media_raw_video_format::wildcard;
-	err = mediaRoster->Connect(m_From.source, m_To.destination, &format, &m_From, &m_To);
+	err = mediaRoster->Connect(fFrom.source, fTo.destination, &format, &fFrom, &fTo);
 	if (err < B_OK) 
 	{
 		//error("Couldn't connect video input to video display!", err);
@@ -164,7 +164,7 @@ void TVideoSettingsDialog::Init()
 	}
 
 	//	Set time source for output node
-	err = mediaRoster->SetTimeSourceFor( m_PreviewView->Node().node, m_TimeSource.node);
+	err = mediaRoster->SetTimeSourceFor( fPreviewView->Node().node, fTimeSource.node);
 	if (err < B_OK) 
 	{
 		//error("Couldn't set TimeSource for video display!", err);
@@ -174,7 +174,7 @@ void TVideoSettingsDialog::Init()
 	}
 
 	//	Set time source for video input
-	err = mediaRoster->SetTimeSourceFor( m_VideoSource.node, m_TimeSource.node);
+	err = mediaRoster->SetTimeSourceFor( fVideoSource.node, fTimeSource.node);
 	if (err < B_OK) 
 	{
 		//error("Couldn't set TimeSource for video input!", err);
@@ -183,11 +183,11 @@ void TVideoSettingsDialog::Init()
 		return;
 	}
 
-	BTimeSource *source = mediaRoster->MakeTimeSourceFor(m_TimeSource);
+	BTimeSource *source = mediaRoster->MakeTimeSourceFor(fTimeSource);
 
 	//	Start them
 	bigtime_t start_delay = 0;
-	mediaRoster->GetStartLatencyFor(m_TimeSource, &start_delay);
+	mediaRoster->GetStartLatencyFor(fTimeSource, &start_delay);
 	start_delay += estimate_max_scheduling_latency(find_thread(NULL));
 
 	bool running = source->IsRunning();
@@ -198,7 +198,7 @@ void TVideoSettingsDialog::Init()
 
 	printf("perf = %.4f real = %.4f\n", (double)perf/1000000., (double)real/1000000.);
 	
-	err = mediaRoster->StartNode(m_To.node, perf);
+	err = mediaRoster->StartNode(fTo.node, perf);
 	if (err < B_OK) 
 	{
 		//error("Couldn't start video displayer!", err);
@@ -207,7 +207,7 @@ void TVideoSettingsDialog::Init()
 		return;
 	}
 	
-	err = mediaRoster->StartNode(m_From.node, perf);
+	err = mediaRoster->StartNode(fFrom.node, perf);
 	if (err < B_OK) 
 	{
 		//error("Couldn't start video input!", err);
@@ -217,7 +217,7 @@ void TVideoSettingsDialog::Init()
 	}
 	
 	//	Workaround for possibly broken Now()
-	err = mediaRoster->SeekNode(m_TimeSource, perf-start_delay, real);
+	err = mediaRoster->SeekNode(fTimeSource, perf-start_delay, real);
 	if (err < B_OK) 
 	{
 		//error("Couldn't Seek() TimeSource!", err);
@@ -226,7 +226,7 @@ void TVideoSettingsDialog::Init()
 		return;
 	}
 	
-	err = mediaRoster->StartNode(m_TimeSource, real);
+	err = mediaRoster->StartNode(fTimeSource, real);
 	if (err < B_OK) 
 	{
 		//error("Couldn't start TimeSource!", err);
@@ -248,12 +248,12 @@ void TVideoSettingsDialog::Init()
 	{
 		// Create local copy of VideoSettings
 		TCueSheetPrefs *thePrefs = cueSheet->GetCueSheetPrefs();		
-		m_TempVideoSettings = thePrefs->m_VideoSettings;		
+		fTempVideoSettings = thePrefs->fVideoSettings;		
 	}
 	
 	// Create background view
-	m_BGView = new TVideoSettingsView(Bounds(), this); 
-	AddChild(m_BGView);
+	fBGView = new TVideoSettingsView(Bounds(), this); 
+	AddChild(fBGView);
 			
 	//
 	// Add tabs to the window
@@ -261,11 +261,11 @@ void TVideoSettingsDialog::Init()
 	
 	// VideoSettings
 	BRect bounds(0, 0, Bounds().Width(), 200);
-	m_TabView = new TVideoSettingsTabView(m_BGView, bounds, "VideoSettingsTabView"); 
-	ASSERT(m_TabView);
-	m_TabView->SetViewColor(kBeGrey); 
+	fTabView = new TVideoSettingsTabView(fBGView, bounds, "VideoSettingsTabView"); 
+	ASSERT(fTabView);
+	fTabView->SetViewColor(kBeGrey); 
 		
-	m_BGView->AddChild(m_TabView);
+	fBGView->AddChild(fTabView);
 }
 
 
@@ -301,7 +301,7 @@ void TVideoSettingsDialog::MessageReceived(BMessage* message)
 					TCueSheetPrefs *thePrefs = cueSheet->GetCueSheetPrefs();
 					
 					// Update the prefs
-					thePrefs->m_VideoSettings = m_TempVideoSettings;
+					thePrefs->fVideoSettings = fTempVideoSettings;
 				}
 				
 				// Goodbye				
@@ -347,8 +347,8 @@ void TVideoSettingsDialog::StartCapture()
 	printf("StartCapture -ENTER-\n");
 	
 	//	Start TimeSource	
-	//BTimeSource *source = BMediaRoster::Roster()->MakeTimeSourceFor(m_TimeSource);
-	status_t err = BMediaRoster::Roster()->StartNode(m_TimeSource, 0);
+	//BTimeSource *source = BMediaRoster::Roster()->MakeTimeSourceFor(fTimeSource);
+	status_t err = BMediaRoster::Roster()->StartNode(fTimeSource, 0);
 	if (err < B_OK) 
 	{
 		//error("Couldn't start TimeSource!", err);
@@ -370,7 +370,7 @@ void TVideoSettingsDialog::StartCapture()
 void TVideoSettingsDialog::StopCapture()
 {	
 	//	Stop TimeSource	
-	status_t err = BMediaRoster::Roster()->StopNode(m_TimeSource, BTimeSource::RealTime());
+	status_t err = BMediaRoster::Roster()->StopNode(fTimeSource, BTimeSource::RealTime());
 	if (err < B_OK) 
 	{
 		//error("Couldn't start TimeSource!", err);

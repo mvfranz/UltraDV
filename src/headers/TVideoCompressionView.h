@@ -38,17 +38,17 @@ class TVideoCompressionView: public BView
 		void 	ApplyToSource();
 				
 		// Member variables
-		BRect					m_PreviewRect;
-		TVideoSettingsTabView 	*m_Parent;
-		BMenuField 				*m_CompressorMenuField;
-		BMenuField 				*m_DepthMenuField;	
-		BStringView 			*m_QualityString;		
-		BTextControl 			*m_FPSTextControl;
-		BSlider					*m_QualitySlider;
-		BCheckBox 				*m_KeyframeCheckBox;
-		BTextControl 			*m_KeyframeTextControl;
-		BCheckBox 				*m_LimitDataRateCheckBox;
-		BTextControl 			*m_LimitDataRateTextControl;
+		BRect					fPreviewRect;
+		TVideoSettingsTabView 	*fParent;
+		BMenuField 				*fCompressorMenuField;
+		BMenuField 				*fDepthMenuField;	
+		BStringView 			*fQualityString;		
+		BTextControl 			*fFPSTextControl;
+		BSlider					*fQualitySlider;
+		BCheckBox 				*fKeyframeCheckBox;
+		BTextControl 			*fKeyframeTextControl;
+		BCheckBox 				*fLimitDataRateCheckBox;
+		BTextControl 			*fLimitDataRateTextControl;
 			
 };	
 

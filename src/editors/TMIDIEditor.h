@@ -36,17 +36,17 @@ class TMIDIEditor: public BWindow
 		void		Refresh();	
 		
 		// Accessor Functions
-		inline 	TMIDIEditorView *GetEditorView(){ return m_EditorView; }	
+		inline 	TMIDIEditorView *GetEditorView(){ return fEditorView; }	
 		
 	private:			
 		// Member Variables
-		TMIDICue			*m_MIDICue;
-		BView				*m_Background;
-		TMIDIEditorView		*m_EditorView;
-		//TMIDIMixerView	*m_MIDIMixerView;
-		BScrollBar			*m_HScroll;
+		TMIDICue			*fMIDICue;
+		BView				*fBackground;
+		TMIDIEditorView		*fEditorView;
+		//TMIDIMixerView	*fMIDIMixerView;
+		BScrollBar			*fHScroll;
 		
-		int32				m_TotalTracks;
+		int32				fTotalTracks;
 					
 		// Member Functions
 		void		Init();		

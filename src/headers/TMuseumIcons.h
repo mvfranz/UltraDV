@@ -26,79 +26,79 @@ class TMuseumIcons
 		BBitmap *GetIconByName(const char *theName);
 		
 		// Icons
-		BBitmap *m_AnimationIcon16;
-		BBitmap *m_Animation32;
-		BBitmap *m_AudioIcon16;
-		BBitmap *m_AudioIcon32;
-		BBitmap *m_MIDIIcon16;
-		BBitmap *m_MIDIIcon32;
-		BBitmap *m_MovieIcon16;
-		BBitmap *m_MovieIcon32;
-		BBitmap *m_PictureIcon16;
-		BBitmap *m_PictureIcon32;
-		BBitmap *m_TextIcon16;
-		BBitmap *m_TextIcon32;
+		BBitmap *fAnimationIcon16;
+		BBitmap *fAnimation32;
+		BBitmap *fAudioIcon16;
+		BBitmap *fAudioIcon32;
+		BBitmap *fMIDIIcon16;
+		BBitmap *fMIDIIcon32;
+		BBitmap *fMovieIcon16;
+		BBitmap *fMovieIcon32;
+		BBitmap *fPictureIcon16;
+		BBitmap *fPictureIcon32;
+		BBitmap *fTextIcon16;
+		BBitmap *fTextIcon32;
 
 		// Cue
-		BBitmap *m_Unlock;
-		BBitmap *m_Lock;
-		BBitmap *m_UnlockDark;
-		BBitmap *m_LockDark;
-		BBitmap *m_VisibleUp;
-		BBitmap *m_VisibleDown;
-		BBitmap *m_TransitionIn;
-		BBitmap *m_TransitionOut;
-		BBitmap *m_PathIn;
-		BBitmap *m_PathOut;
+		BBitmap *fUnlock;
+		BBitmap *fLock;
+		BBitmap *fUnlockDark;
+		BBitmap *fLockDark;
+		BBitmap *fVisibleUp;
+		BBitmap *fVisibleDown;
+		BBitmap *fTransitionIn;
+		BBitmap *fTransitionOut;
+		BBitmap *fPathIn;
+		BBitmap *fPathOut;
 		
-		BBitmap *m_AnimationUpIcon;
-		BBitmap *m_AnimationDnIcon;
-		BBitmap *m_AudioUpIcon;
-		BBitmap *m_AudioDnIcon;
-		BBitmap *m_MIDIUpIcon;
-		BBitmap *m_MIDIDnIcon;
-		BBitmap *m_MovieUpIcon;
-		BBitmap *m_MovieDnIcon;
-		BBitmap *m_PictureUpIcon;
-		BBitmap *m_PictureDnIcon;
-		BBitmap *m_TextUpIcon;
-		BBitmap *m_TextDnIcon;
+		BBitmap *fAnimationUpIcon;
+		BBitmap *fAnimationDnIcon;
+		BBitmap *fAudioUpIcon;
+		BBitmap *fAudioDnIcon;
+		BBitmap *fMIDIUpIcon;
+		BBitmap *fMIDIDnIcon;
+		BBitmap *fMovieUpIcon;
+		BBitmap *fMovieDnIcon;
+		BBitmap *fPictureUpIcon;
+		BBitmap *fPictureDnIcon;
+		BBitmap *fTextUpIcon;
+		BBitmap *fTextDnIcon;
 		
 		// Header
-		BBitmap *m_MuteUp;
-		BBitmap *m_MuteDown;
-		BBitmap *m_SoloUp;
-		BBitmap *m_SoloDown;
-		BBitmap *m_Contract;
-		BBitmap *m_Expand;
+		BBitmap *fMuteUp;
+		BBitmap *fMuteDown;
+		BBitmap *fSoloUp;
+		BBitmap *fSoloDown;
+		BBitmap *fContract;
+		BBitmap *fExpand;
 		
 		// Transitions
-		BBitmap *m_WipeDown	;
-		BBitmap *m_WipeLeft	;
-		BBitmap *m_WipeRight;
-		BBitmap *m_WipeUp;
-		BBitmap *m_WipeBottomLeftTopRight;
-		BBitmap *m_WipeBottomRightTopLeft;
-		BBitmap *m_WipeTopLeftBottomRight;
-		BBitmap *m_WipeTopRightBottomLeft;
-		BBitmap *m_CurtainsIn;
-		BBitmap *m_CurtainsOut;
-		BBitmap *m_RevealBottomLeftTopRight;
-		BBitmap *m_RevealBottomRightTopLeft;
-		BBitmap *m_RevealTopLeftBottomRight;
-		BBitmap *m_RevealTopRightBottomLeft;
-		BBitmap *m_RevealUp;
-		BBitmap *m_RevealDown;
-		BBitmap *m_RevealLeft;
-		BBitmap *m_RevealRight;
+		BBitmap *fWipeDown	;
+		BBitmap *fWipeLeft	;
+		BBitmap *fWipeRight;
+		BBitmap *fWipeUp;
+		BBitmap *fWipeBottomLeftTopRight;
+		BBitmap *fWipeBottomRightTopLeft;
+		BBitmap *fWipeTopLeftBottomRight;
+		BBitmap *fWipeTopRightBottomLeft;
+		BBitmap *fCurtainsIn;
+		BBitmap *fCurtainsOut;
+		BBitmap *fRevealBottomLeftTopRight;
+		BBitmap *fRevealBottomRightTopLeft;
+		BBitmap *fRevealTopLeftBottomRight;
+		BBitmap *fRevealTopRightBottomLeft;
+		BBitmap *fRevealUp;
+		BBitmap *fRevealDown;
+		BBitmap *fRevealLeft;
+		BBitmap *fRevealRight;
 		
 		//	Controls
-		BBitmap *m_ExportSliderLeft;
-		BBitmap *m_ExportSliderRight;
+		BBitmap *fExportSliderLeft;
+		BBitmap *fExportSliderRight;
 		
 		//	Keyframes
-		BBitmap	*m_KeyframeOff;
-		BBitmap	*m_KeyframeOn;
+		BBitmap	*fKeyframeOff;
+		BBitmap	*fKeyframeOn;
 	
 	private:
 

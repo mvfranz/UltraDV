@@ -34,7 +34,7 @@ class TNewProject : public BWindow
 		int32 	GetSelectedItem();
 		
 		// Inlines
-		inline BList *GetPresetsList(){ return m_PresetList; }
+		inline BList *GetPresetsList(){ return fPresetList; }
 		
 	private:
 	
@@ -50,14 +50,14 @@ class TNewProject : public BWindow
 		void 	CreateDefaultPresets();
 		
 		// Member Variables		
-		MuseumApp		*m_Parent;
+		MuseumApp		*fParent;
 		
-		BView 			*m_Background;
-		TNewProjectBox	*m_SettingsBox;
-		BBox			*m_PresetsBox;
-		BScrollView		*m_PresetsListScrollView;
-		BListView		*m_PresetsListView;
-		BList			*m_PresetList;
+		BView 			*fBackground;
+		TNewProjectBox	*fSettingsBox;
+		BBox			*fPresetsBox;
+		BScrollView		*fPresetsListScrollView;
+		BListView		*fPresetsListView;
+		BList			*fPresetList;
 		
 };
 

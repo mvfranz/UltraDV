@@ -69,21 +69,21 @@ class TTimelineView: public BView, public BMediaNode
 			
 						
 		// Member variables
-		TCueSheetWindow	*m_CueSheetWindow;
-		BPoint			m_LastTick;
-		BBitmap			*m_Indicator;
-		BRect			m_IndicatorRect;
+		TCueSheetWindow	*fCueSheetWindow;
+		BPoint			fLastTick;
+		BBitmap			*fIndicator;
+		BRect			fIndicatorRect;
 		
-		thread_id		m_MouseTracker;
+		thread_id		fMouseTracker;
 		
-		bool			m_TimeToQuit;
-		bool			m_IsPlaying;
-		bool			m_IsStopping;
+		bool			fTimeToQuit;
+		bool			fIsPlaying;
+		bool			fIsStopping;
 		
-		port_id 		m_Port;
+		port_id 		fPort;
 		
-		thread_id		m_ServiceThread;
-		thread_id		m_RunThread;								
+		thread_id		fServiceThread;
+		thread_id		fRunThread;								
 };
 
 #endif

@@ -39,11 +39,11 @@ class TAudioEditorToolbar: public BView
 		void Init();
 		
 		// Member Variables		
-		TAudioEditor		*m_Parent;
+		TAudioEditor		*fParent;
 		
-		TAudioZoomInButton	*m_ZoomInButton; 
-		TAudioZoomOutButton	*m_ZoomOutButton; 
-		TAudioPlayButton	*m_PlayButton; 						
+		TAudioZoomInButton	*fZoomInButton; 
+		TAudioZoomOutButton	*fZoomOutButton; 
+		TAudioPlayButton	*fPlayButton; 						
 };
 
 #endif

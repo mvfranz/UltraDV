@@ -30,7 +30,7 @@ class TThread
 		status_t	SetPriority(long newPriority);
 		status_t	WaitForExit (long *thread_return_value);
 		
-		thread_id	ThreadID() { return m_ThreadID; }
+		thread_id	ThreadID() { return fThreadID; }
 		
 		// This is the main routine that should be implemented
 		// It is called by the Run() method when it's time to
@@ -38,7 +38,7 @@ class TThread
 		virtual	status_t	ThreadMain() = 0;
 	
 	protected:
-		thread_id	m_ThreadID;
+		thread_id	fThreadID;
 	
 	private:
 

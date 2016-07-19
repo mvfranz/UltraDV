@@ -93,50 +93,50 @@ TButtonCue::~TButtonCue()
 void TButtonCue::Init()
 {	
 	// Set up default duration
-	m_Duration = 1000;
+	fDuration = 1000;
 
 	// Set up default settings
-	m_IsLocked = false;
+	fIsLocked = false;
 	
-	m_IsSelected = false;
+	fIsSelected = false;
 	
-	m_LowColor 		= kWhite;	
-	m_HighColor 	= kBlack;	
-	m_IsPrepared 	= false;
-	m_IsPlaying 	= false;
+	fLowColor 		= kWhite;	
+	fHighColor 	= kBlack;	
+	fIsPrepared 	= false;
+	fIsPlaying 	= false;
 	
-	m_HasDuration 	= true;
-	m_CanStretch   	= true;
+	fHasDuration 	= true;
+	fCanStretch   	= true;
 	
-	m_CanWindow		= false;
-	m_CanLoop		= false;
-	m_CanEnvelope	= false;
+	fCanWindow		= false;
+	fCanLoop		= false;
+	fCanEnvelope	= false;
 	/*
-	bool			m_IsVisible;			// true if cue is visual
-	bool			m_CanCrop;				// true if cue can visual crop
-	bool			m_CanTransition;		// true if cue can transition
-	bool			m_CanTransitionOut;		// true if cue can transition out
-	bool			m_CanPath;				// true if cue can path
-	bool			m_HasEditor;			// true if cue has internal editor
+	bool			fIsVisible;			// true if cue is visual
+	bool			fCanCrop;				// true if cue can visual crop
+	bool			fCanTransition;		// true if cue can transition
+	bool			fCanTransitionOut;		// true if cue can transition out
+	bool			fCanPath;				// true if cue can path
+	bool			fHasEditor;			// true if cue has internal editor
 		
-	BRect			m_OriginalArea;			// Visual size of untouched image
-	BRect			m_Area;					// Total visual area (in stage coords).
-	BRect			m_CroppedArea;			// Crop area (in itsArea coords).
+	BRect			fOriginalArea;			// Visual size of untouched image
+	BRect			fArea;					// Total visual area (in stage coords).
+	BRect			fCroppedArea;			// Crop area (in itsArea coords).
 	*/
 	
 	// Default initialization
 	TCueView::Init();
 
 	// Add the cue to the cue channel
-	if ( m_Channel->CanInsertCue((TCueView*)this, m_InsertPoint, true))
+	if ( fChannel->CanInsertCue((TCueView*)this, fInsertPoint, true))
 	{
-		m_Channel->AddChild(this);
-		m_Channel->InsertCue(this, m_InsertPoint, m_InsertTime);		
+		fChannel->AddChild(this);
+		fChannel->InsertCue(this, fInsertPoint, fInsertTime);		
 		Select();								
 	}
 
 	// We are now fully instantiated
-	m_IsInstantiated = true;
+	fIsInstantiated = true;
 	
 }
 
@@ -350,7 +350,7 @@ void TButtonCue::LoadCueIcon()
 	{
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
 		area.OffsetBy(kResizeZoneWidth+5, 0);		
-		m_CueIcon = new TBitmapView(area, "ButtonCue", cueIcon, false);
-		AddChild(m_CueIcon);		
+		fCueIcon = new TBitmapView(area, "ButtonCue", cueIcon, false);
+		AddChild(fCueIcon);		
 	}	
 }

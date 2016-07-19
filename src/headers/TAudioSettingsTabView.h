@@ -41,17 +41,17 @@ class TAudioSettingsTabView : public BTabView
 		void 		Draw(BRect);
 	
 		// Inlines
-		inline TAudioSettingsView *GetParent(){ return m_Parent; }
+		inline TAudioSettingsView *GetParent(){ return fParent; }
 		
 	private:
 		// Member Functions
 		void Init();		
 		
 		// Member Variables
-		TAudioSettingsView		*m_Parent;
-		TAudioCompressionView 	*m_CompressionView;
-		TAudioSampleView 		*m_SampleView;
-		TAudioSourceView 		*m_SourceView;
+		TAudioSettingsView		*fParent;
+		TAudioCompressionView 	*fCompressionView;
+		TAudioSampleView 		*fSampleView;
+		TAudioSourceView 		*fSourceView;
 };
 
 #endif

@@ -55,22 +55,22 @@ TVideoSettings::~TVideoSettings()
 void TVideoSettings::Init()
 {	
 	// Compression
-	m_VideoCompressionSettings.m_Compressor = kNone;
+	fVideoCompressionSettings.fCompressor = kNone;
 
 	// Image
-	m_VideoImageSettings.m_HueValue 		= 0.5;
-	m_VideoImageSettings.m_SaturationValue	= 0.5;
-	m_VideoImageSettings.m_BrightnessValue 	= 0.5;
-	m_VideoImageSettings.m_ContrastValue 	= 0.5;
+	fVideoImageSettings.fHueValue 		= 0.5;
+	fVideoImageSettings.fSaturationValue	= 0.5;
+	fVideoImageSettings.fBrightnessValue 	= 0.5;
+	fVideoImageSettings.fContrastValue 	= 0.5;
 
 	// Source
-	m_VideoSourceSettings.m_Digitizer	= kTurboTVPhilips;
-	m_VideoSourceSettings.m_Input		= kComposite;
-	m_VideoSourceSettings.m_Format		= kNTSC_M;
+	fVideoSourceSettings.fDigitizer	= kTurboTVPhilips;
+	fVideoSourceSettings.fInput		= kComposite;
+	fVideoSourceSettings.fFormat		= kNTSC_M;
 	
-	m_VideoSourceSettings.m_Filters.m_GammaCorrection	= true;
-	m_VideoSourceSettings.m_Filters.m_LumaCoring		= true;
-	m_VideoSourceSettings.m_Filters.m_ErrorDiffusion	= true;
-	m_VideoSourceSettings.m_Filters.m_LumaComb			= true;
-	m_VideoSourceSettings.m_Filters.m_ChromaComb		= true;
+	fVideoSourceSettings.fFilters.fGammaCorrection	= true;
+	fVideoSourceSettings.fFilters.fLumaCoring		= true;
+	fVideoSourceSettings.fFilters.fErrorDiffusion	= true;
+	fVideoSourceSettings.fFilters.fLumaComb			= true;
+	fVideoSourceSettings.fFilters.fChromaComb		= true;
 }

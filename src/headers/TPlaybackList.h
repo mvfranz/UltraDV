@@ -41,8 +41,8 @@ class TPlaybackEvent
 		TPlaybackEvent();
 		~TPlaybackEvent();
 		
-		int32 	m_Time;
-		BList	m_CueEvents;	// This is a list of CueEvents, described below...
+		int32 	fTime;
+		BList	fCueEvents;	// This is a list of CueEvents, described below...
 
 	private:
 	
@@ -57,9 +57,9 @@ class TCueEvent
 		TCueEvent();
 		~TCueEvent();
 		
-		int32 		m_Time;
-		TCueView	*m_Cue;
-		BList		m_Events;		// This is a list of event BMessages
+		int32 		fTime;
+		TCueView	*fCue;
+		BList		fEvents;		// This is a list of event BMessages
 		
 	private:
 		

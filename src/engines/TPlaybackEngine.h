@@ -46,8 +46,8 @@ class TPlaybackEngine : public BMediaNode
 		BMediaAddOn	*AddOn( int32 *internal_id) const;
 		
 		//	Accessors
-		bool			IsPlaying(){ return m_IsPlaying; }
-		media_node		GetTimeSource(){ return m_TimeSource; }
+		bool			IsPlaying(){ return fIsPlaying; }
+		media_node		GetTimeSource(){ return fTimeSource; }
 			
 	private:
 		// Member Functions			
@@ -59,22 +59,22 @@ class TPlaybackEngine : public BMediaNode
 		void 			RunRoutine();
 
 		// Member varibles
-		media_node		m_TimeSource;
+		media_node		fTimeSource;
 						
-		TCueSheetView	*m_CueSheet;
+		TCueSheetView	*fCueSheet;
 				
-		bool			m_FirstTime;	// Used to track prerolls that start at an odd time
-		int32			m_ArrayIndex;
+		bool			fFirstTime;	// Used to track prerolls that start at an odd time
+		int32			fArrayIndex;
 		
-		bool			m_TimeToQuit;
-		bool			m_IsPlaying;
-		bool			m_IsStopping;
+		bool			fTimeToQuit;
+		bool			fIsPlaying;
+		bool			fIsStopping;
 		
-		uint32			m_LastTime;
+		uint32			fLastTime;
 		
-		port_id			m_Port;
-		thread_id		m_ServiceThread;
-		thread_id		m_RunThread;
+		port_id			fPort;
+		thread_id		fServiceThread;
+		thread_id		fRunThread;
 		
 };
 

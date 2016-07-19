@@ -40,7 +40,7 @@ TAudioSettingsTabView::TAudioSettingsTabView(TAudioSettingsView *parent, BRect f
 //				BTabView(frame, name, B_WIDTH_AS_USUAL, B_FOLLOW_ALL, B_WILL_DRAW|B_FULL_UPDATE_ON_RESIZE|B_NAVIGABLE_JUMP|B_FRAME_EVENTS|B_NAVIGABLE)
 				BTabView(frame, name)
 {
-	m_Parent = parent,
+	fParent = parent,
 	
 	Init();
 }
@@ -87,24 +87,24 @@ void TAudioSettingsTabView::Init()
 	BTab *compressionTab = new BTab(); 
 	theMessage = GetWindowFromResource("SoundCompressionView");
 	ASSERT(theMessage);
-	m_CompressionView = new TAudioCompressionView(theMessage);	
-	AddTab(m_CompressionView, compressionTab); 
+	fCompressionView = new TAudioCompressionView(theMessage);	
+	AddTab(fCompressionView, compressionTab); 
 	compressionTab->SetLabel("Compression"); 
 	
 	// Get SoundSampleView from resource
 	BTab *sampleTab = new BTab(); 
 	theMessage = GetWindowFromResource("SoundSampleView");
 	ASSERT(theMessage);		
-	m_SampleView = new TAudioSampleView(this, theMessage);
-	AddTab(m_SampleView, sampleTab); 
+	fSampleView = new TAudioSampleView(this, theMessage);
+	AddTab(fSampleView, sampleTab); 
 	sampleTab->SetLabel("Sample"); 
 	
 	// Get SoundSourceView from resource
 	BTab *sourceTab = new BTab();
 	theMessage = GetWindowFromResource("SoundSourceView");
 	ASSERT(theMessage);		
-	m_SourceView = new TAudioSourceView(theMessage);
-	AddTab(m_SourceView, sourceTab);
+	fSourceView = new TAudioSourceView(theMessage);
+	AddTab(fSourceView, sourceTab);
 	sourceTab->SetLabel("Source"); 
 
 }

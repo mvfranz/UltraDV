@@ -36,25 +36,25 @@ class TStageSetup : public BWindow
 		void 	GetDialogSettings();
 		
 		// Member Variables
-		TStageWindow	*m_Stage;
+		TStageWindow	*fStage;
 		
-		rgb_color		m_SaveColor; 
+		rgb_color		fSaveColor; 
 		
-		BBox			*m_DimesionsBox;
-		BBox			*m_SettingsBox;
-		BBox			*m_ColorBox;
+		BBox			*fDimesionsBox;
+		BBox			*fSettingsBox;
+		BBox			*fColorBox;
 		
-		BTextControl	*m_Width;
-		BTextControl	*m_Height;
-		BTextControl	*m_XPos;
-		BTextControl	*m_YPos;
+		BTextControl	*fWidth;
+		BTextControl	*fHeight;
+		BTextControl	*fXPos;
+		BTextControl	*fYPos;
 		
-		BTextControl	*m_TitleText;
+		BTextControl	*fTitleText;
 		
-		BCheckBox		*m_CenterCheck;	
-		BCheckBox		*m_TitleCheck;	
+		BCheckBox		*fCenterCheck;	
+		BCheckBox		*fTitleCheck;	
 		
-		BColorControl	*m_StageColor;
+		BColorControl	*fStageColor;
 	
 				
 };

@@ -74,7 +74,7 @@
 TCueSheetWindow::TCueSheetWindow(BRect bounds, int32 id) : BWindow(bounds, "Untitled", B_DOCUMENT_WINDOW, B_WILL_ACCEPT_FIRST_CLICK)
 {			
 	// Set up ID
-	m_ID = id;
+	fID = id;
 	
 	Init();
 }
@@ -95,13 +95,13 @@ TCueSheetWindow::TCueSheetWindow(BMessage *data) : BWindow (data)
 	//
 	
 	// Init Undo Engine
-	m_UndoEngine = new TUndoEngine();
+	fUndoEngine = new TUndoEngine();
 	
 	//	Set up variable settings
-	m_File = NULL;
+	fFile = NULL;
 		
 	// Dialog box state
-	m_PanelOpen 	= false;
+	fPanelOpen 	= false;
 
 	//	Update menu pointers
 	BMenuBar *badBar = (BMenuBar *)FindView("MuseumMenu");
@@ -118,32 +118,32 @@ TCueSheetWindow::TCueSheetWindow(BMessage *data) : BWindow (data)
 
 	// Create a new TMuseumMenu object and pass the  BMenuBar object in to the constructor. 
 	// Then add the individual menu items with the TMuseumMenu object
-	m_AppMenu = new TMuseumMenus(mbar);	
+	fAppMenu = new TMuseumMenus(mbar);	
 	AddChild(mbar);
 	
 	
 	//	Update pointers to child views
-	m_StageWindow		= (TStageWindow *)FindWindow("Stage");	
-	m_HeaderContainer 	= (THeaderContainerView *)FindView("HeaderContainerView");
-	m_Toolbar 			= (TToolbar *)FindView("TooolbarView");
-	m_TimeZone 			= (TCueSheetTimeView *)FindView("TimeZoneView");
-	m_ExportTimeView 	= (TExportTimeView *)FindView("ExportTimeView");
-	m_ExportZone 		= (TExportZone *)FindView("ExportZoneView");
-	m_Timeline 			= (TTimelineView *)FindView("TimelineView");
-	m_CueSheetView 		= (TCueSheetView *)FindView("CueSheetView");	
-	if (!m_CueSheetView)
-		printf("TCSW:TCSW m_CueSheetView is null!\n");
-	m_HScroll 			= (TCueSheetScrollBarH *)FindView("HCueScroll");	
-	m_VScroll 			= (TCueSheetScrollBarV *)FindView("VCueScroll");		
-	m_TimeScaler 		= (TTimeScalerView *)FindView("TimeScalerView");
+	fStageWindow		= (TStageWindow *)FindWindow("Stage");	
+	fHeaderContainer 	= (THeaderContainerView *)FindView("HeaderContainerView");
+	fToolbar 			= (TToolbar *)FindView("TooolbarView");
+	fTimeZone 			= (TCueSheetTimeView *)FindView("TimeZoneView");
+	fExportTimeView 	= (TExportTimeView *)FindView("ExportTimeView");
+	fExportZone 		= (TExportZone *)FindView("ExportZoneView");
+	fTimeline 			= (TTimelineView *)FindView("TimelineView");
+	fCueSheetView 		= (TCueSheetView *)FindView("CueSheetView");	
+	if (!fCueSheetView)
+		printf("TCSW:TCSW fCueSheetView is null!\n");
+	fHScroll 			= (TCueSheetScrollBarH *)FindView("HCueScroll");	
+	fVScroll 			= (TCueSheetScrollBarV *)FindView("VCueScroll");		
+	fTimeScaler 		= (TTimeScalerView *)FindView("TimeScalerView");
 	
 		
 	//	Match CueChannels to CueChannelHeaders
 	printf("TCSW:TCSW GetChannelList start\n");
-	for(int32 index = 0; index < m_CueSheetView->GetChannelList()->CountItems(); index++)
+	for(int32 index = 0; index < fCueSheetView->GetChannelList()->CountItems(); index++)
 	{
-		TCueChannelHeader *header 	= (TCueChannelHeader *)m_HeaderContainer->ChildAt(index);
-		TCueChannel *channel 		= (TCueChannel *)m_CueSheetView->GetChannelList()->ItemAt(index);
+		TCueChannelHeader *header 	= (TCueChannelHeader *)fHeaderContainer->ChildAt(index);
+		TCueChannel *channel 		= (TCueChannel *)fCueSheetView->GetChannelList()->ItemAt(index);
 				
 		header->SetChannel(channel);
 		channel->SetHeader(header);
@@ -152,8 +152,8 @@ TCueSheetWindow::TCueSheetWindow(BMessage *data) : BWindow (data)
 
 	
 	//	Set scrollbar targets
-	m_HScroll->SetTarget(m_CueSheetView);
-	m_VScroll->SetTarget(m_CueSheetView);
+	fHScroll->SetTarget(fCueSheetView);
+	fVScroll->SetTarget(fCueSheetView);
 		
 	// 	Adjust the scroll bars
 	AdjustScrollBars();
@@ -162,17 +162,17 @@ TCueSheetWindow::TCueSheetWindow(BMessage *data) : BWindow (data)
 	static_cast<MuseumApp *>(be_app)->GetCueSheetList()->AddItem(this);
 	
 	// 	Create playbackEngine
-	m_PlaybackEngine = new TPlaybackEngine(m_CueSheetView);	
-	ASSERT(m_PlaybackEngine);
+	fPlaybackEngine = new TPlaybackEngine(fCueSheetView);	
+	ASSERT(fPlaybackEngine);
 	
 	//	Attach palettes and stage to playbackEngine
 	//TTimePalette *timePalette = static_cast<MuseumApp*>(be_app)->GetTimePalette();
 	//ASSERT(timePalette);
-	//timePalette->GetTimePaletteView()->ConnectToPlaybackEngine(m_PlaybackEngine);
+	//timePalette->GetTimePaletteView()->ConnectToPlaybackEngine(fPlaybackEngine);
 		
 	//TTransportPalette *transport = static_cast<MuseumApp*>(be_app)->GetTransport();	
 	//ASSERT(transport);
-	//transport->GetTransportPaletteView()->ConnectToPlaybackEngine(m_PlaybackEngine);
+	//transport->GetTransportPaletteView()->ConnectToPlaybackEngine(fPlaybackEngine);
 }
 
 
@@ -185,21 +185,21 @@ TCueSheetWindow::TCueSheetWindow(BMessage *data) : BWindow (data)
 TCueSheetWindow::~TCueSheetWindow()
 {
 	// Kill Undo Engine
-	delete m_UndoEngine;
+	delete fUndoEngine;
 
 	// Close our file
-	if (m_File)
-		delete m_File;
+	if (fFile)
+		delete fFile;
 		
 	// Stop sound playback
-	if (m_AudioEngine)
-		delete m_AudioEngine;
+	if (fAudioEngine)
+		delete fAudioEngine;
 
 	// Stop playback
-	if (m_PlaybackEngine)
+	if (fPlaybackEngine)
 	{
-		//m_PlaybackEngine->Stop();
-		delete m_PlaybackEngine;
+		//fPlaybackEngine->Stop();
+		delete fPlaybackEngine;
 	}
 }
 
@@ -218,18 +218,18 @@ void TCueSheetWindow::Init()
 	status_t retVal;
 	
 	// Init Undo Engine
-	m_UndoEngine = new TUndoEngine();
+	fUndoEngine = new TUndoEngine();
 			
 	// Member file used for saves
-	m_File = NULL;
+	fFile = NULL;
 		
 	// Dialog box state
-	m_PanelOpen = false;
+	fPanelOpen = false;
 				
 	// Create the stage window	
 	BRect stageRect(0,0,320,240);
-	m_StageWindow = new TStageWindow(stageRect, this);
-	CenterWindow(m_StageWindow);
+	fStageWindow = new TStageWindow(stageRect, this);
+	CenterWindow(fStageWindow);
 	
 	// Set up menu bar
 	BRect mbarRect = Bounds();
@@ -239,7 +239,7 @@ void TCueSheetWindow::Init()
 	// Set up application menus.
 	// Create a new TMuseumMenu object and pass the  BMenuBar object in to the constructor. 
 	// Then add the individual menu items with the TMuseumMenu object
-	m_AppMenu = new TMuseumMenus(mbar);	
+	fAppMenu = new TMuseumMenus(mbar);	
 	
 	AddChild(mbar);
 
@@ -249,20 +249,20 @@ void TCueSheetWindow::Init()
 	// 	Create Toolbar.  It is always at the top of the window, below the menu.
 	BRect toolRect = Bounds();
 	toolRect.Set(toolRect.left, kMenuHeight, toolRect.right, kMenuHeight+kToolbarHeight);
-	m_Toolbar = new TToolbar(toolRect, this);
-	AddChild(m_Toolbar);
-	m_Toolbar->Show();
+	fToolbar = new TToolbar(toolRect, this);
+	AddChild(fToolbar);
+	fToolbar->Show();
 	
 	// 	Create ExportTimeView.  It is always located below the toolbar and to the
 	// 	very left of the cue sheet.  It is as wide as the cue sheet headers.
 	BRect exportTimeRect;
-	exportTimeRect.left		= m_Toolbar->Frame().left;
-	exportTimeRect.top	 	= m_Toolbar->Frame().bottom+1;
+	exportTimeRect.left		= fToolbar->Frame().left;
+	exportTimeRect.top	 	= fToolbar->Frame().bottom+1;
 	exportTimeRect.right  	= exportTimeRect.left + kHeaderWidth;
 	exportTimeRect.bottom 	= exportTimeRect.top + kExportZoneHeight + 11;
-	m_ExportTimeView = new TExportTimeView(this, exportTimeRect);
-	AddChild(m_ExportTimeView);
-	m_ExportTimeView->Show();
+	fExportTimeView = new TExportTimeView(this, exportTimeRect);
+	AddChild(fExportTimeView);
+	fExportTimeView->Show();
 			
 	// 	Create CueSheet Time Zone.  It is always located below the toolbar and to the
 	// 	very left of the cue sheet.  It is as wide as the cue sheet headers.
@@ -271,21 +271,21 @@ void TCueSheetWindow::Init()
 	zoneRect.top	= exportTimeRect.bottom+1;
 	zoneRect.right 	= zoneRect.left+kHeaderWidth;
 	zoneRect.bottom	= zoneRect.top + kTimelineHeight - 11;
-	m_TimeZone = new TCueSheetTimeView(this, zoneRect);
-	AddChild(m_TimeZone);
-	m_TimeZone->Show();
+	fTimeZone = new TCueSheetTimeView(this, zoneRect);
+	AddChild(fTimeZone);
+	fTimeZone->Show();
 		
 	//	Create ExportZone.  It is always located below the toolbar and to the right
 	//	of the TimeZone.  This is where the user determines the span of the cue sheet
 	//	to preview or export
 	BRect exportRect;
 	exportRect.left   	= zoneRect.right + 1;
-	exportRect.top    	= m_Toolbar->Frame().bottom+1;
+	exportRect.top    	= fToolbar->Frame().bottom+1;
 	exportRect.right  	= Bounds().right;
 	exportRect.bottom   = exportRect.top + kExportZoneHeight;
-	m_ExportZone = new TExportZone(exportRect, this);
-	AddChild(m_ExportZone);
-	m_ExportZone->Show();
+	fExportZone = new TExportZone(exportRect, this);
+	AddChild(fExportZone);
+	fExportZone->Show();
 	
 	// 	Create Timeline.  It is always located below the toolbar and to the right
 	//	of the TimeZone.  This is where the time is indicated and the playback head resides
@@ -294,25 +294,25 @@ void TCueSheetWindow::Init()
 	timeRect.top 	= exportRect.bottom + 1;
 	timeRect.right 	= Bounds().right;
 	timeRect.bottom = timeRect.top + kTimelineHeight;
-	m_Timeline = new TTimelineView(timeRect, this);
-	AddChild(m_Timeline);
-	m_Timeline->Show();
+	fTimeline = new TTimelineView(timeRect, this);
+	AddChild(fTimeline);
+	fTimeline->Show();
 
 	// Create Header Container View
 	BRect containerRect  = Bounds();
-	containerRect.top    = m_Timeline->Frame().bottom;
+	containerRect.top    = fTimeline->Frame().bottom;
 	containerRect.right  = containerRect.left + kHeaderWidth;
 	containerRect.bottom -= kScrollHeight+1;
-	m_HeaderContainer = new THeaderContainerView(containerRect);
-	AddChild(m_HeaderContainer);
-	m_HeaderContainer->SetViewColor(kMediumGrey);
+	fHeaderContainer = new THeaderContainerView(containerRect);
+	AddChild(fHeaderContainer);
+	fHeaderContainer->SetViewColor(kMediumGrey);
 	
 		
 	// Create cue sheet view.  Add one pixel to left to fix drawing bug with header...
-	BRect bounds = m_Timeline->Frame();
+	BRect bounds = fTimeline->Frame();
 	bounds.Set(bounds.left, bounds.bottom+1, Bounds().right-(kScrollWidth+1), Bounds().bottom - (kScrollHeight+1));
-	m_CueSheetView = new TCueSheetView(bounds, this);
-	m_CueSheetView->SetViewColor(kGrey);
+	fCueSheetView = new TCueSheetView(bounds, this);
+	fCueSheetView->SetViewColor(kGrey);
     
     	
 	//
@@ -322,27 +322,27 @@ void TCueSheetWindow::Init()
 	// Horizontal	
 	BRect scrollRect = Bounds();
 	scrollRect.Set(scrollRect.left+kTimeScalerWidth, scrollRect.bottom-kScrollHeight, scrollRect.right-kScrollWidth, scrollRect.bottom);
-	m_HScroll = new TCueSheetScrollBarH(this, scrollRect, NULL, 0, channelLength);
-	AddChild(m_HScroll);	
-	m_HScroll->SetSteps(kTickSpacing, kTickSpacing*4);
+	fHScroll = new TCueSheetScrollBarH(this, scrollRect, NULL, 0, channelLength);
+	AddChild(fHScroll);	
+	fHScroll->SetSteps(kTickSpacing, kTickSpacing*4);
 		
 	// Vertical
 	scrollRect = Bounds();
-	scrollRect.Set(scrollRect.right-kScrollWidth, scrollRect.top + ( m_Timeline->Frame().bottom+1), scrollRect.right, scrollRect.bottom-kScrollHeight);
-	m_VScroll = new TCueSheetScrollBarV(this, scrollRect, m_CueSheetView, 0, channelLength);
-	AddChild(m_VScroll);	
-	m_VScroll->SetSteps(kTickSpacing, kTickSpacing*4);
+	scrollRect.Set(scrollRect.right-kScrollWidth, scrollRect.top + ( fTimeline->Frame().bottom+1), scrollRect.right, scrollRect.bottom-kScrollHeight);
+	fVScroll = new TCueSheetScrollBarV(this, scrollRect, fCueSheetView, 0, channelLength);
+	AddChild(fVScroll);	
+	fVScroll->SetSteps(kTickSpacing, kTickSpacing*4);
 	
 	// Create TimeScaler
 	BRect scalerRect(0, Bounds().bottom-14,kTimeScalerWidth, Bounds().bottom);
-	m_TimeScaler = new TTimeScalerView(scalerRect, m_CueSheetView);
-	AddChild(m_TimeScaler);
+	fTimeScaler = new TTimeScalerView(scalerRect, fCueSheetView);
+	AddChild(fTimeScaler);
 		
 	// Limit the window size
 	SetSizeLimits( 280, 1500, 280, 1500);
 		        	
 	// Add CueSheetView to frame
-	AddChild(m_CueSheetView);
+	AddChild(fCueSheetView);
 	
 	// Adjust the scroll bars
 	AdjustScrollBars();
@@ -354,13 +354,13 @@ void TCueSheetWindow::Init()
 	BMediaRoster *roster = BMediaRoster::Roster();
 	
 	// Create PlaybackEngine and register it
-	m_PlaybackEngine = new TPlaybackEngine(m_CueSheetView);	
-	ASSERT(m_PlaybackEngine);
-	roster->RegisterNode(m_PlaybackEngine);
+	fPlaybackEngine = new TPlaybackEngine(fCueSheetView);	
+	ASSERT(fPlaybackEngine);
+	roster->RegisterNode(fPlaybackEngine);
 	
 	//	Get pointer to timesource and set playback engine to it
-	media_node timeSource = m_PlaybackEngine->GetTimeSource();
-	retVal = roster->SetTimeSourceFor(m_PlaybackEngine->Node().node, timeSource.node);
+	media_node timeSource = fPlaybackEngine->GetTimeSource();
+	retVal = roster->SetTimeSourceFor(fPlaybackEngine->Node().node, timeSource.node);
 	
 	//
 	//	Register media nodes, set their timesource and start them		
@@ -377,16 +377,16 @@ void TCueSheetWindow::Init()
 	retVal = roster->StartNode(transport->Node(), 0);
 	
 	//	TimelineView
-	retVal = roster->SetTimeSourceFor(m_Timeline->Node().node, timeSource.node);
-	retVal = roster->StartNode(m_Timeline->Node(), 0);
+	retVal = roster->SetTimeSourceFor(fTimeline->Node().node, timeSource.node);
+	retVal = roster->StartNode(fTimeline->Node(), 0);
 	
 	//	Stage
-	TStageView *stageView = m_StageWindow->GetStageView();
+	TStageView *stageView = fStageWindow->GetStageView();
 	retVal = roster->SetTimeSourceFor(stageView->Node().node, timeSource.node);
 	retVal = roster->StartNode(stageView->Node(), 0);
 		
 	//	Create audio engine
-	m_AudioEngine = new TAudioEngine();	
+	fAudioEngine = new TAudioEngine();	
 }
 
 #pragma mark -
@@ -435,7 +435,7 @@ status_t TCueSheetWindow::Archive(BMessage *data, bool deep) const
 		{				
 			//	Archive StageWindow
 			BMessage stageArchive;
-			m_StageWindow->Archive(&stageArchive, true);
+			fStageWindow->Archive(&stageArchive, true);
 			data->AddMessage("StageWindow", &stageArchive);
 					
 		}				
@@ -461,10 +461,10 @@ status_t TCueSheetWindow::Archive(BMessage *data, bool deep) const
 void TCueSheetWindow::Hide()
 {	
 	// Hide stage
-	m_StageWindow->Lock();
-	if (m_StageWindow->IsHidden() == false)
-		m_StageWindow->Hide();
-	m_StageWindow->Unlock();
+	fStageWindow->Lock();
+	if (fStageWindow->IsHidden() == false)
+		fStageWindow->Hide();
+	fStageWindow->Unlock();
 
 	// Pass up to parent
 	BWindow::Hide();				
@@ -481,10 +481,10 @@ void TCueSheetWindow::Hide()
 void TCueSheetWindow::Show()
 {
 	// Show stage
-	m_StageWindow->Lock();
-	if (m_StageWindow->IsHidden())
-		m_StageWindow->Show();
-	m_StageWindow->Unlock();
+	fStageWindow->Lock();
+	if (fStageWindow->IsHidden())
+		fStageWindow->Show();
+	fStageWindow->Unlock();
 				
 	// We are now the main Cue Sheet
 	static_cast<MuseumApp *>(be_app)->SetCueSheet(this);
@@ -512,14 +512,14 @@ void TCueSheetWindow::WindowActivated( bool activate)
 		BMessage *message = new BMessage(UPDATE_TIMELINE_MSG);
 		message->AddPoint("Where", where);
 		message->AddInt32("TheTime", GetCurrentTime());		
-		m_Timeline->MessageReceived(message);
+		fTimeline->MessageReceived(message);
 		delete message;	
 	}
 	else
 	{
 		// Tell stage to end edit mode
 		BMessage *theMessage = new BMessage(END_STAGE_EDIT_MSG);
-		m_StageWindow->PostMessage(theMessage, m_StageWindow->GetStageView());
+		fStageWindow->PostMessage(theMessage, fStageWindow->GetStageView());
 		delete theMessage;
 	}
 	
@@ -527,10 +527,10 @@ void TCueSheetWindow::WindowActivated( bool activate)
 	if (activate)
 	{
 		// Show stage
-		m_StageWindow->Lock();
-		if (m_StageWindow->IsHidden())
-			m_StageWindow->Show();
-		m_StageWindow->Unlock();
+		fStageWindow->Lock();
+		if (fStageWindow->IsHidden())
+			fStageWindow->Show();
+		fStageWindow->Unlock();
 		
 		// We are now the main Cue Sheet
 		if ( static_cast<MuseumApp *>(be_app)->GetCueSheet() != this )
@@ -538,13 +538,13 @@ void TCueSheetWindow::WindowActivated( bool activate)
 	}
 	else
 	{
-		m_StageWindow->Lock();
-		if (m_StageWindow->IsHidden() == false)
+		fStageWindow->Lock();
+		if (fStageWindow->IsHidden() == false)
 		{
 			if ( IsHidden() )
-				m_StageWindow->Hide();
+				fStageWindow->Hide();
 		}
-		m_StageWindow->Unlock();
+		fStageWindow->Unlock();
 	}
 	*/
 	
@@ -578,7 +578,7 @@ bool TCueSheetWindow::QuitRequested()
 	bool quit 	= false;	
 	
 	// Ask user to save document
-	if (m_CueSheetView->IsDirty())
+	if (fCueSheetView->IsDirty())
 	{
 		long userVal = SaveAlert();
 		
@@ -587,7 +587,7 @@ bool TCueSheetWindow::QuitRequested()
 		{
 			// User does not want to save
 			case 0:
-				m_CueSheetView->SetDirty(false);
+				fCueSheetView->SetDirty(false);
 				retVal = true;
 				break;
 			
@@ -646,7 +646,7 @@ bool TCueSheetWindow::MyQuitRequested()
 	bool quit 	= false;
 	
 	// Ask user to save document
-	if (m_CueSheetView->IsDirty())
+	if (fCueSheetView->IsDirty())
 	{
 		long userVal = SaveAlert();
 		
@@ -655,7 +655,7 @@ bool TCueSheetWindow::MyQuitRequested()
 		{
 			// User does not want to save
 			case 0:
-				m_CueSheetView->SetDirty(false);
+				fCueSheetView->SetDirty(false);
 				retVal = true;
 				break;
 			
@@ -713,7 +713,7 @@ void TCueSheetWindow::MessageReceived(BMessage* message)
 		// These messages come from the transport
 		case START_BUTTON_MSG:		
 			{				
-				m_CueSheetView->SetCurrentTime( StartTime() );
+				fCueSheetView->SetCurrentTime( StartTime() );
 												
 				// Inform Transport
 				BMessage *theMessage = new BMessage(UPDATE_TIMELINE_MSG);
@@ -734,7 +734,7 @@ void TCueSheetWindow::MessageReceived(BMessage* message)
 				if (newTime < StartTime())
 					newTime = StartTime();
 									
-				m_CueSheetView->SetCurrentTime(newTime);
+				fCueSheetView->SetCurrentTime(newTime);
 																	
 				// Inform Transport
 				BMessage *theMessage = new BMessage(UPDATE_TIMELINE_MSG);
@@ -767,7 +767,7 @@ void TCueSheetWindow::MessageReceived(BMessage* message)
 				if (newTime > StartTime() + Duration())
 					newTime = StartTime() + Duration();
 									
-				m_CueSheetView->SetCurrentTime(newTime);
+				fCueSheetView->SetCurrentTime(newTime);
 																	
 				// Inform Transport
 				BMessage *theMessage = new BMessage(UPDATE_TIMELINE_MSG);
@@ -783,7 +783,7 @@ void TCueSheetWindow::MessageReceived(BMessage* message)
 			
 		case END_BUTTON_MSG:
 			{
-				m_CueSheetView->SetCurrentTime(StartTime() + Duration());
+				fCueSheetView->SetCurrentTime(StartTime() + Duration());
 																	
 				// Inform Transport
 				BMessage *theMessage = new BMessage(UPDATE_TIMELINE_MSG);
@@ -802,13 +802,13 @@ void TCueSheetWindow::MessageReceived(BMessage* message)
 				Lock();
 				
 				// Get start and duration in pixels
-				int32 startPixels 	 = TimeToPixels( m_CueSheetView->StartTime(), GetCurrentTimeFormat(), GetCurrentResolution());
-				int32 durationPixels = TimeToPixels( m_CueSheetView->Duration(), GetCurrentTimeFormat(), GetCurrentResolution());
+				int32 startPixels 	 = TimeToPixels( fCueSheetView->StartTime(), GetCurrentTimeFormat(), GetCurrentResolution());
+				int32 durationPixels = TimeToPixels( fCueSheetView->Duration(), GetCurrentTimeFormat(), GetCurrentResolution());
 				int32 resizePixels 	 = durationPixels - startPixels; 
 				
-				m_CueSheetView->ResolutionChanged(message);
-				m_ExportZone->ResolutionChanged(resizePixels);
-				m_Timeline->ResolutionChanged(resizePixels);
+				fCueSheetView->ResolutionChanged(message);
+				fExportZone->ResolutionChanged(resizePixels);
+				fTimeline->ResolutionChanged(resizePixels);
 				
 				// Update scroll bars								
 				AdjustScrollBars();
@@ -864,14 +864,14 @@ void TCueSheetWindow::AdjustFileMenu()
 	// Get application
 	MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
 
-	BMenu *theMenu = m_AppMenu->GetFileMenu();
+	BMenu *theMenu = fAppMenu->GetFileMenu();
 	if (theMenu)
 	{	
 		// Save item
 		BMenuItem *saveItem = theMenu->FindItem(FILE_SAVE_MSG);
 		if (saveItem)
 		{
-			if (m_CueSheetView->IsDirty())
+			if (fCueSheetView->IsDirty())
 				saveItem->SetEnabled(true);
 			else
 				saveItem->SetEnabled(false);			
@@ -881,7 +881,7 @@ void TCueSheetWindow::AdjustFileMenu()
 		BMenuItem *revertItem = theMenu->FindItem(FILE_REVERT_MSG);
 		if (saveItem)
 		{
-			if (m_CueSheetView->IsDirty())
+			if (fCueSheetView->IsDirty())
 				revertItem->SetEnabled(true);
 			else
 				revertItem->SetEnabled(false);			
@@ -903,14 +903,14 @@ void TCueSheetWindow::AdjustEditMenu()
 	// Get application
 	MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
 
-	BMenu *theMenu = m_AppMenu->GetEditMenu();
+	BMenu *theMenu = fAppMenu->GetEditMenu();
 	if (theMenu)
 	{	
 		// 	Undo Item	
 		BMenuItem *undoItem = theMenu->FindItem(EDIT_UNDO_MSG);		
 		if (undoItem)
 		{
-			if (m_UndoEngine->CanUndo())
+			if (fUndoEngine->CanUndo())
 				undoItem->SetEnabled(true);
 			else
 				undoItem->SetEnabled(false);		
@@ -920,24 +920,24 @@ void TCueSheetWindow::AdjustEditMenu()
 		// Enable if any items are selected
 		BMenuItem *cutItem = theMenu->FindItem(EDIT_CUT_MSG);
 		if (cutItem)
-			cutItem->SetEnabled( m_CueSheetView->ItemsSelected() );
+			cutItem->SetEnabled( fCueSheetView->ItemsSelected() );
 		
 		// Copy
 		// Enable if any items are selected
 		BMenuItem *copyItem = theMenu->FindItem(EDIT_COPY_MSG);
 		if (copyItem)			
-			copyItem->SetEnabled( m_CueSheetView->ItemsSelected() );
+			copyItem->SetEnabled( fCueSheetView->ItemsSelected() );
 			
 		// Paste
 		// Enable if there is anything on the clipboard
 		BMenuItem *pasteItem = theMenu->FindItem(EDIT_PASTE_MSG);
 		if (pasteItem)
-			pasteItem->SetEnabled( static_cast<MuseumApp *>(be_app)->m_Clipboard->HasData() );
+			pasteItem->SetEnabled( static_cast<MuseumApp *>(be_app)->fClipboard->HasData() );
 			
 		// Clear
 		BMenuItem *clearItem = theMenu->FindItem(EDIT_CLEAR_MSG);
 		if (clearItem)
-			clearItem->SetEnabled( m_CueSheetView->ItemsSelected() );
+			clearItem->SetEnabled( fCueSheetView->ItemsSelected() );
 			
 		// Select All
 		// Enable if there is anything to be selected
@@ -945,7 +945,7 @@ void TCueSheetWindow::AdjustEditMenu()
 		if (selectAllItem)
 		{
 			// Enable this item if there are any cues to be selected
-			selectAllItem->SetEnabled( m_CueSheetView->HasCues() );
+			selectAllItem->SetEnabled( fCueSheetView->HasCues() );
 		}
 	}
 }
@@ -963,7 +963,7 @@ void TCueSheetWindow::AdjustCueSheetMenu()
 	// Get application
 	MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
 
-	BMenu *theMenu = m_AppMenu->GetCueSheetMenu();
+	BMenu *theMenu = fAppMenu->GetCueSheetMenu();
 	if (theMenu)
 	{	
 		// 	Setup Item	
@@ -992,7 +992,7 @@ void TCueSheetWindow::AdjustCueSheetMenu()
 		if (showDurationsItem)		
 		{
 			// Enable this item if there are any cues to be selected
-			showDurationsItem->SetEnabled( m_CueSheetView->HasCues() );
+			showDurationsItem->SetEnabled( fCueSheetView->HasCues() );
 		}
 		
 		// 	Show Stop Time Item	
@@ -1000,7 +1000,7 @@ void TCueSheetWindow::AdjustCueSheetMenu()
 		if (showStopTimeItem)
 		{
 			// Enable this item if there are any cues to be selected
-			showStopTimeItem->SetEnabled( m_CueSheetView->HasCues() );
+			showStopTimeItem->SetEnabled( fCueSheetView->HasCues() );
 		}
 
 
@@ -1014,7 +1014,7 @@ void TCueSheetWindow::AdjustCueSheetMenu()
 		if (deleteItem)
 		{
 			//  If we only have one channel, disable this item
-			if (m_CueSheetView->GetTotalChannels() > 1)
+			if (fCueSheetView->GetTotalChannels() > 1)
 				deleteItem->SetEnabled(true);
 			else
 				deleteItem->SetEnabled(false);
@@ -1033,7 +1033,7 @@ void TCueSheetWindow::AdjustCueSheetMenu()
 		{
 			//  A cue in two or more distinct channels must be selected for this
 			//	command to be enable
-			if ( m_CueSheetView->HasMultipleCueChannelsSelected() )
+			if ( fCueSheetView->HasMultipleCueChannelsSelected() )
 				startItem->SetEnabled(true);
 			else
 				startItem->SetEnabled(false);
@@ -1045,7 +1045,7 @@ void TCueSheetWindow::AdjustCueSheetMenu()
 		{
 			//  A cue in two or more distinct channels must be selected for this
 			//	command to be enable
-			if ( m_CueSheetView->HasMultipleCueChannelsSelected() )
+			if ( fCueSheetView->HasMultipleCueChannelsSelected() )
 				endItem->SetEnabled(true);
 			else
 				endItem->SetEnabled(false);
@@ -1077,56 +1077,56 @@ void TCueSheetWindow::AdjustCueMenu()
 	// Get application
 	MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
 
-	BMenu *theMenu = m_AppMenu->GetCueMenu();
+	BMenu *theMenu = fAppMenu->GetCueMenu();
 	if (theMenu)
 	{	
 		//	Get Cue Info
 		// Enable if any items are selected
 		BMenuItem *cueInfoItem = theMenu->FindItem(CUESHEET_GETINFO_MSG);
 		if (cueInfoItem)
-			cueInfoItem->SetEnabled( m_CueSheetView->ItemsSelected() );
+			cueInfoItem->SetEnabled( fCueSheetView->ItemsSelected() );
 
 		//	Default Cue Setup
 		// Enable if any items are selected
 		//BMenuItem *cueInfoItem = theMenu->FindItem(CUESHEET_GETINFO_MSG);
 		//if (cueInfoItem)
-		//	cueInfoItem->SetEnabled( m_CueSheetView->ItemsSelected() );
+		//	cueInfoItem->SetEnabled( fCueSheetView->ItemsSelected() );
 
 		//	Show Cue Contents
 		// Enable if any items are selected
 		BMenuItem *showContentsItem = theMenu->FindItem(CUESHEET_SHOWCONTENTS_MSG);
 		if (showContentsItem)
-			showContentsItem->SetEnabled( m_CueSheetView->ItemsSelected() );
+			showContentsItem->SetEnabled( fCueSheetView->ItemsSelected() );
 
 		//	Show All Cue Contents
 		// Enable if we have cues
 		BMenuItem *showAllContentsItem = theMenu->FindItem(CUESHEET_SHOWALLCONTENTS_MSG);
 		if (showAllContentsItem)
-			showAllContentsItem->SetEnabled( m_CueSheetView->HasCues() );
+			showAllContentsItem->SetEnabled( fCueSheetView->HasCues() );
 
 		//	Hide All Cue Contents
 		// Enable if we have cues
 		BMenuItem *hideAllContentsItem = theMenu->FindItem(CUESHEET_HIDEALLCONTENTS_MSG);
 		if (hideAllContentsItem)
-			hideAllContentsItem->SetEnabled( m_CueSheetView->HasCues() );
+			hideAllContentsItem->SetEnabled( fCueSheetView->HasCues() );
 
 		//	Cue Setup
 		// Enable if any items are selected
 		BMenuItem *setupItem = theMenu->FindItem(CUESHEET_SETUP_MSG);
 		if (setupItem)
-			setupItem->SetEnabled( m_CueSheetView->ItemsSelected() );
+			setupItem->SetEnabled( fCueSheetView->ItemsSelected() );
 
 		//	Open Cue Editor
 		// Enable if any items are selected
 		BMenuItem *editItem = theMenu->FindItem(CUESHEET_EDIT_MSG);
 		if (editItem)
-			editItem->SetEnabled( m_CueSheetView->ItemsSelected() );
+			editItem->SetEnabled( fCueSheetView->ItemsSelected() );
 
 		//	Add Keyframes
 		// Enable if any items are selected
 		BMenuItem *keyframeItem = theMenu->FindItem(CUESHEET_KEYFRAME_MSG);
 		if (keyframeItem)
-			keyframeItem->SetEnabled( m_CueSheetView->ItemsSelected() );
+			keyframeItem->SetEnabled( fCueSheetView->ItemsSelected() );
 	}
 }
 
@@ -1143,7 +1143,7 @@ void TCueSheetWindow::AdjustStageMenu()
 	// Get application
 	MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
 
-	BMenu *theMenu = m_AppMenu->GetStageMenu();
+	BMenu *theMenu = fAppMenu->GetStageMenu();
 	if (theMenu)
 	{	
 		// 	Stage Item	
@@ -1153,7 +1153,7 @@ void TCueSheetWindow::AdjustStageMenu()
 		//	Live Drag Item
 		BMenuItem *updateItem = theMenu->FindItem(STAGE_LUPDATE_MSG);
 		if (updateItem)
-			updateItem->SetMarked( m_CueSheetView->GetLiveUpdate() );		
+			updateItem->SetMarked( fCueSheetView->GetLiveUpdate() );		
 	}
 }
 
@@ -1175,14 +1175,14 @@ void TCueSheetWindow::AdjustWindowsMenu()
 	// Get application
 	MuseumApp *theApp = static_cast<MuseumApp *>(be_app);
 
-	BMenu *theMenu = m_AppMenu->GetWindowsMenu();
+	BMenu *theMenu = fAppMenu->GetWindowsMenu();
 	if (theMenu)
 	{	
 		// 	Stage Item	
 		BMenuItem *stageItem = theMenu->FindItem(WINDOWS_STAGE_MSG);		
 		if (stageItem)
 		{
-			TStageWindow *stage = m_StageWindow;
+			TStageWindow *stage = fStageWindow;
 			if (stage)
 			{
 				stage->Lock();
@@ -1307,31 +1307,31 @@ void TCueSheetWindow::AdjustWindowsMenu()
 void TCueSheetWindow::AdjustScrollBars()
 {	
 	const BRect scrollRect = Bounds();
-	const BRect scrollArea = m_CueSheetView->Bounds();
+	const BRect scrollArea = fCueSheetView->Bounds();
 	
-	int16 timeFormat = m_CueSheetView->GetTimeFormat();
-	int16 resolution = m_CueSheetView->GetResolution();
+	int16 timeFormat = fCueSheetView->GetTimeFormat();
+	int16 resolution = fCueSheetView->GetResolution();
 	
 	// Get start and duration in pixels
-	int32 startPixels 	 = TimeToPixels( m_CueSheetView->StartTime(), m_CueSheetView->GetTimeFormat(), m_CueSheetView->GetResolution());
-	int32 durationPixels = TimeToPixels( m_CueSheetView->Duration(),  m_CueSheetView->GetTimeFormat(), m_CueSheetView->GetResolution());
+	int32 startPixels 	 = TimeToPixels( fCueSheetView->StartTime(), fCueSheetView->GetTimeFormat(), fCueSheetView->GetResolution());
+	int32 durationPixels = TimeToPixels( fCueSheetView->Duration(),  fCueSheetView->GetTimeFormat(), fCueSheetView->GetResolution());
 	int32 resizePixels 	 = durationPixels - startPixels; 
 
 	// Adjust horizontal scrollbar
-	AdjustScrollBar( m_HScroll, scrollRect.Width(), kTickSpacing, resizePixels+kTimeScalerWidth+1, scrollRect.left);
+	AdjustScrollBar( fHScroll, scrollRect.Width(), kTickSpacing, resizePixels+kTimeScalerWidth+1, scrollRect.left);
 	
 	// 	Vertical scrollbar area is total combined height of all channels
 	//	Iterate through all of the channels and calculate height
 	int32 totalHeight = 0;
-	for (int32 index = 0; index < m_CueSheetView->GetTotalChannels(); index++)
+	for (int32 index = 0; index < fCueSheetView->GetTotalChannels(); index++)
 	{
-		TCueChannel *theChannel = (TCueChannel *)m_CueSheetView->GetChannelList()->ItemAt(index);			
+		TCueChannel *theChannel = (TCueChannel *)fCueSheetView->GetChannelList()->ItemAt(index);			
 		if (theChannel)
 			totalHeight += theChannel->Bounds().Height();
 	}
 		
 	// Adjust vertical scrollbar
-	AdjustScrollBar( m_VScroll, scrollRect.Height()-(kTimelineHeight+kToolbarHeight+kMenuHeight+10), kTickSpacing, totalHeight+kTimelineHeight+kToolbarHeight+kMenuHeight+1, scrollRect.top);
+	AdjustScrollBar( fVScroll, scrollRect.Height()-(kTimelineHeight+kToolbarHeight+kMenuHeight+10), kTickSpacing, totalHeight+kTimelineHeight+kToolbarHeight+kMenuHeight+1, scrollRect.top);
 }
 
 #pragma mark -
@@ -1361,19 +1361,19 @@ void TCueSheetWindow::Save(BMessage *message)
 	// Create a BDirectory object
 	BDirectory saveDir(&theRef);
 												
-	// Now create the file.  Create new file if m_File is unitialized.
-	if (m_File)
-		delete m_File;
+	// Now create the file.  Create new file if fFile is unitialized.
+	if (fFile)
+		delete fFile;
 	
-	m_File = new BFile();
+	fFile = new BFile();
 	
-	myErr = saveDir.CreateFile(theString, m_File, false);
+	myErr = saveDir.CreateFile(theString, fFile, false);
 	
 	if (myErr != B_OK)
 		return;
 	
 	//	Write out file header
-	//WriteHeader(m_File);
+	//WriteHeader(fFile);
 	
 	BMessage archive;
 	
@@ -1383,10 +1383,10 @@ void TCueSheetWindow::Save(BMessage *message)
 	
 	//	Flatten and write out to file
 	status_t numBytes;
-	cueSheetArchive.Flatten(m_File, &numBytes); 
+	cueSheetArchive.Flatten(fFile, &numBytes); 
 	
 	// Set file type
-	BNodeInfo info(m_File);
+	BNodeInfo info(fFile);
 	if ( info.InitCheck() )
 		return;
 	
@@ -1403,12 +1403,12 @@ void TCueSheetWindow::Save(BMessage *message)
 	delete largeIcon;
 	
 	// Update our entry in the Windows menu to reflect possible new filename
-	BMenuItem *theItem = m_AppMenu->GetWindowsMenu()->FindItem( Title());
+	BMenuItem *theItem = fAppMenu->GetWindowsMenu()->FindItem( Title());
 	if (theItem)
 		theItem->SetLabel(theString);
 	
 	// We aren't dirty now
-	m_CueSheetView->SetDirty(false);
+	fCueSheetView->SetDirty(false);
 }
 
 
@@ -1473,7 +1473,7 @@ void TCueSheetWindow::Cut()
 
 void TCueSheetWindow::Copy()
 {
-	m_CueSheetView->Copy();
+	fCueSheetView->Copy();
 }
 
 
@@ -1486,7 +1486,7 @@ void TCueSheetWindow::Copy()
 
 void TCueSheetWindow::Paste()
 {
-	m_CueSheetView->Paste();
+	fCueSheetView->Paste();
 }
 
 
@@ -1499,7 +1499,7 @@ void TCueSheetWindow::Paste()
 
 void TCueSheetWindow::Clear()
 {
-	m_CueSheetView->Clear();
+	fCueSheetView->Clear();
 }
 
 
@@ -1512,7 +1512,7 @@ void TCueSheetWindow::Clear()
 
 void TCueSheetWindow::SelectAll()
 {
-	m_CueSheetView->SelectAll();
+	fCueSheetView->SelectAll();
 }
 
 
@@ -1523,21 +1523,21 @@ void TCueSheetWindow::SelectAll()
 //	SetPanelOpen
 //---------------------------------------------------------------------
 //
-//	Set m_PanelOpen to the value
+//	Set fPanelOpen to the value
 //
 
 void TCueSheetWindow::SetPanelOpen(bool theVal)
 {
-	m_PanelOpen = theVal;
+	fPanelOpen = theVal;
 	
-	if (m_PanelOpen == false)
+	if (fPanelOpen == false)
 	{
 		BPoint where;
 		where.x = 0;
 		BMessage *message = new BMessage(UPDATE_TIMELINE_MSG);
 		message->AddPoint("Where", where);
 		message->AddInt32("TheTime", GetCurrentTime());		
-		m_Timeline->MessageReceived(message);
+		fTimeline->MessageReceived(message);
 		delete message;		
 	}
 }

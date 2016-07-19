@@ -74,10 +74,10 @@ TStagePictureCue::TStagePictureCue(BMessage *theMessage) : TStageCue(theMessage)
 TStagePictureCue::~TStagePictureCue()
 {
 	// Stop and clean up transitions
-	if (m_Transition)
+	if (fTransition)
 	{
-		delete m_Transition;
-		m_Transition = NULL;
+		delete fTransition;
+		fTransition = NULL;
 	}
 	
 }
@@ -94,7 +94,7 @@ void TStagePictureCue::Init()
 	// Set up resize zone rects
 	SetResizeZones();
 	
-	m_Transition = NULL;
+	fTransition = NULL;
 	
 }
 
@@ -156,12 +156,12 @@ status_t TStagePictureCue::Archive(BMessage *data, bool deep) const
 
 void TStagePictureCue::Draw(BRect updateRect)
 {	
-	if ( (m_Bitmap) && IsCueHidden() == true &&!IsHidden() )
+	if ( (fBitmap) && IsCueHidden() == true &&!IsHidden() )
 	{
 		rgb_color saveColor = HighColor();
 				
 		// Draw bitmap 
-		DrawBitmap(m_Offscreen, B_ORIGIN);
+		DrawBitmap(fOffscreen, B_ORIGIN);
 		
 		// Data selection and resizing rect
 		DrawSelectionRect();
@@ -181,22 +181,22 @@ void TStagePictureCue::Draw(BRect updateRect)
 void TStagePictureCue::DrawData(BRect updateRect, long theTime)
 {	
 	// Do not draw if cue or channel is muted
-	if ( m_ChannelCue->GetChannel()->GetMute() )
+	if ( fChannelCue->GetChannel()->GetMute() )
 		return;
 	
-	if ( m_Bitmap && IsCueHidden() == false && IsHidden() == true)
+	if ( fBitmap && IsCueHidden() == false && IsHidden() == true)
 	{
-		BRect area = m_ChannelCue->GetCroppedArea();
+		BRect area = fChannelCue->GetCroppedArea();
 		
 		// Set up environment
 		BRegion clipRegion, saveRegion;
 		Parent()->GetClippingRegion(&saveRegion);
-		clipRegion.Set(m_ChannelCue->GetCroppedArea());
+		clipRegion.Set(fChannelCue->GetCroppedArea());
 		Parent()->ConstrainClippingRegion( &clipRegion );
 	
 		// Draw bitmap
 		BPoint thePt(area.left, area.top); 
-		Parent()->DrawBitmap(m_Offscreen, thePt);
+		Parent()->DrawBitmap(fOffscreen, thePt);
 		
 		// Restore
 		Parent()->ConstrainClippingRegion(&saveRegion);
@@ -214,22 +214,22 @@ void TStagePictureCue::DrawData(BRect updateRect, long theTime)
 void TStagePictureCue::CompositeData(BRect updateRect, BView *offscreen)
 {	
 	// Do not draw if cue or channel is muted
-//	if ( m_ChannelCue->GetChannel()->GetMute() )
+//	if ( fChannelCue->GetChannel()->GetMute() )
 //		return;
 	
-//	if ( m_Bitmap && IsCueHidden() == false && IsHidden() == true)
+//	if ( fBitmap && IsCueHidden() == false && IsHidden() == true)
 	{
-		BRect area = m_ChannelCue->GetCroppedArea();
+		BRect area = fChannelCue->GetCroppedArea();
 		
 		// Set up environment
 		BRegion clipRegion, saveRegion;
 		offscreen->GetClippingRegion(&saveRegion);
-		clipRegion.Set(m_ChannelCue->GetCroppedArea());
+		clipRegion.Set(fChannelCue->GetCroppedArea());
 		offscreen->ConstrainClippingRegion( &clipRegion );
 	
 		// Draw bitmap
 		BPoint thePt(area.left, area.top); 
-		offscreen->DrawBitmap(m_Offscreen, thePt);
+		offscreen->DrawBitmap(fOffscreen, thePt);
 		
 		// Restore
 		offscreen->ConstrainClippingRegion(&saveRegion);
@@ -285,8 +285,8 @@ void TStagePictureCue::MouseDown(BPoint where)
 			}
 				
 			// Update the picture rects
-			m_ChannelCue->SetArea( Frame() );
-			m_ChannelCue->SetCroppedArea( Frame() );
+			fChannelCue->SetArea( Frame() );
+			fChannelCue->SetCroppedArea( Frame() );
 			break;
 			
 		// Show stage cue menu
@@ -328,24 +328,24 @@ void TStagePictureCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_
 		return;
 		
 	// Set proper cursor for resize zones
-	if ( m_TopLeftResize.Contains(where) )
-		be_app->SetCursor( &((MuseumApp*)be_app)->m_ResizeDiagRightCursor);
-	else if ( m_TopMiddleResize.Contains(where) )
-		be_app->SetCursor( &((MuseumApp*)be_app)->m_SizeVertCursor);
-	else if ( m_TopRightResize.Contains(where) )
-		be_app->SetCursor( &((MuseumApp*)be_app)->m_ResizeDiagLeftCursor);
-	else if ( m_RightMiddleResize.Contains(where) )
-		be_app->SetCursor( &((MuseumApp*)be_app)->m_SizeHorzCursor);		
-	else if ( m_RightMiddleResize.Contains(where) )
-		be_app->SetCursor( &((MuseumApp*)be_app)->m_SizeHorzCursor);		
-	else if ( m_BottomRightResize.Contains(where) )
-		be_app->SetCursor( &((MuseumApp*)be_app)->m_ResizeDiagRightCursor);
-	else if ( m_BottomMiddleResize.Contains(where) )
-		be_app->SetCursor( &((MuseumApp*)be_app)->m_SizeVertCursor);
-	else if ( m_BottomLeftResize.Contains(where) )
-		be_app->SetCursor( &((MuseumApp*)be_app)->m_ResizeDiagLeftCursor);
-	else if ( m_LeftMiddleResize.Contains(where) )
-		be_app->SetCursor( &((MuseumApp*)be_app)->m_SizeHorzCursor);		
+	if ( fTopLeftResize.Contains(where) )
+		be_app->SetCursor( &((MuseumApp*)be_app)->fResizeDiagRightCursor);
+	else if ( fTopMiddleResize.Contains(where) )
+		be_app->SetCursor( &((MuseumApp*)be_app)->fSizeVertCursor);
+	else if ( fTopRightResize.Contains(where) )
+		be_app->SetCursor( &((MuseumApp*)be_app)->fResizeDiagLeftCursor);
+	else if ( fRightMiddleResize.Contains(where) )
+		be_app->SetCursor( &((MuseumApp*)be_app)->fSizeHorzCursor);		
+	else if ( fRightMiddleResize.Contains(where) )
+		be_app->SetCursor( &((MuseumApp*)be_app)->fSizeHorzCursor);		
+	else if ( fBottomRightResize.Contains(where) )
+		be_app->SetCursor( &((MuseumApp*)be_app)->fResizeDiagRightCursor);
+	else if ( fBottomMiddleResize.Contains(where) )
+		be_app->SetCursor( &((MuseumApp*)be_app)->fSizeVertCursor);
+	else if ( fBottomLeftResize.Contains(where) )
+		be_app->SetCursor( &((MuseumApp*)be_app)->fResizeDiagLeftCursor);
+	else if ( fLeftMiddleResize.Contains(where) )
+		be_app->SetCursor( &((MuseumApp*)be_app)->fSizeHorzCursor);		
 	else
 		be_app->SetCursor(B_HAND_CURSOR);		
 }
@@ -431,17 +431,17 @@ void TStagePictureCue::SetBitmap(BBitmap *bitmap)
 {
 	if (bitmap)
 	{
-		m_Bitmap = bitmap;	
+		fBitmap = bitmap;	
 		
 		// Create offscreen bitmap and view		
-		m_Offscreen = new BBitmap( m_Bitmap->Bounds(), m_Bitmap->ColorSpace(), true, false);
+		fOffscreen = new BBitmap( fBitmap->Bounds(), fBitmap->ColorSpace(), true, false);
 		
-		m_OffscreenView = new BView( m_Bitmap->Bounds(), "OffscreenView", B_FOLLOW_NONE, NULL);
-		m_Offscreen->AddChild(m_OffscreenView);
-		m_OffscreenView->Looper()->Lock();
-		m_OffscreenView->DrawBitmap(m_Bitmap);
-		m_OffscreenView->Sync();
-		m_OffscreenView->Looper()->Unlock();
+		fOffscreenView = new BView( fBitmap->Bounds(), "OffscreenView", B_FOLLOW_NONE, NULL);
+		fOffscreen->AddChild(fOffscreenView);
+		fOffscreenView->Looper()->Lock();
+		fOffscreenView->DrawBitmap(fBitmap);
+		fOffscreenView->Sync();
+		fOffscreenView->Looper()->Unlock();
 	}
 }
 
@@ -482,15 +482,15 @@ void TStagePictureCue::MessageReceived(BMessage *message)
 		
 void TStagePictureCue::SetVisibility(double theTime)
 {
-	double cueStartTime = m_ChannelCue->GetStartTime();
-	double cueEndTime 	= m_ChannelCue->GetStartTime() + m_ChannelCue->GetDuration();
+	double cueStartTime = fChannelCue->GetStartTime();
+	double cueEndTime 	= fChannelCue->GetStartTime() + fChannelCue->GetDuration();
 					
 	// Is the current time before the cue's start time or after the cue's end time?
 	if (theTime < cueStartTime || theTime >= cueEndTime )
 	{
 		if ( IsCueHidden() == false)
 		{
-			m_IsHidden = true;
+			fIsHidden = true;
 			UpdatePictureCueRegion(theTime);
 		}
 	}
@@ -500,7 +500,7 @@ void TStagePictureCue::SetVisibility(double theTime)
 		if ( IsCueHidden() == true)
 		{
 			// Set it's hidden flag to false
-			m_IsHidden = false;			
+			fIsHidden = false;			
 			UpdatePictureCueRegion(theTime);			
 		}
 	}
@@ -519,7 +519,7 @@ void TStagePictureCue::SetVisibility(double theTime)
 void TStagePictureCue::UpdatePictureCueRegion(double theTime)
 {
 	// Determine channelID
-	int32 cueChannelID = m_ChannelCue->GetChannelID();
+	int32 cueChannelID = fChannelCue->GetChannelID();
 	
 	// Get total channels
 	int32 totalChannels = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView()->GetTotalChannels();
@@ -529,7 +529,7 @@ void TStagePictureCue::UpdatePictureCueRegion(double theTime)
 	//	other area rects in higher channels than us.  We wil then break 
 	//	the region down into rects and invalidate them.		
 	BRegion invalRegion;
-	invalRegion.Include(m_ChannelCue->GetArea());
+	invalRegion.Include(fChannelCue->GetArea());
 	
 	for(int32 index = cueChannelID+1; index <= totalChannels; index++)
 	{
@@ -577,25 +577,25 @@ void TStagePictureCue::DrawSelectionRect()
 	
 	// Fill them first...
 	SetHighColor(kWhite);	
-	FillRect(m_TopLeftResize);
-	FillRect(m_TopMiddleResize);
-	FillRect(m_TopRightResize);
-	FillRect(m_RightMiddleResize);
-	FillRect(m_BottomRightResize);
-	FillRect(m_BottomMiddleResize);
-	FillRect(m_BottomLeftResize);
-	FillRect(m_LeftMiddleResize);
+	FillRect(fTopLeftResize);
+	FillRect(fTopMiddleResize);
+	FillRect(fTopRightResize);
+	FillRect(fRightMiddleResize);
+	FillRect(fBottomRightResize);
+	FillRect(fBottomMiddleResize);
+	FillRect(fBottomLeftResize);
+	FillRect(fLeftMiddleResize);
 	
 	// Now stroke...	
 	SetHighColor(kBlack);
-	StrokeRect(m_TopLeftResize);
-	StrokeRect(m_TopMiddleResize);
-	StrokeRect(m_TopRightResize);
-	StrokeRect(m_RightMiddleResize);
-	StrokeRect(m_BottomRightResize);
-	StrokeRect(m_BottomMiddleResize);
-	StrokeRect(m_BottomLeftResize);
-	StrokeRect(m_LeftMiddleResize);
+	StrokeRect(fTopLeftResize);
+	StrokeRect(fTopMiddleResize);
+	StrokeRect(fTopRightResize);
+	StrokeRect(fRightMiddleResize);
+	StrokeRect(fBottomRightResize);
+	StrokeRect(fBottomMiddleResize);
+	StrokeRect(fBottomLeftResize);
+	StrokeRect(fLeftMiddleResize);
 				
 }		
 
@@ -654,14 +654,14 @@ void TStagePictureCue::SetResizeZones()
 {	
 	BRect bounds = Bounds();
 	
-	m_TopLeftResize.Set( bounds.left, bounds.top, bounds.left+kBorder, bounds.top+kBorder);
-	m_TopMiddleResize.Set( (bounds.Width()/2) - (kBorder/2), bounds.top, (bounds.Width()/2) + (kBorder/2), bounds.top+kBorder);
-	m_TopRightResize.Set( bounds.right-kBorder, bounds.top, bounds.right, bounds.top+kBorder);	
-	m_RightMiddleResize.Set( bounds.right-kBorder, (bounds.Height()/2) - (kBorder/2), bounds.right, (bounds.Height()/2) + (kBorder/2));
-	m_BottomRightResize.Set( bounds.right-kBorder, bounds.bottom-kBorder, bounds.right, bounds.bottom);	
-	m_BottomMiddleResize.Set( (bounds.Width()/2) - (kBorder/2), bounds.bottom-kBorder, (bounds.Width()/2) + (kBorder/2), bounds.bottom);
-	m_BottomLeftResize.Set( bounds.left, bounds.bottom-kBorder, bounds.left+kBorder, bounds.bottom);
-	m_LeftMiddleResize.Set( bounds.left, (bounds.Height()/2) - (kBorder/2), bounds.left+kBorder, (bounds.Height()/2) + (kBorder/2));
+	fTopLeftResize.Set( bounds.left, bounds.top, bounds.left+kBorder, bounds.top+kBorder);
+	fTopMiddleResize.Set( (bounds.Width()/2) - (kBorder/2), bounds.top, (bounds.Width()/2) + (kBorder/2), bounds.top+kBorder);
+	fTopRightResize.Set( bounds.right-kBorder, bounds.top, bounds.right, bounds.top+kBorder);	
+	fRightMiddleResize.Set( bounds.right-kBorder, (bounds.Height()/2) - (kBorder/2), bounds.right, (bounds.Height()/2) + (kBorder/2));
+	fBottomRightResize.Set( bounds.right-kBorder, bounds.bottom-kBorder, bounds.right, bounds.bottom);	
+	fBottomMiddleResize.Set( (bounds.Width()/2) - (kBorder/2), bounds.bottom-kBorder, (bounds.Width()/2) + (kBorder/2), bounds.bottom);
+	fBottomLeftResize.Set( bounds.left, bounds.bottom-kBorder, bounds.left+kBorder, bounds.bottom);
+	fLeftMiddleResize.Set( bounds.left, (bounds.Height()/2) - (kBorder/2), bounds.left+kBorder, (bounds.Height()/2) + (kBorder/2));
 		
 }
 
@@ -675,28 +675,28 @@ void TStagePictureCue::SetResizeZones()
 
 bool TStagePictureCue::PointInResizeZones(BPoint thePoint)
 {
-	if (m_TopLeftResize.Contains(thePoint))
+	if (fTopLeftResize.Contains(thePoint))
 		return true;
 		
-	if (m_TopMiddleResize.Contains(thePoint))
+	if (fTopMiddleResize.Contains(thePoint))
 		return true;
 
-	if (m_TopRightResize.Contains(thePoint))
+	if (fTopRightResize.Contains(thePoint))
 		return true;
 
-	if (m_RightMiddleResize.Contains(thePoint))
+	if (fRightMiddleResize.Contains(thePoint))
 		return true;
 
-	if (m_BottomRightResize.Contains(thePoint))
+	if (fBottomRightResize.Contains(thePoint))
 		return true;
 
-	if (m_BottomMiddleResize.Contains(thePoint))
+	if (fBottomMiddleResize.Contains(thePoint))
 		return true;
 
-	if (m_BottomLeftResize.Contains(thePoint))
+	if (fBottomLeftResize.Contains(thePoint))
 		return true;
 
-	if (m_LeftMiddleResize.Contains(thePoint))
+	if (fLeftMiddleResize.Contains(thePoint))
 		return true;
 		
 	return false;
@@ -801,28 +801,28 @@ void TStagePictureCue::ResizeOrCrop(BPoint thePoint)
 
 short TStagePictureCue::GetResizeZoneID(BPoint thePoint)
 {
-	if (m_TopLeftResize.Contains(thePoint))
+	if (fTopLeftResize.Contains(thePoint))
 		return kTopLeftResize;
 		
-	if (m_TopMiddleResize.Contains(thePoint))
+	if (fTopMiddleResize.Contains(thePoint))
 		return kTopMiddleResize;
 
-	if (m_TopRightResize.Contains(thePoint))
+	if (fTopRightResize.Contains(thePoint))
 		return kTopRightResize;
 
-	if (m_RightMiddleResize.Contains(thePoint))
+	if (fRightMiddleResize.Contains(thePoint))
 		return kRightMiddleResize;
 
-	if (m_BottomRightResize.Contains(thePoint))
+	if (fBottomRightResize.Contains(thePoint))
 		return kBottomRightResize;
 
-	if (m_BottomMiddleResize.Contains(thePoint))
+	if (fBottomMiddleResize.Contains(thePoint))
 		return kBottomMiddleResize;
 
-	if (m_BottomLeftResize.Contains(thePoint))
+	if (fBottomLeftResize.Contains(thePoint))
 		return kBottomLeftResize;
 
-	if (m_LeftMiddleResize.Contains(thePoint))
+	if (fLeftMiddleResize.Contains(thePoint))
 		return kLeftMiddleResize;
 
 	// No zone found
@@ -868,7 +868,7 @@ void TStagePictureCue::ResizeTopRight( BPoint thePoint)
 			float resize = thePoint.x - savePt.x;
 									
 			// Don't allow resize past bitmap width 
-			if ( ( Bounds().Width() + resize <= m_Bitmap->Bounds().Width()) || ( Bounds().right - resize >=  kBorder*2 ) ) 
+			if ( ( Bounds().Width() + resize <= fBitmap->Bounds().Width()) || ( Bounds().right - resize >=  kBorder*2 ) ) 
 			{
 				// Redraw the selection rect and resize points
 				InvalidateSelectionRect();
@@ -885,11 +885,11 @@ void TStagePictureCue::ResizeTopRight( BPoint thePoint)
 		GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
-		if (thePoint.x > m_Bitmap->Bounds().right)
-			thePoint.x = m_Bitmap->Bounds().right;	
+		if (thePoint.x > fBitmap->Bounds().right)
+			thePoint.x = fBitmap->Bounds().right;	
 			
-		if (thePoint.x < m_Bitmap->Bounds().left + (kBorder*2) )
-			thePoint.x = m_Bitmap->Bounds().left + (kBorder*2);		
+		if (thePoint.x < fBitmap->Bounds().left + (kBorder*2) )
+			thePoint.x = fBitmap->Bounds().left + (kBorder*2);		
 			
 		// Convert to parents coordinate system
 		ConvertToParent(&thePoint);													
@@ -921,7 +921,7 @@ void TStagePictureCue::ResizeRight( BPoint thePoint)
 			float resize = thePoint.x - savePt.x;
 									
 			// Don't allow resize past bitmap width 
-			if ( ( Bounds().Width() + resize <= m_Bitmap->Bounds().Width()) || ( Bounds().right - resize >=  kBorder*2 ) ) 
+			if ( ( Bounds().Width() + resize <= fBitmap->Bounds().Width()) || ( Bounds().right - resize >=  kBorder*2 ) ) 
 			{
 				// Redraw the selection rect and resize points
 				InvalidateSelectionRect();
@@ -938,11 +938,11 @@ void TStagePictureCue::ResizeRight( BPoint thePoint)
 		GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
-		if (thePoint.x > m_Bitmap->Bounds().right)
-			thePoint.x = m_Bitmap->Bounds().right;	
+		if (thePoint.x > fBitmap->Bounds().right)
+			thePoint.x = fBitmap->Bounds().right;	
 			
-		if (thePoint.x < m_Bitmap->Bounds().left + (kBorder*2) )
-			thePoint.x = m_Bitmap->Bounds().left + (kBorder*2);		
+		if (thePoint.x < fBitmap->Bounds().left + (kBorder*2) )
+			thePoint.x = fBitmap->Bounds().left + (kBorder*2);		
 			
 		// Convert to parents coordinate system
 		ConvertToParent(&thePoint);													
@@ -974,10 +974,10 @@ void TStagePictureCue::ResizeBottomRight( BPoint thePoint)
 			float resizeY = thePoint.y - savePt.y;
 									
 			// Don't allow resize past bitmap width and height 			
-			if ( ( Bounds().Width() + resizeX <= m_Bitmap->Bounds().Width()) || Bounds().Height() + resizeY <= m_Bitmap->Bounds().Height() ) 
+			if ( ( Bounds().Width() + resizeX <= fBitmap->Bounds().Width()) || Bounds().Height() + resizeY <= fBitmap->Bounds().Height() ) 
 			{
 				// Constrian to minimum bounds
-				if ( ( Bounds().right - resizeX >=  kBorder*2 ) || Bounds().bottom - resizeY >= m_Bitmap->Bounds().top + kBorder*2 ) 
+				if ( ( Bounds().right - resizeX >=  kBorder*2 ) || Bounds().bottom - resizeY >= fBitmap->Bounds().top + kBorder*2 ) 
 				{
 					// Redraw the selection rect and resize points
 					InvalidateSelectionRect();
@@ -995,17 +995,17 @@ void TStagePictureCue::ResizeBottomRight( BPoint thePoint)
 		GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
-		if (thePoint.x > m_Bitmap->Bounds().right)
-			thePoint.x = m_Bitmap->Bounds().right;	
+		if (thePoint.x > fBitmap->Bounds().right)
+			thePoint.x = fBitmap->Bounds().right;	
 			
-		if (thePoint.y > m_Bitmap->Bounds().bottom)
-			thePoint.y = m_Bitmap->Bounds().bottom;	
+		if (thePoint.y > fBitmap->Bounds().bottom)
+			thePoint.y = fBitmap->Bounds().bottom;	
 			
-		if (thePoint.x < m_Bitmap->Bounds().left + (kBorder*2) )
-			thePoint.x = m_Bitmap->Bounds().left + (kBorder*2);	
+		if (thePoint.x < fBitmap->Bounds().left + (kBorder*2) )
+			thePoint.x = fBitmap->Bounds().left + (kBorder*2);	
 			
-		if (thePoint.y < m_Bitmap->Bounds().top + (kBorder*2))
-			thePoint.y = m_Bitmap->Bounds().top + (kBorder*2);		
+		if (thePoint.y < fBitmap->Bounds().top + (kBorder*2))
+			thePoint.y = fBitmap->Bounds().top + (kBorder*2);		
 			
 		// Convert to parents coordinate system
 		ConvertToParent(&thePoint);													
@@ -1038,7 +1038,7 @@ void TStagePictureCue::ResizeBottom( BPoint thePoint)
 			float resize = thePoint.y - savePt.y;
 															
 			// Don't allow resize past bitmap height or mimimum height
-			if ( Bounds().Height() + resize <= m_Bitmap->Bounds().Height() || Bounds().bottom - resize >= m_Bitmap->Bounds().top + kBorder*2 )
+			if ( Bounds().Height() + resize <= fBitmap->Bounds().Height() || Bounds().bottom - resize >= fBitmap->Bounds().top + kBorder*2 )
 			{
 				// Redraw the selection rect and resize points
 				InvalidateSelectionRect();
@@ -1055,11 +1055,11 @@ void TStagePictureCue::ResizeBottom( BPoint thePoint)
 		GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
-		if (thePoint.y > m_Bitmap->Bounds().bottom)
-			thePoint.y = m_Bitmap->Bounds().bottom;	
+		if (thePoint.y > fBitmap->Bounds().bottom)
+			thePoint.y = fBitmap->Bounds().bottom;	
 						
-		if (thePoint.y < m_Bitmap->Bounds().top + (kBorder*2))
-			thePoint.y = m_Bitmap->Bounds().top + (kBorder*2);		
+		if (thePoint.y < fBitmap->Bounds().top + (kBorder*2))
+			thePoint.y = fBitmap->Bounds().top + (kBorder*2);		
 			
 		// Convert to parents coordinate system
 		ConvertToParent(&thePoint);													
@@ -1092,7 +1092,7 @@ void TStagePictureCue::ResizeLeft( BPoint thePoint)
 			float resize = thePoint.x - savePt.x;
 									
 			// Don't allow resize past bitmap width 
-			if ( Bounds().Width() <= m_Bitmap->Bounds().Width() ) 
+			if ( Bounds().Width() <= fBitmap->Bounds().Width() ) 
 			{
 				// Redraw the selection rect and resize points
 				InvalidateSelectionRect();
@@ -1104,8 +1104,8 @@ void TStagePictureCue::ResizeLeft( BPoint thePoint)
 				ConvertToParent(movePt);
 				MoveTo( movePt.x, Frame().top );
 				
-				if ( Bounds().Width() + resize > m_Bitmap->Bounds().Width() )				
-					resize = Bounds().Width() - m_Bitmap->Bounds().Width();
+				if ( Bounds().Width() + resize > fBitmap->Bounds().Width() )				
+					resize = Bounds().Width() - fBitmap->Bounds().Width();
 				
 				ResizeBy( -resize, 0 );
 				
@@ -1121,8 +1121,8 @@ void TStagePictureCue::ResizeLeft( BPoint thePoint)
 		// Clip the point back within the proper bounds
 			
 		// Fix bounds violation
-		//if ( Bounds().Width() > m_Bitmap->Bounds().Width() )
-		//	ResizeBy( (Bounds().Width() - m_Bitmap->Bounds().Width()), 0 );		
+		//if ( Bounds().Width() > fBitmap->Bounds().Width() )
+		//	ResizeBy( (Bounds().Width() - fBitmap->Bounds().Width()), 0 );		
 					
 		// Convert to parents coordinate system
 		ConvertToParent(&thePoint);													
@@ -1143,10 +1143,10 @@ void TStagePictureCue::ResizeLeft( BPoint thePoint)
 		
 void TStagePictureCue::Stop()
 {
-	if (m_Transition)
+	if (fTransition)
 	{
-		delete m_Transition;
-		m_Transition = NULL;
+		delete fTransition;
+		fTransition = NULL;
 	}	
 }
 
@@ -1165,23 +1165,23 @@ void TStagePictureCue::Stop()
 void TStagePictureCue::DoTransition(bool transitionIn)
 {
 	// Clean up last transition if neccessary
-	if (m_Transition)
+	if (fTransition)
 	{
-		delete m_Transition;	
-		m_Transition = NULL;
+		delete fTransition;	
+		fTransition = NULL;
 	}
 	
 	// We are now visible
-	m_IsHidden = false;
+	fIsHidden = false;
 	
 	// Create new one and fire it off...
 	if (transitionIn)
-		m_Transition = new TTransition( this, (TStageView *)Parent(), m_ChannelCue->GetTransitionInID(), m_ChannelCue->GetTransitionInDuration()); 
+		fTransition = new TTransition( this, (TStageView *)Parent(), fChannelCue->GetTransitionInID(), fChannelCue->GetTransitionInDuration()); 
 	else
-		m_Transition = new TTransition( this, (TStageView *)Parent(), m_ChannelCue->GetTransitionOutID(), m_ChannelCue->GetTransitionOutDuration()); 
+		fTransition = new TTransition( this, (TStageView *)Parent(), fChannelCue->GetTransitionOutID(), fChannelCue->GetTransitionOutDuration()); 
 	
 	// Start it
-	m_Transition->Start();
+	fTransition->Start();
 
 }
 
@@ -1202,7 +1202,7 @@ void TStagePictureCue::OpenStageCueMenu(BPoint menuPt)
 	BMenuItem 	*selected;
 	
 	// Create the menu and mark the current transition
-	TStageCueMenu *theMenu = new TStageCueMenu(this->m_ChannelCue);
+	TStageCueMenu *theMenu = new TStageCueMenu(this->fChannelCue);
 	
 	if (theMenu)
 	{	
@@ -1217,21 +1217,21 @@ void TStagePictureCue::OpenStageCueMenu(BPoint menuPt)
 			if ( selected->Message()->FindInt32("DrawingMode", &drawingMode) == B_OK)
 			{			
 				// Lock offscreen 								
-				m_OffscreenView->Looper()->Lock();
+				fOffscreenView->Looper()->Lock();
 				
 				// Save drawing mode
-				m_ChannelCue->SetDrawingMode( (drawing_mode)drawingMode );
+				fChannelCue->SetDrawingMode( (drawing_mode)drawingMode );
 				
 				// Only redraw if mode has changed		
-				if ( m_OffscreenView->DrawingMode() != m_ChannelCue->GetDrawingMode() )
+				if ( fOffscreenView->DrawingMode() != fChannelCue->GetDrawingMode() )
 				{
 					//	Draw the bitmap into the offscreen using the new mode.
-					m_OffscreenView->SetDrawingMode(m_ChannelCue->GetDrawingMode());			
-					m_OffscreenView->DrawBitmap(m_Bitmap);
-					m_OffscreenView->Sync();			
+					fOffscreenView->SetDrawingMode(fChannelCue->GetDrawingMode());			
+					fOffscreenView->DrawBitmap(fBitmap);
+					fOffscreenView->Sync();			
 					Invalidate();
 				}
-				m_OffscreenView->Looper()->Unlock();
+				fOffscreenView->Looper()->Unlock();
 			}
 		}
 			

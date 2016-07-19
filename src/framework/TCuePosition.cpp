@@ -43,17 +43,17 @@ TCuePosition::TCuePosition(BRect outline)
 
 BRect TCuePosition::Enclosure(bool transformed) const
 {
-	BRect r(m_corners[0], m_corners[0]);
+	BRect r(fcorners[0], fcorners[0]);
 
 	for (int i = 1; i < 4; i++) {
-		if (m_corners[i].x < r.left)
-			r.left = m_corners[i].x;
-		if (m_corners[i].x > r.right)
-			r.right = m_corners[i].x;
-		if (m_corners[i].y < r.top)
-			r.top = m_corners[i].y;
-		if (m_corners[i].y > r.bottom)
-			r.bottom = m_corners[i].y;
+		if (fcorners[i].x < r.left)
+			r.left = fcorners[i].x;
+		if (fcorners[i].x > r.right)
+			r.right = fcorners[i].x;
+		if (fcorners[i].y < r.top)
+			r.top = fcorners[i].y;
+		if (fcorners[i].y > r.bottom)
+			r.bottom = fcorners[i].y;
 	}
 	
 	if (transformed) {
@@ -92,17 +92,17 @@ bool TCuePosition::Contains(BPoint pt, bool transformed) const
 	// Use transformed or non-transformed data, as appropriate
 	BPoint xCorners[4];
 	if (transformed) {
-		xCorners[0] = TransformPt(m_corners[0]);
-		xCorners[1] = TransformPt(m_corners[1]);
-		xCorners[2] = TransformPt(m_corners[2]);
-		xCorners[3] = TransformPt(m_corners[3]);
+		xCorners[0] = TransformPt(fcorners[0]);
+		xCorners[1] = TransformPt(fcorners[1]);
+		xCorners[2] = TransformPt(fcorners[2]);
+		xCorners[3] = TransformPt(fcorners[3]);
 
 		vertex0 = &xCorners[numVerts - 1];
 		vertex1 = &xCorners[0];
 	}
 	else {
-		vertex0 = &m_corners[numVerts - 1];
-		vertex1 = &m_corners[0];
+		vertex0 = &fcorners[numVerts - 1];
+		vertex1 = &fcorners[0];
 	}
 		
 	//	Get test bit for above/below X axis
@@ -155,27 +155,27 @@ bool TCuePosition::Contains(BPoint pt, bool transformed) const
 
 void TCuePosition::Registration(BPoint pt)
 {
-	m_registration = pt;
+	fregistration = pt;
 }
 
 void TCuePosition::Corner1(BPoint pt)
 {
-	m_corners[0] = pt;
+	fcorners[0] = pt;
 }
 
 void TCuePosition::Corner2(BPoint pt)
 {
-	m_corners[1] = pt;
+	fcorners[1] = pt;
 }
 
 void TCuePosition::Corner3(BPoint pt)
 {
-	m_corners[2] = pt;
+	fcorners[2] = pt;
 }
 
 void TCuePosition::Corner4(BPoint pt)
 {
-	m_corners[3] = pt;
+	fcorners[3] = pt;
 }
 
 //---------------------------------------------------------------------

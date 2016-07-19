@@ -404,7 +404,7 @@ void AVIView::SetBitmapView(TBitmapView *theView)
 	m_BitmapView = theView;
 	
 	//	Get a pointer to the bits
-	m_BitmapBits = m_BitmapView->m_Bitmap->Bits();
+	m_BitmapBits = m_BitmapView->fBitmap->Bits();
 	
 //m_BitmapBits = m_BitmapView->GetBitmap()->Bits();
 // ABH pBits = m_BitmapView->Bits();

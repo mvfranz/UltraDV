@@ -68,13 +68,13 @@ TCueChannel::TCueChannel(BRect bounds, TCueSheetView *parent, int32 ID) :
 {
 	
 	// Save unique ID
-	m_ID = ID;
+	fID = ID;
 	
 	// Set up name
-	sprintf(m_Name, "Untitled");
+	sprintf(fName, "Untitled");
 	
 	// Save the parent cue sheet view
-	m_CueSheet = parent;
+	fCueSheet = parent;
 	
 	// Perform default initialization
 	Init();
@@ -90,24 +90,24 @@ TCueChannel::TCueChannel(BRect bounds, TCueSheetView *parent, int32 ID) :
 TCueChannel::TCueChannel(BMessage *data) : BView(data)
 {
 
-	m_CueSheet 	= NULL;
-	m_Header	= NULL;
+	fCueSheet 	= NULL;
+	fHeader	= NULL;
 
 	// Create cue item list
-	m_CueList = new BList();
-	ASSERT(m_CueList);
+	fCueList = new BList();
+	ASSERT(fCueList);
 
 	//	Find our member variables in the archive		
-	data->FindInt32("ID", &m_ID);		
+	data->FindInt32("ID", &fID);		
 	
 	const char *theStr;
 	data->FindString("Name", &theStr);		
-	strcpy(m_Name, theStr);	
+	strcpy(fName, theStr);	
 	
-	data->FindBool("IsMuted", &m_IsMuted);
-	data->FindBool("IsSoloed", &m_IsSoloed);
-	data->FindBool("IsExpanded", &m_IsExpanded);
-	data->FindBool("IsLocked", &m_IsLocked);
+	data->FindBool("IsMuted", &fIsMuted);
+	data->FindBool("IsSoloed", &fIsSoloed);
+	data->FindBool("IsExpanded", &fIsExpanded);
+	data->FindBool("IsLocked", &fIsLocked);
 	
 	//	Set up environment
 	SetDrawingMode(B_OP_COPY);
@@ -140,23 +140,23 @@ void TCueChannel::Init()
 	SetViewColor(B_TRANSPARENT_32_BIT);
 		
 	// Create cue item list
-	m_CueList = new BList();
-	ASSERT(m_CueList);
+	fCueList = new BList();
+	ASSERT(fCueList);
 	
 	// 	Create header.  This is where the mute and solo buttons, text label and id number are displayed.
 	//	The header is actually a child of the CueSheetWindow.  We do this so it remains fixed
 	//	when the channels are being scrolled.	
-	CreateHeader( m_CueSheet->GetParent()->GetHeaderContainer(), Bounds().Height());
+	CreateHeader( fCueSheet->GetParent()->GetHeaderContainer(), Bounds().Height());
 	
 	// Set member variables
-	m_IsMuted 		= false;
-	m_IsSoloed 		= false;
-	m_IsExpanded 	= false;
-	m_IsLocked		= false;
+	fIsMuted 		= false;
+	fIsSoloed 		= false;
+	fIsExpanded 	= false;
+	fIsLocked		= false;
 	
 	//	Init tick points
-	m_TickPt.Set(-1, -1);
-	m_OldTickPt = m_TickPt;
+	fTickPt.Set(-1, -1);
+	fOldTickPt = fTickPt;
 	
 }
 
@@ -202,12 +202,12 @@ status_t TCueChannel::Archive(BMessage *data, bool deep) const
 		data->AddString("class", "TCueChannel");
 		
 		// Add our member variables to the archive		
-		data->AddInt32("ID", m_ID);				
-		data->AddString("Name", m_Name);		
-		data->AddBool("IsMuted", m_IsMuted);
-		data->AddBool("IsSoloed", m_IsSoloed);
-		data->AddBool("IsExpanded", m_IsExpanded);
-		data->AddBool("IsLocked", m_IsLocked);
+		data->AddInt32("ID", fID);				
+		data->AddString("Name", fName);		
+		data->AddBool("IsMuted", fIsMuted);
+		data->AddBool("IsSoloed", fIsSoloed);
+		data->AddBool("IsExpanded", fIsExpanded);
+		data->AddBool("IsLocked", fIsLocked);
 				
 		// Add attached views
 		if (deep)
@@ -235,10 +235,10 @@ void TCueChannel::CreateHeader(THeaderContainerView *container, float height)
 	//	The header is actually a child of the CueSheetWindow.  We do this so it remains fixed
 	//	when the channels are being scrolled.
 	BRect bounds = Frame();
-	bounds.Set(m_CueSheet->Bounds().left , bounds.top+1, m_CueSheet->Bounds().left+kHeaderWidth, bounds.top+(height+1));
-	m_Header = new TCueChannelHeader(bounds, this);
-	container->AddChild(m_Header);
-	m_Header->Show();	
+	bounds.Set(fCueSheet->Bounds().left , bounds.top+1, fCueSheet->Bounds().left+kHeaderWidth, bounds.top+(height+1));
+	fHeader = new TCueChannelHeader(bounds, this);
+	container->AddChild(fHeader);
+	fHeader->Show();	
 }
 		
 #pragma mark -
@@ -254,10 +254,10 @@ void TCueChannel::CreateHeader(THeaderContainerView *container, float height)
 void TCueChannel::MouseDown(BPoint where)
 {
 	// Do nothing if we are playing
-	if ( m_CueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+	if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
 		return;
 	
-	m_CueSheet->DeselectAllCues();
+	fCueSheet->DeselectAllCues();
 		
 	// We have the focus
 	MakeFocus(true);
@@ -299,7 +299,7 @@ void TCueChannel::MouseDown(BPoint where)
 void TCueChannel::MouseUp(BPoint where)
 {
 	// Do nothing if we are playing
-	if ( m_CueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+	if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
 		return;
 }
 
@@ -314,11 +314,11 @@ void TCueChannel::MouseUp(BPoint where)
 void TCueChannel::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
 {
 	// Do nothing if we are playing
-	if ( m_CueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+	if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
 		return;
 	
 	// Exit if panel is open
-	if ( m_CueSheet->GetParent()->IsPanelOpen())
+	if ( fCueSheet->GetParent()->IsPanelOpen())
 		return;
 			
 	// Update Timeline.  Clip the location of where.x to be within the bounds
@@ -354,9 +354,9 @@ void TCueChannel::MouseMoved( BPoint where, uint32 code, const BMessage *a_messa
 	if (buttons)
 	{
 		// Check and see if this is a cue drag
-		if (static_cast<MuseumApp *>(be_app)->m_IsCueDrag)
+		if (static_cast<MuseumApp *>(be_app)->fIsCueDrag)
 		{
-			where.x -= static_cast<MuseumApp *>(be_app)->m_CueDragDelta;
+			where.x -= static_cast<MuseumApp *>(be_app)->fCueDragDelta;
 		}
 	}
 	
@@ -378,7 +378,7 @@ void TCueChannel::MouseMoved( BPoint where, uint32 code, const BMessage *a_messa
 
 void TCueChannel::KeyDown(const char *bytes, int32 numBytes)
 {
-	m_CueSheet->KeyDown(bytes, numBytes);
+	fCueSheet->KeyDown(bytes, numBytes);
 }
 
 
@@ -392,7 +392,7 @@ void TCueChannel::KeyDown(const char *bytes, int32 numBytes)
 
 void TCueChannel::KeyUp(const char *bytes, int32 numBytes)
 {
-	m_CueSheet->KeyDown(bytes, numBytes);
+	fCueSheet->KeyDown(bytes, numBytes);
 }
 
 
@@ -481,11 +481,11 @@ void TCueChannel::MessageReceived(BMessage *message)
 			case CUE_ICON_DRAG_MSG:						
 				{
 					// Do nothing if we are playing
-					if ( m_CueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+					if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
 						return;
 					
 					// Make sure we aren't locked
-					if ( m_IsLocked )
+					if ( fIsLocked )
 						return;
 						
 					//	Extract drop point
@@ -503,11 +503,11 @@ void TCueChannel::MessageReceived(BMessage *message)
 			case BROWSER_ICON_DRAG_MSG:
 				{
 					// Do nothing if we are playing
-					if ( m_CueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+					if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
 						return;
 
 					// Make sure we aren't locked
-					if ( m_IsLocked )
+					if ( fIsLocked )
 						return;
 										
 					// Get drop point
@@ -526,14 +526,14 @@ void TCueChannel::MessageReceived(BMessage *message)
 			case CUE_DRAG_MSG:
 				{
 					// We are done dragging a cue
-					static_cast<MuseumApp *>(be_app)->m_IsCueDrag = false;
+					static_cast<MuseumApp *>(be_app)->fIsCueDrag = false;
 
 					// Do nothing if we are playing
-					if ( m_CueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+					if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
 						return;
 
 					// Make sure we aren't locked
-					if ( m_IsLocked )
+					if ( fIsLocked )
 						return;
 
 					// Get drop point
@@ -614,10 +614,10 @@ void TCueChannel::MessageReceived(BMessage *message)
 void TCueChannel::HandleSoloMessage()
 {
 	// Unsolo the channel
-	if (m_IsSoloed)
+	if (fIsSoloed)
 	{
 		if (IsOptionKeyDown())
-			m_CueSheet->UnsoloAllChannels();
+			fCueSheet->UnsoloAllChannels();
 		else
 			Unsolo();			
 	}
@@ -625,7 +625,7 @@ void TCueChannel::HandleSoloMessage()
 	else
 	{
 		if (IsOptionKeyDown())
-			m_CueSheet->SoloAllChannels();
+			fCueSheet->SoloAllChannels();
 		else
 			Solo();
 	}
@@ -645,10 +645,10 @@ void TCueChannel::HandleSoloMessage()
 void TCueChannel::HandleMuteMessage()
 {
 	// Unmute the channel
-	if (m_IsMuted)
+	if (fIsMuted)
 	{
 		if (IsOptionKeyDown())
-			m_CueSheet->UnmuteAllChannels();
+			fCueSheet->UnmuteAllChannels();
 		else
 			Unmute();			
 	}
@@ -656,7 +656,7 @@ void TCueChannel::HandleMuteMessage()
 	else
 	{
 		if (IsOptionKeyDown())
-			m_CueSheet->MuteAllChannels();
+			fCueSheet->MuteAllChannels();
 		else
 			Mute();
 	}
@@ -681,14 +681,14 @@ void TCueChannel::HandleMuteMessage()
 void TCueChannel::HandleExpandMessage()
 {
 	// Contract the channel
-	if (m_IsExpanded)
+	if (fIsExpanded)
 	{
 		if (IsOptionKeyDown())
-			m_CueSheet->ContractAllChannels();
+			fCueSheet->ContractAllChannels();
 		else
 		{
 			Contract();			
-			m_CueSheet->AdjustChannelPositions(this);
+			fCueSheet->AdjustChannelPositions(this);
 		}
 	}
 	// Expand the channel
@@ -696,12 +696,12 @@ void TCueChannel::HandleExpandMessage()
 	{
 		if (IsOptionKeyDown())
 		{
-			m_CueSheet->ExpandAllChannels();
+			fCueSheet->ExpandAllChannels();
 		}
 		else
 		{
 			Expand();
-			m_CueSheet->AdjustChannelPositions(this);
+			fCueSheet->AdjustChannelPositions(this);
 		}			
 	}
 	
@@ -725,10 +725,10 @@ void TCueChannel::HandleExpandMessage()
 void TCueChannel::HandleLockMessage()
 {
 	// Unlock the channel
-	if (m_IsLocked)
+	if (fIsLocked)
 	{
 		if (IsOptionKeyDown())
-			m_CueSheet->UnlockAllChannels();
+			fCueSheet->UnlockAllChannels();
 		else
 		{
 			UnlockChannel();			
@@ -738,7 +738,7 @@ void TCueChannel::HandleLockMessage()
 	else
 	{
 		if (IsOptionKeyDown())
-			m_CueSheet->LockAllChannels();
+			fCueSheet->LockAllChannels();
 		else
 		{
 			LockChannel();
@@ -759,13 +759,13 @@ void TCueChannel::HandleLockMessage()
 void TCueChannel::HandleEffectExpandMessage()
 {
 	//	Hide all cue effect trays
-	if (m_IsExpanded)
+	if (fIsExpanded)
 	{				
 		bool collapsed = false;
 		
-		for ( int32 index = 0; index < m_CueList->CountItems(); index++)
+		for ( int32 index = 0; index < fCueList->CountItems(); index++)
 		{
-			TCueView *theCue = (TCueView *)m_CueList->ItemAt(index);
+			TCueView *theCue = (TCueView *)fCueList->ItemAt(index);
 						
 			if (theCue->IsEffectsVisible())
 			{
@@ -773,7 +773,7 @@ void TCueChannel::HandleEffectExpandMessage()
 				if (collapsed == false)
 				{
 					ResizeTo(Bounds().Width(), kChannelMaxHeight);										
-					m_Header->ResizeTo( m_Header->Bounds().Width(), kChannelMaxHeight);	
+					fHeader->ResizeTo( fHeader->Bounds().Width(), kChannelMaxHeight);	
 					collapsed = true;
 				}				
 				theCue->HideEffects();
@@ -784,7 +784,7 @@ void TCueChannel::HandleEffectExpandMessage()
 				if (collapsed == false)
 				{
 					ResizeTo(Bounds().Width(), Bounds().Height() + kEffectsTrayHeight);
-					m_Header->ResizeTo( m_Header->Bounds().Width(), m_Header->Bounds().Height() + kEffectsTrayHeight);
+					fHeader->ResizeTo( fHeader->Bounds().Width(), fHeader->Bounds().Height() + kEffectsTrayHeight);
 					collapsed = true;
 				}
 				theCue->ShowEffects();
@@ -792,12 +792,12 @@ void TCueChannel::HandleEffectExpandMessage()
 		}
 
 		//	Adjust positions of other channels
-		m_CueSheet->AdjustChannelPositions(this);
+		fCueSheet->AdjustChannelPositions(this);
 	}
 
 	//	Redraw
 	Invalidate();
-	m_Header->Invalidate();
+	fHeader->Invalidate();
 
 	// Adjust scroll bars
 	static_cast<MuseumApp *>(be_app)->GetCueSheet()->AdjustScrollBars();
@@ -822,12 +822,12 @@ void TCueChannel::AddCueToList(TCueView *insertCue)
 	BPoint		endPt;
 	
 	// Get total items in list
-	int32 totalItems = m_CueList->CountItems();
+	int32 totalItems = fCueList->CountItems();
 
 	// If totalItems == 0, it is the first item in the list.  Just add it.
 	if (totalItems == 0)
 	{
-		m_CueList->AddItem(insertCue, 0);
+		fCueList->AddItem(insertCue, 0);
 		return;
 	}
 	// Iterate through the list of cues
@@ -835,7 +835,7 @@ void TCueChannel::AddCueToList(TCueView *insertCue)
 	{
 		for (int32 index = 0; index < totalItems; index++)
 		{
-			theCue = (TCueView *)m_CueList->ItemAt(index);
+			theCue = (TCueView *)fCueList->ItemAt(index);
 			if(theCue)
 			{			
 				// Check and see if the insert cues start time is before the
@@ -849,15 +849,15 @@ void TCueChannel::AddCueToList(TCueView *insertCue)
 					// If we aren't at the end, keep on iterating through the list					
 					if (index+1 == totalItems)
 					{
-						m_CueList->AddItem(insertCue);
+						fCueList->AddItem(insertCue);
 						return;
 					}
 				}				
 				else
 				{
 					// Insert cue into list
-					//m_CueList->AddItem(insertCue, index-1);
-					m_CueList->AddItem(insertCue, index);
+					//fCueList->AddItem(insertCue, index-1);
+					fCueList->AddItem(insertCue, index);
 					return;
 				}
 			}	
@@ -874,12 +874,12 @@ void TCueChannel::AddCueToList(TCueView *insertCue)
 //
 void TCueChannel::RemoveCueFromList(TCueView *cueView)
 {
-	if (m_CueList->HasItem(cueView))
+	if (fCueList->HasItem(cueView))
 	{
 		bool retVal;
 		
-		int32 index = m_CueList->IndexOf(cueView);
-		retVal = m_CueList->RemoveItem(cueView);
+		int32 index = fCueList->IndexOf(cueView);
+		retVal = fCueList->RemoveItem(cueView);
 	}
 }
 
@@ -895,12 +895,12 @@ void TCueChannel::FreeCueList()
 {
 	void *anItem; 
    	
-   	for ( int32 i = m_CueList->CountItems(); anItem = m_CueList->ItemAt(i); i++ ) 
+   	for ( int32 i = fCueList->CountItems(); anItem = fCueList->ItemAt(i); i++ ) 
    	{
 		delete anItem; 
 	}
    	
-   	delete m_CueList;
+   	delete fCueList;
 
 } 
 #pragma warn_possunwant reset
@@ -916,9 +916,9 @@ void TCueChannel::FreeCueList()
 TCueView *TCueChannel::GetCueAtTime(uint32 theTime)
 {
    	
-   	for ( int32 index = 0; index < m_CueList->CountItems(); index++ ) 
+   	for ( int32 index = 0; index < fCueList->CountItems(); index++ ) 
    	{
-		TCueView *theCue = (TCueView *)m_CueList->ItemAt(index);
+		TCueView *theCue = (TCueView *)fCueList->ItemAt(index);
 		
 		// We have a cue
 		if (theCue)
@@ -946,9 +946,9 @@ TCueView *TCueChannel::GetCueAtTime(uint32 theTime)
 TVisualCue *TCueChannel::GetVisualCueAtTime(uint32 theTime)
 {
    	
-   	for ( int32 index = 0; index < m_CueList->CountItems(); index++ ) 
+   	for ( int32 index = 0; index < fCueList->CountItems(); index++ ) 
    	{
-		TCueView *theCue = (TCueView *)m_CueList->ItemAt(index);
+		TCueView *theCue = (TCueView *)fCueList->ItemAt(index);
 		
 		// We have a cue
 		if (theCue)
@@ -992,7 +992,7 @@ void TCueChannel::CreateCue(BPoint point, int16 cueIconID)
 	bounds.bottom 	-= kCueInset;	
 		
 	// Deselect other cues
-	m_CueSheet->DeselectAllCues();
+	fCueSheet->DeselectAllCues();
 
 	// Get insert time based on point.x
 	uint32 insertTime = PixelsToTime( point.x, GetCurrentTimeFormat(), GetCurrentResolution());
@@ -1093,7 +1093,7 @@ void TCueChannel::CreateCue(BPoint point, entry_ref &theRef)
 		return;
 	
 	// Deselect other cues
-	m_CueSheet->DeselectAllCues();
+	fCueSheet->DeselectAllCues();
 
 	// Get insert time based on point.x
 	uint32 insertTime = PixelsToTime( point.x, GetCurrentTimeFormat(), GetCurrentResolution());
@@ -1172,9 +1172,9 @@ bool TCueChannel::CanInsertCue(TCueView *insertCue, uint32 insertStartTime, bool
 	uint32 insertEndTime = insertStartTime + insertCue->Duration();
 
 	// Iterate through the list of cues
-	for (int32 i = 0; i < m_CueList->CountItems(); i++)
+	for (int32 i = 0; i < fCueList->CountItems(); i++)
 	{
-		TCueView *theCue = (TCueView *)m_CueList->ItemAt(i);
+		TCueView *theCue = (TCueView *)fCueList->ItemAt(i);
 		
 		uint32 cueStartTime = theCue->StartTime();
 		uint32 cueEndTime = theCue->StartTime() + theCue->Duration();
@@ -1345,7 +1345,7 @@ void TCueChannel::InsertCue(TCueView *cueView, uint32 time)
 	
 	// 	Check for channel expanded or contracted state.  Show or hide cue controls
 	//	depending on state
-	if ( m_IsExpanded )
+	if ( fIsExpanded )
 		cueView->Expand();
 	else
 		cueView->Contract();	
@@ -1407,7 +1407,7 @@ void TCueChannel::InsertCue(TCueView *cueView, BPoint insertPoint, uint32 insert
 	
 	// 	Check for channel expanded or contracted state.  Show or hide cue controls
 	//	depending on state
-	if ( m_IsExpanded )
+	if ( fIsExpanded )
 		cueView->Expand();
 	else
 		cueView->Contract();	
@@ -1471,7 +1471,7 @@ TCueView  *TCueChannel::GetNeighborRight(TCueView *theView)
 	TCueView 	*theCue;
 		
 	// Get the cues index into the cue list
-	int32 index = m_CueList->IndexOf(theView);
+	int32 index = fCueList->IndexOf(theView);
 	
 	// If the index is negative, the item is not in the list
 	if (index < 0 )
@@ -1479,12 +1479,12 @@ TCueView  *TCueChannel::GetNeighborRight(TCueView *theView)
 		
 	// If the index is equal to the total number of items in the list, 
 	//	it is the last cue in the list and has no neighbor to the right
-	int32 numItems = m_CueList->CountItems();
+	int32 numItems = fCueList->CountItems();
 	if (index == numItems)
 		return NULL;
 		
 	// Any other cue has a neighbor directly to the right of it
-	theCue = (TCueView *)m_CueList->ItemAt(index+1);
+	theCue = (TCueView *)fCueList->ItemAt(index+1);
 	
 	return (theCue);
 	
@@ -1503,7 +1503,7 @@ TCueView  *TCueChannel::GetNeighborLeft(TCueView *theView)
 	TCueView 	*theCue;
 		
 	// Get the cues index into the cue list
-	int32 index = m_CueList->IndexOf(theView);
+	int32 index = fCueList->IndexOf(theView);
 	
 	// If the index is negative, the item is not in the list
 	if (index < 0 )
@@ -1515,7 +1515,7 @@ TCueView  *TCueChannel::GetNeighborLeft(TCueView *theView)
 		return NULL;
 		
 	// Any other cue has a neighbor directly to the left of it
-	theCue = (TCueView *)m_CueList->ItemAt(index-1);
+	theCue = (TCueView *)fCueList->ItemAt(index-1);
 	
 	return (theCue);
 	
@@ -1593,9 +1593,9 @@ void TCueChannel::SendMessageToAllCues(BMessage *theMessage)
 {
 	TCueView *theView;
 	
-	for( int32 i = 0; i < m_CueList->CountItems(); i++)
+	for( int32 i = 0; i < fCueList->CountItems(); i++)
 	{
-		theView = (TCueView *)m_CueList->ItemAt(i);
+		theView = (TCueView *)fCueList->ItemAt(i);
 		
 		if(theView)
 		{
@@ -1725,8 +1725,8 @@ void TCueChannel::NudgeSelectedCues(bool nudgeLeft)
 						insertTime -= increment;
 																	
 						//  Don't move ahead of the cue sheet start time
-						if (insertTime < m_CueSheet->StartTime())
-							insertTime = m_CueSheet->StartTime();
+						if (insertTime < fCueSheet->StartTime())
+							insertTime = fCueSheet->StartTime();
 					}
 					else
 					{
@@ -1734,8 +1734,8 @@ void TCueChannel::NudgeSelectedCues(bool nudgeLeft)
 						insertTime += increment;
 
 						//  Don't move after the cue sheet end time
-						if (insertTime > (m_CueSheet->StartTime() + m_CueSheet->Duration()) - theCue->Duration())
-							insertTime = (m_CueSheet->StartTime() + m_CueSheet->Duration()) - theCue->Duration();
+						if (insertTime > (fCueSheet->StartTime() + fCueSheet->Duration()) - theCue->Duration())
+							insertTime = (fCueSheet->StartTime() + fCueSheet->Duration()) - theCue->Duration();
 					}
 					
 					// Check for collisions with other cues
@@ -1769,12 +1769,12 @@ void TCueChannel::NudgeSelectedCues(bool nudgeLeft)
 //	GetTimeFormat
 //---------------------------------------------------------------------
 //
-//	Return cue sheets m_TimeFormat
+//	Return cue sheets fTimeFormat
 //
 
 timecode_type TCueChannel::GetTimeFormat()
 {
-	return m_CueSheet->GetTimeFormat();
+	return fCueSheet->GetTimeFormat();
 }
 
 
@@ -1782,12 +1782,12 @@ timecode_type TCueChannel::GetTimeFormat()
 //	GetResolution
 //---------------------------------------------------------------------
 //
-//	Return cue sheets m_Resolution
+//	Return cue sheets fResolution
 //
 
 short TCueChannel::GetResolution()
 {
-	return m_CueSheet->GetResolution();
+	return fCueSheet->GetResolution();
 }
 
 	
@@ -1818,13 +1818,13 @@ void TCueChannel::TimeFormatChanged()
 void TCueChannel::ResolutionChanged(int32 resizePixels)
 {		
 	// Resize all cues
-	for( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		TCueView *theCue = (TCueView *)m_CueList->ItemAt(index);
+		TCueView *theCue = (TCueView *)fCueList->ItemAt(index);
 		
 		if(theCue)
 		{
-			theCue->ResolutionChanged(m_CueSheet->GetTimeFormat(), m_CueSheet->GetResolution());
+			theCue->ResolutionChanged(fCueSheet->GetTimeFormat(), fCueSheet->GetResolution());
 		}
 	}
 	
@@ -1847,9 +1847,9 @@ bool TCueChannel::HasCues()
 {
 	TCueView *theView;
 	
-	for( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		theView = (TCueView *)m_CueList->ItemAt(index);
+		theView = (TCueView *)fCueList->ItemAt(index);
 		
 		if(theView)
 			return true;			
@@ -1870,9 +1870,9 @@ void TCueChannel::SelectAllCues()
 {
 	TCueView *theView;
 	
-	for( int32 i = 0; i < m_CueList->CountItems(); i++)
+	for( int32 i = 0; i < fCueList->CountItems(); i++)
 	{
-		theView = (TCueView *)m_CueList->ItemAt(i);
+		theView = (TCueView *)fCueList->ItemAt(i);
 		
 		if(theView)
 		{
@@ -1897,9 +1897,9 @@ void TCueChannel::DeselectAllCues()
 {
 	TCueView *theView;
 	
-	for( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		theView = (TCueView *)m_CueList->ItemAt(index);
+		theView = (TCueView *)fCueList->ItemAt(index);
 		
 		if(theView)
 		{
@@ -1924,9 +1924,9 @@ void TCueChannel::DeselectAllCues(TCueView *theCue)
 {
 	TCueView *theView;
 	
-	for( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		theView = (TCueView *)m_CueList->ItemAt(index);
+		theView = (TCueView *)fCueList->ItemAt(index);
 		
 		if(theView != theCue)
 		{
@@ -1950,9 +1950,9 @@ bool TCueChannel::HasSelectedCues()
 {
 	TCueView *theView;
 	
-	for( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		theView = (TCueView *)m_CueList->ItemAt(index);
+		theView = (TCueView *)fCueList->ItemAt(index);
 		
 		if(theView)
 		{
@@ -1979,9 +1979,9 @@ BList *TCueChannel::GetSelectedCues()
 	
 	TCueView *theView;
 	
-	for( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		theView = (TCueView *)m_CueList->ItemAt(index);
+		theView = (TCueView *)fCueList->ItemAt(index);
 		
 		if(theView)
 		{
@@ -2008,10 +2008,10 @@ BList *TCueChannel::GetSelectedCues()
 void TCueChannel::SetChannelName(const char *theName)
 {
 	// Copy the new name into our member variable
-	strcpy(m_Name, theName);
+	strcpy(fName, theName);
 	
 	// Update the Channel Header's StringView
-	m_Header->UpdateChannelName();	
+	fHeader->UpdateChannelName();	
 }
 
 
@@ -2025,10 +2025,10 @@ void TCueChannel::SetChannelName(const char *theName)
 void TCueChannel::SetChannelID(short ID)
 {
 	// Copy the new name into our member variable
-	m_ID = ID;
+	fID = ID;
 	
 	// Update the Channel Header's StringView
-	m_Header->UpdateChannelName();	
+	fHeader->UpdateChannelName();	
 }
 
 
@@ -2041,21 +2041,21 @@ void TCueChannel::SetChannelID(short ID)
 
 void TCueChannel::Solo()
 {
-	if (!m_IsSoloed)
+	if (!fIsSoloed)
 	{
-		if (m_IsMuted)
+		if (fIsMuted)
 		{
 			// Unmute the channel
-			m_IsMuted = false;
-			m_Header->GetMuteButton()->Invalidate();		
+			fIsMuted = false;
+			fHeader->GetMuteButton()->Invalidate();		
 		}
 				
 		// Solo the channel
-		m_IsSoloed = true;
-		m_Header->GetSoloButton()->Invalidate();
+		fIsSoloed = true;
+		fHeader->GetSoloButton()->Invalidate();
 		
 		// Mute all other channels that aren't also soloed
-		m_CueSheet->MuteAllUnsoloedChannels();						
+		fCueSheet->MuteAllUnsoloedChannels();						
 	}
 }
 
@@ -2069,14 +2069,14 @@ void TCueChannel::Solo()
 
 void TCueChannel::Unsolo()
 {
-	if (m_IsSoloed)
+	if (fIsSoloed)
 	{
 		// Unsolo the channel
-		m_IsSoloed = false;
-		m_Header->GetSoloButton()->Invalidate();		
+		fIsSoloed = false;
+		fHeader->GetSoloButton()->Invalidate();		
 		
 		// Mute the channel if other channels are soloed
-		if ( m_CueSheet->AreOtherChannelsSoloed(this) )
+		if ( fCueSheet->AreOtherChannelsSoloed(this) )
 			Mute();
 	}
 }
@@ -2091,23 +2091,23 @@ void TCueChannel::Unsolo()
 
 void TCueChannel::Mute()
 {
-	if (!m_IsMuted)
+	if (!fIsMuted)
 	{
 		// Mute the channel
-		m_IsMuted = true;
-		m_Header->GetMuteButton()->Draw( m_Header->GetMuteButton()->Bounds() );
+		fIsMuted = true;
+		fHeader->GetMuteButton()->Draw( fHeader->GetMuteButton()->Bounds() );
 				
 		// Unsolo the channel
-		if (m_IsSoloed)
+		if (fIsSoloed)
 		{
-			m_IsSoloed = false;
-			m_Header->GetSoloButton()->Draw( m_Header->GetSoloButton()->Bounds() );
+			fIsSoloed = false;
+			fHeader->GetSoloButton()->Draw( fHeader->GetSoloButton()->Bounds() );
 		}
 		
 		// Mute all cues in channel
-		for (int32 index = 0; index < m_CueList->CountItems(); index++)
+		for (int32 index = 0; index < fCueList->CountItems(); index++)
 		{	
-			TCueView *theCue = (TCueView *)m_CueList->ItemAt(index);
+			TCueView *theCue = (TCueView *)fCueList->ItemAt(index);
 			
 			if (theCue)
 				theCue->Mute();
@@ -2125,23 +2125,23 @@ void TCueChannel::Mute()
 
 void TCueChannel::Unmute()
 {
-	if (m_IsMuted)
+	if (fIsMuted)
 	{
 		// Unmute the channel
-		m_IsMuted = false;
-		m_Header->GetMuteButton()->Draw( m_Header->GetMuteButton()->Bounds() );
+		fIsMuted = false;
+		fHeader->GetMuteButton()->Draw( fHeader->GetMuteButton()->Bounds() );
 				
 /*		// Unsolo the channel
-		if (m_IsSoloed)
+		if (fIsSoloed)
 		{
-			m_IsSoloed = false;
-			m_Header->GetSoloButton()->Invalidate();		
+			fIsSoloed = false;
+			fHeader->GetSoloButton()->Invalidate();		
 		}*/
 		
 		// Unmute all cues in channel
-		for (int32 index = 0; index < m_CueList->CountItems(); index++)
+		for (int32 index = 0; index < fCueList->CountItems(); index++)
 		{	
-			TCueView *theCue = (TCueView *)m_CueList->ItemAt(index);
+			TCueView *theCue = (TCueView *)fCueList->ItemAt(index);
 			
 			if (theCue)
 				theCue->Unmute();
@@ -2160,20 +2160,20 @@ void TCueChannel::Unmute()
 
 void TCueChannel::Contract(bool force)
 {
-	if (m_IsExpanded == true || force == true)
+	if (fIsExpanded == true || force == true)
 	{
-		m_IsExpanded = false;
+		fIsExpanded = false;
 		// For now, set to default contracted height
 		ResizeTo( Bounds().Width(), kChannelMinHeight);		
-		m_Header->ResizeTo( m_Header->Bounds().Width(), kChannelMinHeight);
-		m_Header->Invalidate();		
+		fHeader->ResizeTo( fHeader->Bounds().Width(), kChannelMinHeight);
+		fHeader->Invalidate();		
 						
 		// Inform cues of contracted state
 		ContractAllCues();
 		UpdateAllResizeZones();
 		RedrawAllCues();
 		
-		m_Header->GetExpandButton()->Invalidate();
+		fHeader->GetExpandButton()->Invalidate();
 		
 		// Force redraw
 		Invalidate();
@@ -2191,9 +2191,9 @@ void TCueChannel::Contract(bool force)
 
 void TCueChannel::Expand(bool force)
 {
-	if (m_IsExpanded == false || force == true)
+	if (fIsExpanded == false || force == true)
 	{
-		m_IsExpanded = true;
+		fIsExpanded = true;
 		
 		// For now, set to default expanded height
 		// gzr: to do... If the user has set up a custom
@@ -2201,15 +2201,15 @@ void TCueChannel::Expand(bool force)
 		
 		// Resize channel, header and all attached cues
 		ResizeTo( Bounds().Width(), kChannelMaxHeight);	
-		m_Header->ResizeTo( m_Header->Bounds().Width(), kChannelMaxHeight);	
-		m_Header->Invalidate();	
+		fHeader->ResizeTo( fHeader->Bounds().Width(), kChannelMaxHeight);	
+		fHeader->Invalidate();	
 							
 		// Inform cues of expanded state
 		ExpandAllCues();					
 		UpdateAllResizeZones();
 		RedrawAllCues();	
 			
-		m_Header->GetExpandButton()->Invalidate();
+		fHeader->GetExpandButton()->Invalidate();
 		
 		// Force redraw
 		Invalidate();
@@ -2225,9 +2225,9 @@ void TCueChannel::Expand(bool force)
 
 void TCueChannel::ContractAllCues()
 {
-	for ( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for ( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		TCueView *theCue = (TCueView *)m_CueList->ItemAt(index);
+		TCueView *theCue = (TCueView *)fCueList->ItemAt(index);
 		
 		if (theCue)
 			theCue->Contract();
@@ -2243,9 +2243,9 @@ void TCueChannel::ContractAllCues()
 
 void TCueChannel::ExpandAllCues()
 {
-	for ( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for ( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		TCueView *theCue = (TCueView *)m_CueList->ItemAt(index);
+		TCueView *theCue = (TCueView *)fCueList->ItemAt(index);
 		
 		if (theCue)
 			theCue->Expand();
@@ -2328,8 +2328,8 @@ void TCueChannel::Draw(BRect updateRect)
 	if (IsPlaying() == false)
 	{
 		SetHighColor(kBlack);
-		startPt.Set(m_TickPt.x, kTop+1);
-		endPt.Set(m_TickPt.x, kBottom-1);
+		startPt.Set(fTickPt.x, kTop+1);
+		endPt.Set(fTickPt.x, kBottom-1);
 		StrokeLine(startPt, endPt);
 	}
 
@@ -2356,27 +2356,27 @@ void TCueChannel::DrawIndicatorTick(BPoint drawPt)
 	PushState();
 		
 	// Save point into tracking member variable points
-	m_TickPt = drawPt;
+	fTickPt = drawPt;
 
 	// If point is at new location, go ahead and draw
-	if (m_TickPt.x != m_OldTickPt.x)
+	if (fTickPt.x != fOldTickPt.x)
 	{			
 		// Erase last indicator tick. Clip out the outline lines 
 		//SetHighColor(kLightGrey);
-		startPt.Set(m_OldTickPt.x, bounds.top+2);
-		endPt.Set(m_OldTickPt.x, bounds.bottom-2);
+		startPt.Set(fOldTickPt.x, bounds.top+2);
+		endPt.Set(fOldTickPt.x, bounds.bottom-2);
 		StrokeLine(startPt, endPt);
 		BRect invalRect(startPt, endPt);
 		Draw(invalRect);
 		
 		// Draw the new indicator tick. Clip out the outline lines 
 		SetHighColor(kBlack);
-		startPt.Set(m_TickPt.x, bounds.top+1);
-		endPt.Set(m_TickPt.x, bounds.bottom-1);
+		startPt.Set(fTickPt.x, bounds.top+1);
+		endPt.Set(fTickPt.x, bounds.bottom-1);
 		StrokeLine(startPt, endPt);
 		
 		// Save tick location for next compare
-		m_OldTickPt = m_TickPt;
+		fOldTickPt = fTickPt;
 	}
 	
 	// Restore environment
@@ -2435,9 +2435,9 @@ void TCueChannel::DrawTimelineGuides(BRect updateRect)
 
 void TCueChannel::RedrawAllCues()
 {
-	for ( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for ( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		TCueView *theView = (TCueView *)m_CueList->ItemAt(index);
+		TCueView *theView = (TCueView *)fCueList->ItemAt(index);
 		
 		if (theView)
 			theView->Invalidate();
@@ -2454,9 +2454,9 @@ void TCueChannel::RedrawAllCues()
 
 void TCueChannel::UpdateAllResizeZones()
 {
-	for ( int32 index = 0; index < m_CueList->CountItems(); index++)
+	for ( int32 index = 0; index < fCueList->CountItems(); index++)
 	{
-		TCueView *theView = (TCueView *)m_CueList->ItemAt(index);
+		TCueView *theView = (TCueView *)fCueList->ItemAt(index);
 		
 		if (theView)
 			theView->UpdateResizeZones();
@@ -2477,11 +2477,11 @@ void TCueChannel::UpdateAllResizeZones()
 
 void TCueChannel::LockChannel()
 {
-	if (! m_IsLocked)
+	if (! fIsLocked)
 	{
-		m_IsLocked = true;
+		fIsLocked = true;
 		DeselectAllCues();
-		m_Header->GetLockButton()->Invalidate();
+		fHeader->GetLockButton()->Invalidate();
 		LockAllCues();
 	}
 }
@@ -2496,10 +2496,10 @@ void TCueChannel::LockChannel()
 
 void TCueChannel::UnlockChannel()
 {
-	if(m_IsLocked)
+	if(fIsLocked)
 	{
-		m_IsLocked = false;
-		m_Header->GetLockButton()->Invalidate();
+		fIsLocked = false;
+		fHeader->GetLockButton()->Invalidate();
 		UnlockAllCues();
 	}
 }
@@ -2516,9 +2516,9 @@ void TCueChannel::LockAllCues()
 {
 	TCueView *theView;
 	
-	for( int32 i = 0; i < m_CueList->CountItems(); i++)
+	for( int32 i = 0; i < fCueList->CountItems(); i++)
 	{
-		theView = (TCueView *)m_CueList->ItemAt(i);
+		theView = (TCueView *)fCueList->ItemAt(i);
 		
 		if(theView)
 		{
@@ -2545,9 +2545,9 @@ void TCueChannel::UnlockAllCues()
 	TCueView *theView;
 	
 	// Iterate through all cues in the list
-	for( int32 i = 0; i < m_CueList->CountItems(); i++)
+	for( int32 i = 0; i < fCueList->CountItems(); i++)
 	{
-		theView = (TCueView *)m_CueList->ItemAt(i);
+		theView = (TCueView *)fCueList->ItemAt(i);
 		
 		if(theView)
 		{
@@ -2575,13 +2575,13 @@ void TCueChannel::UnlockAllCues()
 
 void TCueChannel::AttachedToWindow()
 {			
-	if (m_CueSheet == NULL)
+	if (fCueSheet == NULL)
 	{
-		m_CueSheet 	= (TCueSheetView *)Parent();		
+		fCueSheet 	= (TCueSheetView *)Parent();		
 	
 		//	Add ourselves to cue list
 printf("TCueChannel::AttachedToWindow: GetChannelList\n");
-		BList *channelList = m_CueSheet->GetChannelList();		
+		BList *channelList = fCueSheet->GetChannelList();		
 		if ( channelList->HasItem(this) == false)
 			channelList->AddItem(this);			
 	}
@@ -2597,24 +2597,24 @@ printf("TCueChannel::AttachedToWindow: GetChannelList\n");
 //	SetID
 //---------------------------------------------------------------------
 //
-//	Set channel m_ID to theID
+//	Set channel fID to theID
 //
 
 void TCueChannel::SetID(int32 theID)
 {
-	m_ID = theID;
+	fID = theID;
 }
 
 //---------------------------------------------------------------------
 //	SetParent
 //---------------------------------------------------------------------
 //
-//	Set channel m_CueSheet to parent
+//	Set channel fCueSheet to parent
 //
 
 void TCueChannel::SetParent(TCueSheetView *parent)
 {
-	m_CueSheet = parent;
+	fCueSheet = parent;
 }
 
 //---------------------------------------------------------------------
@@ -2625,5 +2625,5 @@ void TCueChannel::SetParent(TCueSheetView *parent)
 
 void TCueChannel::SetHeader(TCueChannelHeader *header)
 {
-	m_Header = header;
+	fHeader = header;
 }

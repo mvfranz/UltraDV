@@ -50,8 +50,8 @@ void TAudioSettingsDialog::Init()
 {	
 	
 	// Create background view
-	m_BGView = new TAudioSettingsView(Bounds(), this); 
-	AddChild(m_BGView);
+	fBGView = new TAudioSettingsView(Bounds(), this); 
+	AddChild(fBGView);
 	
 	//
 	// Add tabs to the window
@@ -59,11 +59,11 @@ void TAudioSettingsDialog::Init()
 	
 	// AudioSettings
 	BRect bounds(0, 0, Bounds().Width(), 200);
-	m_TabView = new TAudioSettingsTabView(m_BGView, bounds, "AudioSettingsTabView"); 
-	ASSERT(m_TabView);
-	m_TabView->SetViewColor(kBeGrey); 
+	fTabView = new TAudioSettingsTabView(fBGView, bounds, "AudioSettingsTabView"); 
+	ASSERT(fTabView);
+	fTabView->SetViewColor(kBeGrey); 
 		
-	m_BGView->AddChild(m_TabView);
+	fBGView->AddChild(fTabView);
 	
 }
 

@@ -48,12 +48,12 @@ class TAudioEditorView: public BView
 		void	ZoomOut();
 				
 		// Member Variables		
-		TAudioEditor	*m_Parent;		
-		BPoint			m_TickPt;
-		BPoint			m_OldTickPt;
+		TAudioEditor	*fParent;		
+		BPoint			fTickPt;
+		BPoint			fOldTickPt;
 		
-		bool			m_UpdatePreview;
-		BBitmap 		*m_PreviewBitmap;	
+		bool			fUpdatePreview;
+		BBitmap 		*fPreviewBitmap;	
 		
 		// Member Functions
 		//void			UpdateNumSampleFrames(int32 delta);

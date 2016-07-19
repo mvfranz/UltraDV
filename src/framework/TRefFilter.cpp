@@ -33,7 +33,7 @@
 
 TRefFilter::TRefFilter(FilterType filterType) : BRefFilter()
 {	
-	m_FilterType = filterType;
+	fFilterType = filterType;
 }
 
 
@@ -55,7 +55,7 @@ bool TRefFilter::Filter(const entry_ref *theRef, BNode *theNode,
 	BNodeInfo nodeInfo(theNode);
 	
 
-	switch(m_FilterType)
+	switch(fFilterType)
 	{
 		case kAudioFilter:
 		{

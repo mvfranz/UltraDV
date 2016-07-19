@@ -44,8 +44,8 @@
 
 TPasteCues::TPasteCues(TCueSheetView *cueSheet, BList *cueList, BMessage *theMessage) : BWindow(theMessage)
 {
-	m_CueSheet 	= cueSheet;
-	m_CueList	= cueList;
+	fCueSheet 	= cueSheet;
+	fCueList	= cueList;
 		
 	// Default initialization
 	Init();
@@ -75,7 +75,7 @@ void TPasteCues::Init()
 	SetFeel(B_MODAL_APP_WINDOW_FEEL);
 	
 	// Get total number of channels
-	int32 numChannels = m_CueSheet->GetTotalChannels();
+	int32 numChannels = fCueSheet->GetTotalChannels();
 	char numStr[10];
 	sprintf(numStr, "%d", numChannels);
 	
@@ -86,42 +86,42 @@ void TPasteCues::Init()
 	BRect bounds = Bounds();
 	
 	// Find main background view
-	m_BackView = (BView *)FindView("PasteCuesView");
+	fBackView = (BView *)FindView("PasteCuesView");
 	
 	// Replace BTextView with our own beveled TCueTimeText
 	BTextView *textView = (BTextView *)FindView("AtTimeText");
 		
-	m_PasteTime = new TCueTimeText( (BHandler *) NULL, (int32) NULL, (BRect) textView->Bounds(), (const char *)textView->Name(), (uint32)textView->ResizingMode(), kTextBevel);
-	m_BackView->AddChild(m_PasteTime);
-	m_PasteTime->MoveTo(textView->Frame().left, textView->Frame().top);
+	fPasteTime = new TCueTimeText( (BHandler *) NULL, (int32) NULL, (BRect) textView->Bounds(), (const char *)textView->Name(), (uint32)textView->ResizingMode(), kTextBevel);
+	fBackView->AddChild(fPasteTime);
+	fPasteTime->MoveTo(textView->Frame().left, textView->Frame().top);
 	
-	m_BackView->RemoveChild(textView);
+	fBackView->RemoveChild(textView);
 	delete textView;
 		
 	// Replace BTextControl with our own TNumberTextControl
 	BTextControl *numberText = (BTextControl *)FindView("InTrackText");
-	m_ChannelText = new TNumberTextControl(numberText->Bounds(), "In Channel:", numberText->Name(), numberText->Text(), NULL);
-	m_BackView->AddChild(m_ChannelText);
-	m_ChannelText->MoveTo(numberText->Frame().left, numberText->Frame().top);
-	m_ChannelText->SetDivider(numberText->Divider());	
+	fChannelText = new TNumberTextControl(numberText->Bounds(), "In Channel:", numberText->Name(), numberText->Text(), NULL);
+	fBackView->AddChild(fChannelText);
+	fChannelText->MoveTo(numberText->Frame().left, numberText->Frame().top);
+	fChannelText->SetDivider(numberText->Divider());	
 	
 	BMessage *modMessage = new BMessage(IN_CHANNEL_MSG);
-	m_ChannelText->SetModificationMessage(modMessage);
+	fChannelText->SetModificationMessage(modMessage);
 	
 	alignment label, text;
 	numberText->GetAlignment(&label, &text);
-	m_ChannelText->SetAlignment(label, text);
+	fChannelText->SetAlignment(label, text);
 	
-	m_BackView->RemoveChild(numberText);
+	fBackView->RemoveChild(numberText);
 	delete numberText;
 	
 	// Set text to current time
 	char timeStr[256];
-	TimeToString(m_CueSheet->GetCurrentTime(), m_CueSheet->GetTimeFormat(), timeStr, false);
-	m_PasteTime->SetText(timeStr);
+	TimeToString(fCueSheet->GetCurrentTime(), fCueSheet->GetTimeFormat(), timeStr, false);
+	fPasteTime->SetText(timeStr);
 	
 	// Set focus to text
-	m_PasteTime->MakeFocus(true);
+	fPasteTime->MakeFocus(true);
 		
 }
 
@@ -145,21 +145,21 @@ void TPasteCues::MessageReceived(BMessage* message)
 		case OK_MSG:
 			{
 				// Get total number of channels
-				int32 numChannels = m_CueSheet->GetTotalChannels();
+				int32 numChannels = fCueSheet->GetTotalChannels();
 				char numStr[10];
 				sprintf(numStr, "%d", numChannels);
 		
 				// 	Get the time the user wants to paste at
-				int64 theTime = m_PasteTime->GetTime();
+				int64 theTime = fPasteTime->GetTime();
 
 				// 	Get the channel the user wants to paste into
-				int32 theChannel = atoi(m_ChannelText->Text());
+				int32 theChannel = atoi(fChannelText->Text());
 								
 				// Send message to cue sheet view.  Add time, channel and cue list
 				if (theChannel > 0 && theChannel <= numChannels)
 				{
 					BMessage *theMessage = new BMessage(CUE_PASTE_MSG);
-					theMessage->AddPointer("CueList", m_CueList);
+					theMessage->AddPointer("CueList", fCueList);
 					theMessage->AddInt32("PasteTime", theTime);
 					theMessage->AddInt32("PasteChannel", theChannel);
 					(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(theMessage, (BHandler *)static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView(), NULL );				
@@ -176,7 +176,7 @@ void TPasteCues::MessageReceived(BMessage* message)
 		case CANCEL_MSG:
 			{
 				// Free the cue list
-				delete m_CueList;
+				delete fCueList;
 				
 				Lock();			
 				Quit();
@@ -188,7 +188,7 @@ void TPasteCues::MessageReceived(BMessage* message)
 		case IN_CHANNEL_MSG:
 			{     			
      			// Get total number of channels
-				int32 numChannels = m_CueSheet->GetTotalChannels();
+				int32 numChannels = fCueSheet->GetTotalChannels();
 				char numStr[10];
 				char oneStr[10];
 				
@@ -196,16 +196,16 @@ void TPasteCues::MessageReceived(BMessage* message)
 				sprintf(numStr, "%d", numChannels);
 				
 				// Get the channel number entered
-				int32 theNum = atoi( m_ChannelText->Text());
+				int32 theNum = atoi( fChannelText->Text());
 				
 				// 	If the after channel is less than zero, correct the user input
 				if (theNum < 1)
-     				m_ChannelText->SetText(oneStr);    
+     				fChannelText->SetText(oneStr);    
 
 				// 	If the after channel is greater than total channels,
      			//	correct the user input
 				if (theNum > numChannels)
-     				m_ChannelText->SetText(numStr);    
+     				fChannelText->SetText(numStr);    
      		}
 			break;
 			

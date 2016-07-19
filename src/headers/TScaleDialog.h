@@ -64,30 +64,30 @@ class TScaleDialog : public BWindow
 		float 	GetNewHeight();
 		
 		// Member Variables		
-		TVisualCue 			*m_Cue;
-		BView				*m_BackView;
+		TVisualCue 			*fCue;
+		BView				*fBackView;
 		
-		TNumberTextControl 	*m_WidthText;
-		TNumberTextControl 	*m_HeightText;
+		TNumberTextControl 	*fWidthText;
+		TNumberTextControl 	*fHeightText;
 		
-		BMenuField			*m_WidthMenu;
-		BMenuField			*m_HeightMenu;
+		BMenuField			*fWidthMenu;
+		BMenuField			*fHeightMenu;
 		
-		BCheckBox			*m_AspectCheck;
+		BCheckBox			*fAspectCheck;
 		
-		BPoint				m_SavedScale;
+		BPoint				fSavedScale;
 		
-		bool				m_AspectRatio;
+		bool				fAspectRatio;
 		
-		BButton 			*m_OKButton;
-		BButton 			*m_ApplyButton;
-		BButton 			*m_CancelButton;
+		BButton 			*fOKButton;
+		BButton 			*fApplyButton;
+		BButton 			*fCancelButton;
 		
-		UnitType			m_HeightUnitType;
-		UnitType			m_WidthUnitType;
+		UnitType			fHeightUnitType;
+		UnitType			fWidthUnitType;
 		
-		float				m_AspectWidth;
-		float				m_AspectHeight;	
+		float				fAspectWidth;
+		float				fAspectHeight;	
 };
 
 #endif

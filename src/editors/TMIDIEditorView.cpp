@@ -36,7 +36,7 @@
 
 TMIDIEditorView::TMIDIEditorView(TMIDIEditor *parent, BRect bounds) : BView(bounds, "MIDIEditorView", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
 {
-	m_Editor = parent;	
+	fEditor = parent;	
 	
 	// Default initialization
 	Init();	

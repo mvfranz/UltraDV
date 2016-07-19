@@ -73,9 +73,9 @@ void TNumberTextControl::Init()
 	//BTextView *theView = TextView();
 	
 	// Swap out text view for our own
-	//m_TextView = new TNumberTextView( theView->Frame(), "NumberText", theView->ResizingMode() );
-	//m_TextView->SetText( theView->Text() );
-	//theView = m_TextView;
+	//fTextView = new TNumberTextView( theView->Frame(), "NumberText", theView->ResizingMode() );
+	//fTextView->SetText( theView->Text() );
+	//theView = fTextView;
 	
 	// Disallow all characters except numbers
 	BTextView *theView = TextView();

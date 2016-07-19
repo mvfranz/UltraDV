@@ -104,7 +104,7 @@ virtual	void Disconnected(
 virtual	status_t FormatChanged(
 				const media_source & producer,
 				const media_destination & consumer, 
-				int32 from_change_count,
+				int32 frofchange_count,
 				const media_format & format);
 
 private:

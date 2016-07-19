@@ -63,43 +63,43 @@ void TAudioLevelsView::Init(int8 theStream, int8 theSpeed, int8 oldSpeed)
 	// We handle our own drawing
 	SetViewColor(B_TRANSPARENT_32_BIT);
 
-	m_Done 	= false;
-	m_Ready = false;
+	fDone 	= false;
+	fReady = false;
 	
-	m_LeftBuffer = new float[512];
-	m_RightBuffer = new float[512];
+	fLeftBuffer = new float[512];
+	fRightBuffer = new float[512];
 	
-	m_BufferLock = new BLocker("BufferLock");
+	fBufferLock = new BLocker("BufferLock");
 		
-	m_UpdateThread = spawn_thread((thread_entry)update, "update thread", B_LOW_PRIORITY, this);
+	fUpdateThread = spawn_thread((thread_entry)update, "update thread", B_LOW_PRIORITY, this);
 	
-	this->m_Stream 	 = theStream;
-	this->m_Speed 	 = theSpeed;
-	this->m_OldSpeed = oldSpeed;
+	this->fStream 	 = theStream;
+	this->fSpeed 	 = theSpeed;
+	this->fOldSpeed = oldSpeed;
 	
-	//m_ADCStream = new BADCStream();	
-	//m_ADCStream->SetSamplingRate(44100);
-	//m_ADCStream->BoostMic(false);
+	//fADCStream = new BADCStream();	
+	//fADCStream->SetSamplingRate(44100);
+	//fADCStream->BoostMic(false);
 	
-	//m_DACStream = new BDACStream();	
-	//m_DACStream->SetSamplingRate(44100);
+	//fDACStream = new BDACStream();	
+	//fDACStream->SetSamplingRate(44100);
 	
-	//m_Subscriber = new BSubscriber();
+	//fSubscriber = new BSubscriber();
 	
-	//if (m_Stream == 0)
-	//	m_Subscriber->Subscribe(m_ADCStream);		
-	//else if (m_Stream == 1)
-	//	m_Subscriber->Subscribe(m_DACStream);
-	//else if (m_Stream == 2)
+	//if (fStream == 0)
+	//	fSubscriber->Subscribe(fADCStream);		
+	//else if (fStream == 1)
+	//	fSubscriber->Subscribe(fDACStream);
+	//else if (fStream == 2)
 	//{
-	//	m_Speed 	= 0;
-	//	m_OldSpeed 	= 2;
+	//	fSpeed 	= 0;
+	//	fOldSpeed 	= 2;
 	//	return;
 	//}
 	
-	//m_Subscriber->EnterStream(NULL, true, (void *)this, (enter_stream_hook)stream_func, NULL, true);
+	//fSubscriber->EnterStream(NULL, true, (void *)this, (enter_streafhook)streaffunc, NULL, true);
 		
-	resume_thread(m_UpdateThread);
+	resume_thread(fUpdateThread);
 }
 
 
@@ -116,106 +116,106 @@ void TAudioLevelsView::UpdateData(int32 code)
 		case 'PASE':
 			// Pause the threads
 	
-			if (m_Speed == 0)
+			if (fSpeed == 0)
 				break;
 				
-			m_BufferLock->Lock();
+			fBufferLock->Lock();
 			for (int32 i = 0; i < 512; i++)
 			{
-				m_LeftBuffer[i] = 0;
-				m_RightBuffer[i] = 0;
+				fLeftBuffer[i] = 0;
+				fRightBuffer[i] = 0;
 			}
-			m_BufferLock->Unlock();
+			fBufferLock->Unlock();
 			
-			//m_Subscriber->ExitStream();
-			//m_Subscriber->Unsubscribe();
+			//fSubscriber->ExitStream();
+			//fSubscriber->Unsubscribe();
 			
-			//suspend_thread(m_UpdateThread);
-			m_OldSpeed = m_Speed;
-			m_Speed = 0;
+			//suspend_thread(fUpdateThread);
+			fOldSpeed = fSpeed;
+			fSpeed = 0;
 			
-			m_Stream = 2;
+			fStream = 2;
 			break;
 			
 		case 'ADC ':
 			// Switch to adc
 			
-			if (m_Speed == 0)
+			if (fSpeed == 0)
 			{
-				m_Speed = m_OldSpeed;
-				resume_thread(m_UpdateThread);
+				fSpeed = fOldSpeed;
+				resume_thread(fUpdateThread);
 			}
 			
-			m_BufferLock->Lock();
+			fBufferLock->Lock();
 			for (int32 i = 0; i < 512; i++)
 			{
-				m_LeftBuffer[i] = 0;
-				m_RightBuffer[i] = 0;
+				fLeftBuffer[i] = 0;
+				fRightBuffer[i] = 0;
 			}
-			m_BufferLock->Unlock();
+			fBufferLock->Unlock();
 		
-			//m_Subscriber->ExitStream();
-			//m_Subscriber->Unsubscribe();
+			//fSubscriber->ExitStream();
+			//fSubscriber->Unsubscribe();
 			
-			//m_Subscriber->Subscribe(m_ADCStream);
+			//fSubscriber->Subscribe(fADCStream);
 		
-			m_Stream = 0;
+			fStream = 0;
 	
-			//m_Subscriber->EnterStream(NULL, true, (void *)this, (enter_stream_hook)stream_func, NULL, true);
+			//fSubscriber->EnterStream(NULL, true, (void *)this, (enter_streafhook)streaffunc, NULL, true);
 			break;
 			
 		// Switch to dac
 		case 'DAC ':			
-			if (m_Speed == 0)
+			if (fSpeed == 0)
 			{
-				m_Speed = m_OldSpeed;
-				resume_thread(m_UpdateThread);
+				fSpeed = fOldSpeed;
+				resume_thread(fUpdateThread);
 			}
 			
-			m_BufferLock->Lock();
+			fBufferLock->Lock();
 			for (int32 i = 0; i < 512; i++)
 			{
-				m_LeftBuffer[i] = 0;
-				m_RightBuffer[i] = 0;
+				fLeftBuffer[i] = 0;
+				fRightBuffer[i] = 0;
 			}
-			m_BufferLock->Unlock();
+			fBufferLock->Unlock();
 		
-			//m_Subscriber->ExitStream();
-			//m_Subscriber->Unsubscribe();
+			//fSubscriber->ExitStream();
+			//fSubscriber->Unsubscribe();
 			
-			//m_Subscriber->Subscribe(m_DACStream);
+			//fSubscriber->Subscribe(fDACStream);
 		
-			m_Stream = 1;
+			fStream = 1;
 	
-			//m_Subscriber->EnterStream(NULL, true, (void *)this, (enter_stream_hook)stream_func, NULL, true);
+			//fSubscriber->EnterStream(NULL, true, (void *)this, (enter_streafhook)streaffunc, NULL, true);
 			break;
 			
 		case '1/25':
-			if (m_Speed != 0)
-				m_Speed = 1;
+			if (fSpeed != 0)
+				fSpeed = 1;
 			else
-				m_OldSpeed = 1;
+				fOldSpeed = 1;
 			break;
 			
 		case '1/2 ':
-			if (m_Speed != 0)
-				m_Speed = 2;
+			if (fSpeed != 0)
+				fSpeed = 2;
 			else
-				m_OldSpeed = 2;
+				fOldSpeed = 2;
 			break;
 			
 		case '1   ':
-			if (m_Speed != 0)
-				m_Speed = 3;
+			if (fSpeed != 0)
+				fSpeed = 3;
 			else
-				m_OldSpeed = 3;
+				fOldSpeed = 3;
 			break;
 			
 		case '2   ':
-			if (m_Speed != 0)
-				m_Speed = 4;
+			if (fSpeed != 0)
+				fSpeed = 4;
 			else
-				m_OldSpeed = 4;
+				fOldSpeed = 4;
 			break;
 			
 		default:
@@ -268,29 +268,29 @@ void TAudioLevelsView::Update()
 	fillRect.left 	= bounds.left;
 	fillRect.right  = fillRect.left + (width/2)-1;
 			
-	while (!m_Ready)
+	while (!fReady)
 	{
 	}
 	
-	while (m_Done == false)
+	while (fDone == false)
 	{						
 		leftHigh 	= 0.0;
 		rightHigh 	= 0.0;
 	
 		leftCount 	= 0;
 		rightCount 	= 0;
-		m_BufferLock->Lock();
+		fBufferLock->Lock();
 		
-		fft_real_to_hermitian(m_LeftBuffer, 512);
-		fft_real_to_hermitian(m_RightBuffer, 512);
+		fft_real_to_hermitian(fLeftBuffer, 512);
+		fft_real_to_hermitian(fRightBuffer, 512);
 		
 		for (int32 i = 0; i < 512; i++)
-			leftHigh = m_LeftBuffer[i] > leftHigh ? m_LeftBuffer[i] : leftHigh;
+			leftHigh = fLeftBuffer[i] > leftHigh ? fLeftBuffer[i] : leftHigh;
 			
 		for (int32 i = 0; i < 512; i++)
-			rightHigh = m_RightBuffer[i] > rightHigh ? m_RightBuffer[i] : rightHigh;
+			rightHigh = fRightBuffer[i] > rightHigh ? fRightBuffer[i] : rightHigh;
 			
-		m_BufferLock->Unlock();
+		fBufferLock->Unlock();
 		
 		leftCount  = leftHigh	/ 5.0;
 		rightCount = rightHigh  / 5.0;
@@ -329,7 +329,7 @@ void TAudioLevelsView::Update()
 		
 		Flush();
 		
-		switch (m_Speed)
+		switch (fSpeed)
 		{
 			case 0:
 				suspend_thread(find_thread(NULL));
@@ -356,34 +356,34 @@ void TAudioLevelsView::Update()
 
 
 //---------------------------------------------------------------------
-//	stream_func
+//	streaffunc
 //---------------------------------------------------------------------
 //
 //
 
-bool TAudioLevelsView::stream_func(void *data, char *buf, size_t size, void *header)
+bool TAudioLevelsView::streaffunc(void *data, char *buf, size_t size, void *header)
 {	
 		
 	TAudioLevelsView	*amv = (TAudioLevelsView *)data;
 	int32 count = size / 2;
 	
-	amv->m_BufferLock->Lock();
+	amv->fBufferLock->Lock();
 	
 	int32 frame_cnt = 0;
 	for (int32 i = 0; i < 512; i++)
 	{
-		amv->m_LeftBuffer[i] = ((int16 *)buf)[frame_cnt] / 32768.0;
+		amv->fLeftBuffer[i] = ((int16 *)buf)[frame_cnt] / 32768.0;
 		frame_cnt += 2;
 	}
 	
 	frame_cnt = 1;
 	for (int32 i = 0; i < 512; i++)
 	{
-		amv->m_RightBuffer[i] = ((int16 *)buf)[frame_cnt] / 32768.0;
+		amv->fRightBuffer[i] = ((int16 *)buf)[frame_cnt] / 32768.0;
 		frame_cnt += 2;
 	}
 	
-	amv->m_BufferLock->Unlock();
+	amv->fBufferLock->Unlock();
 	
 	return true;
 }
@@ -403,7 +403,7 @@ void TAudioLevelsView::Draw(BRect updateRect)
 	PushState();
 	
 	BPoint startPt, endPt;	
-	m_Ready = true;
+	fReady = true;
 	
 	SetHighColor(kBlack);
 	FillRect(Bounds());
@@ -527,26 +527,26 @@ void TAudioLevelsView::AttachedToWindow()
 
 void TAudioLevelsView::DetachedFromWindow()
 {	
-	if (m_Done == false)
+	if (fDone == false)
 	{
-		m_Done = true;
+		fDone = true;
 		
-		kill_thread(m_UpdateThread);
-		m_BufferLock->Unlock();	
+		kill_thread(fUpdateThread);
+		fBufferLock->Unlock();	
 		
-		//m_Subscriber->ExitStream();
-		//m_Subscriber->Unsubscribe();
+		//fSubscriber->ExitStream();
+		//fSubscriber->Unsubscribe();
 		
-		//delete m_Subscriber;
-		//delete m_ADCStream;
-		//delete m_DACStream;
+		//delete fSubscriber;
+		//delete fADCStream;
+		//delete fDACStream;
 		
-		m_BufferLock->Lock();		
-		delete m_LeftBuffer;
-		delete m_RightBuffer;	
-		m_BufferLock->Unlock();
+		fBufferLock->Lock();		
+		delete fLeftBuffer;
+		delete fRightBuffer;	
+		fBufferLock->Unlock();
 		
-		delete m_BufferLock;
+		delete fBufferLock;
 	}
 	
 	BView::DetachedFromWindow();

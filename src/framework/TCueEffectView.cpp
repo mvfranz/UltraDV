@@ -32,13 +32,13 @@
 TCueEffectView::TCueEffectView(BRect bounds, TCueView *theCue, TCueEffect *theEffect)
 {
 	//	Save bounds
-	m_Bounds = bounds;
+	fBounds = bounds;
 			
 	// Save cue pointer
-	m_Cue = theCue;
+	fCue = theCue;
 
 	// Save effect pointer
-	m_Effect = theEffect;
+	fEffect = theEffect;
 			
 	//	Do default initialization
 	Init();	
@@ -56,7 +56,7 @@ TCueEffectView::~TCueEffectView()
 	Deselect();
 	
 	//	Free effect
-	delete m_Effect;
+	delete fEffect;
 }
 
 
@@ -69,7 +69,7 @@ TCueEffectView::~TCueEffectView()
 void TCueEffectView::Init()
 {
 	// We start life unselected
-	m_IsSelected = false;
+	fIsSelected = false;
 		
 	//	Set up resize zones
 	UpdateResizeZones();
@@ -102,8 +102,8 @@ void TCueEffectView::MouseDown(BPoint where, bool doubleClick)
 	else
 	{
 		//	Deselect everyone
-		if (m_IsSelected == false)
-			m_Cue->DeselectAllEffects();
+		if (fIsSelected == false)
+			fCue->DeselectAllEffects();
 		
 		//	Select
 		Select();
@@ -111,12 +111,12 @@ void TCueEffectView::MouseDown(BPoint where, bool doubleClick)
 	
 	/*
 	// Make sure point falls within our bounds or resize zones	
-	if ( m_ChannelCue->CuePosition()->Contains(where) || PointInResizeZones(where) )
+	if ( fChannelCue->CuePosition()->Contains(where) || PointInResizeZones(where) )
 	{	
 		
 		uint32 	type;
 		int32	count = 0;
-		BMessage *message = m_Stage->Window()->CurrentMessage();
+		BMessage *message = fStage->Window()->CurrentMessage();
 		if (B_OK == message->GetInfo("clicks", &type, &count) )
 		{
 			int32 clickCount = message->FindInt32("clicks", count-1);
@@ -124,8 +124,8 @@ void TCueEffectView::MouseDown(BPoint where, bool doubleClick)
 			// Is this a double click?  If so, open editor
 			if (clickCount == 2)
 			{
-				//if(m_ChannelCue->HasEditor())
-				//	m_ChannelCue->OpenEditor();		
+				//if(fChannelCue->HasEditor())
+				//	fChannelCue->OpenEditor();		
 			}
 			//	Open transform dialog for current tool
 			else if ( IsOptionKeyDown() )
@@ -140,7 +140,7 @@ void TCueEffectView::MouseDown(BPoint where, bool doubleClick)
 
 				// Determine which button has been clicked
 				uint32 	buttons = 0;
-				BMessage *message = m_Stage->Window()->CurrentMessage();
+				BMessage *message = fStage->Window()->CurrentMessage();
 				message->FindInt32("buttons", (long *)&buttons);
 			
 				switch(buttons)
@@ -151,7 +151,7 @@ void TCueEffectView::MouseDown(BPoint where, bool doubleClick)
 							//	Otherwise, they are using a stage tool
 							if ( PointInResizeZones(where) )
 							{																					
-								switch(m_Stage->GetToolMode())
+								switch(fStage->GetToolMode())
 								{
 									case kMoveMode:
 										DragPicture(where);					
@@ -215,11 +215,11 @@ void TCueEffectView::MouseMoved( BPoint where)
 {
 	/*
 	//	Do nothing if window is not active
-	if (m_Stage->Window()->IsActive() == false)
+	if (fStage->Window()->IsActive() == false)
 		return;
 		
 	//	Determine tool mode and set proper cursor
-	switch(m_Stage->GetToolMode())
+	switch(fStage->GetToolMode())
 	{
 		case kMoveMode:
 			SetMoveCursor(where);			
@@ -288,21 +288,21 @@ void TCueEffectView::Resized()
 void TCueEffectView::Draw(BRect updateRect)
 {			
 	//	Fill it
-	m_Cue->SetHighColor(kLightGrey);
-	m_Cue->FillRect(m_Bounds);
+	fCue->SetHighColor(kLightGrey);
+	fCue->FillRect(fBounds);
 				
 	//	Outline entire content area
-	m_Cue->SetHighColor(kWhite);
-	m_Cue->StrokeRect(m_Bounds);
+	fCue->SetHighColor(kWhite);
+	fCue->StrokeRect(fBounds);
 	
 	//	Draw name text
 	BFont font(be_plain_font); 
 	font.SetSize(9.0);   	
-	m_Cue->SetFont(&font);
-	BPoint drawPt(m_Bounds.left, m_Bounds.bottom-1);
-	m_Cue->SetHighColor(kBlack);
-	m_Cue->SetLowColor(kSteelBlue);
-	m_Cue->DrawString(m_Effect->Name().c_str(), drawPt);
+	fCue->SetFont(&font);
+	BPoint drawPt(fBounds.left, fBounds.bottom-1);
+	fCue->SetHighColor(kBlack);
+	fCue->SetLowColor(kSteelBlue);
+	fCue->DrawString(fEffect->Name().c_str(), drawPt);
 }
 
 
@@ -315,13 +315,13 @@ void TCueEffectView::Draw(BRect updateRect)
 void TCueEffectView::DrawSelectionRect()
 {			
 	//	Draw Selection in red
-	if (m_Cue->LockLooper())
+	if (fCue->LockLooper())
 	{
-		m_Cue->PushState();
-		m_Cue->SetHighColor(kRed);
-		m_Cue->StrokeRect(m_Bounds);
-		m_Cue->PopState();
-		m_Cue->UnlockLooper();	
+		fCue->PushState();
+		fCue->SetHighColor(kRed);
+		fCue->StrokeRect(fBounds);
+		fCue->PopState();
+		fCue->UnlockLooper();	
 	}
 }
 
@@ -335,28 +335,28 @@ void TCueEffectView::DrawSelectionRect()
 void TCueEffectView::InvalidateSelectionRect()
 {			
 	//	Return to normal framed state
-	if (m_Cue->LockLooper())
+	if (fCue->LockLooper())
 	{
 		BPoint startPt, endPt;
 		
-		m_Cue->PushState();
+		fCue->PushState();
 		
-		m_Cue->SetHighColor(kWhite);
-		startPt.Set(m_Bounds.left, m_Bounds.bottom-1);
-		endPt.Set(m_Bounds.left, m_Bounds.top);	
-		m_Cue->StrokeLine(startPt, endPt);
-		endPt.Set(m_Bounds.right, m_Bounds.top);
-		m_Cue->StrokeLine(endPt);
+		fCue->SetHighColor(kWhite);
+		startPt.Set(fBounds.left, fBounds.bottom-1);
+		endPt.Set(fBounds.left, fBounds.top);	
+		fCue->StrokeLine(startPt, endPt);
+		endPt.Set(fBounds.right, fBounds.top);
+		fCue->StrokeLine(endPt);
 		
-		m_Cue->SetHighColor(kBlack);
-		startPt.Set(m_Bounds.right, m_Bounds.top+1);
-		endPt.Set(m_Bounds.right, m_Bounds.bottom);
-		m_Cue->StrokeLine(startPt, endPt);
-		endPt.Set(m_Bounds.left, m_Bounds.bottom);
-		m_Cue->StrokeLine(endPt);
+		fCue->SetHighColor(kBlack);
+		startPt.Set(fBounds.right, fBounds.top+1);
+		endPt.Set(fBounds.right, fBounds.bottom);
+		fCue->StrokeLine(startPt, endPt);
+		endPt.Set(fBounds.left, fBounds.bottom);
+		fCue->StrokeLine(endPt);
 		
-		m_Cue->PopState();
-		m_Cue->UnlockLooper();	
+		fCue->PopState();
+		fCue->UnlockLooper();	
 	}
 }
 
@@ -376,7 +376,7 @@ void TCueEffectView::DragPicture(BPoint thePoint)
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);
+	fStage->GetMouse(&thePoint, &buttons, true);
 		
 	// Save point for future compare
 	savePt = thePoint;
@@ -396,12 +396,12 @@ void TCueEffectView::DragPicture(BPoint thePoint)
 			DrawSelectionRect(false);
 			
 			// Adjust cue's stage location
-			outline = m_ChannelCue->CuePosition()->Enclosure();
+			outline = fChannelCue->CuePosition()->Enclosure();
 			outline.left 	+= diffX;
 			outline.top  	+= diffY;
 			outline.right 	+= diffX;
 			outline.bottom  += diffY;
-			m_ChannelCue->CuePosition()->Outline(outline);
+			fChannelCue->CuePosition()->Outline(outline);
 			
 			// Update resize zones
 			SetResizeZones();
@@ -412,16 +412,16 @@ void TCueEffectView::DragPicture(BPoint thePoint)
 			//	Draw new selection rect
 			DrawSelectionRect(false);		
 		}			
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 	}
 	
 	//	Draw new position
-	if ( m_Stage->LockLooper())
+	if ( fStage->LockLooper())
 	{
-		//m_Stage->StageDraw(m_ChannelCue->GetCroppedArea(), GetCurrentTime());
-		m_Stage->StageDraw(m_ChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
-		m_Stage->Draw(m_Stage->Bounds());
-		m_Stage->UnlockLooper();
+		//fStage->StageDraw(fChannelCue->GetCroppedArea(), GetCurrentTime());
+		fStage->StageDraw(fChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
+		fStage->Draw(fStage->Bounds());
+		fStage->UnlockLooper();
 	}*/		
 }
 
@@ -436,8 +436,8 @@ void TCueEffectView::DragPicture(BPoint thePoint)
 void TCueEffectView::UpdateResizeZones()
 {	
 	//	Set up resize zones
-	m_LResizeZone.Set(m_Bounds.left, m_Bounds.top, m_Bounds.left+kResizeZoneWidth, m_Bounds.bottom);
-	m_RResizeZone.Set(m_Bounds.right-kResizeZoneWidth, m_Bounds.top, m_Bounds.right, m_Bounds.bottom );
+	fLResizeZone.Set(fBounds.left, fBounds.top, fBounds.left+kResizeZoneWidth, fBounds.bottom);
+	fRResizeZone.Set(fBounds.right-kResizeZoneWidth, fBounds.top, fBounds.right, fBounds.bottom );
 }
 
 
@@ -453,12 +453,12 @@ void TCueEffectView::UpdateResizeZones()
 
 void TCueEffectView::Select()
 {
-	if (m_IsSelected == false)
+	if (fIsSelected == false)
 	{		
 		//	Deselect all other cue effects
 		
 		//	We are now selected
-		m_IsSelected = true;
+		fIsSelected = true;
 		
 		//	Draw selection rect
 		DrawSelectionRect();
@@ -473,9 +473,9 @@ void TCueEffectView::Select()
 
 void TCueEffectView::Deselect()
 {
-	if (m_IsSelected)
+	if (fIsSelected)
 	{
-		m_IsSelected = false;
+		fIsSelected = false;
 		
 		//	Invalidate selection rect
 		InvalidateSelectionRect();	

@@ -44,12 +44,12 @@ class TChannelCueButton: public BView
 		virtual void 	DoClick();
 		
 		// Member variables
-		TCueView	*m_Cue;
-		BLooper		*m_Target;
-		BHandler	*m_Handler;
-		bool		m_MouseDown;
-		BBitmap		*m_OffBitmap;
-		BBitmap		*m_OnBitmap;		
+		TCueView	*fCue;
+		BLooper		*fTarget;
+		BHandler	*fHandler;
+		bool		fMouseDown;
+		BBitmap		*fOffBitmap;
+		BBitmap		*fOnBitmap;		
 };		
 
 #endif

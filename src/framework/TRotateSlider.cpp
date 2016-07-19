@@ -40,11 +40,11 @@ TRotateSlider::TRotateSlider( TRotateDialog *dialog, TNumberTextControl *rotateT
 				  TSlider(frame, name, label, message, minValue, maxValue, thumbType, resizingMode, flags)
 {
 	// Set up member variables
-	m_Dialog 		= dialog;
-	m_TextControl 	= rotateText;
-	m_Cue 			= theCue;
-	m_Stage			= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
-	m_StageView 	= m_Stage->GetStageView();
+	fDialog 		= dialog;
+	fTextControl 	= rotateText;
+	fCue 			= theCue;
+	fStage			= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
+	fStageView 	= fStage->GetStageView();
 }
 
 
@@ -85,34 +85,34 @@ void TRotateSlider::SetValue(int32 value)
 	TSlider::SetValue(value);
 	
 	//	Update cue
-	m_Cue->SetRotation(value);
+	fCue->SetRotation(value);
 	
 	//	Update text
-	if (m_TextControl != NULL)
+	if (fTextControl != NULL)
 	{
 		char newStr[3];
 		sprintf(newStr, "%d", value);
-		m_TextControl->SetText(newStr);
+		fTextControl->SetText(newStr);
 	}
 	
 	// Update cue
-	if (m_Cue != NULL)
+	if (fCue != NULL)
 	{
 		//	Draw transformed bitmap
-		if ( m_Dialog->GetRealtimePreview() == true )
+		if ( fDialog->GetRealtimePreview() == true )
 		{
-			if (m_Cue->IsOnStage())
+			if (fCue->IsOnStage())
 			{
-				m_Stage->Lock();
-				m_StageView->StageDraw( m_Cue->GetDrawArea(), GetCurrentTime());
-				m_StageView->Draw( m_Cue->GetDrawArea());
-				m_Stage->Unlock();
+				fStage->Lock();
+				fStageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
+				fStageView->Draw( fCue->GetDrawArea());
+				fStage->Unlock();
 			}		
 		}
 		//	Draw bounding box
 		else
 		{
-			//m_Cue->DrawSelectionRect
+			//fCue->DrawSelectionRect
 		}
 	}
 }
@@ -127,6 +127,6 @@ void TRotateSlider::SetValue(int32 value)
 
 void TRotateSlider::SetTextControl(TNumberTextControl *textControl)
 {
-	m_TextControl = textControl;
+	fTextControl = textControl;
 }
 

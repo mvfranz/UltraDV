@@ -36,13 +36,13 @@ class TAudioSourceView: public BView
 		void 	Init();
 						
 		// Member variables
-		BMenuField			*m_DeviceMenuField;
-		BMenuField 			*m_InputMenuField;			
-		TAudioLevelsView	*m_AudioLevelsView;
-		BBox				*m_VolumeBox;
+		BMenuField			*fDeviceMenuField;
+		BMenuField 			*fInputMenuField;			
+		TAudioLevelsView	*fAudioLevelsView;
+		BBox				*fVolumeBox;
 		
-		TLevelsSlider		*m_InputSlider;
-		TLevelsSlider		*m_OutputSlider;
+		TLevelsSlider		*fInputSlider;
+		TLevelsSlider		*fOutputSlider;
 };
 
 // Messages

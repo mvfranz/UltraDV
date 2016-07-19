@@ -36,15 +36,15 @@ class TAddChannel : public BWindow
 		virtual void			Init();		
 		
 		// Member Variables
-		TCueSheetView	*m_CueSheet;		
+		TCueSheetView	*fCueSheet;		
 		
-		BView				*m_BackView;
-		BStringView			*m_AddText;
-		TNumberTextControl 	*m_AddChannelText;
-		TNumberTextControl 	*m_AfterChannelText;
+		BView				*fBackView;
+		BStringView			*fAddText;
+		TNumberTextControl 	*fAddChannelText;
+		TNumberTextControl 	*fAfterChannelText;
 		
-		BButton 			*m_OKButton;
-		BButton 			*m_CancelButton;
+		BButton 			*fOKButton;
+		BButton 			*fCancelButton;
 	
 };
 

@@ -36,7 +36,7 @@ class TPictureCueEditor: public BWindow
 		void 		FrameResized( float newWidth, float newHeight);
 		
 		// Accessor Functions
-		inline 	TPictureCueEditorView *GetEditorView(){ return m_EditorView; }	
+		inline 	TPictureCueEditorView *GetEditorView(){ return fEditorView; }	
 		
 	private:	
 		// Member Functions
@@ -47,15 +47,15 @@ class TPictureCueEditor: public BWindow
 		void 	ShowDurationDialog();
 		
 		// Member Variables
-		TPictureCue					*m_Cue;
-		TPictureCueEditorToolbar	*m_Toolbar;
-		BView						*m_Background;
-		BBitmap 					*m_Bitmap;
-		TPictureCueEditorView		*m_EditorView;
-		BScrollBar					*m_HScroll;
-		BScrollBar					*m_VScroll;
+		TPictureCue					*fCue;
+		TPictureCueEditorToolbar	*fToolbar;
+		BView						*fBackground;
+		BBitmap 					*fBitmap;
+		TPictureCueEditorView		*fEditorView;
+		BScrollBar					*fHScroll;
+		BScrollBar					*fVScroll;
 		
-		TPictureDurationDialog		*m_Dialog;									
+		TPictureDurationDialog		*fDialog;									
 };
 
 #endif

@@ -36,7 +36,7 @@
 
 TVideoEditorView::TVideoEditorView(TVideoEditor *editor, BMessage *message) : BView(message)
 {	
-	m_Editor = editor;
+	fEditor = editor;
 	
 	// Perform default initialization
 	Init();
@@ -65,7 +65,7 @@ void TVideoEditorView::Init()
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
 	
-	m_DrawPoint.Set(0, 0);	
+	fDrawPoint.Set(0, 0);	
 }
 
 
@@ -87,7 +87,7 @@ void TVideoEditorView::Draw(BRect updateRect)
 	PushState();
 	
 	// Refresh display with current frame
-	if ( m_Editor->IsPlaying() == false)
+	if ( fEditor->IsPlaying() == false)
 	{
 		//	Fill background with black
 		SetHighColor(kBlack);
@@ -95,13 +95,13 @@ void TVideoEditorView::Draw(BRect updateRect)
 
 		//	Refresh with last rendered frame
 		//	Look into centering the bitmap
-		BBitmap *vidBitmap = m_Editor->GetDisplayBitmap();
+		BBitmap *vidBitmap = fEditor->GetDisplayBitmap();
 		if (vidBitmap)
 		{
-			m_DrawPoint.x = (Bounds().Width() / 2) - (vidBitmap->Bounds().Width() / 2);
-			m_DrawPoint.y = (Bounds().Height() / 2) - (vidBitmap->Bounds().Height() / 2);
+			fDrawPoint.x = (Bounds().Width() / 2) - (vidBitmap->Bounds().Width() / 2);
+			fDrawPoint.y = (Bounds().Height() / 2) - (vidBitmap->Bounds().Height() / 2);
 
-			DrawBitmap(vidBitmap, m_DrawPoint);
+			DrawBitmap(vidBitmap, fDrawPoint);
 		}
 	}
 	
@@ -119,7 +119,7 @@ void TVideoEditorView::Draw(BRect updateRect)
 void TVideoEditorView::DisplayFrame(BBitmap *frame)
 {		
 	LockLooper();
-	DrawBitmap(frame, m_DrawPoint);
+	DrawBitmap(frame, fDrawPoint);
 	UnlockLooper();
 }
 

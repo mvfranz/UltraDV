@@ -84,12 +84,12 @@ void TVideoCaptureToolbar::Init()
 	bounds = Bounds();
 	bounds.Set( kButtonLeftOffset, bounds.top + kButtonTopOffset, kToolButtonWidth+kButtonLeftOffset, 
 				bounds.top + kButtonTopOffset + kToolButtonHeight );
-	m_RecordButton = new TBitmapButton( bounds, "RecordButton", recordUp, recordDn, 
+	fRecordButton = new TBitmapButton( bounds, "RecordButton", recordUp, recordDn, 
 										 this, new BMessage(VIDCAP_RECORD_MSG), true, B_TWO_STATE_BUTTON); 
 	
-	AddChild(m_RecordButton);
-	m_RecordButton->Show();
-	m_RecordButton->SetTarget(Parent());	
+	AddChild(fRecordButton);
+	fRecordButton->Show();
+	fRecordButton->SetTarget(Parent());	
 }
 
 #pragma mark -

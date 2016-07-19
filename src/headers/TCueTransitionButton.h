@@ -39,14 +39,14 @@ class TCueTransitionButton: public TChannelCueButton
 		// Member variables
 		
 		// Accessor Functions
-		inline void SetParent(TCueView *theCue){ m_Cue = theCue;   }	
+		inline void SetParent(TCueView *theCue){ fCue = theCue;   }	
 		
 	private:				
 		// Member functions
 		void 	DoClick();
 		
 		// Member variables
-		bool	m_TransitionIn;
+		bool	fTransitionIn;
 				
 };		
 

@@ -33,7 +33,7 @@
 TPreset::TPreset(char *theName)
 {
 	// Set up member variables
-	strcpy(m_Name, theName);
+	strcpy(fName, theName);
 	
 }
 
@@ -51,34 +51,34 @@ TPreset::TPreset(BMessage *data)
 	int16 	tmpInt16;
 	
 	data->FindString((const char *)"Name",(const char **) &tmpStr);
-	strcpy(m_Name, tmpStr);
+	strcpy(fName, tmpStr);
 	
 	data->FindString("Description01", (const char **)&tmpStr);
-	strcpy(m_Description01, tmpStr);
+	strcpy(fDescription01, tmpStr);
 	
 	data->FindString((const char *)"Description02", (const char **)&tmpStr);
-	strcpy(m_Description02, tmpStr);
+	strcpy(fDescription02, tmpStr);
 
 	data->FindString((const char *)"Description03", (const char **)&tmpStr);
-	strcpy(m_Description03, tmpStr);
+	strcpy(fDescription03, tmpStr);
 
 	data->FindString((const char *)"Description04", (const char **)&tmpStr);
-	strcpy(m_Description04, tmpStr);
+	strcpy(fDescription04, tmpStr);
 
 	data->FindString((const char *)"Description05", (const char **)&tmpStr);
-	strcpy(m_Description05, tmpStr);
+	strcpy(fDescription05, tmpStr);
 
 	data->FindInt16((const char *)"TimeBase", &tmpInt16);
-	m_Timebase = (timecode_type)tmpInt16;
+	fTimebase = (timecode_type)tmpInt16;
 	
 	data->FindInt16((const char *)"AudioCompressor", &tmpInt16);
-	m_AudioCompressor = (audio_compressor_type)tmpInt16;
+	fAudioCompressor = (audio_compressor_type)tmpInt16;
 
 	data->FindInt16((const char *)"VideoCompressor", &tmpInt16);
-	m_VideoCompressor = (video_compressor_type)tmpInt16;
+	fVideoCompressor = (video_compressor_type)tmpInt16;
 	
-	data->FindInt32("FrameWidth", &m_FrameWidth);
-	data->FindInt32("FrameHeight", &m_FrameHeight);
+	data->FindInt32("FrameWidth", &fFrameWidth);
+	data->FindInt32("FrameHeight", &fFrameHeight);
 }
 
 
@@ -131,17 +131,17 @@ status_t TPreset::Archive(BMessage *data, bool deep) const
 		// Add our class name to the archive
 		data->AddString("class", "TPreset");
 				
-		data->AddString("Name", m_Name);
-		data->AddString("Description01", m_Description01);
-		data->AddString("Description02", m_Description02);
-		data->AddString("Description03", m_Description03);
-		data->AddString("Description04", m_Description04);
-		data->AddString("Description05", m_Description05);
-		data->AddInt16("TimeBase", m_Timebase);
-		data->AddInt16("AudioCompressor", m_AudioCompressor);
-		data->AddInt16("VideoCompressor", m_VideoCompressor);
-		data->AddInt32("FrameWidth", m_FrameWidth);
-		data->AddInt32("FrameHeight", m_FrameHeight);
+		data->AddString("Name", fName);
+		data->AddString("Description01", fDescription01);
+		data->AddString("Description02", fDescription02);
+		data->AddString("Description03", fDescription03);
+		data->AddString("Description04", fDescription04);
+		data->AddString("Description05", fDescription05);
+		data->AddInt16("TimeBase", fTimebase);
+		data->AddInt16("AudioCompressor", fAudioCompressor);
+		data->AddInt16("VideoCompressor", fVideoCompressor);
+		data->AddInt32("FrameWidth", fFrameWidth);
+		data->AddInt32("FrameHeight", fFrameHeight);
 
 		// Add attached data
 		if (deep)
@@ -164,7 +164,7 @@ status_t TPreset::Archive(BMessage *data, bool deep) const
 
 void TPreset::SetName(char *theName)
 {
-	strcpy(m_Name, theName);
+	strcpy(fName, theName);
 }
 
 
@@ -177,7 +177,7 @@ void TPreset::SetName(char *theName)
 
 void TPreset::SetTimebase(timecode_type theTimebase)
 {
-	m_Timebase = theTimebase;
+	fTimebase = theTimebase;
 }
 
 

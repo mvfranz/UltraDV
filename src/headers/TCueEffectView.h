@@ -41,9 +41,9 @@ class TCueEffectView
 		void 	InvalidateSelectionRect();
 						
 		// Accessor Functions
-		inline TCueEffect 	*Effect(){ return m_Effect; }
-		inline bool 		Selected(){ return m_IsSelected; }
-		inline BRect 		Bounds(){ return m_Bounds; }		
+		inline TCueEffect 	*Effect(){ return fEffect; }
+		inline bool 		Selected(){ return fIsSelected; }
+		inline BRect 		Bounds(){ return fBounds; }		
 		
 	private:		
 		void 	DragPicture(BPoint);
@@ -52,13 +52,13 @@ class TCueEffectView
 		virtual void	Init();
 		void 			UpdateResizeZones();
 		
-		BRect		m_Bounds;
-		BRect		m_LResizeZone;
-		BRect		m_RResizeZone;
-		TCueView	*m_Cue;
-		TCueEffect	*m_Effect;		
-		bool		m_IsSelected;	
-		BBitmap		*m_Icon;
+		BRect		fBounds;
+		BRect		fLResizeZone;
+		BRect		fRResizeZone;
+		TCueView	*fCue;
+		TCueEffect	*fEffect;		
+		bool		fIsSelected;	
+		BBitmap		*fIcon;
 		
 };
 

@@ -34,8 +34,8 @@ class TStageToolButton: public BView
 		// Member variables	
 		
 		// Accessor Functions
-		inline bool GetButtonState(){ return m_ButtonState; }
-		inline void SetButtonState(bool theState){ m_ButtonState = theState; }
+		inline bool GetButtonState(){ return fButtonState; }
+		inline void SetButtonState(bool theState){ fButtonState = theState; }
 		
 	private:				
 		// Member functions
@@ -44,11 +44,11 @@ class TStageToolButton: public BView
 		
 		
 		// Member variables
-		TStageToolsView		*m_Parent;
-		BMessage			*m_Message;
-		bool				m_ButtonState;
-		BBitmap				*m_OffBitmap;
-		BBitmap				*m_OnBitmap;
+		TStageToolsView		*fParent;
+		BMessage			*fMessage;
+		bool				fButtonState;
+		BBitmap				*fOffBitmap;
+		BBitmap				*fOnBitmap;
 		
 };		
 

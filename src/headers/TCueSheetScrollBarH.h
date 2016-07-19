@@ -42,9 +42,9 @@ class TCueSheetScrollBarH : public BScrollBar
 		void Init();
 		
 		// Member Variables
-		float			m_LastValue;
+		float			fLastValue;
 		
-		TCueSheetWindow	*m_CueSheetWindow;
+		TCueSheetWindow	*fCueSheetWindow;
 
 
 };

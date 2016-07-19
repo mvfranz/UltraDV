@@ -38,18 +38,18 @@ class TVideoImageView: public BView
 		void 	ApplyToSource();
 								
 		// Member variables
-		BRect					m_PreviewRect;
-		TVideoSettingsTabView	*m_Parent;
-		BStringView				*m_HueString;
-		BStringView				*m_SaturationString;
-		BStringView				*m_BrightnessString;
-		BStringView				*m_ContrastString;
-		BButton					*m_DefaultsButton;
+		BRect					fPreviewRect;
+		TVideoSettingsTabView	*fParent;
+		BStringView				*fHueString;
+		BStringView				*fSaturationString;
+		BStringView				*fBrightnessString;
+		BStringView				*fContrastString;
+		BButton					*fDefaultsButton;
 		
-		TMuseumSlider			*m_HueSlider;
-		TMuseumSlider			*m_SaturationSlider;
-		TMuseumSlider			*m_BrightnessSlider;
-		TMuseumSlider			*m_ContrastSlider;
+		TMuseumSlider			*fHueSlider;
+		TMuseumSlider			*fSaturationSlider;
+		TMuseumSlider			*fBrightnessSlider;
+		TMuseumSlider			*fContrastSlider;
 	
 };		
 

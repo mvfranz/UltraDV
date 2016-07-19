@@ -49,16 +49,16 @@ class TAudioCaptureWindow: public BWindow
 		void MessageReceived(BMessage* message);	
 		
 		// Accessor Functions
-		inline bool 		IsRecording(){ return m_IsRecording; }
-		inline void 		AbortRecording(){ m_IsRecording = false; }
-		inline AudCapPtr 	GetCaptureSettings(){ return &m_CaptureSettings; }
-		inline TStatusView	*GetStatusView(){ return m_StatusView; }
+		inline bool 		IsRecording(){ return fIsRecording; }
+		inline void 		AbortRecording(){ fIsRecording = false; }
+		inline AudCapPtr 	GetCaptureSettings(){ return &fCaptureSettings; }
+		inline TStatusView	*GetStatusView(){ return fStatusView; }
 		
-		inline BStringView	*GetFileSize(){ return m_FileSize; }
-		inline BStringView	*GetSpaceRemaining(){ return m_SpaceRemaining; }		
-		inline entry_ref    *GetFileRef(){ return &m_FileRef; }
+		inline BStringView	*GetFileSize(){ return fFileSize; }
+		inline BStringView	*GetSpaceRemaining(){ return fSpaceRemaining; }		
+		inline entry_ref    *GetFileRef(){ return &fFileRef; }
 		
-		inline	TSoundRecorder *RecordNode(){ return m_RecordNode; }
+		inline	TSoundRecorder *RecordNode(){ return fRecordNode; }
 
 		
 	private:	
@@ -83,25 +83,25 @@ class TAudioCaptureWindow: public BWindow
 		void 	CreateTempFile();
 		
 		// Member Variables
-		TAudioCaptureToolbar *m_Toolbar;
-		BView 				*m_AudCapView;		
-		TStatusView			*m_StatusView;
-		BStringView			*m_FileSize;
-		BStringView			*m_SpaceRemaining;		
-		BStringView			*m_TimeRemaining;		
-		TAudioLevelsView	*m_LevelsView;
+		TAudioCaptureToolbar *fToolbar;
+		BView 				*fAudCapView;		
+		TStatusView			*fStatusView;
+		BStringView			*fFileSize;
+		BStringView			*fSpaceRemaining;		
+		BStringView			*fTimeRemaining;		
+		TAudioLevelsView	*fLevelsView;
 		
-		bool				m_IsRecording;						
-		thread_id			m_UpdaterThread;	
-		AudCapStruct		m_CaptureSettings;
+		bool				fIsRecording;						
+		thread_id			fUpdaterThread;	
+		AudCapStruct		fCaptureSettings;
 		
-		BFilePanel			*m_Panel;
-		entry_ref			m_FileRef;
+		BFilePanel			*fPanel;
+		entry_ref			fFileRef;
 		
-		TSoundRecorder 		*m_RecordNode;
-		media_input 		m_Input;
-		media_output 		m_Output;
-		BTimeSource 		*m_Timesource;
+		TSoundRecorder 		*fRecordNode;
+		media_input 		fInput;
+		media_output 		fOutput;
+		BTimeSource 		*fTimesource;
 };
 
 // Capture Messages

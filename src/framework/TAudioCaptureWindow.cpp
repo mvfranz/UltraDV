@@ -66,22 +66,22 @@ TAudioCaptureWindow::~TAudioCaptureWindow()
 	
 	// Exit from all threads
 	status_t status;
-	m_IsRecording = false;
-	wait_for_thread(m_UpdaterThread, &status);
+	fIsRecording = false;
+	wait_for_thread(fUpdaterThread, &status);
 		
 	// Dispose of BFilePanel
 	HidePanel();
 	
 	// Close any open files
-	if (m_CaptureSettings.audioFile)
+	if (fCaptureSettings.audioFile)
 	{
-		m_CaptureSettings.audioFile->Unset();
-		delete m_CaptureSettings.audioFile;
+		fCaptureSettings.audioFile->Unset();
+		delete fCaptureSettings.audioFile;
 	}
 	
-	if (m_CaptureSettings.audioBuf)
+	if (fCaptureSettings.audioBuf)
 	{
-		delete m_CaptureSettings.audioBuf;
+		delete fCaptureSettings.audioBuf;
 	}	
 }
 
@@ -96,61 +96,61 @@ void TAudioCaptureWindow::Init()
 {	
 	
 	//	Init variables
-	m_IsRecording 	= false;
-	m_RecordNode 	= NULL;
+	fIsRecording 	= false;
+	fRecordNode 	= NULL;
 	
 	// Create tool bar
 	BView *toolbarView = (BView *)FindView("AudioCaptureToolbarView");
-	m_Toolbar = new TAudioCaptureToolbar(toolbarView->Bounds());
+	fToolbar = new TAudioCaptureToolbar(toolbarView->Bounds());
 	RemoveChild(toolbarView);
-	AddChild(m_Toolbar);
-	m_Toolbar->Show();
+	AddChild(fToolbar);
+	fToolbar->Show();
 	delete toolbarView;
 			
 	// Find text items
-	m_FileSize 			= (BStringView *)FindView("FileSizeString");
-	m_SpaceRemaining 	= (BStringView *)FindView("SpaceRemainingString");
+	fFileSize 			= (BStringView *)FindView("FileSizeString");
+	fSpaceRemaining 	= (BStringView *)FindView("SpaceRemainingString");
 		
 	// Find Levels Box
 	BBox *levelsBox = (BBox *)FindView("LevelsBox");
 	
 	//  Create AudCap View
-	m_AudCapView = (BView *)FindView("AudioCaptureView");
+	fAudCapView = (BView *)FindView("AudioCaptureView");
 	
 	// Add levels view
 	BView *levelsView = (BView *)FindView("LevelsView");
-	m_LevelsView = new TAudioLevelsView(levelsView->Frame());
+	fLevelsView = new TAudioLevelsView(levelsView->Frame());
 	levelsBox->RemoveChild(levelsView);
-	levelsBox->AddChild(m_LevelsView);	
-	m_LevelsView->Show();
+	levelsBox->AddChild(fLevelsView);	
+	fLevelsView->Show();
 	delete levelsView;
 
 	// Find status view
 	BView *statusView = (BView *)FindView("StatusView");
-	m_StatusView = new TStatusView(statusView->Frame());
+	fStatusView = new TStatusView(statusView->Frame());
 	RemoveChild(statusView);
 	delete statusView;
-	AddChild(m_StatusView);
-	m_StatusView->Show();
+	AddChild(fStatusView);
+	fStatusView->Show();
 			
-	// Set up m_CaptureSettings
-	m_CaptureSettings.captureMethod 	= kCaptureToDisk;
-	m_CaptureSettings.compressMethod 	= kPostCompress;
-	m_CaptureSettings.audioBuf			= new BMallocIO();
-	m_CaptureSettings.audioFile			= NULL;
-	m_CaptureSettings.audioWindow		= this;
+	// Set up fCaptureSettings
+	fCaptureSettings.captureMethod 	= kCaptureToDisk;
+	fCaptureSettings.compressMethod 	= kPostCompress;
+	fCaptureSettings.audioBuf			= new BMallocIO();
+	fCaptureSettings.audioFile			= NULL;
+	fCaptureSettings.audioWindow		= this;
 	
 	// Set panel to NULL
-	m_Panel = NULL;
+	fPanel = NULL;
 	
 	// Set indicators
-	m_FileSize->SetText("0k");
-	m_SpaceRemaining->SetText("0k");
+	fFileSize->SetText("0k");
+	fSpaceRemaining->SetText("0k");
 	
 	// Set status text
 	BMessage *textMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 	textMessage->AddString("StatusText", "Ready to Capture...");
-	m_StatusView->MessageReceived(textMessage);
+	fStatusView->MessageReceived(textMessage);
 	delete textMessage;
 	
 	// Find temp directory on boot volume and create temp file
@@ -174,7 +174,7 @@ void TAudioCaptureWindow::MessageReceived(BMessage* message)
 	{
 		case AUDCAP_RECORD_MSG:			
 			{
-				if (m_IsRecording)
+				if (fIsRecording)
 					StopRecording();
 				else
 					StartRecording();
@@ -192,12 +192,12 @@ void TAudioCaptureWindow::MessageReceived(BMessage* message)
 												
 		// Capture to Disk
 		case AUDCAP_DISK_MSG:
-			m_CaptureSettings.captureMethod = kCaptureToDisk;
+			fCaptureSettings.captureMethod = kCaptureToDisk;
 			break;
 			
 		// Capture to RAM
 		case AUDCAP_RAM_MSG:
-			m_CaptureSettings.captureMethod = kCaptureToRAM;
+			fCaptureSettings.captureMethod = kCaptureToRAM;
 			break;
 			
 		// Post compress
@@ -210,9 +210,9 @@ void TAudioCaptureWindow::MessageReceived(BMessage* message)
            			if ( box ) 
 					{ 
 						if ( box->Value() == B_CONTROL_ON)
-							m_CaptureSettings.compressMethod = kPostCompress;
+							fCaptureSettings.compressMethod = kPostCompress;
 						else
-							m_CaptureSettings.compressMethod = kRealTimeCompress;
+							fCaptureSettings.compressMethod = kRealTimeCompress;
 					} 					
 				}				
 			}
@@ -238,45 +238,45 @@ void TAudioCaptureWindow::MessageReceived(BMessage* message)
 void TAudioCaptureWindow::StartRecording()
 {		
 	// Check for a valid file first
-	if (m_CaptureSettings.audioFile == NULL)
+	if (fCaptureSettings.audioFile == NULL)
 		CreateTempFile();
 	
 	//	Set up record node
-	m_RecordNode = new TSoundRecorder("Sound Input");
-	SetupRecordNode(m_RecordNode, m_Input, m_Output, m_Timesource);
+	fRecordNode = new TSoundRecorder("Sound Input");
+	SetupRecordNode(fRecordNode, fInput, fOutput, fTimesource);
 
-	if (!m_Timesource) 
+	if (!fTimesource) 
 	{
 		(new BAlert("", "Error configuring sound hardware!", "Stop"))->Go();
-		BMediaRoster::Roster()->StopNode(m_Output.node, 0, true);
-		m_RecordNode->Release();
+		BMediaRoster::Roster()->StopNode(fOutput.node, 0, true);
+		fRecordNode->Release();
 		return;
 	}
 				
 	// Set record flag to true
-	m_IsRecording = true;
+	fIsRecording = true;
 	
 	//	Set up hooks and start recording
-	m_RecordNode->SetHooks(adc_reader, NULL, &m_CaptureSettings);
-	StartRecordNode(m_RecordNode, m_Input, m_Output, m_Timesource);
+	fRecordNode->SetHooks(adc_reader, NULL, &fCaptureSettings);
+	StartRecordNode(fRecordNode, fInput, fOutput, fTimesource);
 
 	// Update status bar
 	BMessage *textMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 	textMessage->AddString("StatusText", "Capturing Audio...");
-	m_StatusView->MessageReceived(textMessage);
+	fStatusView->MessageReceived(textMessage);
 	delete textMessage;
 
 	// Spawn updater thread
-	m_UpdaterThread = spawn_thread(_updater_thread, "UpdaterThread", B_REAL_TIME_PRIORITY, this);
+	fUpdaterThread = spawn_thread(_updater_thread, "UpdaterThread", B_REAL_TIME_PRIORITY, this);
 	
-	if ( ValidThread(m_UpdaterThread) )
+	if ( ValidThread(fUpdaterThread) )
 	{
-		resume_thread(m_UpdaterThread);	
+		resume_thread(fUpdaterThread);	
 		
 		// Update status bar
 		BMessage *textMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 		textMessage->AddString("StatusText", "Capturing Audio...");
-		m_StatusView->MessageReceived(textMessage);
+		fStatusView->MessageReceived(textMessage);
 		delete textMessage;	
 	}
 }
@@ -291,57 +291,57 @@ void TAudioCaptureWindow::StartRecording()
 
 void TAudioCaptureWindow::StopRecording()
 {		
-	m_IsRecording = false;
+	fIsRecording = false;
 	
 	//	Stop RecordNode
 	StopRecordNode();
 	
 	// If we have captured to RAM, save file out.
-	if (m_CaptureSettings.captureMethod == kCaptureToRAM)
+	if (fCaptureSettings.captureMethod == kCaptureToRAM)
 	{
-		m_CaptureSettings.audioFile->Write( m_CaptureSettings.audioBuf->Buffer(), m_CaptureSettings.audioBuf->BufferLength() );	
+		fCaptureSettings.audioFile->Write( fCaptureSettings.audioBuf->Buffer(), fCaptureSettings.audioBuf->BufferLength() );	
 	}
 	
 	// Reset indicators
 	Lock();
 
-	m_FileSize->SetText("0k");
-	m_SpaceRemaining->SetText("0k");
+	fFileSize->SetText("0k");
+	fSpaceRemaining->SetText("0k");
 	
 	// Update status bar
 	BMessage *textMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 	textMessage->AddString("StatusText", "Ready to Capture...");
-	m_StatusView->MessageReceived(textMessage);
+	fStatusView->MessageReceived(textMessage);
 	delete textMessage;
 
 	Unlock();
 
 	// Set the mimetype
-	BNodeInfo info(m_CaptureSettings.audioFile);
+	BNodeInfo info(fCaptureSettings.audioFile);
 	info.SetType("audio/raw");
 	
 	// Set icons
-	BBitmap *smallIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_AudioIcon16;
+	BBitmap *smallIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon16;
 	info.SetIcon( smallIcon, B_MINI_ICON);	
 	
-	BBitmap *largeIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_AudioIcon32;	
+	BBitmap *largeIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon32;	
 	info.SetIcon( largeIcon, B_LARGE_ICON);
 		
 	// Clean up
-	m_CaptureSettings.audioFile->Unset();
-	delete m_CaptureSettings.audioFile;
-	m_CaptureSettings.audioFile = NULL;
+	fCaptureSettings.audioFile->Unset();
+	delete fCaptureSettings.audioFile;
+	fCaptureSettings.audioFile = NULL;
 		
 	// Open file in new AudioEditor
 	//float maxWidthHeight = kAudioEditorHeight+kAudioToolbarHeight+kTimelineHeight;
 	//BRect bounds(50, 50, 300, 50+maxWidthHeight);
-	//TAudioEditor *theEditor = new TAudioEditor(bounds, &m_FileRef, NULL);
+	//TAudioEditor *theEditor = new TAudioEditor(bounds, &fFileRef, NULL);
 	
 	//if (theEditor)
 	//	theEditor->Show();
 	
 	// Clear our copy buffer
-	m_CaptureSettings.audioBuf->SetSize(0);
+	fCaptureSettings.audioBuf->SetSize(0);
 	
 	//	Play...
 	/*media_raw_audio_format my_format;
@@ -361,7 +361,7 @@ void TAudioCaptureWindow::StopRecording()
 	BSoundPlayer player;
 	BSoundPlayer::play_id id;
 	
-	BSound *sound = new BSound(&m_FileRef);
+	BSound *sound = new BSound(&fFileRef);
 	if (sound->InitCheck() == B_OK) 
 	{
 		printf("Have a BSound!\n");
@@ -514,23 +514,23 @@ void TAudioCaptureWindow::StopRecordNode()
 	status_t err;
 	
 	//	Stop nodes
-	err = BMediaRoster::Roster()->StopNode(m_Timesource->Node(), 0, true);
-	err = BMediaRoster::Roster()->StopNode(m_Output.node, 0, true);
-	err = BMediaRoster::Roster()->StopNode(m_Input.node, 0, true);
+	err = BMediaRoster::Roster()->StopNode(fTimesource->Node(), 0, true);
+	err = BMediaRoster::Roster()->StopNode(fOutput.node, 0, true);
+	err = BMediaRoster::Roster()->StopNode(fInput.node, 0, true);
 	
 	if (err >= B_OK || err == B_TIMED_OUT)
 	{
 		printf("StopRecordNode::Disconnect-\n");
-		err = BMediaRoster::Roster()->Disconnect( m_Output.node.node, m_Output.source, 
-										  		  m_Input.node.node, m_Input.destination);
+		err = BMediaRoster::Roster()->Disconnect( fOutput.node.node, fOutput.source, 
+										  		  fInput.node.node, fInput.destination);
 	}
 												  
 	if (err >= B_OK || err == B_TIMED_OUT) 
-		err = BMediaRoster::Roster()->StopNode(m_Input.node, 0, true);
+		err = BMediaRoster::Roster()->StopNode(fInput.node, 0, true);
 			
 	//	All done
-	delete m_RecordNode;
-	m_RecordNode = NULL;
+	delete fRecordNode;
+	fRecordNode = NULL;
 	
 	if (err < B_OK) 
 		fprintf(stderr, "Error stopping: %x\n", err);		
@@ -657,11 +657,11 @@ void TAudioCaptureWindow::SelectAudioFile(BMessage *theMessage)
 {
 	
 	// Check and see if we have an open file already.  Is so , clean it up
-	if (m_CaptureSettings.audioFile)
+	if (fCaptureSettings.audioFile)
 	{
 		// Clean up
-		m_CaptureSettings.audioFile->Unset();
-		delete m_CaptureSettings.audioFile;
+		fCaptureSettings.audioFile->Unset();
+		delete fCaptureSettings.audioFile;
 	}
 	
 	// Extract info from message
@@ -679,10 +679,10 @@ void TAudioCaptureWindow::SelectAudioFile(BMessage *theMessage)
 		BDirectory saveDir(&dirRef);
 		if (saveDir.InitCheck() == B_OK)
 		{
-			m_CaptureSettings.audioFile = new BFile();
-			if ( saveDir.CreateFile(fileName, m_CaptureSettings.audioFile, false) == B_OK)
+			fCaptureSettings.audioFile = new BFile();
+			if ( saveDir.CreateFile(fileName, fCaptureSettings.audioFile, false) == B_OK)
 			{			
-				if (m_CaptureSettings.audioFile->InitCheck() != B_OK)
+				if (fCaptureSettings.audioFile->InitCheck() != B_OK)
 				{
 					DebugAlert("Error creating file.");
 					return;
@@ -690,16 +690,16 @@ void TAudioCaptureWindow::SelectAudioFile(BMessage *theMessage)
 				
 				// Stash files entry ref
 				BEntry theEntry(&saveDir, fileName);
-				theEntry.GetRef(&m_FileRef);
+				theEntry.GetRef(&fFileRef);
 							
 				// Update indicators
-				m_FileSize->SetText("0k");
-				m_SpaceRemaining->SetText("0k");	
+				fFileSize->SetText("0k");
+				fSpaceRemaining->SetText("0k");	
 				
 				// Update status bar
 				BMessage *textMessage = new BMessage(UPDATE_STATUS_TEXT_MSG);
 				textMessage->AddString("StatusText", "Ready to Capture...");
-				m_StatusView->MessageReceived(textMessage);
+				fStatusView->MessageReceived(textMessage);
 				delete textMessage;
 			
 			}
@@ -732,21 +732,21 @@ void TAudioCaptureWindow::SelectAudioFile(BMessage *theMessage)
 void TAudioCaptureWindow::ShowPanel()
 {
 	// Show panel if already created
-	if (m_Panel)
-		m_Panel->Show();
+	if (fPanel)
+		fPanel->Show();
 	// Create new panel
 	else
 	{
 		// 	Create messenger to send panel messages to our channel.  We cannot send it to 
 		//  ourself as we are not part of the view heirarchy.
-	 	//BMessenger *messenger = new BMessenger( m_Channel,  ((MuseumApp *)be_app)->GetCueSheet());
+	 	//BMessenger *messenger = new BMessenger( fChannel,  ((MuseumApp *)be_app)->GetCueSheet());
 	 	BMessenger *messenger = new BMessenger(this);
 		
 		// Create message containing pointer to ourself
 		BMessage *message = new BMessage(AUDCAP_PANEL_MSG);
 		 	
 	 	// Construct a file panel and set it to modal
-	 	m_Panel = new BFilePanel( B_SAVE_PANEL, messenger, NULL, B_FILE_NODE, false, message, NULL, true, true );
+	 	fPanel = new BFilePanel( B_SAVE_PANEL, messenger, NULL, B_FILE_NODE, false, message, NULL, true, true );
 	 
 	 	// Set it to application's home directory
 	 	app_info appInfo;
@@ -754,11 +754,11 @@ void TAudioCaptureWindow::ShowPanel()
 	 	BEntry entry(&appInfo.ref);
 	 	BDirectory parentDir;
 	 	entry.GetParent(&parentDir);
-	 	m_Panel->SetPanelDirectory(&parentDir);
+	 	fPanel->SetPanelDirectory(&parentDir);
 	 		
 		// Center Panel
-		CenterWindow(m_Panel->Window());
-		m_Panel->Show();
+		CenterWindow(fPanel->Window());
+		fPanel->Show();
 		
 		// Clean up
 		delete messenger;
@@ -776,10 +776,10 @@ void TAudioCaptureWindow::ShowPanel()
 
 void TAudioCaptureWindow::HidePanel()
 {	
-	if(m_Panel)
+	if(fPanel)
 	{
-		delete m_Panel;
-		m_Panel = NULL;
+		delete fPanel;
+		fPanel = NULL;
 	}
 }
 
@@ -804,21 +804,21 @@ void TAudioCaptureWindow::CreateTempFile()
 	get_ref_for_path( pathObj.Path(), &ref);
    
 	BDirectory fileDir(&ref);
-	m_CaptureSettings.audioFile = new BFile();
+	fCaptureSettings.audioFile = new BFile();
 	
-	//if ( fileDir.CreateFile("tempCapFile.raw", m_CaptureSettings.audioFile, false) == B_OK)
+	//if ( fileDir.CreateFile("tempCapFile.raw", fCaptureSettings.audioFile, false) == B_OK)
 	// Create temp file named the current system time
 	char fileName[256];
 	uint32 time = real_time_clock ();
 	sprintf(fileName, "%ldaudio.raw", time);
 	
-	if ( fileDir.CreateFile(fileName, m_CaptureSettings.audioFile, false) == B_OK)
+	if ( fileDir.CreateFile(fileName, fCaptureSettings.audioFile, false) == B_OK)
 	{			
-		if (m_CaptureSettings.audioFile->InitCheck() != B_OK)
+		if (fCaptureSettings.audioFile->InitCheck() != B_OK)
 			DebugAlert("Error creating file.");
 		
 		// Stash files entry ref
 		BEntry theEntry(&fileDir, fileName);
-		theEntry.GetRef(&m_FileRef);
+		theEntry.GetRef(&fFileRef);
 	}	         
 }

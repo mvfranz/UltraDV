@@ -31,7 +31,7 @@ class TAudioPlayButton : public BView
 		// Member variables	
 		
 		// Accessor Functions
-		inline void SetButtonState(bool theState){ m_ButtonState = theState; }
+		inline void SetButtonState(bool theState){ fButtonState = theState; }
 		
 	private:				
 		// Member functions
@@ -39,11 +39,11 @@ class TAudioPlayButton : public BView
 		
 		
 		// Member variables
-		TAudioEditorToolbar	*m_Parent;
-		BHandler			*m_Handler;
-		bool				m_ButtonState;
-		BBitmap				*m_OffBitmap;
-		BBitmap				*m_OnBitmap;
+		TAudioEditorToolbar	*fParent;
+		BHandler			*fHandler;
+		bool				fButtonState;
+		BBitmap				*fOffBitmap;
+		BBitmap				*fOnBitmap;
 		
 };		
 

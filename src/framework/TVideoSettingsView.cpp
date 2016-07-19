@@ -39,7 +39,7 @@
 
 TVideoSettingsView::TVideoSettingsView(BRect bounds, TVideoSettingsDialog *parent) : BView(bounds, "VideoSettingsView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Perform default intitialization
 	Init();
@@ -81,45 +81,45 @@ void TVideoSettingsView::Init()
 	const BRect okFrame( bounds.right - 90, bounds.bottom - 35, bounds.right - 30, bounds.bottom - 55);
 	
 	// Create the Cancel button
-	m_CancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	AddChild(m_CancelButton);
+	fCancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	AddChild(fCancelButton);
 	
 	// Create the OK button
-	m_OKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	AddChild(m_OKButton);
-	m_OKButton->MakeDefault(true);
+	fOKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	AddChild(fOKButton);
+	fOKButton->MakeDefault(true);
 	
 	//	Extract the groups and controls form the VideoSource ParameterWeb
-	m_ParameterWeb = m_Parent->ParameterWeb();
+	fParameterWeb = fParent->ParameterWeb();
 	
-	if (m_ParameterWeb)
+	if (fParameterWeb)
 	{
 		//	Video Input:  BDiscreteParameter, has four settings
-		m_VideoInputParam = m_ParameterWeb->ParameterAt(0);
-		printf("Parameter::Name() %s\n", m_VideoInputParam->Name());
+		fVideoInputParam = fParameterWeb->ParameterAt(0);
+		printf("Parameter::Name() %s\n", fVideoInputParam->Name());
 		
 		//	Audio Input:  BDiscreteParameter, has four settings
-		m_AudioInputParam = m_ParameterWeb->ParameterAt(1);
-		printf("Parameter::Name() %s\n", m_AudioInputParam->Name());
+		fAudioInputParam = fParameterWeb->ParameterAt(1);
+		printf("Parameter::Name() %s\n", fAudioInputParam->Name());
 		
 		//	Ignore channel
-		//m_ChannelInput = m_ParameterWeb->ParameterAt(2);
+		//fChannelInput = fParameterWeb->ParameterAt(2);
 		
 		//	Brightness: BContinuousParameter
-		m_BrightnessParam = m_ParameterWeb->ParameterAt(3);
-		printf("Parameter::Name() %s\n", m_BrightnessParam->Name());
+		fBrightnessParam = fParameterWeb->ParameterAt(3);
+		printf("Parameter::Name() %s\n", fBrightnessParam->Name());
 		
 		//	Brightness: BContinuousParameter
-		m_ContrastParam = m_ParameterWeb->ParameterAt(4);
-		printf("Parameter::Name() %s\n", m_ContrastParam->Name());
+		fContrastParam = fParameterWeb->ParameterAt(4);
+		printf("Parameter::Name() %s\n", fContrastParam->Name());
 
 		//	Brightness: BContinuousParameter
-		m_SaturationParam = m_ParameterWeb->ParameterAt(5);
-		printf("Parameter::Name() %s\n", m_SaturationParam->Name());
+		fSaturationParam = fParameterWeb->ParameterAt(5);
+		printf("Parameter::Name() %s\n", fSaturationParam->Name());
 
 		//	Brightness: BContinuousParameter
-		m_HueParam = m_ParameterWeb->ParameterAt(6);
-		printf("Parameter::Name() %s\n", m_HueParam->Name());
+		fHueParam = fParameterWeb->ParameterAt(6);
+		printf("Parameter::Name() %s\n", fHueParam->Name());
 	}
 }
 
@@ -145,356 +145,356 @@ void TVideoSettingsView::MessageReceived(BMessage *theMessage)
 	{					
 		case CANCEL_MSG:
 		case OK_MSG:
-			m_Parent->MessageReceived(theMessage);
+			fParent->MessageReceived(theMessage);
 			break;
 		
 		case msg_start_capture:
-			//m_VideoSource->StartCapture();
+			//fVideoSource->StartCapture();
 			break;
 			
 		case msg_stop_capture:
-			//m_VideoSource->StopCapture();
+			//fVideoSource->StopCapture();
 			break;
 			
 		case msg_hauppauge_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppaugePhilips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppaugePhilips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_temic:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppaugeTemic;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppaugeTemic;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_400_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge400Philips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge400Philips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_400_temic:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge400Temic;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge400Temic;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_401_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge401Philips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge401Philips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_401_temic:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge401Temic;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge401Temic;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_405_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge405Philips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge405Philips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_405_temic:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge405Temic;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge405Temic;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_406_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge406Philips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge406Philips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_406_temic:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge406Temic;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge406Temic;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_418_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge418Philips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge418Philips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_hauppauge_452_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kHauppauge452Philips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kHauppauge452Philips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_HAUPPAUGE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_avermedia_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kAvermediaPhilips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_AVERMEDIA);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kAvermediaPhilips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_AVERMEDIA);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_intel_svriii:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kIntelSVRIII;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_INTEL);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kIntelSVRIII;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_INTEL);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_turbotv_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kTurboTVPhilips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_IMS);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kTurboTVPhilips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_IMS);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_turbotv_temic:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kTurboTVTemic;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_IMS);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kTurboTVTemic;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_IMS);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_miro_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kMiroPhilips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_MIRO);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kMiroPhilips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_MIRO);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_miro_temic:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kMiroTemic;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_MIRO);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kMiroTemic;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_MIRO);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_diamond_philips:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kDiamondPhilips;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_DIAMOND);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kDiamondPhilips;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_DIAMOND);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_diamond_temic:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kDiamondTemic;			
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_DIAMOND);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kDiamondTemic;			
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_DIAMOND);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case msg_osprey_100:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Digitizer = kOsprey100;
-			//((Bt848Source *)m_VideoSource)->SetCardBrand(BT848HW_OSPREY);
-			//m_VideoSource->VideoMux()->SetSource(m_VideoSource->VideoMux()->Source());
-			//m_VideoSource->AudioMux()->SetSource(m_VideoSource->AudioMux()->Source());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fDigitizer = kOsprey100;
+			//((Bt848Source *)fVideoSource)->SetCardBrand(BT848HW_OSPREY);
+			//fVideoSource->VideoMux()->SetSource(fVideoSource->VideoMux()->Source());
+			//fVideoSource->AudioMux()->SetSource(fVideoSource->AudioMux()->Source());
 			break;
 			
 		case BRIGHTNESS_SLIDER_MSG:
 			{
-				/*GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_BrightnessValue = theMessage->FindInt32("be:value");
+				/*GetParent()->fTempVideoSettings.fVideoImageSettings.fBrightnessValue = theMessage->FindInt32("be:value");
 				int32 value = theMessage->FindInt32("be:value");				
 				int32 floatValue = (int32) *((float *)value);
 				
 				bigtime_t 	lastTime;
 				int32 	  	oldValue;
 				size_t		size;
-				m_BrightnessParam->GetValue(&oldValue, &size, &lastTime);
+				fBrightnessParam->GetValue(&oldValue, &size, &lastTime);
 				printf("Old Brightness: %d\n", oldValue);
-				m_BrightnessParam->SetValue(&value, sizeof(int32), 0);				
+				fBrightnessParam->SetValue(&value, sizeof(int32), 0);				
 				printf("New Brightness: %d\n", value);*/
 			}
 			break;	
 				
 		case CONTRAST_SLIDER_MSG:
 			{
-				GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_ContrastValue = theMessage->FindInt32("be:value");
+				GetParent()->fTempVideoSettings.fVideoImageSettings.fContrastValue = theMessage->FindInt32("be:value");
 				int32 value = theMessage->FindInt32("be:value");
-				m_ContrastParam->SetValue(&value, sizeof(int32), 0);
+				fContrastParam->SetValue(&value, sizeof(int32), 0);
 			}
 			break;	
 				
 		case HUE_SLIDER_MSG:
 			{
-				GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_HueValue = theMessage->FindInt32("be:value");
+				GetParent()->fTempVideoSettings.fVideoImageSettings.fHueValue = theMessage->FindInt32("be:value");
 				int32 value = theMessage->FindInt32("be:value");
-				m_HueParam->SetValue(&value, sizeof(int32), 0);
+				fHueParam->SetValue(&value, sizeof(int32), 0);
 			}
 			break;	
 				
 		case SATURATION_SLIDER_MSG:
 			{
-				GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_SaturationValue = theMessage->FindInt32("be:value");
+				GetParent()->fTempVideoSettings.fVideoImageSettings.fSaturationValue = theMessage->FindInt32("be:value");
 				int32 value = theMessage->FindInt32("be:value");
-				m_SaturationParam->SetValue(&value, sizeof(int32), 0);
+				fSaturationParam->SetValue(&value, sizeof(int32), 0);
 			}
 			break;
 	
 		case msg_gamma:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Filters.m_GammaCorrection = cntlPtr->Value();
-			//m_VideoSource->VideoControls()->SetGammaCorrectionRemoval(cntlPtr->Value());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFilters.fGammaCorrection = cntlPtr->Value();
+			//fVideoSource->VideoControls()->SetGammaCorrectionRemoval(cntlPtr->Value());
 			break;	
 						
 		case msg_coring:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Filters.m_LumaCoring = cntlPtr->Value();
-			//m_VideoSource->VideoControls()->SetLumaCoring(cntlPtr->Value());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFilters.fLumaCoring = cntlPtr->Value();
+			//fVideoSource->VideoControls()->SetLumaCoring(cntlPtr->Value());
 			break;	
 						
 		case msg_luma_comb:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Filters.m_LumaComb = cntlPtr->Value();
-			//m_VideoSource->VideoControls()->SetLumaCombFilter(cntlPtr->Value());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFilters.fLumaComb = cntlPtr->Value();
+			//fVideoSource->VideoControls()->SetLumaCombFilter(cntlPtr->Value());
 			break;	
 						
 		case msg_chroma_comb:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Filters.m_ChromaComb = cntlPtr->Value();
-			//m_VideoSource->VideoControls()->SetChromaCombFilter(cntlPtr->Value());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFilters.fChromaComb = cntlPtr->Value();
+			//fVideoSource->VideoControls()->SetChromaCombFilter(cntlPtr->Value());
 			break;	
 						
 		case msg_error_diffusion:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Filters.m_ErrorDiffusion = cntlPtr->Value();			
-			//m_VideoSource->VideoControls()->SetErrorDiffusion(cntlPtr->Value());
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFilters.fErrorDiffusion = cntlPtr->Value();			
+			//fVideoSource->VideoControls()->SetErrorDiffusion(cntlPtr->Value());
 			break;	
 						
 		case msg_composite:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Input = kComposite;
-			//m_VideoSource->VideoMux()->SetSource(B_COMPOSITE_0);
-			//m_VideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fInput = kComposite;
+			//fVideoSource->VideoMux()->SetSource(B_COMPOSITE_0);
+			//fVideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
 			break;	
 				
 		case msg_tuner:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Input = kTuner;
-			//m_VideoSource->VideoMux()->SetSource(B_TUNER_0);
-			//m_VideoSource->AudioMux()->SetSource(B_TUNER_AUDIO_0);
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fInput = kTuner;
+			//fVideoSource->VideoMux()->SetSource(B_TUNER_0);
+			//fVideoSource->AudioMux()->SetSource(B_TUNER_AUDIO_0);
 			break;
 					
 		case msg_svideo:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Input = kSVideo;
-			//m_VideoSource->VideoMux()->SetSource(B_SVIDEO_0);
-			//m_VideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fInput = kSVideo;
+			//fVideoSource->VideoMux()->SetSource(B_SVIDEO_0);
+			//fVideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
 			break;
 					
 		case msg_color_bars:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Input = kColorBars;
-			//m_VideoSource->VideoMux()->SetSource(B_COLOR_BARS);
-			//m_VideoSource->AudioMux()->SetSource(B_MUTE_AUDIO);
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fInput = kColorBars;
+			//fVideoSource->VideoMux()->SetSource(B_COLOR_BARS);
+			//fVideoSource->AudioMux()->SetSource(B_MUTE_AUDIO);
 			break;	
 				
 		case msg_camera:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Input = kCamera;
-			//m_VideoSource->VideoMux()->SetSource(B_COMPOSITE_1);
-			//m_VideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fInput = kCamera;
+			//fVideoSource->VideoMux()->SetSource(B_COMPOSITE_1);
+			//fVideoSource->AudioMux()->SetSource(B_COMPOSITE_AUDIO_0);
 			break;
 					
 		case msg_ntsc_m:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Format = kNTSC_M;
-			//m_VideoSource->SetVideoFormat(B_NTSC_M);
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFormat = kNTSC_M;
+			//fVideoSource->SetVideoFormat(B_NTSC_M);
 			break;
 					
 		case msg_ntsc_j:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Format = kNTSC_J;
-			//m_VideoSource->SetVideoFormat(B_NTSC_J);
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFormat = kNTSC_J;
+			//fVideoSource->SetVideoFormat(B_NTSC_J);
 			break;
 					
 		case msg_pal_bg:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Format = kPAL_BG;
-			//m_VideoSource->SetVideoFormat(B_PAL_M);
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFormat = kPAL_BG;
+			//fVideoSource->SetVideoFormat(B_PAL_M);
 			break;	
 				
 		case msg_pal_i:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Format = kPAL_I;
-			//m_VideoSource->SetVideoFormat(B_PAL_N);			
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFormat = kPAL_I;
+			//fVideoSource->SetVideoFormat(B_PAL_N);			
 			break;
 					
 		case msg_secam:
-			GetParent()->m_TempVideoSettings.m_VideoSourceSettings.m_Format = kSECAM;
-			//m_VideoSource->SetVideoFormat(B_SECAM);
+			GetParent()->fTempVideoSettings.fVideoSourceSettings.fFormat = kSECAM;
+			//fVideoSource->SetVideoFormat(B_SECAM);
 			break;
 					
 		case msg_usa_air:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_US_NTSC_AIR);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_US_NTSC_AIR);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_usa_irc:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_US_NTSC_CABLE_IRC);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_US_NTSC_CABLE_IRC);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_usa_hrc:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_US_NTSC_CABLE_HRC);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_US_NTSC_CABLE_HRC);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_europe_air:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_EUROPE_PAL_AIR);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_EUROPE_PAL_AIR);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_europe_cable:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_EUROPE_PAL_CABLE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_EUROPE_PAL_CABLE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_france_air:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_FRANCE_SECAM_AIR);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_FRANCE_SECAM_AIR);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_france_cable:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_FRANCE_SECAM_CABLE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_FRANCE_SECAM_CABLE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_gb_air:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_GREAT_BRITAIN_PAL_AIR);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_GREAT_BRITAIN_PAL_AIR);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_gb_cable:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_GREAT_BRITAIN_PAL_CABLE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_GREAT_BRITAIN_PAL_CABLE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_japan_air:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_JAPAN_NTSC_AIR);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_JAPAN_NTSC_AIR);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 			
 		case msg_japan_cable:
-			//m_VideoSource->Tuner()->SetTunerLocale(B_JAPAN_NTSC_CABLE);
-			//m_VideoSource->Tuner()->Tune(m_CurrentChannel);
+			//fVideoSource->Tuner()->SetTunerLocale(B_JAPAN_NTSC_CABLE);
+			//fVideoSource->Tuner()->Tune(fCurrentChannel);
 			break;
 				
 		default:

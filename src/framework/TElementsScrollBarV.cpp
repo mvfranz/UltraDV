@@ -38,7 +38,7 @@
 TElementsScrollBarV::TElementsScrollBarV(BRect frame, const char *name, TElementsSorter *target, float min, float max ) :
 					BScrollBar( frame, name, NULL, min, max, B_VERTICAL)
 {	
-	m_Parent = target;
+	fParent = target;
 	
 	// Do default initialization
 	Init();
@@ -69,7 +69,7 @@ void TElementsScrollBarV::Init()
 	// 	Get current scrollvalue and save it in our tracking variable.  
 	//	We use this value to scroll the HeaderZone in concert with
 	//	the CueSheetView
-	m_LastValue = Value();
+	fLastValue = Value();
 }
 
 
@@ -97,32 +97,32 @@ void TElementsScrollBarV::ValueChanged(float newValue)
 	BScrollBar::ValueChanged(newValue);
 	
 	//  We need to scroll the SorterList areas of our attached SorterContainers
-	if (newValue != m_LastValue)
+	if (newValue != fLastValue)
 	{
 		bool negative;
 		
 		// Construct message to send parent
 		BMessage *theMessage = new BMessage(SORTER_SCROLL_V_MSG);
 		
-		if (newValue > m_LastValue)
+		if (newValue > fLastValue)
 		{
 			negative = false;
 			theMessage->AddBool("Negative", negative); 
 			theMessage->AddFloat("NewValue", newValue); 
-			theMessage->AddFloat("LastValue", m_LastValue); 
-			m_Parent->MessageReceived(theMessage);
+			theMessage->AddFloat("LastValue", fLastValue); 
+			fParent->MessageReceived(theMessage);
 		}
 		else
 		{
 			negative = true;
 			theMessage->AddBool("Negative", negative); 
 			theMessage->AddFloat("NewValue", newValue); 
-			theMessage->AddFloat("LastValue", m_LastValue); 
-			m_Parent->MessageReceived(theMessage);
+			theMessage->AddFloat("LastValue", fLastValue); 
+			fParent->MessageReceived(theMessage);
 		}
 			
 		// Save value for next compare
-		m_LastValue = newValue;
+		fLastValue = newValue;
 		
 		delete theMessage;
 	}		

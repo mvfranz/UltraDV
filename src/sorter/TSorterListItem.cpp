@@ -39,13 +39,13 @@
 TSorterListItem::TSorterListItem(uint32 level, bool expanded, BRect bounds, const char *theString, SorterType theType, entry_ref& fileRef) : 
 				 BListItem(level, expanded)
 {
-	m_Cue		= NULL;
-	m_Type 		= theType;
-	m_EntryRef	= fileRef;
+	fCue		= NULL;
+	fType 		= theType;
+	fEntryRef	= fileRef;
 	
 	// Make a copy of the data string
-	m_DataString = (char *) malloc(strlen(theString)+1);       
-	strcpy(m_DataString, theString);
+	fDataString = (char *) malloc(strlen(theString)+1);       
+	strcpy(fDataString, theString);
 		
 	// Perform default initialization
 	Init();
@@ -60,8 +60,8 @@ TSorterListItem::TSorterListItem(uint32 level, bool expanded, BRect bounds, cons
 
 TSorterListItem::~TSorterListItem()
 {
-	// Free m_DataString
-	free(m_DataString);
+	// Free fDataString
+	free(fDataString);
 }
 
 
@@ -75,24 +75,24 @@ void TSorterListItem::Init()
 {
 	// Set DataType based on entry_ref
 	BFile theFile; 
-	if ( theFile.SetTo(&m_EntryRef, B_READ_WRITE) == B_OK )
+	if ( theFile.SetTo(&fEntryRef, B_READ_WRITE) == B_OK )
 	{		
 		// Create node
 		BNodeInfo nodeInfo(&theFile);
 		if (nodeInfo.InitCheck() == B_NO_ERROR)
 		{
 			if (IsAudio(nodeInfo))
-				m_DataType = kAudioType;
+				fDataType = kAudioType;
 			else if (IsImage(nodeInfo))
-				m_DataType = kPictureType;
+				fDataType = kPictureType;
 			else if (IsText(nodeInfo))
-				m_DataType = kTextType;
+				fDataType = kTextType;
 			else if (IsVideo(nodeInfo))
-				m_DataType = kVideoType;
+				fDataType = kVideoType;
 		}
 		else
 		{
-			m_DataType = kUnknownType;	
+			fDataType = kUnknownType;	
 		}	
 		
 		theFile.Unset();
@@ -136,14 +136,14 @@ void TSorterListItem::DrawItem(BView *owner, BRect itemRect, bool drawEverything
 	// Draw our data string
 	owner->SetHighColor(kBlack);
 	BPoint textPt(itemRect.left+kSorterTextOffset, itemRect.bottom - 2);
-	owner->DrawString(m_DataString, textPt);
+	owner->DrawString(fDataString, textPt);
 		
 	// Is it selected
-	if ( IsSelected() && m_Type == kNameSorter)
+	if ( IsSelected() && fType == kNameSorter)
 	{
 		itemRect.top = itemRect.bottom - (kSorterFontSize+2);
 		itemRect.left += (kSorterTextOffset-2);
-		float width = owner->StringWidth(m_DataString);
+		float width = owner->StringWidth(fDataString);
 		itemRect.right = itemRect.left + width + 2;
 		owner->InvertRect(itemRect);
 	}

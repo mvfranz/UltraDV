@@ -21,10 +21,10 @@ class TBitmapView : public BView //, public BBitmap
 		~TBitmapView();
 						
 		virtual void Draw( BRect area);
-		BBitmap *m_Bitmap; // ABH moved from private to public
+		BBitmap *fBitmap; // ABH moved from private to public
 					
 	private:
-		bool	m_Ownership;
+		bool	fOwnership;
 					
 };
 

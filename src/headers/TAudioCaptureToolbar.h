@@ -30,7 +30,7 @@ class TAudioCaptureToolbar: public BView
 		void Init();
 		
 		// Member Variables						
-		TBitmapButton	*m_RecordButton; 
+		TBitmapButton	*fRecordButton; 
 };
 
 #endif

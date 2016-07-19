@@ -33,7 +33,7 @@ class TTransportPaletteView: public TBitmapView
 		void 	Draw(BRect updateRect);		
 		void	MessageReceived(BMessage *message);
 		
-		TTimeText	*GetTransportText(){ return m_TransportText; }
+		TTimeText	*GetTransportText(){ return fTransportText; }
 		
 		// Member variables	
 		
@@ -43,13 +43,13 @@ class TTransportPaletteView: public TBitmapView
 		void 	Init();
 				
 		// Member variables
-		TBitmapButton	*m_StartButton;				
-		TBitmapButton	*m_RewindButton;
-		TBitmapButton	*m_PlayButton;
-		TBitmapButton	*m_PauseButton;
-		TBitmapButton	*m_FFButton;		
-		TBitmapButton	*m_EndButton;
-		TTimeText		*m_TransportText;
+		TBitmapButton	*fStartButton;				
+		TBitmapButton	*fRewindButton;
+		TBitmapButton	*fPlayButton;
+		TBitmapButton	*fPauseButton;
+		TBitmapButton	*fFFButton;		
+		TBitmapButton	*fEndButton;
+		TTimeText		*fTransportText;
 };		
 
 

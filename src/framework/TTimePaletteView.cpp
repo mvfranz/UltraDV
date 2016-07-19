@@ -55,8 +55,8 @@ TTimePaletteView::TTimePaletteView(BRect bounds) : BView(bounds, "TransportView"
 TTimePaletteView::~TTimePaletteView()
 {
 	// Clean up TBitmapView
-	if (m_LocatorBitmap)
-		delete m_LocatorBitmap;		
+	if (fLocatorBitmap)
+		delete fLocatorBitmap;		
 }
 
 
@@ -99,10 +99,10 @@ void TTimePaletteView::Init()
 	BBitmap *bitmap = new BBitmap(bitmapRect, B_COLOR_8_BIT);
 	ASSERT(bitmap);
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
-	m_LocatorBitmap = new TBitmapView( bitmapRect, "LocatorBitmap", bitmap, true, B_FOLLOW_ALL);	
-	ASSERT(m_LocatorBitmap);	
-	AddChild(m_LocatorBitmap);
-	m_LocatorBitmap->Show();
+	fLocatorBitmap = new TBitmapView( bitmapRect, "LocatorBitmap", bitmap, true, B_FOLLOW_ALL);	
+	ASSERT(fLocatorBitmap);	
+	AddChild(fLocatorBitmap);
+	fLocatorBitmap->Show();
 	
 	// Set text size temporarily to the text view size to get proper 
 	// string length of default start time "00:00:00:00"
@@ -122,10 +122,10 @@ void TTimePaletteView::Init()
 	timeFont.SetSize(kTimeFontSize);
 	
 	// Create TTimeText View
-	m_TimeText = new TTimeText(NULL, 0, bounds, "TimeTextView", B_FOLLOW_ALL);
-	m_LocatorBitmap->AddChild(m_TimeText);
-	m_TimeText->SetFontAndColor(&timeFont, 0, kGreen);
-	m_TimeText->Show(); 
+	fTimeText = new TTimeText(NULL, 0, bounds, "TimeTextView", B_FOLLOW_ALL);
+	fLocatorBitmap->AddChild(fTimeText);
+	fTimeText->SetFontAndColor(&timeFont, 0, kGreen);
+	fTimeText->Show(); 
 			
 	// Restore settings
 	SetFont(&saveFont);
@@ -140,7 +140,7 @@ void TTimePaletteView::Init()
 
 void TTimePaletteView::Draw(BRect updateRect)
 {
-	m_TimeText->Draw(updateRect);	
+	fTimeText->Draw(updateRect);	
 }
 
 
@@ -260,12 +260,12 @@ void TTimePaletteView::MessageReceived(BMessage* message)
 	{
 		// Pass this down to time text
 		case NEW_TIME_MSG:
-			m_TimeText->MessageReceived(message);
+			fTimeText->MessageReceived(message);
 			break;
 		
 		// The time is being update due to a mouse move over the cue sheet
 		case UPDATE_TIMELINE_MSG:
-			m_TimeText->MessageReceived(message);
+			fTimeText->MessageReceived(message);
 			break;
 			
 		default:

@@ -40,20 +40,20 @@
 TAudioZoomInButton::TAudioZoomInButton(TAudioEditorToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Save handler
-	m_Handler = handler;
+	fHandler = handler;
 
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap = onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap = onBitmap;
 		
 	// Store target and handler
-	m_Handler = handler;
+	fHandler = handler;
 	
 	// Perform default initialization
 	Init();
@@ -69,8 +69,8 @@ TAudioZoomInButton::TAudioZoomInButton(TAudioEditorToolbar *parent, BRect bounds
 TAudioZoomInButton::~TAudioZoomInButton()
 {
 	// Free data
-	delete m_OffBitmap;
-	delete m_OnBitmap;
+	delete fOffBitmap;
+	delete fOnBitmap;
 }
 
 
@@ -93,11 +93,11 @@ void TAudioZoomInButton::Init()
 
 void TAudioZoomInButton::Draw(BRect updateRect)
 {
-	// Draw proper bitmap state, if m_State is true, draw on bitmap
-	if (m_MouseDown)
-		DrawBitmap(m_OffBitmap, B_ORIGIN);		
+	// Draw proper bitmap state, if fState is true, draw on bitmap
+	if (fMouseDown)
+		DrawBitmap(fOffBitmap, B_ORIGIN);		
 	else
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
 
 
@@ -128,7 +128,7 @@ void TAudioZoomInButton::MouseUp(BPoint where)
 	
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this		
-	//m_MouseDown = false; 
+	//fMouseDown = false; 
 }
 
 
@@ -222,18 +222,18 @@ void TAudioZoomInButton::DoClick()
 	
 	// We will always be in the up osition when we start.
 	// First, set the button state to down and force a redraw...
-	m_MouseDown = true; 
+	fMouseDown = true; 
 	Draw(Bounds()); 
 		
 	// Now send message to the view that the user is zooming in...
 	BMessage *message = new BMessage(AUDIO_ZOOMIN_BUTTON_MSG);
-	m_Parent->Window()->PostMessage(message, (( TAudioEditor *)m_Parent->Window())->GetEditorView() );
+	fParent->Window()->PostMessage(message, (( TAudioEditor *)fParent->Window())->GetEditorView() );
 	delete message;
 	
 	// Wait a short while before restoring to up position
 	snooze(100 * 1000);
 	
 	// Restore and invalidate
-	m_MouseDown = false; 
+	fMouseDown = false; 
 	Draw(Bounds()); 
 }

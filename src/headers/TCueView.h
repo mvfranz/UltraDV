@@ -152,29 +152,29 @@ class TCueView : public BView, public BMediaNode
 		BMediaAddOn	*AddOn( int32 *internal_id) const;
 		
 		// Accessor Methods
-		inline TCueChannel	 	*GetChannel(){return m_Channel;}
-		inline bool 			IsLocked(){ return m_IsLocked; }
-		inline bool 			IsExpanded(){ return m_IsExpanded; }
-		inline BFilePanel		*GetPanel(){ return m_Panel; }
-		inline bool				CanTransition(){ return m_CanTransition; }
-		inline bool				HasEditor(){ return m_HasEditor; }		
-		inline bool				HasDuration(){ return m_HasDuration; }				
-		inline uint32			Duration(){ return m_Duration; }
-		inline uint32			StartTime(){ return m_StartTime; }
-		inline bool				Selected(){ return m_IsSelected; }
-		inline bool				IsVisible(){ return m_IsVisible; }
-		inline bool				IsInstantiated(){ return m_IsInstantiated; }
-		inline bool				IsMuted(){ return m_IsMuted; }
+		inline TCueChannel	 	*GetChannel(){return fChannel;}
+		inline bool 			IsLocked(){ return fIsLocked; }
+		inline bool 			IsExpanded(){ return fIsExpanded; }
+		inline BFilePanel		*GetPanel(){ return fPanel; }
+		inline bool				CanTransition(){ return fCanTransition; }
+		inline bool				HasEditor(){ return fHasEditor; }		
+		inline bool				HasDuration(){ return fHasDuration; }				
+		inline uint32			Duration(){ return fDuration; }
+		inline uint32			StartTime(){ return fStartTime; }
+		inline bool				Selected(){ return fIsSelected; }
+		inline bool				IsVisible(){ return fIsVisible; }
+		inline bool				IsInstantiated(){ return fIsInstantiated; }
+		inline bool				IsMuted(){ return fIsMuted; }
 						
-		inline entry_ref		*GetFileRef(){ return &m_FileRef; }
-		inline BFile			*GetFile(){ return m_File; }
-		inline drawing_mode		GetDrawingMode(){ return m_DrawingMode; }
-		inline CueDisplay		GetDisplayMode(){ return m_CueDisplayMode; }
+		inline entry_ref		*GetFileRef(){ return &fFileRef; }
+		inline BFile			*GetFile(){ return fFile; }
+		inline drawing_mode		GetDrawingMode(){ return fDrawingMode; }
+		inline CueDisplay		GetDisplayMode(){ return fCueDisplayMode; }
 						
-		inline bool				IsShowingDuration(){ return m_ShowDuration; }
-		inline bool				IsShowingControls(){ return m_CueDisplayMode == kCueControls; }
-		inline bool				IsShowingContents(){ return m_CueDisplayMode == kCueContents; }
-		inline bool				IsEffectsVisible(){ return m_EffectsVisible; }
+		inline bool				IsShowingDuration(){ return fShowDuration; }
+		inline bool				IsShowingControls(){ return fCueDisplayMode == kCueControls; }
+		inline bool				IsShowingContents(){ return fCueDisplayMode == kCueContents; }
+		inline bool				IsEffectsVisible(){ return fEffectsVisible; }
 														
 		// Member Variables			
 							
@@ -231,103 +231,103 @@ class TCueView : public BView, public BMediaNode
 												
 		//	Member Variables			
 	// ABH missing transparency???
-		float m_Transparency; //SetTransparency / GetTransparency; 
-		uint32 m_TransitionInDuration;
-		uint32 m_TransitionOutDuration;
-		uint32 m_TransitionInID;
-		uint32 m_TransitionOutID;
+		float fTransparency; //SetTransparency / GetTransparency; 
+		uint32 fTransitionInDuration;
+		uint32 fTransitionOutDuration;
+		uint32 fTransitionInID;
+		uint32 fTransitionOutID;
 	// ABH missing rotation???
-		float m_Rotation;
+		float fRotation;
 	// ABH
-		BPoint m_InsertPoint;
+		BPoint fInsertPoint;
 		
-		rgb_color		m_LowColor;				// Low color for content and env
-		rgb_color		m_HighColor;			// High color for content and env
-		drawing_mode	m_DrawingMode;			// Drawing ink effect
-		bool			m_IsInstantiated;		// True if cue is fully realized
-		bool			m_IsPrepared;			// Ready for playback
-		bool			m_IsPaused;
+		rgb_color		fLowColor;				// Low color for content and env
+		rgb_color		fHighColor;			// High color for content and env
+		drawing_mode	fDrawingMode;			// Drawing ink effect
+		bool			fIsInstantiated;		// True if cue is fully realized
+		bool			fIsPrepared;			// Ready for playback
+		bool			fIsPaused;
 		
-		uint32			m_FileTime;
-		uint32			m_StartTime;			// in milliseconds
-		uint32			m_PreparedTime;
-		uint32			m_Duration;				// in milliseconds
-		uint32			m_StartOffset;
+		uint32			fFileTime;
+		uint32			fStartTime;			// in milliseconds
+		uint32			fPreparedTime;
+		uint32			fDuration;				// in milliseconds
+		uint32			fStartOffset;
 								
-		bool			m_CanStretch;			// true if cue is stretchable
-		bool			m_CanWindow;			// true if cue can window into file
-		bool			m_CanLoop;				// true if cue can loop
-		bool			m_CanEnvelope;			// true if cue can volume envelope
-		bool			m_HasDuration;			// true if cue has a duration
-		bool			m_IsVisible;			// true if cue is visual
-		bool			m_CanCrop;				// true if cue can visual crop
+		bool			fCanStretch;			// true if cue is stretchable
+		bool			fCanWindow;			// true if cue can window into file
+		bool			fCanLoop;				// true if cue can loop
+		bool			fCanEnvelope;			// true if cue can volume envelope
+		bool			fHasDuration;			// true if cue has a duration
+		bool			fIsVisible;			// true if cue is visual
+		bool			fCanCrop;				// true if cue can visual crop
 		
-		bool			m_CanTransition;		// true if cue can transition
-		bool			m_CanPath;				// true if cue can path
+		bool			fCanTransition;		// true if cue can transition
+		bool			fCanPath;				// true if cue can path
 						
-		bool			m_HasEditor;			// true if cue has internal editor		
-		bool			m_EditorOpen;			// true if internal editor is open
+		bool			fHasEditor;			// true if cue has internal editor		
+		bool			fEditorOpen;			// true if internal editor is open
 			
-		bool			m_IsSelected;			// true if it has been click selected
-		bool			m_HasExternalEditor;	// true if use external editor
+		bool			fIsSelected;			// true if it has been click selected
+		bool			fHasExternalEditor;	// true if use external editor
 		
-		BRect			m_LResizeZone;			// Left side resize zone
-		BRect			m_RResizeZone;			// Right side resize zone				
-		BRect 			m_DurationDeltaRect;	// Location of duration delta indicator
-		BRect			m_EffectsTray;			// Area of cues effects tray	
+		BRect			fLResizeZone;			// Left side resize zone
+		BRect			fRResizeZone;			// Right side resize zone				
+		BRect 			fDurationDeltaRect;	// Location of duration delta indicator
+		BRect			fEffectsTray;			// Area of cues effects tray	
 		
-		bool			m_AppCursorSet;
-		uint32			m_InsertTime;	
+		bool			fAppCursorSet;
+		uint32			fInsertTime;	
 		
-		BFilePanel 		*m_Panel; 				// File panel for cue media loading
+		BFilePanel 		*fPanel; 				// File panel for cue media loading
 		
-		TCueTimeText	*m_StartText;
-		TCueTimeText	*m_EndText;
+		TCueTimeText	*fStartText;
+		TCueTimeText	*fEndText;
 				
 		// Cue Buttons
-		TBitmapButton	*m_LockButton;
-		TBitmapButton	*m_MuteButton;		
-		TBitmapButton	*m_EffectsButton;
+		TBitmapButton	*fLockButton;
+		TBitmapButton	*fMuteButton;		
+		TBitmapButton	*fEffectsButton;
 				
-		int16			m_ID;					// 	Cue identification ID
+		int16			fID;					// 	Cue identification ID
 		
-		bool			m_MouseDown;			// 	For mouse down/up tracking
-		bool			m_Resizing;				// 	For mouse dragging
+		bool			fMouseDown;			// 	For mouse down/up tracking
+		bool			fResizing;				// 	For mouse dragging
 							
-		bool			m_IsLocked;				// 	Cue is locked into channel
-		bool			m_IsExpanded;			//	Cue is expanded in channel	
-		bool			m_IsMuted;				//	Cue data is muted or non-visible
-		bool			m_EffectsVisible;		//	Effects tray is visible
+		bool			fIsLocked;				// 	Cue is locked into channel
+		bool			fIsExpanded;			//	Cue is expanded in channel	
+		bool			fIsMuted;				//	Cue data is muted or non-visible
+		bool			fEffectsVisible;		//	Effects tray is visible
 		
-		BList			*m_EffectsList;			//	List to hold effects applied to cue
+		BList			*fEffectsList;			//	List to hold effects applied to cue
 		
-		TBitmapView		*m_CueIcon;				// Visual display of cue		
-		TCueChannel		*m_Channel;
+		TBitmapView		*fCueIcon;				// Visual display of cue		
+		TCueChannel		*fChannel;
 							
-		int32			m_MinCueWidth;			// Minimum width of a cue
+		int32			fMinCueWidth;			// Minimum width of a cue
 					
-		TTimer			*m_AntThread;
+		TTimer			*fAntThread;
 		
-		entry_ref		m_FileRef;				// Cues data file entry_ref	
-		BFile			*m_File;				// Cues file
+		entry_ref		fFileRef;				// Cues data file entry_ref	
+		BFile			*fFile;				// Cues file
 		
-		BPoint			m_LastClickPt;			// Mouse click tracking					
+		BPoint			fLastClickPt;			// Mouse click tracking					
 		
-		bool			m_ShowDuration;			//	Show duration delta
+		bool			fShowDuration;			//	Show duration delta
 		
-		CueDisplay		m_CueDisplayMode;		//	Type of cue display in cue data area
+		CueDisplay		fCueDisplayMode;		//	Type of cue display in cue data area
 		
-		bool			m_TimeToQuit;
-		bool			m_IsPlaying;
-		bool			m_IsStopping;
+		bool			fTimeToQuit;
+		bool			fIsPlaying;
+		bool			fIsStopping;
 
-		port_id 		m_Port;
+		port_id 		fPort;
 		
-		thread_id		m_ServiceThread;
-		thread_id		m_RunThread;
+		thread_id		fServiceThread;
+		thread_id		fRunThread;
 		
 		//pattern	cueAnts = {0x1F, 0x3E, 0x7C, 0xF8, 0xF1, 0xE3, 0xC7, 0x8F};
-		pattern			m_CueAnts;
+		pattern			fCueAnts;
 };
 
 #endif

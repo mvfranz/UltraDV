@@ -42,7 +42,7 @@ const short kScalerTickHeight = 5;
 TTimeScalerView::TTimeScalerView(BRect bounds, TCueSheetView *parent) : BView(bounds, "TimeScalerView", B_FOLLOW_LEFT|B_FOLLOW_BOTTOM , B_WILL_DRAW)
 {
 	// Set CueSheet parent
-	//m_CueSheet = parent;
+	//fCueSheet = parent;
 	
 	// Perform default initialization
 	Init();
@@ -88,22 +88,22 @@ void TTimeScalerView::Init()
 	BRect area = Bounds();
 	
 	// The control rect is the left half of the bounding rect
-	m_ControlRect = area;
-	m_ControlRect.right = (m_ControlRect.right - m_ControlRect.left) / 2;
+	fControlRect = area;
+	fControlRect.right = (fControlRect.right - fControlRect.left) / 2;
 	
 	// The text rect is the right half of the bounding rect
-	m_TextRect = area;
-	m_TextRect.left = (m_TextRect.right - m_TextRect.left) / 2;
+	fTextRect = area;
+	fTextRect.left = (fTextRect.right - fTextRect.left) / 2;
 		
 	// Set up the array of rects for hitpoint detection.  We divide the area into 
 	// a number of rects equal to the total number of ticks.		
-	short tickWidth = m_ControlRect.Width();
+	short tickWidth = fControlRect.Width();
 	short spaceWidth = tickWidth / kTotalTicks;
 	
 	for (short index = 0; index < kTotalTicks; index++)
 	{
-		m_ClickArray[index].Set( m_ControlRect.left +( index * spaceWidth), m_ControlRect.top,
-								 m_ControlRect.left + spaceWidth +( index * spaceWidth), m_ControlRect.bottom);						
+		fClickArray[index].Set( fControlRect.left +( index * spaceWidth), fControlRect.top,
+								 fControlRect.left + spaceWidth +( index * spaceWidth), fControlRect.bottom);						
 	}
 		
 	// Load thumb bitmap
@@ -111,12 +111,12 @@ void TTimeScalerView::Init()
 	
 	// Create Indicator View 
 	BRect bounds( Bounds().left, Bounds().bottom - (kTimeIndicatorHeight-1), Bounds().left+(kTimeIndicatorWidth-1), Bounds().bottom);
-	m_Indicator = new TBitmapView( bounds, "TimeScaler", bitmap, B_FOLLOW_LEFT | B_FOLLOW_BOTTOM);
+	fIndicator = new TBitmapView( bounds, "TimeScaler", bitmap, B_FOLLOW_LEFT | B_FOLLOW_BOTTOM);
 	
 	// Add to view, move it to the proper resolution tick and show it
-	AddChild(m_Indicator);
-	m_Indicator->MoveTo(m_ClickArray[GetCurrentResolution()].left, Bounds().bottom - (kTimeIndicatorHeight-1));	
-	m_Indicator->Show();
+	AddChild(fIndicator);
+	fIndicator->MoveTo(fClickArray[GetCurrentResolution()].left, Bounds().bottom - (kTimeIndicatorHeight-1));	
+	fIndicator->Show();
 }
 
 
@@ -192,26 +192,26 @@ void TTimeScalerView::Draw(BRect updateRect)
 		
 	// Fill text rect
 	SetHighColor(kBeGrey);
-	FillRect(m_TextRect);	
+	FillRect(fTextRect);	
 		
 	// Fill control rect
 	SetHighColor(kMediumGrey);
-	FillRect(m_ControlRect);	
+	FillRect(fControlRect);	
 	
 	// Outline entire area
 	SetHighColor(kBeShadow);
-	StrokeRect(m_TextRect);
+	StrokeRect(fTextRect);
 	
 	// Draw light shadow at top of control area
 	SetHighColor(kBlack);
-	startPt.Set(m_ControlRect.left+1, m_ControlRect.top+1);
-	endPt.Set(m_ControlRect.right-1, m_ControlRect.top+1);
+	startPt.Set(fControlRect.left+1, fControlRect.top+1);
+	endPt.Set(fControlRect.right-1, fControlRect.top+1);
 	StrokeLine(startPt, endPt);
 	
 	// Draw highlight at top of text area
 	SetHighColor(kBeHighlight);
-	startPt.Set(m_TextRect.left+1, m_TextRect.top+1);
-	endPt.Set(m_TextRect.right-1, m_TextRect.top+1);
+	startPt.Set(fTextRect.left+1, fTextRect.top+1);
+	endPt.Set(fTextRect.right-1, fTextRect.top+1);
 	StrokeLine(startPt, endPt);
 		
 	// Draw tick indicator and ticks
@@ -227,7 +227,7 @@ void TTimeScalerView::Draw(BRect updateRect)
 	StrokeLine(startPt, endPt);
 	
 	// Draw text
-	// gzr: to do... Figure out how to center the text in the m_TextRect
+	// gzr: to do... Figure out how to center the text in the fTextRect
 	char timeStr[256];
 	GetTimeScaleString(GetCurrentResolution(), (char *)&timeStr);
 	SetFont(be_plain_font);   
@@ -253,25 +253,25 @@ void TTimeScalerView::MouseDown(BPoint where)
 {	
 	
 	// Make sure we are in the control rect
-	if ( !m_ControlRect.Contains(where) )
+	if ( !fControlRect.Contains(where) )
 		return;
 	
 	// Activate cue sheet
 	Window()->Activate(true);
 	
-	// Now, clip the mouse and keep it inside the m_ControlRect - the width
+	// Now, clip the mouse and keep it inside the fControlRect - the width
 	// of the indicator
-	if (where.x > m_ControlRect.right - kTimeIndicatorWidth)
-		where.x = m_ControlRect.right - kTimeIndicatorWidth;
+	if (where.x > fControlRect.right - kTimeIndicatorWidth)
+		where.x = fControlRect.right - kTimeIndicatorWidth;
 	
 	// Now, locate which tick rect click is in
 	short rectIndex = GetClickRect(where);
 
 	// Move tick indicator view to the click rect closest to the mouse down location
-	m_Indicator->MoveTo(m_ClickArray[rectIndex].left, Bounds().bottom - (kTimeIndicatorHeight-1));
+	fIndicator->MoveTo(fClickArray[rectIndex].left, Bounds().bottom - (kTimeIndicatorHeight-1));
 	TCueSheetView *cueSheet = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetCueSheetView();	
 	cueSheet->SetResolution(rectIndex);
-	Invalidate(m_TextRect);
+	Invalidate(fTextRect);
 	
 	// If the user is holding down the mouse, move the indicator in reply
 	uint32 	buttons = 0;
@@ -281,13 +281,13 @@ void TTimeScalerView::MouseDown(BPoint where)
 	while (buttons)
 	{
 		// Clip the mouse point to be within our control rect
-		if (where.x < m_ControlRect.left)
-			where.x = m_ControlRect.left;
+		if (where.x < fControlRect.left)
+			where.x = fControlRect.left;
 		
-		if (where.x > m_ControlRect.right - kTimeIndicatorWidth)
-			where.x = m_ControlRect.right - kTimeIndicatorWidth;
+		if (where.x > fControlRect.right - kTimeIndicatorWidth)
+			where.x = fControlRect.right - kTimeIndicatorWidth;
 			
-		where.y = m_ControlRect.Height()/2;
+		where.y = fControlRect.Height()/2;
 		
 		if (where != savePt)
 		{
@@ -295,9 +295,9 @@ void TTimeScalerView::MouseDown(BPoint where)
 			short rectIndex = GetClickRect(where);
 
 			// Move tick indicator view to the click rect closest to the mouse down location
-			m_Indicator->MoveTo(m_ClickArray[rectIndex].left, Bounds().bottom - (kTimeIndicatorHeight-1));		
+			fIndicator->MoveTo(fClickArray[rectIndex].left, Bounds().bottom - (kTimeIndicatorHeight-1));		
 			cueSheet->SetResolution(rectIndex);
-			Invalidate(m_TextRect);
+			Invalidate(fTextRect);
 			
 			// Save the mouse location
 			savePt = where;
@@ -341,8 +341,8 @@ void TTimeScalerView::DrawTimeScaleTicks()
 	short spaceWidth = tickWidth / kTotalTicks;
 	for (short i = 0; i < kTotalTicks; i++)
 	{
-		startPt.Set(m_ControlRect.left+5+(i * spaceWidth), m_ControlRect.top+1);
-		endPt.Set(m_ControlRect.left+5+(i * spaceWidth), m_ControlRect.top+kScalerTickHeight);
+		startPt.Set(fControlRect.left+5+(i * spaceWidth), fControlRect.top+1);
+		endPt.Set(fControlRect.left+5+(i * spaceWidth), fControlRect.top+kScalerTickHeight);
 		StrokeLine(startPt, endPt);	
 	}
 	
@@ -376,7 +376,7 @@ void TTimeScalerView::DrawTickIndicator()
 	tickOffset.x += (spaceWidth*cueSheet->GetResolution()) - 4;
 	
 	// Move view	
-	m_Indicator->MoveTo(tickOffset.x, Bounds().bottom - (kTimeIndicatorHeight-1));
+	fIndicator->MoveTo(tickOffset.x, Bounds().bottom - (kTimeIndicatorHeight-1));
 	
 	// Restore color
 	PopState();
@@ -388,7 +388,7 @@ void TTimeScalerView::DrawTickIndicator()
 //	GetClickRect
 //---------------------------------------------------------------------
 //
-//	Return the rect in the m_ClickArray that the point resides in
+//	Return the rect in the fClickArray that the point resides in
 //
 
 short TTimeScalerView::GetClickRect(BPoint where)
@@ -398,7 +398,7 @@ short TTimeScalerView::GetClickRect(BPoint where)
 	
 	for (short index = 0; index < kTotalTicks; index++)
 	{
-		if ( m_ClickArray[index].Contains(where) )
+		if ( fClickArray[index].Contains(where) )
 		{
 			rectIndex = index;
 			return rectIndex;

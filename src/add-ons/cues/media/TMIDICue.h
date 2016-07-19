@@ -34,7 +34,7 @@ class	TMIDICue : public TCueView
 		void 	MessageReceived(BMessage *message);
 								
 		// Accessor Functions
-		inline TMIDIFile *GetMidiFile(){ return m_MIDIFile; }
+		inline TMIDIFile *GetMidiFile(){ return fMIDIFile; }
 		
 		// Member Variables
 		
@@ -65,17 +65,17 @@ class	TMIDICue : public TCueView
 		void 	CalcDuration();
 		
 		// Member Variables		
-		TMIDIEditor		*m_Editor;	
-		BMidiPort		*m_MIDIPort;
-		BMidiStore		*m_MIDIStore;	
-		BList			*m_TrackList;
+		TMIDIEditor		*fEditor;	
+		BMidiPort		*fMIDIPort;
+		BMidiStore		*fMIDIStore;	
+		BList			*fTrackList;
 		
-		TMIDIConductor	*m_MIDIConductor;
-		TMIDIFile		*m_MIDIFile;
-		TMIDIEngine		*m_MIDIEngine;
-		BMidiSynthFile 	*m_SynthFile; 
+		TMIDIConductor	*fMIDIConductor;
+		TMIDIFile		*fMIDIFile;
+		TMIDIEngine		*fMIDIEngine;
+		BMidiSynthFile 	*fSynthFile; 
 		
-		thread_id		m_PlaybackThread;
+		thread_id		fPlaybackThread;
 					
 };
 

@@ -41,9 +41,9 @@ private:
 		BTimedBufferQueue & operator =(	//	unimplemented
 				const BTimedBufferQueue & other);
 
-		struct _buffer_queue_imp * m_queue;
-		int32 _m_buffer_count;
-		uint32 _m_reserved_timed_buffer_queue_[6];
+		struct _buffer_queue_imp * fqueue;
+		int32 _fbuffer_count;
+		uint32 _freserved_timed_buffer_queue_[6];
 };
 
 #endif	//	TIMED_BUFFER_QUEUE_H

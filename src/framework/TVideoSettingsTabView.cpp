@@ -40,7 +40,7 @@ TVideoSettingsTabView::TVideoSettingsTabView(TVideoSettingsView *parent, BRect f
 //				BTabView(frame, name, B_WIDTH_AS_USUAL, B_FOLLOW_ALL, B_WILL_DRAW|B_FULL_UPDATE_ON_RESIZE|B_NAVIGABLE_JUMP|B_FRAME_EVENTS|B_NAVIGABLE)
 				BTabView(frame, name)
 {
-	m_Parent = parent,
+	fParent = parent,
 	
 	Init();
 }
@@ -77,24 +77,24 @@ void TVideoSettingsTabView::Init()
 	BTab *compressionTab = new BTab(); 	
 	theMessage = GetWindowFromResource("VideoCompressionView");
 	ASSERT(theMessage);
-	m_CompressionView = new TVideoCompressionView(this, theMessage);
-	AddTab(m_CompressionView, compressionTab); 
+	fCompressionView = new TVideoCompressionView(this, theMessage);
+	AddTab(fCompressionView, compressionTab); 
 	compressionTab->SetLabel("Compression"); 
 	
 	// Get VideoImageView from resource
 	BTab *imageTab = new BTab(); 	
 	theMessage = GetWindowFromResource("VideoImageView");
 	ASSERT(theMessage);		
-	m_ImageView = new TVideoImageView(this, theMessage);
-	AddTab(m_ImageView, imageTab); 
+	fImageView = new TVideoImageView(this, theMessage);
+	AddTab(fImageView, imageTab); 
 	imageTab->SetLabel("Image"); 
 	
 	// Get VideoImageSource from resource
 	BTab *sourceTab = new BTab(); 	
 	theMessage = GetWindowFromResource("VideoSourceView");
 	ASSERT(theMessage);		
-	m_SourceView = new TVideoSourceView(this, theMessage);
-	AddTab(m_SourceView, sourceTab); 
+	fSourceView = new TVideoSourceView(this, theMessage);
+	AddTab(fSourceView, sourceTab); 
 	sourceTab->SetLabel("Source"); 
 }
 	

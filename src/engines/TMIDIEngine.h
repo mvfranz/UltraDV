@@ -31,8 +31,8 @@ class TMIDIEngine
 		
 	private: 		
 		// Member Functions
-		BMidiStore	*m_MIDIStore;
-		BMidiPort	*m_MIDIPort;
+		BMidiStore	*fMIDIStore;
+		BMidiPort	*fMIDIPort;
       		
 };
 

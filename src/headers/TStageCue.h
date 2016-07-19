@@ -46,8 +46,8 @@ class TStageCue
 		void 	SetChannelCue(TVisualCue *theCue);
 				
 		// Accessor Functions
-		inline TVisualCue 	*GetChannelCue(){ return m_ChannelCue; }
-		inline bool			Selected(){ return m_IsSelected; }
+		inline TVisualCue 	*GetChannelCue(){ return fChannelCue; }
+		inline bool			Selected(){ return fIsSelected; }
 		
 	private:
 		void	Init();
@@ -112,20 +112,20 @@ class TStageCue
 		void	OpenCurrentToolDialog();				
 					
 	protected:
-		TStageView	*m_Stage;	
-		TVisualCue	*m_ChannelCue;		
-		bool		m_IsSelected;
-		TTimer		*m_AntThread;
+		TStageView	*fStage;	
+		TVisualCue	*fChannelCue;		
+		bool		fIsSelected;
+		TTimer		*fAntThread;
 		
 		// Resize control zones
-		TPolygon m_TopLeftResize;
-		TPolygon m_TopMiddleResize;
-		TPolygon m_TopRightResize;
-		TPolygon m_RightMiddleResize;
-		TPolygon m_BottomRightResize;
-		TPolygon m_BottomMiddleResize;
-		TPolygon m_BottomLeftResize;
-		TPolygon m_LeftMiddleResize;
+		TPolygon fTopLeftResize;
+		TPolygon fTopMiddleResize;
+		TPolygon fTopRightResize;
+		TPolygon fRightMiddleResize;
+		TPolygon fBottomRightResize;
+		TPolygon fBottomMiddleResize;
+		TPolygon fBottomLeftResize;
+		TPolygon fLeftMiddleResize;
 									
 };
 

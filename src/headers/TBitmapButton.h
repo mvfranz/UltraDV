@@ -47,14 +47,14 @@ class TBitmapButton: public BPictureButton
 			// Hang on to these until we are attached to a window. Then
 			// you can render them into a picture. Takes ownership of these
 			// when passed into the ctor.
-		BBitmap* m_OffBitmap;
-		BBitmap* m_OnBitmap;
+		BBitmap* fOffBitmap;
+		BBitmap* fOnBitmap;
 			// If the handler has no BLooper at ctor time, save it for
 			// AttachedToWindow() to call SetTarget().
-		BHandler *m_HandlerHadNoLooper;
+		BHandler *fHandlerHadNoLooper;
 		
 			//	If this is true, we need to delete bitmaps passed in
-		bool m_Ownership;
+		bool fOwnership;
 };		
 
 #endif

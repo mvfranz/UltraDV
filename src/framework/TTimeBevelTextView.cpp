@@ -65,8 +65,8 @@ void TTimeBevelTextView::Init()
 	// Create child TNumberTextView
 	BRect bounds = Bounds();
 	bounds.InsetBy(2, 2);
-	m_TextView = new TTimeTextView( NULL, 0, bounds, "TimeTextView", B_FOLLOW_ALL);
-	AddChild(m_TextView);
+	fTextView = new TTimeTextView( NULL, 0, bounds, "TimeTextView", B_FOLLOW_ALL);
+	AddChild(fTextView);
 }
 
 
@@ -83,7 +83,7 @@ void TTimeBevelTextView::Draw(BRect inRect)
 	rgb_color saveColor = HighColor();
 			
 	// Draw text
-	m_TextView->Draw(inRect);
+	fTextView->Draw(inRect);
 	
 	// Draw standard Be Style bevel
 	BPoint startPt, endPt;

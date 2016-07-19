@@ -43,7 +43,7 @@ class __declspec(dllexport) TVisualCue : public TCueView
 		void SetRotation(float);
 		BPoint GetScale();
 		void SetScale(BPoint);
-		BPoint m_Scale;
+		BPoint fScale;
 		bool HasTransitionIn();
 		bool HasTransitionOut();
 		BHandler *GetCueTransitionInButton();
@@ -75,9 +75,9 @@ class __declspec(dllexport) TVisualCue : public TCueView
 		void 			UpdateStageCue();
 				
 		//	Inlines
-		inline TCuePosition		*CuePosition(){ return m_CuePosition; }
-		inline sem_id			GetRenderSem(){ return m_RenderSem; }				
-		inline DisplayQuality	GetDisplayQuality(){ return m_DisplayQuality; }
+		inline TCuePosition		*CuePosition(){ return fCuePosition; }
+		inline sem_id			GetRenderSem(){ return fRenderSem; }				
+		inline DisplayQuality	GetDisplayQuality(){ return fDisplayQuality; }
 		
 	protected:
 		// Member Variables
@@ -97,16 +97,16 @@ class __declspec(dllexport) TVisualCue : public TCueView
 												
 		// Member Variables
 		// ABH
-		bool m_HasTransitionIn;
-		bool m_HasTransitionOut;
+		bool fHasTransitionIn;
+		bool fHasTransitionOut;
 		
-		TCuePosition	*m_CuePosition;
+		TCuePosition	*fCuePosition;
 			
-		sem_id			m_RenderSem;	//	Semaphore to handle access to bitmap
-		BBitmap			*m_Bitmap;	// Cue visual data
+		sem_id			fRenderSem;	//	Semaphore to handle access to bitmap
+		BBitmap			*fBitmap;	// Cue visual data
 		
-		BBitmap			*m_TransformBitmap;
-		DisplayQuality	m_DisplayQuality;				
+		BBitmap			*fTransformBitmap;
+		DisplayQuality	fDisplayQuality;				
 };
 
 #endif

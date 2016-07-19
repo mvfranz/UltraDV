@@ -38,10 +38,10 @@ static status_t thread_mainthread(void *data)
 //
 //
 
-TThread::TThread(const char *aName, long aPriority) : m_ThreadID(-1)
+TThread::TThread(const char *aName, long aPriority) : fThreadID(-1)
 {
 	// spawn the TThread
-	m_ThreadID = spawn_thread(thread_mainthread, aName, aPriority, this);
+	fThreadID = spawn_thread(thread_mainthread, aName, aPriority, this);
 }
 
 
@@ -68,7 +68,7 @@ TThread::~TThread()
 
 status_t TThread::GetInfo(thread_info *info)
 {
-	return get_thread_info(m_ThreadID, info);
+	return get_thread_info(fThreadID, info);
 }
 
 
@@ -81,7 +81,7 @@ status_t TThread::GetInfo(thread_info *info)
 
 status_t TThread::Kill()
 {
-	return kill_thread(m_ThreadID);
+	return kill_thread(fThreadID);
 }
 
 
@@ -93,7 +93,7 @@ status_t TThread::Kill()
 
 status_t TThread::Run()
 {
-	return resume_thread(m_ThreadID);
+	return resume_thread(fThreadID);
 }
 
 
@@ -105,7 +105,7 @@ status_t TThread::Run()
 
 status_t TThread::Suspend()
 {
-	return suspend_thread(m_ThreadID);
+	return suspend_thread(fThreadID);
 }
 
 
@@ -117,7 +117,7 @@ status_t TThread::Suspend()
 
 status_t TThread::Rename(const char *newName)
 {
-	return rename_thread(m_ThreadID, newName);
+	return rename_thread(fThreadID, newName);
 }
 
 
@@ -129,7 +129,7 @@ status_t TThread::Rename(const char *newName)
 
 status_t TThread::SetPriority(long newPriority)
 {
-	return set_thread_priority(m_ThreadID, newPriority);
+	return set_thread_priority(fThreadID, newPriority);
 }
 
 
@@ -141,5 +141,5 @@ status_t TThread::SetPriority(long newPriority)
 
 status_t TThread::WaitForExit(long *exitStatus)
 {
-	return wait_for_thread(m_ThreadID, exitStatus);
+	return wait_for_thread(fThreadID, exitStatus);
 }

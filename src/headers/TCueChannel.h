@@ -106,18 +106,18 @@ class TCueChannel: public BView
 		void 	SetHeader(TCueChannelHeader *header);
 		
 		// Accessor functions
-		inline TCueSheetView 		*GetCueSheet(){ return m_CueSheet; }
-		inline TCueChannelHeader	*GetChannelHeader(){ return m_Header; }		
-		inline int16		 		GetID(){ return m_ID; }
-		inline char		 			*GetName(){ return m_Name; }
-		inline bool 				GetSolo(){ return m_IsSoloed; }
-		inline void 				SetSolo(bool state){ m_IsSoloed = state; }
-		inline bool 				GetMute(){ return m_IsMuted; }
-		inline void 				SetMute(bool state){ m_IsMuted = state; }
-		inline bool 				IsExpanded(){ return m_IsExpanded; }
-		inline bool 				IsLocked(){ return m_IsLocked; }
-		inline BList 				*GetCueList(){ return m_CueList; }
-		inline int32 				GetTotalCues(){ return m_CueList->CountItems(); }
+		inline TCueSheetView 		*GetCueSheet(){ return fCueSheet; }
+		inline TCueChannelHeader	*GetChannelHeader(){ return fHeader; }		
+		inline int16		 		GetID(){ return fID; }
+		inline char		 			*GetName(){ return fName; }
+		inline bool 				GetSolo(){ return fIsSoloed; }
+		inline void 				SetSolo(bool state){ fIsSoloed = state; }
+		inline bool 				GetMute(){ return fIsMuted; }
+		inline void 				SetMute(bool state){ fIsMuted = state; }
+		inline bool 				IsExpanded(){ return fIsExpanded; }
+		inline bool 				IsLocked(){ return fIsLocked; }
+		inline BList 				*GetCueList(){ return fCueList; }
+		inline int32 				GetTotalCues(){ return fCueList->CountItems(); }
 			
 		// Member Variables
 				
@@ -134,20 +134,20 @@ class TCueChannel: public BView
 	private:	
 						
 		// Member variables	
-		TCueSheetView		*m_CueSheet;	
-		TCueChannelHeader	*m_Header;
-		BList 				*m_CueList;		
+		TCueSheetView		*fCueSheet;	
+		TCueChannelHeader	*fHeader;
+		BList 				*fCueList;		
 		
-		int32				m_ID;
-		char				m_Name[255];
+		int32				fID;
+		char				fName[255];
 		
-		bool				m_IsMuted;
-		bool				m_IsSoloed;
-		bool				m_IsExpanded;
-		bool				m_IsLocked;
+		bool				fIsMuted;
+		bool				fIsSoloed;
+		bool				fIsExpanded;
+		bool				fIsLocked;
 		
-		BPoint				m_TickPt;
-		BPoint				m_OldTickPt;
+		BPoint				fTickPt;
+		BPoint				fOldTickPt;
 		
 		// Member functions
 		void 	Init();

@@ -37,15 +37,15 @@ public:
 
 	// INFO METHODS
 	BPoint Registration(bool transformed = false) const	
-		{ return transformed? TransformPt(m_registration, true) : m_registration; }
+		{ return transformed? TransformPt(fregistration, true) : fregistration; }
 	BPoint Corner1(bool transformed = false) const
-		{ return transformed? TransformPt(m_corners[0]) : m_corners[0]; }
+		{ return transformed? TransformPt(fcorners[0]) : fcorners[0]; }
 	BPoint Corner2(bool transformed = false) const
-		{ return transformed? TransformPt(m_corners[1]) : m_corners[1]; }
+		{ return transformed? TransformPt(fcorners[1]) : fcorners[1]; }
 	BPoint Corner3(bool transformed = false) const
-		{ return transformed? TransformPt(m_corners[2]) : m_corners[2]; }
+		{ return transformed? TransformPt(fcorners[2]) : fcorners[2]; }
 	BPoint Corner4(bool transformed = false) const
-		{ return transformed? TransformPt(m_corners[3]) : m_corners[3]; }
+		{ return transformed? TransformPt(fcorners[3]) : fcorners[3]; }
 		// The smallest rectangle which contains all of the corners
 	BRect Enclosure(bool transformed = false) const;
 		// 'true' if a point is within the corners. If 'transformed'
@@ -69,13 +69,13 @@ public:
 
 private:
 	// Data
-	BPoint m_registration;
-	BPoint m_corners[4];
-		// The transformation matrix to apply to m_corners
-	float m_CornerMatrix[3][3];
-		// The matrix for m_registration. This allows for 
+	BPoint fregistration;
+	BPoint fcorners[4];
+		// The transformation matrix to apply to fcorners
+	float fCornerMatrix[3][3];
+		// The matrix for fregistration. This allows for 
 		// a transformation to skip changing the reg pt. 
-	float m_RegistrationMatrix[3][3];
+	float fRegistrationMatrix[3][3];
 	
 	// Methods
 		// Transform the point according to the current matrix

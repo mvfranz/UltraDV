@@ -46,9 +46,9 @@ class TVideoEditor: public BWindow
 		bool 	QuitRequested();
 		
 		// Accessor Functions
-		inline TVideoEditorView *GetVideoEditorView(){ return m_EditorView; }
-		inline bool				IsPlaying(){ return m_IsPlaying; }
-		inline BBitmap			*GetDisplayBitmap(){ return m_DisplayBitmap; }
+		inline TVideoEditorView *GetVideoEditorView(){ return fEditorView; }
+		inline bool				IsPlaying(){ return fIsPlaying; }
+		inline BBitmap			*GetDisplayBitmap(){ return fDisplayBitmap; }
 		
 	private:	
 		// Member Functions
@@ -86,47 +86,47 @@ class TVideoEditor: public BWindow
 		bool 			LoadAndDecode(uint32 theFrame, BBitmap *bitmap);
 		
 		// Member Variables	
-		TVideoEditorMenus           *m_EditorMenu;
-		BView						*m_BGView;
-		BView						*m_ControlsBGView;
-		TVideoEditorView			*m_EditorView;
-		TVideoEditorControlsView	*m_ControlsView;
-		TVideoEditorText			*m_InText;
-		TVideoEditorText			*m_OutText;
-		TVideoEditorText			*m_DurationText;
-		TVideoEditorText			*m_TimeText;
-		TVideoEditorTransport		*m_Transport;
-		TVideoEditorShuttle			*m_Shuttle;
+		TVideoEditorMenus           *fEditorMenu;
+		BView						*fBGView;
+		BView						*fControlsBGView;
+		TVideoEditorView			*fEditorView;
+		TVideoEditorControlsView	*fControlsView;
+		TVideoEditorText			*fInText;
+		TVideoEditorText			*fOutText;
+		TVideoEditorText			*fDurationText;
+		TVideoEditorText			*fTimeText;
+		TVideoEditorTransport		*fTransport;
+		TVideoEditorShuttle			*fShuttle;
 		
-		TBitmapButton				*m_InButton;
-		TBitmapButton				*m_OutButton;
-		TBitmapButton				*m_StartButton;
-		TBitmapButton				*m_VolumeButton;
-		TBitmapButton				*m_EndButton;
-		TBitmapButton				*m_FrameForwardButton;
-		TBitmapButton				*m_FrameBackButton;
-		TBitmapButton				*m_PlayButton;
-		TBitmapButton				*m_LoopButton;
-		TBitmapButton				*m_MarkButton;
-		TBitmapButton				*m_GotoButton;
-		TBitmapButton				*m_DetachButton;
+		TBitmapButton				*fInButton;
+		TBitmapButton				*fOutButton;
+		TBitmapButton				*fStartButton;
+		TBitmapButton				*fVolumeButton;
+		TBitmapButton				*fEndButton;
+		TBitmapButton				*fFrameForwardButton;
+		TBitmapButton				*fFrameBackButton;
+		TBitmapButton				*fPlayButton;
+		TBitmapButton				*fLoopButton;
+		TBitmapButton				*fMarkButton;
+		TBitmapButton				*fGotoButton;
+		TBitmapButton				*fDetachButton;
 			
-		bool			m_IsPlaying;	
-		bool			m_IsLooping;
-		entry_ref		m_FileRef;
+		bool			fIsPlaying;	
+		bool			fIsLooping;
+		entry_ref		fFileRef;
 		
-		TMovieCue		*m_MovieCue;		
-		BBitmap 		*m_DisplayBitmap;
-		BFilePanel		*m_FileSavePanel;
-		bool			m_NewFile;
-		bool			m_IsClosing;
+		TMovieCue		*fMovieCue;		
+		BBitmap 		*fDisplayBitmap;
+		BFilePanel		*fFileSavePanel;
+		bool			fNewFile;
+		bool			fIsClosing;
 				
-		TRIFFReader		*m_Reader;
-		TAudioCodec 	*m_AudioCodec;
-		TVideoCodec 	*m_VideoCodec;
+		TRIFFReader		*fReader;
+		TAudioCodec 	*fAudioCodec;
+		TVideoCodec 	*fVideoCodec;
 
-		uint32			m_CurrentVideoFrame;
-		uint32			m_CurrentTime;
+		uint32			fCurrentVideoFrame;
+		uint32			fCurrentTime;
 };
 
 

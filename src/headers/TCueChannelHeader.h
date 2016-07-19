@@ -40,21 +40,21 @@ class TCueChannelHeader: public BView
 		void 	SetChannel(TCueChannel *channel);
 		
 		// Accessor Functions
-		inline 	TMuteButton *GetMuteButton(){ return m_MuteButton; }
-		inline 	TSoloButton *GetSoloButton(){ return m_SoloButton; }
-		inline 	TExpandButton *GetExpandButton(){ return m_ExpandButton; }
-		inline 	TLockButton *GetLockButton(){ return m_LockButton; }
+		inline 	TMuteButton *GetMuteButton(){ return fMuteButton; }
+		inline 	TSoloButton *GetSoloButton(){ return fSoloButton; }
+		inline 	TExpandButton *GetExpandButton(){ return fExpandButton; }
+		inline 	TLockButton *GetLockButton(){ return fLockButton; }
 				
 	private:
 		
 		// Member variables
-		TCueChannel			*m_Channel;
-		TChannelNameView	*m_Name;
-		TSoloButton			*m_SoloButton;
-		TMuteButton			*m_MuteButton;	
-		TExpandButton		*m_ExpandButton;
-		TLockButton			*m_LockButton;
-		bool				m_IsHighlighted;
+		TCueChannel			*fChannel;
+		TChannelNameView	*fName;
+		TSoloButton			*fSoloButton;
+		TMuteButton			*fMuteButton;	
+		TExpandButton		*fExpandButton;
+		TLockButton			*fLockButton;
+		bool				fIsHighlighted;
 		
 		// Member functions
 		void 	Init();								

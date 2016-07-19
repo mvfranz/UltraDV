@@ -39,27 +39,27 @@ typedef multimap<bigtime_t, BBuffer *> buffer_map;
 class _buffer_queue_imp {
 public:
 
-	buffer_map m_buffers;
-	int32 m_lock_count;
-	int32 m_lock_sem;
+	buffer_map fbuffers;
+	int32 flock_count;
+	int32 flock_sem;
 
 	_buffer_queue_imp() {
-		m_lock_count = 1;
-		m_lock_sem = create_sem(0, "_buffer_queue_imp");
+		flock_count = 1;
+		flock_sem = create_sem(0, "_buffer_queue_imp");
 	}
 	~_buffer_queue_imp() {
-		delete_sem(m_lock_sem);
+		delete_sem(flock_sem);
 	}
 	bool lock() {
-		if (atomic_add(&m_lock_count, -1) < 1) {
-			status_t err = acquire_sem(m_lock_sem);
+		if (atomic_add(&flock_count, -1) < 1) {
+			status_t err = acquire_sem(flock_sem);
 			if (err < B_OK) return false;
 		}
 		return true;
 	}
 	void unlock() {
-		if (atomic_add(&m_lock_count, 1) < 0) {
-			release_sem(m_lock_sem);
+		if (atomic_add(&flock_count, 1) < 0) {
+			release_sem(flock_sem);
 		}
 	}
 };
@@ -67,13 +67,13 @@ public:
 
 BTimedBufferQueue::BTimedBufferQueue()
 {
-	m_queue = new _buffer_queue_imp;
-	_m_buffer_count = 0;
+	fqueue = new _buffer_queue_imp;
+	_fbuffer_count = 0;
 }
 
 BTimedBufferQueue::~BTimedBufferQueue()
 {
-	delete m_queue;
+	delete fqueue;
 }
 
 
@@ -82,14 +82,14 @@ BTimedBufferQueue::PushBuffer(
 	BBuffer * buffer,
 	bigtime_t time)
 {
-	if (!m_queue->lock()) return B_ERROR;
+	if (!fqueue->lock()) return B_ERROR;
 	try {
-		m_queue->m_buffers.insert(buffer_map::value_type(time, buffer));
-		atomic_add(&_m_buffer_count, 1);
-		m_queue->unlock();
+		fqueue->fbuffers.insert(buffer_map::value_type(time, buffer));
+		atomic_add(&_fbuffer_count, 1);
+		fqueue->unlock();
 	}
 	catch (...) {
-		m_queue->unlock();
+		fqueue->unlock();
 		return B_ERROR;
 	}
 	return B_OK;
@@ -100,21 +100,21 @@ BTimedBufferQueue::PopFirstBuffer(
 	bigtime_t * out_time)
 {
 	BBuffer * buf = 0;
-	if (!m_queue->lock()) return 0;
+	if (!fqueue->lock()) return 0;
 	try {
-		buffer_map::iterator i(m_queue->m_buffers.begin());
-		if (i != m_queue->m_buffers.end()) {
+		buffer_map::iterator i(fqueue->fbuffers.begin());
+		if (i != fqueue->fbuffers.end()) {
 			buf = (*i).second;
 			if (out_time) {
 				*out_time = (*i).first;
 			}
-			atomic_add(&_m_buffer_count, -1);
-			m_queue->m_buffers.erase(i);
+			atomic_add(&_fbuffer_count, -1);
+			fqueue->fbuffers.erase(i);
 		}
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	catch (...) {
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	return buf;
 }
@@ -123,11 +123,11 @@ bool
 BTimedBufferQueue::HasBuffers()
 {
 #if 1
-	return _m_buffer_count > 0;
+	return _fbuffer_count > 0;
 #else
-	if (!m_queue->lock()) return false;
-	bool ret = m_queue->m_buffers.size() > 0;
-	m_queue->unlock();
+	if (!fqueue->lock()) return false;
+	bool ret = fqueue->fbuffers.size() > 0;
+	fqueue->unlock();
 	return ret;
 #endif
 }
@@ -135,13 +135,13 @@ BTimedBufferQueue::HasBuffers()
 bigtime_t
 BTimedBufferQueue::TimeOfFirstBuffer()
 {
-	if (!m_queue->lock()) return false;
+	if (!fqueue->lock()) return false;
 	bigtime_t ret = 0;
-	buffer_map::iterator i(m_queue->m_buffers.begin());
-	if (i != m_queue->m_buffers.end()) {
+	buffer_map::iterator i(fqueue->fbuffers.begin());
+	if (i != fqueue->fbuffers.end()) {
 		ret = (*i).first;
 	}
-	m_queue->unlock();
+	fqueue->unlock();
 	return ret;
 }
 
@@ -151,19 +151,19 @@ BTimedBufferQueue::PeekFirstBufferAtOrAfter(
 	bigtime_t * out_time)
 {
 	BBuffer * buf = 0;
-	if (!m_queue->lock()) return 0;
+	if (!fqueue->lock()) return 0;
 	try {
-		buffer_map::iterator i(m_queue->m_buffers.lower_bound(time));
-		if (i != m_queue->m_buffers.end()) {
+		buffer_map::iterator i(fqueue->fbuffers.lower_bound(time));
+		if (i != fqueue->fbuffers.end()) {
 			buf = (*i).second;
 			if (out_time) {
 				*out_time = (*i).first;
 			}
 		}
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	catch (...) {
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	return buf;
 }
@@ -173,22 +173,22 @@ BTimedBufferQueue::RemoveBuffer(
 	BBuffer * buffer)
 {
 	status_t err = B_ERROR;
-	if (!m_queue->lock()) return B_ERROR;
+	if (!fqueue->lock()) return B_ERROR;
 	try {
-		buffer_map::iterator i(m_queue->m_buffers.begin());
-		while (i != m_queue->m_buffers.end()) {
+		buffer_map::iterator i(fqueue->fbuffers.begin());
+		while (i != fqueue->fbuffers.end()) {
 			if ((*i).second == buffer) {
-				atomic_add(&_m_buffer_count, -1);
-				m_queue->m_buffers.erase(i);
+				atomic_add(&_fbuffer_count, -1);
+				fqueue->fbuffers.erase(i);
 				err = B_OK;
 				break;
 			}
 			i++;
 		}
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	catch (...) {
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	return err;
 }
@@ -198,19 +198,19 @@ BTimedBufferQueue::FlushBefore(
 	bigtime_t time)
 {
 	status_t err = B_ERROR;
-	if (!m_queue->lock()) return B_ERROR;
+	if (!fqueue->lock()) return B_ERROR;
 	try {
-		buffer_map::iterator i(m_queue->m_buffers.begin());
-		buffer_map::iterator e(m_queue->m_buffers.lower_bound(time));
+		buffer_map::iterator i(fqueue->fbuffers.begin());
+		buffer_map::iterator e(fqueue->fbuffers.lower_bound(time));
 		while (i != e) {
-			atomic_add(&_m_buffer_count, -1);
-			m_queue->m_buffers.erase(i++);
+			atomic_add(&_fbuffer_count, -1);
+			fqueue->fbuffers.erase(i++);
 		}
 		err = B_OK;
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	catch (...) {
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	return err;
 }
@@ -220,19 +220,19 @@ BTimedBufferQueue::FlushFromAndAfter(
 	bigtime_t time)
 {
 	status_t err = B_ERROR;
-	if (!m_queue->lock()) return B_ERROR;
+	if (!fqueue->lock()) return B_ERROR;
 	try {
-		buffer_map::iterator i(m_queue->m_buffers.lower_bound(time));
-		buffer_map::iterator e(m_queue->m_buffers.end());
+		buffer_map::iterator i(fqueue->fbuffers.lower_bound(time));
+		buffer_map::iterator e(fqueue->fbuffers.end());
 		while (i != e) {
-			atomic_add(&_m_buffer_count, -1);
-			m_queue->m_buffers.erase(i++);
+			atomic_add(&_fbuffer_count, -1);
+			fqueue->fbuffers.erase(i++);
 		}
 		err = B_OK;
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	catch (...) {
-		m_queue->unlock();
+		fqueue->unlock();
 	}
 	return err;
 }

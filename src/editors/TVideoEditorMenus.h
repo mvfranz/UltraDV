@@ -29,12 +29,12 @@ class TVideoEditorMenus
 		~TVideoEditorMenus();
 								
 		// Member variables
-		BMenu	*m_FileMenu;
-		BMenu	*m_EditMenu;
+		BMenu	*fFileMenu;
+		BMenu	*fEditMenu;
 		
 	private:
-		BMenuBar 		*m_MenuBar;
-		TVideoEditor	*m_Parent;
+		BMenuBar 		*fMenuBar;
+		TVideoEditor	*fParent;
 
 		bool	AddFileMenu();
 		bool 	AddEditMenu();

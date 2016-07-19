@@ -43,7 +43,7 @@
 TCueSheetTimeView::TCueSheetTimeView(TCueSheetWindow *parent, BRect bounds) : BView(bounds, "TimeZoneView", B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_CueSheetWindow = parent;
+	fCueSheetWindow = parent;
 	
 	// Perform default initialization
 	Init();
@@ -59,7 +59,7 @@ TCueSheetTimeView::TCueSheetTimeView(TCueSheetWindow *parent, BRect bounds) : BV
 
 TCueSheetTimeView::TCueSheetTimeView(BMessage *message) : BView(message)
 {
-	m_CueSheetWindow = NULL;
+	fCueSheetWindow = NULL;
 	
 	// Perform default initialization
 	Init();		
@@ -87,7 +87,7 @@ void TCueSheetTimeView::Init()
 {
 
 	// Set up memeber variables
-	m_ProjectSettings = false;
+	fProjectSettings = false;
         	
 }
 
@@ -204,9 +204,9 @@ void TCueSheetTimeView::Draw(BRect updateRect)
    	
 	BPoint 	textPt;
 	char 	timeStr[256];
-	int32 	startTime = m_CueSheetWindow->GetCueSheetView()->StartTime();
+	int32 	startTime = fCueSheetWindow->GetCueSheetView()->StartTime();
 	textPt.Set(bounds.left + 9, bounds.top + 16);
-	TimeToString(startTime, m_CueSheetWindow->GetCueSheetView()->GetTimeFormat(), timeStr, FALSE);		
+	TimeToString(startTime, fCueSheetWindow->GetCueSheetView()->GetTimeFormat(), timeStr, FALSE);		
 	DrawString(timeStr, textPt);
 	
 	// Restore environment
@@ -243,27 +243,27 @@ void TCueSheetTimeView::ShowProjectSettingDialog(BPoint where)
 {
 		
 	// If we have created the dialog bring it to the front and show it
-	if( m_ProjectSettings)
+	if( fProjectSettings)
 	{
-		if (m_ProjectWindow)
+		if (fProjectWindow)
 		{	
-			m_ProjectWindow->Show();
-			m_ProjectWindow->Activate(true);
+			fProjectWindow->Show();
+			fProjectWindow->Activate(true);
 		}
 	}
 	// Create the Project Settings dialog from a resource archive
 	else
 	{
 		BMessage *theMessage = GetWindowFromResource("ProjectSettingsWindow");
-		m_ProjectWindow = new TProjectSettings(this, m_CueSheetWindow->GetCueSheetView(), theMessage);
+		fProjectWindow = new TProjectSettings(this, fCueSheetWindow->GetCueSheetView(), theMessage);
 							
 		// Move it under the mouse
 		//ConvertToScreen(&where);
-		//m_ProjectWindow->MoveTo(where.x, where.y);
-		CenterWindow(m_ProjectWindow);
+		//fProjectWindow->MoveTo(where.x, where.y);
+		CenterWindow(fProjectWindow);
 	
 		// Show the dialog
-		m_ProjectWindow->Show();		
+		fProjectWindow->Show();		
 	}
 	return;
 }
@@ -282,9 +282,9 @@ void TCueSheetTimeView::ShowProjectSettingDialog(BPoint where)
 
 void TCueSheetTimeView::AttachedToWindow()
 {			
-	if(m_CueSheetWindow == NULL)
+	if(fCueSheetWindow == NULL)
 	{
-		m_CueSheetWindow = (TCueSheetWindow *)Window();		
+		fCueSheetWindow = (TCueSheetWindow *)Window();		
 	}
 	
 	//	Pass up to parent
@@ -303,5 +303,5 @@ void TCueSheetTimeView::AttachedToWindow()
 
 void TCueSheetTimeView::SetParent(TCueSheetWindow *parent)
 {
- 	m_CueSheetWindow = parent;
+ 	fCueSheetWindow = parent;
 }

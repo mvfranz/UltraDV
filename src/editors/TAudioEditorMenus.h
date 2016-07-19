@@ -25,12 +25,12 @@ class TAudioEditorMenus
 		~TAudioEditorMenus();
 								
 		// Member variables
-		BMenu	*m_FileMenu;
-		BMenu	*m_EditMenu;
+		BMenu	*fFileMenu;
+		BMenu	*fEditMenu;
 		
 	private:
-		BMenuBar 		*m_MenuBar;
-		TAudioEditor	*m_Parent;
+		BMenuBar 		*fMenuBar;
+		TAudioEditor	*fParent;
 
 		bool	AddFileMenu();
 		bool 	AddEditMenu();

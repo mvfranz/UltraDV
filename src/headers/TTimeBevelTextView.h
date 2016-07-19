@@ -35,14 +35,14 @@ class TTimeBevelTextView : public BView
 		void MessageReceived(BMessage *message);
 		
 		// Accessor Functions
-		inline TTimeTextView *TextView(){ return m_TextView; }
+		inline TTimeTextView *TextView(){ return fTextView; }
 		
 	private:
 		// Member Functions
 		void Init();
 		
 		// Member variables
-		TTimeTextView	*m_TextView;
+		TTimeTextView	*fTextView;
 	
 	protected:
 	

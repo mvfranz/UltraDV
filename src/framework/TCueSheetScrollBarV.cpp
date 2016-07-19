@@ -37,7 +37,7 @@
 TCueSheetScrollBarV::TCueSheetScrollBarV( TCueSheetWindow *parent, BRect frame, BView *target, float min, float max ) :
 					BScrollBar( frame, "VCueScroll", target, min, max, B_VERTICAL)
 {	
-	m_CueSheetWindow = parent;
+	fCueSheetWindow = parent;
 	
 	// Do default initialization
 	Init();
@@ -52,7 +52,7 @@ TCueSheetScrollBarV::TCueSheetScrollBarV( TCueSheetWindow *parent, BRect frame, 
 
 TCueSheetScrollBarV::TCueSheetScrollBarV(BMessage *data ) : BScrollBar(data)
 {	
-	m_CueSheetWindow = NULL;
+	fCueSheetWindow = NULL;
 	
 	// Do default initialization
 	Init();
@@ -135,7 +135,7 @@ void TCueSheetScrollBarV::Init()
 	// 	Get current scrollvalue and save it in our tracking variable.  
 	//	We use this value to scroll the HeaderZone in concert with
 	//	the CueSheetView
-	m_LastValue = Value();
+	fLastValue = Value();
 }
 
 //---------------------------------------------------------------------
@@ -150,15 +150,15 @@ void TCueSheetScrollBarV::ValueChanged(float newValue)
 	BScrollBar::ValueChanged(newValue);
 	
 	// We need to offset the HeaderContainer as well...
-	if (newValue != m_LastValue)
+	if (newValue != fLastValue)
 	{
-		if (newValue > m_LastValue)
-			m_CueSheetWindow->GetHeaderContainer()->ScrollBy(0, newValue - m_LastValue);
+		if (newValue > fLastValue)
+			fCueSheetWindow->GetHeaderContainer()->ScrollBy(0, newValue - fLastValue);
 		else
-			m_CueSheetWindow->GetHeaderContainer()->ScrollBy(0, -(m_LastValue - newValue));	
+			fCueSheetWindow->GetHeaderContainer()->ScrollBy(0, -(fLastValue - newValue));	
 			
 		// Save value for next compare
-		m_LastValue = newValue;
+		fLastValue = newValue;
 	}		
 }
 
@@ -176,9 +176,9 @@ void TCueSheetScrollBarV::ValueChanged(float newValue)
 
 void TCueSheetScrollBarV::AttachedToWindow()
 {			
-	if(m_CueSheetWindow == NULL)
+	if(fCueSheetWindow == NULL)
 	{
-		m_CueSheetWindow = (TCueSheetWindow *)Window();	
+		fCueSheetWindow = (TCueSheetWindow *)Window();	
 	}
 	
 	//	Pass up to parent
@@ -196,5 +196,5 @@ void TCueSheetScrollBarV::AttachedToWindow()
 //
 void TCueSheetScrollBarV::SetParent(TCueSheetWindow *parent)
 {
- 	m_CueSheetWindow = parent;
+ 	fCueSheetWindow = parent;
 }

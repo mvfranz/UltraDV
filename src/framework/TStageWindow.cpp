@@ -40,7 +40,7 @@ TStageWindow::TStageWindow(BRect bounds, TCueSheetWindow *cueSheet) : BWindow( b
 													B_NOT_ZOOMABLE | B_NOT_RESIZABLE | B_NOT_CLOSABLE | B_WILL_ACCEPT_FIRST_CLICK) 
 {			
 	//	Save parent cue sheet
-	m_CueSheet = cueSheet;
+	fCueSheet = cueSheet;
 	
 	//	Defualt initialization
 	Init();
@@ -70,9 +70,9 @@ TStageWindow::TStageWindow(BMessage *data) : BWindow(data)
 	{
 		if ( validate_instantiation(&childArchive, "TStageView") )
 		{			
-			m_StageView = new TStageView(&childArchive); 
-			ASSERT(m_StageView);
-			AddChild(m_StageView);
+			fStageView = new TStageView(&childArchive); 
+			ASSERT(fStageView);
+			AddChild(fStageView);
 		}
 	}
 }
@@ -99,13 +99,13 @@ void TStageWindow::Init()
 {
 	BFont font(be_fixed_font);
 
-	m_StageView = new TStageView(Bounds(), this);
+	fStageView = new TStageView(Bounds(), this);
 
 	// Limit the window size
 	SetSizeLimits( 100, 1500, 100, 1500);
 	        	
 	// Add view to frame
-	AddChild(m_StageView);
+	AddChild(fStageView);
 }
 
 
@@ -153,10 +153,10 @@ status_t TStageWindow::Archive(BMessage *data, bool deep) const
 		if (deep)
 		{					
 			//	StageView			
-			if (m_StageView)
+			if (fStageView)
 			{		
 				BMessage childArchive;				
-				if ( m_StageView->Archive(&childArchive, deep) == B_OK )
+				if ( fStageView->Archive(&childArchive, deep) == B_OK )
 					data->AddMessage("StageView", &childArchive);
 			}			
 		}		

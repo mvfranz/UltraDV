@@ -50,7 +50,7 @@ class TRadioBitmapButton : public TBitmapButton
 	private:
 			// If this is true we never set an off state or send an off
 			// message for this object.
-		bool m_BeingTracked;
+		bool fBeingTracked;
 };
 
 #endif

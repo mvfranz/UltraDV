@@ -34,7 +34,7 @@ class TBrowserWindow: public BWindow
 		void		Init();	
 		
 		// Member Variable
-		TBrowserTabView *m_BrowserTabView;
+		TBrowserTabView *fBrowserTabView;
 };
 
 #endif

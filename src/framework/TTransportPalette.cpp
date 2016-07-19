@@ -69,17 +69,17 @@ TTransportPalette::TTransportPalette(BRect bounds):BWindow( bounds, "Transport",
 TTransportPalette::~TTransportPalette()
 {
 	//	Signal threads to quit
-	m_TimeToQuit = true;
+	fTimeToQuit = true;
 	
 	//	Quit service thread
-	if (write_port_etc(m_Port, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
-		kill_thread(m_ServiceThread);
+	if (write_port_etc(fPort, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
+		kill_thread(fServiceThread);
 	
 	status_t result;
-	wait_for_thread(m_ServiceThread, &result);
+	wait_for_thread(fServiceThread, &result);
 
 	//	Wait for Run thread
-	wait_for_thread(m_RunThread, &result);		
+	wait_for_thread(fRunThread, &result);		
 }
 
 
@@ -98,9 +98,9 @@ void TTransportPalette::Init()
 	Lock();
 	
 	//	Set up member variables
-	m_TimeToQuit	= false;
-	m_IsPlaying 	= false;
-	m_IsStopping	= false;
+	fTimeToQuit	= false;
+	fIsPlaying 	= false;
+	fIsStopping	= false;
 
 	//
 	// Create background bitmap
@@ -128,21 +128,21 @@ void TTransportPalette::Init()
 	bitmap->SetBits(data, size, 0, B_COLOR_8_BIT);
 
 	// Create MediaCueView and add it to the window
-	m_TransportView = new TTransportPaletteView(Bounds(), bitmap);
+	fTransportView = new TTransportPaletteView(Bounds(), bitmap);
 	
 	// Add view to frame
-	AddChild(m_TransportView);
+	AddChild(fTransportView);
 	
 	//	Create our port
-	m_Port = create_port(3, "TransportPort");
+	fPort = create_port(3, "TransportPort");
 			
 	//	Create port service thread
-	m_ServiceThread = spawn_thread(service_routine, "Transport:Service", B_NORMAL_PRIORITY, this);
-	resume_thread(m_ServiceThread);	
+	fServiceThread = spawn_thread(service_routine, "Transport:Service", B_NORMAL_PRIORITY, this);
+	resume_thread(fServiceThread);	
 	
 	//	Create run thread
-	m_RunThread = spawn_thread(run_routine, "Transport::Run", B_NORMAL_PRIORITY, this);	
-	resume_thread(m_RunThread);
+	fRunThread = spawn_thread(run_routine, "Transport::Run", B_NORMAL_PRIORITY, this);	
+	resume_thread(fRunThread);
 
 	
 	Unlock();
@@ -200,7 +200,7 @@ bool TTransportPalette::QuitRequested()
 
 port_id TTransportPalette::ControlPort() const
 {
-	return m_Port;
+	return fPort;
 }
 
 
@@ -244,14 +244,14 @@ status_t TTransportPalette::service_routine(void * data)
 
 void TTransportPalette::ServiceRoutine()
 {
-	while (!m_TimeToQuit)
+	while (!fTimeToQuit)
 	{
 		//	Read message
 		status_t 		err  = 0;
 		int32 			code = 0;
 		char 			msg[B_MEDIA_MESSAGE_SIZE];
 		
-		err = read_port_etc(m_Port, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);		
+		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);		
 		
 		if (err == B_TIMED_OUT) 
 			continue;
@@ -297,7 +297,7 @@ void TTransportPalette::RunRoutine()
 {
 	char text[12];	
 	
-	while(!m_TimeToQuit)
+	while(!fTimeToQuit)
 	{
 		snooze(50000);
 	
@@ -306,7 +306,7 @@ void TTransportPalette::RunRoutine()
 		{
 			//	Update text						
 			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);						
-			m_TransportView->GetTransportText()->SetText(text);
+			fTransportView->GetTransportText()->SetText(text);
 		}		
 	}
 }

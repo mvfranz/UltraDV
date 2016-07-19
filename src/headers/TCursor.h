@@ -24,12 +24,12 @@ typedef struct CursorData
 
 typedef struct Cursor 
 {
-	uint8 		m_ImageSize;	// size of bitmap
-	uint8 		m_ImageDepth;	// bit depth of image
-	uint8 		m_HotSpotX;		// x location of hotspot
-	uint8 		m_HotSpotY;		// y location of hotspot
-	CursorData 	m_Image;		// image data	
-	CursorData 	m_Mask;			// image mask	
+	uint8 		fImageSize;	// size of bitmap
+	uint8 		fImageDepth;	// bit depth of image
+	uint8 		fHotSpotX;		// x location of hotspot
+	uint8 		fHotSpotY;		// y location of hotspot
+	CursorData 	fImage;		// image data	
+	CursorData 	fMask;			// image mask	
 } Cursor;		
 																
 // Class Definition
@@ -43,12 +43,12 @@ class TCursor
 		
 	protected:
 				
-		uint8 	m_ImageSize;	// size of bitmap
-		uint8 	m_ImageDepth;	// bit depth of image
-		uint8 	m_HotSpotX;		// x location of hotspot
-		uint8 	m_HotSpotY;		// y location of hotspot
-		Cursor 	m_Image;		// image data	
-		Cursor 	m_Mask;			// image mask	
+		uint8 	fImageSize;	// size of bitmap
+		uint8 	fImageDepth;	// bit depth of image
+		uint8 	fHotSpotX;		// x location of hotspot
+		uint8 	fHotSpotY;		// y location of hotspot
+		Cursor 	fImage;		// image data	
+		Cursor 	fMask;			// image mask	
 		
 };
 

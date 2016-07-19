@@ -39,17 +39,17 @@
 TChannelCueButton::TChannelCueButton(TCueView *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler, uint32 flags) : BView(bounds, name, flags, B_WILL_DRAW)
 {
 	// Save parent view
-	m_Cue = parent;
+	fCue = parent;
 	
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap = onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap = onBitmap;
 		
 	// Store target and handler
-	m_Handler = handler;
+	fHandler = handler;
 	
 	// Perform default initialization
 	Init();
@@ -65,11 +65,11 @@ TChannelCueButton::TChannelCueButton(TCueView *parent, BRect bounds, const char 
 TChannelCueButton::TChannelCueButton(const TChannelCueButton *theButton) : BView(theButton->Bounds(), theButton->Name(), B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Create copy
-	m_Cue 		= theButton->m_Cue;
-	m_MouseDown = false;
-	m_OffBitmap = theButton->m_OffBitmap;
-	m_OnBitmap 	= theButton->m_OnBitmap;
-	m_Handler 	= theButton->m_Handler;
+	fCue 		= theButton->fCue;
+	fMouseDown = false;
+	fOffBitmap = theButton->fOffBitmap;
+	fOnBitmap 	= theButton->fOnBitmap;
+	fHandler 	= theButton->fHandler;
 	
 	// Perform default initialization
 	Init();
@@ -86,17 +86,17 @@ TChannelCueButton::TChannelCueButton(BMessage *data) : BView(data)
 {
 	
 	// Find our member variables in the BMessage
-	data->FindBool("MouseDown", &m_MouseDown);
+	data->FindBool("MouseDown", &fMouseDown);
 	
-	data->FindPointer("OffBitmap", (void **)&m_OffBitmap);
-	data->FindPointer("OffBitmap", (void **)&m_OnBitmap);
+	data->FindPointer("OffBitmap", (void **)&fOffBitmap);
+	data->FindPointer("OffBitmap", (void **)&fOnBitmap);
 		
 	/*
 	// Save parent view	
-	m_Cue = parent;
+	fCue = parent;
 			
 	// Store target and handler
-	m_Handler = handler;
+	fHandler = handler;
 	*/
 	
 	// Perform default initialization
@@ -170,14 +170,14 @@ status_t TChannelCueButton::Archive(BMessage *data, bool deep) const
 		data->AddString("class", "TChannelCueButton");
 		
 		// Add our member variables to the archive
-		data->AddBool("MouseDown", m_MouseDown);
+		data->AddBool("MouseDown", fMouseDown);
 		
-		data->AddPointer("OffBitmap", m_OffBitmap);
-		data->AddPointer("OffBitmap", m_OnBitmap);
+		data->AddPointer("OffBitmap", fOffBitmap);
+		data->AddPointer("OffBitmap", fOnBitmap);
 		
-		//TCueView	*m_Cue;
-		//BLooper		*m_Target;
-		//BHandler	*m_Handler;
+		//TCueView	*fCue;
+		//BLooper		*fTarget;
+		//BHandler	*fHandler;
 				
 		// Add attached views
 		if (deep)
@@ -203,11 +203,11 @@ status_t TChannelCueButton::Archive(BMessage *data, bool deep) const
 
 void TChannelCueButton::Draw(BRect updateRect)
 {
-	// Draw proper bitmap state, if m_State is true, draw on bitmap
-	if ( m_MouseDown )
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+	// Draw proper bitmap state, if fState is true, draw on bitmap
+	if ( fMouseDown )
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 	else
-		DrawBitmap(m_OffBitmap, B_ORIGIN);
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 }
 
 
@@ -240,7 +240,7 @@ void TChannelCueButton::MouseUp(BPoint where)
 	
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this		
-	m_MouseDown = false; 
+	fMouseDown = false; 
 }
 
 
@@ -273,7 +273,7 @@ void TChannelCueButton::DoClick()
 {	
 	// We will always be in the up position when we start.
 	// First, set the button state to down and force a redraw...
-	m_MouseDown = true; 
+	fMouseDown = true; 
 	Draw(Bounds()); 
 			
 	// Trap mouse while it is down
@@ -290,18 +290,18 @@ void TChannelCueButton::DoClick()
 		{
 			if ( bounds.Contains(mousePt) )
 			{
-				if (m_MouseDown == false)
+				if (fMouseDown == false)
 				{
-					m_MouseDown = true;
+					fMouseDown = true;
 					Draw(bounds);	
 				}
 			}
 			// If the mouse is outside of the button bounds draw it's up state
 			else 
 			{
-				if (m_MouseDown == true)
+				if (fMouseDown == true)
 				{
-					m_MouseDown = false;
+					fMouseDown = false;
 					Draw(bounds);
 				}
 			} 			
@@ -315,7 +315,7 @@ void TChannelCueButton::DoClick()
 	if ( bounds.Contains(mousePt) )
 	{		
 		// Restore and invalidate
-		m_MouseDown = false; 
+		fMouseDown = false; 
 		Draw(bounds);
 	}
 }

@@ -68,9 +68,9 @@ TVisualCue::TVisualCue(int16 id, TCueChannel *parent, BRect bounds, uint32 start
 	TCueView(id, parent, bounds, startTime, cueName)
 {	
 	// Init member variables 
-	m_File				= NULL;
-	m_Bitmap 			= NULL;
-	m_TransformBitmap	= NULL;
+	fFile				= NULL;
+	fBitmap 			= NULL;
+	fTransformBitmap	= NULL;
 }
 
 //---------------------------------------------------------------------
@@ -83,8 +83,8 @@ TVisualCue::TVisualCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect 
 	TCueView(id, parent, bounds, startTime, cueName)
 {	
 	// Init member variables 
-	m_Bitmap 			= NULL;
-	m_TransformBitmap	= NULL;		
+	fBitmap 			= NULL;
+	fTransformBitmap	= NULL;		
 }
 
 		
@@ -98,20 +98,20 @@ TVisualCue::TVisualCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRect 
 TVisualCue::TVisualCue(BMessage *theMessage) : TCueView(theMessage)
 {	
 	// Init member varibles
-	m_Bitmap 			= NULL;
-	m_TransformBitmap	= NULL;
+	fBitmap 			= NULL;
+	fTransformBitmap	= NULL;
 		
 	ssize_t 		numBytes;
 	DisplayQuality	*quality;	
 	theMessage->FindData("DisplayQuality", B_ANY_TYPE, (const void **)&quality, &numBytes );
-	m_DisplayQuality = *quality;
+	fDisplayQuality = *quality;
 										
 	// 	Set the file to none.  The bitmap data was passed in to us,
 	//	not read from a file.
-	m_File = NULL;
+	fFile = NULL;
 				
 	// We are now fully instantiated
-	m_IsInstantiated = true;	
+	fIsInstantiated = true;	
 }
 
 //---------------------------------------------------------------------
@@ -123,22 +123,22 @@ TVisualCue::TVisualCue(BMessage *theMessage) : TCueView(theMessage)
 TVisualCue::~TVisualCue()
 {
 	//	Delete render semaphore
-	delete_sem(m_RenderSem);
+	delete_sem(fRenderSem);
 
-	if (m_Bitmap)
+	if (fBitmap)
 	{
-		delete	m_Bitmap;
-		m_Bitmap = NULL;
+		delete	fBitmap;
+		fBitmap = NULL;
 	}
 	
-	if (m_TransformBitmap)
+	if (fTransformBitmap)
 	{
-		delete m_TransformBitmap; 
-		m_TransformBitmap = NULL;
+		delete fTransformBitmap; 
+		fTransformBitmap = NULL;
 	}
 	
-	if (m_CuePosition)
-		delete m_CuePosition;
+	if (fCuePosition)
+		delete fCuePosition;
 }
 
 
@@ -151,41 +151,41 @@ TVisualCue::~TVisualCue()
 void TVisualCue::Init()
 {								
 	// 	Set up default duration in milliseconds
-	m_Duration 			= 1000;
+	fDuration 			= 1000;
 	
 	// 	Set up default settings
-	m_IsLocked 			= false;	
-	m_IsSelected 		= false;	
-	m_LowColor 			= kWhite;	
-	m_HighColor 		= kBlack;	
-	m_IsPrepared 		= false;
-	m_IsPlaying 		= false;	
-	m_HasDuration 		= true;	
-	m_CanStretch		= true;		
-	m_CanEnvelope		= false;
-	m_IsVisible 		= true;
-	m_CanCrop			= true;	
-	m_CanTransition		= true;	
-	m_CanPath			= true;	
-	m_HasEditor			= true;	
-	m_CanWindow			= false;
-	m_CanLoop			= false;
+	fIsLocked 			= false;	
+	fIsSelected 		= false;	
+	fLowColor 			= kWhite;	
+	fHighColor 		= kBlack;	
+	fIsPrepared 		= false;
+	fIsPlaying 		= false;	
+	fHasDuration 		= true;	
+	fCanStretch		= true;		
+	fCanEnvelope		= false;
+	fIsVisible 		= true;
+	fCanCrop			= true;	
+	fCanTransition		= true;	
+	fCanPath			= true;	
+	fHasEditor			= true;	
+	fCanWindow			= false;
+	fCanLoop			= false;
 		
-	m_DisplayQuality	= kPreviewQuality;
-	m_Transparency = 0;	// ABH
-// ABH should init	m_Scale 
-	m_Rotation = 0;
+	fDisplayQuality	= kPreviewQuality;
+	fTransparency = 0;	// ABH
+// ABH should init	fScale 
+	fRotation = 0;
 	
 	// Default initialization
 	TCueView::Init();
 		
 	//	Set up TCuePosition
-	m_CuePosition = new TCuePosition(m_Bitmap->Bounds());
+	fCuePosition = new TCuePosition(fBitmap->Bounds());
 	
 	//	Set up registration
-	float regX = m_Bitmap->Bounds().Width()  / 2;
-	float regY = m_Bitmap->Bounds().Height() / 2;
-	m_CuePosition->Registration(BPoint(regX, regY));
+	float regX = fBitmap->Bounds().Width()  / 2;
+	float regY = fBitmap->Bounds().Height() / 2;
+	fCuePosition->Registration(BPoint(regX, regY));
 	
 	//--------------
 	
@@ -195,8 +195,8 @@ void TVisualCue::Init()
 	
 	//	Set time in local cue time, not global time
 	TWipeRightOut *effect = new TWipeRightOut();	
-	effect->EndTime(m_Duration);
-	effect->Duration(m_Duration - 100);
+	effect->EndTime(fDuration);
+	effect->Duration(fDuration - 100);
 	
 	BRect effectRect = Bounds();
 	const int32 addAmount = kChannelMaxHeight - (kCueInset*2);	
@@ -212,10 +212,10 @@ void TVisualCue::Init()
 		
 	//	Create effect view and add to list
 	TTransitionView *effectView = new TTransitionView(effectRect, this, effect);
-	m_EffectsList->AddItem(effectView);
+	fEffectsList->AddItem(effectView);
 
 	//	Create render semaphore
-	m_RenderSem = create_sem(1, "VisualCueRenderSem");	
+	fRenderSem = create_sem(1, "VisualCueRenderSem");	
 }
 
 #pragma mark -
@@ -224,11 +224,11 @@ void TVisualCue::Init()
 // ABH missing functions 
 
 bool TVisualCue::HasTransitionIn(){
-	return m_HasTransitionIn;	// Have to initialize this somewhere!
+	return fHasTransitionIn;	// Have to initialize this somewhere!
 }
 
 bool TVisualCue::HasTransitionOut(){
-	return m_HasTransitionOut;	// Have to initialize this somewhere!
+	return fHasTransitionOut;	// Have to initialize this somewhere!
 }
 
 // ABH called in TTransitionMenuLooper
@@ -245,13 +245,13 @@ void TVisualCue::SetTransparency(float val)
 	printf("SetTransparency called\n");
 
 	if (val > 0){
-		m_Transparency = val;
+		fTransparency = val;
 	}
 }
 
 float TVisualCue::GetTransparency(){
 	printf("GetDrawArea called\n");
-	return m_Transparency;
+	return fTransparency;
 }
 
 BRect TVisualCue::GetDrawArea(){
@@ -260,13 +260,13 @@ BRect TVisualCue::GetDrawArea(){
 
 float TVisualCue::GetRotation(){
 	printf("GetRotation called\n");
-	return m_Rotation;
+	return fRotation;
 }
 
 void TVisualCue::SetRotation(float val){
 	printf("SetRotation called\n");
 	if (val >= 0){
-		m_Rotation = val;
+		fRotation = val;
 	}
 }
 
@@ -280,13 +280,13 @@ BRect TVisualCue::GetScaledArea(){
 }
 BPoint TVisualCue::GetScale(){
 	printf("GetScale called\n");
-	return m_Scale ;
+	return fScale ;
 }
 
 void TVisualCue::SetScale(BPoint val){
 	printf("SetScale called\n");
 	
-		m_Scale = val;
+		fScale = val;
 
 }
 
@@ -337,7 +337,7 @@ status_t TVisualCue::Archive(BMessage *data, bool deep) const
 		data->AddString("class", "TVisualCue");	
 				
 		// Add our member variables to the archive		
-		data->AddData("DisplayQuality", B_ANY_TYPE, &m_DisplayQuality, sizeof(DisplayQuality) );
+		data->AddData("DisplayQuality", B_ANY_TYPE, &fDisplayQuality, sizeof(DisplayQuality) );
 				
 		//	Archive out deep data
 		if (deep)
@@ -363,13 +363,13 @@ status_t TVisualCue::Archive(BMessage *data, bool deep) const
 void TVisualCue::Draw(BRect updateRect)
 {
 	// Return if were not done cooking...
-	if (!m_IsInstantiated)
+	if (!fIsInstantiated)
 		return;
 
 	PushState();
 	
 	//	Determine drawing state	
-	switch (m_CueDisplayMode)
+	switch (fCueDisplayMode)
 	{
 		case kCueControls:
 			TCueView::Draw(updateRect);
@@ -384,14 +384,14 @@ void TVisualCue::Draw(BRect updateRect)
 				GetClippingRegion(&saveRegion);		
 	
 				// Clip out resize rects
-				if ( updateRect.right > Bounds().right - m_LResizeZone.Width())
-					updateRect.right = Bounds().right - m_LResizeZone.Width();
+				if ( updateRect.right > Bounds().right - fLResizeZone.Width())
+					updateRect.right = Bounds().right - fLResizeZone.Width();
 					
-				//	Clip out m_EffectsTray
-				if (m_EffectsVisible)
+				//	Clip out fEffectsTray
+				if (fEffectsVisible)
 				{
-					if ( updateRect.bottom > m_EffectsTray.top)
-						updateRect.bottom = m_EffectsTray.top;
+					if ( updateRect.bottom > fEffectsTray.top)
+						updateRect.bottom = fEffectsTray.top;
 				}
 				
 				//	Install clip region
@@ -400,20 +400,20 @@ void TVisualCue::Draw(BRect updateRect)
 				
 				// Set up display rect
 				BRect pictRect = Bounds();
-				if (m_EffectsVisible)
-					pictRect.bottom = m_EffectsTray.top;
-				pictRect.left = m_LResizeZone.right+1;
-				pictRect.right = m_LResizeZone.right+pictRect.Height();
+				if (fEffectsVisible)
+					pictRect.bottom = fEffectsTray.top;
+				pictRect.left = fLResizeZone.right+1;
+				pictRect.right = fLResizeZone.right+pictRect.Height();
 				pictRect.InsetBy(1,1);		
 							
 				// Fill cue area with bitmap
-				if (m_Bitmap)
+				if (fBitmap)
 				{
 					for (int32 index = 0; pictRect.right < updateRect.right; index++)
 					{
-						pictRect.left 	= ( pictRect.Height()* index ) + m_LResizeZone.right+1; 
+						pictRect.left 	= ( pictRect.Height()* index ) + fLResizeZone.right+1; 
 						pictRect.right 	= pictRect.left + pictRect.Height(); 
-						DrawBitmap(m_Bitmap, pictRect);
+						DrawBitmap(fBitmap, pictRect);
 					}			
 				}
 				
@@ -441,18 +441,18 @@ void TVisualCue::Draw(BRect updateRect)
 void TVisualCue::RenderData(uint32 theTime, BRect bounds)
 {
 	// Exit if we are muted
-	if (m_IsMuted)
+	if (fIsMuted)
 		return;
 	
 	//	Acquire render sem
-	//status_t err = acquire_sem_etc(fCaptureSem, 1, B_TIMEOUT, timeout);
-	acquire_sem(m_RenderSem);
+	//status_t err = acquire_sefetc(fCaptureSem, 1, B_TIMEOUT, timeout);
+	acquire_sem(fRenderSem);
 	
 	//	Render bitmap data internally
 	RenderBitmapData();
 	
 	//	All done
-	release_sem(m_RenderSem);
+	release_sem(fRenderSem);
 }
 
 
@@ -594,7 +594,7 @@ void TVisualCue::MessageReceived(BMessage *message)
 			
 		//	Opacity dialog has been closed
 		//case OPACITY_CLOSE_MSG:
-		//	m_OpacityDialog = NULL;
+		//	fOpacityDialog = NULL;
 		//	break;
 						
 		//	Show scale dialog
@@ -604,7 +604,7 @@ void TVisualCue::MessageReceived(BMessage *message)
 			
 		//	Scale dialog has been closed
 		//case SCALE_CLOSE_MSG:
-		//	m_ScaleDialog = NULL;
+		//	fScaleDialog = NULL;
 		//	break;
 			
 		//	Show rotate dialog
@@ -614,7 +614,7 @@ void TVisualCue::MessageReceived(BMessage *message)
 			
 		//	Rotate dialog has been closed
 		//case ROTATE_CLOSE_MSG:
-		//	m_RotateDialog = NULL;
+		//	fRotateDialog = NULL;
 		//	break;
 
 		default:
@@ -635,15 +635,15 @@ void TVisualCue::MessageReceived(BMessage *message)
 
 void TVisualCue::HidePanel()
 {	
-	if(m_Panel)
+	if(fPanel)
 	{
 		// Clean up any RefFilters
-		TRefFilter *theFilter = static_cast<TRefFilter *>( m_Panel->RefFilter() );
+		TRefFilter *theFilter = static_cast<TRefFilter *>( fPanel->RefFilter() );
 		if (theFilter)
 			delete theFilter;
 			
-		delete m_Panel;
-		m_Panel = NULL;				
+		delete fPanel;
+		fPanel = NULL;				
 	}
 	
 	TCueView::HidePanel();
@@ -664,18 +664,18 @@ void TVisualCue::HidePanel()
 void TVisualCue::Expand(bool force)
 {
 	if (force == true)
-		m_IsExpanded = false;
+		fIsExpanded = false;
 
 	// Do nothing if we are already expanded
-	if (m_IsExpanded) 
+	if (fIsExpanded) 
 		return;
 		
-	m_IsExpanded = true;
+	fIsExpanded = true;
 	
 	// We show certain controls based on what cue display mode we are in
 	//
 	
-	switch (m_CueDisplayMode)
+	switch (fCueDisplayMode)
 	{
 		case kCueControls:
 			ShowControls();
@@ -702,10 +702,10 @@ void TVisualCue::Expand(bool force)
 void TVisualCue::Contract(bool force)
 {
 	if (force == true)
-		m_IsExpanded = true;
+		fIsExpanded = true;
 	
 	// Do nothing if we are already contracted
-	if (m_IsExpanded == false)
+	if (fIsExpanded == false)
 		return;
 		
 	TCueView::Contract();
@@ -724,7 +724,7 @@ void TVisualCue::Contract(bool force)
 
 void TVisualCue::ShowContents()
 {	
-	m_CueDisplayMode = kCueContents;
+	fCueDisplayMode = kCueContents;
 			
 	TCueView::ShowContents();
 }
@@ -782,11 +782,11 @@ void TVisualCue::HideControls()
 void TVisualCue::SetDisplayMode(CueDisplay theMode)
 {
 	//	Do nothing if we are alreay set to requested mode
-	if (theMode == m_CueDisplayMode)
+	if (theMode == fCueDisplayMode)
 		return;
 		
 	//	Clean up old mode
-	switch(m_CueDisplayMode)
+	switch(fCueDisplayMode)
 	{
 		case kCueControls:
 			break;
@@ -816,7 +816,7 @@ void TVisualCue::SetDisplayMode(CueDisplay theMode)
 	}
 	
 	//	Set new mode variable
-	m_CueDisplayMode = theMode;
+	fCueDisplayMode = theMode;
 }
 
 
@@ -831,14 +831,14 @@ void TVisualCue::SetQualityMode(DisplayQuality theMode)
 {
 	/*
 	//	Do nothing if we are alreay set to requested mode
-	if (theMode == m_DisplayQuality)
+	if (theMode == fDisplayQuality)
 		return;
 		
 	//	Set new mode variable
-	m_DisplayQuality = theMode;
+	fDisplayQuality = theMode;
 
 	//	Set new mode
-	switch(m_DisplayQuality)
+	switch(fDisplayQuality)
 	{
 		case kWireframeQuality:
 			UpdateStageCue();
@@ -875,7 +875,7 @@ void TVisualCue::SetQualityMode(DisplayQuality theMode)
 
 BBitmap *TVisualCue::GetBitmap(uint32 theTime)
 {
-	return m_Bitmap;
+	return fBitmap;
 }
 
 
@@ -894,7 +894,7 @@ bool TVisualCue::IsOnStage()
 	
 	uint32 theTime = GetCurrentTime();
 	
-	if (theTime >= m_StartTime && theTime <= m_StartTime + m_Duration)
+	if (theTime >= fStartTime && theTime <= fStartTime + fDuration)
 		return true;		
 	
 	return false;

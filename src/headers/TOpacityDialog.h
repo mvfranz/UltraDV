@@ -35,7 +35,7 @@ class TOpacityDialog : public BWindow
 		void 	MessageReceived(BMessage* message);	
 		
 		//	Accessor Functions
-		bool	GetRealtimePreview(){ return m_RealtimePreview; }
+		bool	GetRealtimePreview(){ return fRealtimePreview; }
 
 	private:
 	
@@ -44,18 +44,18 @@ class TOpacityDialog : public BWindow
 		void 	UpdateCue();
 		
 		// Member Variables		
-		TVisualCue 			*m_Cue;
-		BView				*m_BackView;
-		TOpacitySlider		*m_Slider;
-		TNumberTextControl 	*m_OpacityText;
-		BCheckBox			*m_UpdateCheckbox;
+		TVisualCue 			*fCue;
+		BView				*fBackView;
+		TOpacitySlider		*fSlider;
+		TNumberTextControl 	*fOpacityText;
+		BCheckBox			*fUpdateCheckbox;
 		
-		float				m_SavedOpacity;
-		bool				m_RealtimePreview;
+		float				fSavedOpacity;
+		bool				fRealtimePreview;
 		
-		BButton 			*m_OKButton;
-		BButton 			*m_ApplyButton;
-		BButton 			*m_CancelButton;
+		BButton 			*fOKButton;
+		BButton 			*fApplyButton;
+		BButton 			*fCancelButton;
 	
 };
 

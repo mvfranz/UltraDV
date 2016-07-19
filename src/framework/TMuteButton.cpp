@@ -6,7 +6,7 @@
 //
 //	Date:	02.07.98
 //
-//	Desc:	Mute button object.  The m_IsMuted flag in the Cue Channel acts as 
+//	Desc:	Mute button object.  The fIsMuted flag in the Cue Channel acts as 
 //			the state flag
 //
 //	Copyright ©1998 mediapede Software
@@ -42,17 +42,17 @@
 TMuteButton::TMuteButton(TCueChannel *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_Channel = parent;
+	fChannel = parent;
 	
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap = onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap = onBitmap;
 	
 	// Store target and handler
-	m_Handler = handler;
+	fHandler = handler;
 	
 
 	// Perform default initialization
@@ -67,14 +67,14 @@ TMuteButton::TMuteButton(TCueChannel *parent, BRect bounds, const char *name, BB
 
 TMuteButton::TMuteButton(BMessage *data) : BView(data)
 {	
-	m_Handler = NULL;
+	fHandler = NULL;
 	
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 
 	// Set bitmaps
-	m_OffBitmap	= GetAppIcons()->m_MuteUp;
-	m_OnBitmap 	= GetAppIcons()->m_MuteDown;
+	fOffBitmap	= GetAppIcons()->fMuteUp;
+	fOnBitmap 	= GetAppIcons()->fMuteDown;
 }
 
 //---------------------------------------------------------------------
@@ -166,11 +166,11 @@ status_t TMuteButton::Archive(BMessage *data, bool deep) const
 
 void TMuteButton::Draw(BRect updateRect)
 {
-	// Draw proper bitmap state, if m_State is true, draw on bitmap
-	if (m_Channel->GetMute())
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+	// Draw proper bitmap state, if fState is true, draw on bitmap
+	if (fChannel->GetMute())
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 	else
-		DrawBitmap(m_OffBitmap, B_ORIGIN);
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 }
 
 
@@ -189,15 +189,15 @@ void TMuteButton::MouseDown(BPoint where)
 	
 	// Create and send message		
 	BMessage *muteMessage = new BMessage(MUTE_BUTTON_MSG);
-	short id = m_Channel->GetID();
-	muteMessage->AddInt16("ChannelID", m_Channel->GetID());								
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(muteMessage, m_Channel);	
+	short id = fChannel->GetID();
+	muteMessage->AddInt16("ChannelID", fChannel->GetID());								
+	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(muteMessage, fChannel);	
 	// Clean up
 	delete muteMessage;
 		
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	m_MouseDown = true; 
+	fMouseDown = true; 
 }
 
 
@@ -214,7 +214,7 @@ void TMuteButton::MouseUp(BPoint where)
 	
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this		
-	m_MouseDown = false; 
+	fMouseDown = false; 
 }
 
 #pragma mark -
@@ -231,10 +231,10 @@ void TMuteButton::MouseUp(BPoint where)
 
 void TMuteButton::AttachedToWindow()
 {			
-	if (m_Handler == NULL)
+	if (fHandler == NULL)
 	{
 		// Set target
-		m_Handler = (TCueSheetWindow *)Window();
+		fHandler = (TCueSheetWindow *)Window();
 
 	}	
 	//	Pass up to parent
@@ -252,5 +252,5 @@ void TMuteButton::AttachedToWindow()
 
 void TMuteButton::SetChannel(TCueChannel *channel)
 {
-	m_Channel = channel;	
+	fChannel = channel;	
 }

@@ -43,7 +43,7 @@
 TCueSheetScrollBarH::TCueSheetScrollBarH( TCueSheetWindow *parent, BRect frame, BView *target, float min, float max ) :
 					BScrollBar( frame, "HCueScroll", target, min, max, B_HORIZONTAL)
 {
-	m_CueSheetWindow = parent;
+	fCueSheetWindow = parent;
 	
 	// Do default initialization
 	Init();
@@ -59,7 +59,7 @@ TCueSheetScrollBarH::TCueSheetScrollBarH( TCueSheetWindow *parent, BRect frame, 
 
 TCueSheetScrollBarH::TCueSheetScrollBarH(BMessage *data ) : BScrollBar(data)
 {		
-	m_CueSheetWindow = NULL;
+	fCueSheetWindow = NULL;
 	
 	// Do default initialization
 	Init();
@@ -144,7 +144,7 @@ void TCueSheetScrollBarH::Init()
 	// 	Get current scroll value and save it in our tracking variable.  
 	//	We use this value to scroll the HeaderZone in concert with
 	//	the CueSheetView
-	m_LastValue = Value();
+	fLastValue = Value();
 }
 
 //---------------------------------------------------------------------
@@ -159,45 +159,45 @@ void TCueSheetScrollBarH::ValueChanged(float newValue)
 	BScrollBar::ValueChanged(newValue);
 	
 	// We need to offset the Export Zone, TimeLine and CueChannels...
-	if (newValue != m_LastValue)
+	if (newValue != fLastValue)
 	{				
-		if (newValue > m_LastValue)
+		if (newValue > fLastValue)
 		{
-			m_CueSheetWindow->GetExportZone()->ScrollBy(newValue - m_LastValue, 0);
-			m_CueSheetWindow->GetTimeline()->ScrollBy(newValue - m_LastValue, 0);
+			fCueSheetWindow->GetExportZone()->ScrollBy(newValue - fLastValue, 0);
+			fCueSheetWindow->GetTimeline()->ScrollBy(newValue - fLastValue, 0);
 			
 			//	Handle cue channels
-			BList *channelList = m_CueSheetWindow->GetCueSheetView()->GetChannelList();
+			BList *channelList = fCueSheetWindow->GetCueSheetView()->GetChannelList();
 			for (int32 channelNum = 0; channelNum < channelList->CountItems(); channelNum++)
 			{
 				TCueChannel *theChannel = (TCueChannel *)channelList->ItemAt(channelNum);
 				if (theChannel)
-					theChannel->ScrollBy(newValue - m_LastValue, 0);				
+					theChannel->ScrollBy(newValue - fLastValue, 0);				
 			}		
 		}
 		else			
 		{
-			m_CueSheetWindow->GetExportZone()->ScrollBy(-(m_LastValue - newValue), 0);
-			m_CueSheetWindow->GetTimeline()->ScrollBy(-(m_LastValue - newValue), 0);
+			fCueSheetWindow->GetExportZone()->ScrollBy(-(fLastValue - newValue), 0);
+			fCueSheetWindow->GetTimeline()->ScrollBy(-(fLastValue - newValue), 0);
 			
 			//	Handle cue channels
-			BList *channelList = m_CueSheetWindow->GetCueSheetView()->GetChannelList();
+			BList *channelList = fCueSheetWindow->GetCueSheetView()->GetChannelList();
 			for (int32 channelNum = 0; channelNum < channelList->CountItems(); channelNum++)
 			{
 				TCueChannel *theChannel = (TCueChannel *)channelList->ItemAt(channelNum);
 				if (theChannel)
-					theChannel->ScrollBy(-(m_LastValue - newValue), 0);				
+					theChannel->ScrollBy(-(fLastValue - newValue), 0);				
 			}		
 
 		}
 			
 		// Force a redraw of the items
-		m_CueSheetWindow->GetExportZone()->Invalidate();		
-		BRect bounds = m_CueSheetWindow->GetTimeline()->Bounds();
-		m_CueSheetWindow->GetTimeline()->Invalidate(bounds);
+		fCueSheetWindow->GetExportZone()->Invalidate();		
+		BRect bounds = fCueSheetWindow->GetTimeline()->Bounds();
+		fCueSheetWindow->GetTimeline()->Invalidate(bounds);
 		
 		// Save value for next compare
-		m_LastValue = newValue;		
+		fLastValue = newValue;		
 	}		
 }
 
@@ -215,9 +215,9 @@ void TCueSheetScrollBarH::ValueChanged(float newValue)
 
 void TCueSheetScrollBarH::AttachedToWindow()
 {			
-	if(m_CueSheetWindow == NULL)
+	if(fCueSheetWindow == NULL)
 	{
-		m_CueSheetWindow = (TCueSheetWindow *)Window();		
+		fCueSheetWindow = (TCueSheetWindow *)Window();		
 	}
 	
 	//	Pass up to parent
@@ -234,5 +234,5 @@ void TCueSheetScrollBarH::AttachedToWindow()
 //
 void TCueSheetScrollBarH::SetParent(TCueSheetWindow *parent)
 {
- 	m_CueSheetWindow = parent;
+ 	fCueSheetWindow = parent;
 }

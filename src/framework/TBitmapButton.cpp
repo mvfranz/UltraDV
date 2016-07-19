@@ -36,10 +36,10 @@ TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
 		//		flags = B_WILL_DRAW | B_NAVIGABLE		
 	BPictureButton(bounds, name, new BPicture(), new BPicture(), message, 
 			behavior, resizingMode, flags),
-	m_OnBitmap(on),
-	m_OffBitmap(off),
-	m_HandlerHadNoLooper(NULL),
-	m_Ownership(ownership)
+	fOnBitmap(on),
+	fOffBitmap(off),
+	fHandlerHadNoLooper(NULL),
+	fOwnership(ownership)
 {
 	// These cannot be zero
 	assert(on && off && handler);
@@ -47,9 +47,9 @@ TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
 	// been added to a window. In that case, wait until AttachedToWindow()
 	// to set it as a target.
 	if (handler->Looper() == 0)
-		m_HandlerHadNoLooper = handler;
+		fHandlerHadNoLooper = handler;
 	else {
-		m_HandlerHadNoLooper = NULL;
+		fHandlerHadNoLooper = NULL;
 		SetTarget(handler);
 	}
 			
@@ -68,10 +68,10 @@ TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
 		//		flags = B_WILL_DRAW | B_NAVIGABLE
 	BPictureButton(bounds, name, new BPicture(), new BPicture(), message, 
 			behavior, resizingMode, flags),
-	m_OnBitmap(on),
-	m_OffBitmap(off),
-	m_HandlerHadNoLooper(NULL),
-	m_Ownership(ownership)
+	fOnBitmap(on),
+	fOffBitmap(off),
+	fHandlerHadNoLooper(NULL),
+	fOwnership(ownership)
 {
 
 	//	Set background to tranparent to stop flicker
@@ -87,13 +87,13 @@ TBitmapButton::TBitmapButton(BRect bounds, const char* name, BBitmap* off,
 TBitmapButton::~TBitmapButton()
 {
 	// Free data if we never attached to a window
-	if (m_Ownership)
+	if (fOwnership)
 	{
-		if (m_OffBitmap)
-			delete m_OffBitmap;
+		if (fOffBitmap)
+			delete fOffBitmap;
 		
-		if (m_OffBitmap)
-			delete m_OnBitmap;
+		if (fOffBitmap)
+			delete fOnBitmap;
 	}
 }
 
@@ -106,34 +106,34 @@ void TBitmapButton::AttachedToWindow()
 {
 	// Create the pictures now that DrawBitmap will work
 	BView* parent = Parent();
-	if (m_OnBitmap != 0) {
+	if (fOnBitmap != 0) {
 		parent->BeginPicture(new BPicture);
-		parent->DrawBitmap(m_OnBitmap, Bounds());
+		parent->DrawBitmap(fOnBitmap, Bounds());
 		SetEnabledOn(parent->EndPicture());
 
-		if (m_Ownership) {
-			delete m_OnBitmap;
-			m_OnBitmap = 0;
+		if (fOwnership) {
+			delete fOnBitmap;
+			fOnBitmap = 0;
 		}
 	}
 
-	if (m_OffBitmap != 0) {
+	if (fOffBitmap != 0) {
 		parent->BeginPicture(new BPicture);
-		parent->DrawBitmap(m_OffBitmap, Bounds());
+		parent->DrawBitmap(fOffBitmap, Bounds());
 		SetEnabledOff(parent->EndPicture());
 
-		if (m_Ownership) {
-			delete m_OffBitmap;
-			m_OffBitmap = 0;
+		if (fOwnership) {
+			delete fOffBitmap;
+			fOffBitmap = 0;
 		}
 	}
 
 	// Connect with a looper
-	if (m_HandlerHadNoLooper) {
+	if (fHandlerHadNoLooper) {
 		// Should have one now!
-		assert(m_HandlerHadNoLooper->Looper());
-		SetTarget(m_HandlerHadNoLooper);
-		m_HandlerHadNoLooper = 0;
+		assert(fHandlerHadNoLooper->Looper());
+		SetTarget(fHandlerHadNoLooper);
+		fHandlerHadNoLooper = 0;
 	}
 }
 

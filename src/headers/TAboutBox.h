@@ -22,7 +22,7 @@ class TAboutBox : public BWindow
 		//virtual void		Refresh();	
 		
 	private:
-		BButton*			m_OKButton;
+		BButton*			fOKButton;
 
 		virtual void			Init();		
 };

@@ -52,7 +52,7 @@ const BRect kRotateDialogBounds(0, 0, 315, 125);
 TRotateDialog::TRotateDialog(TVisualCue *theCue) : BWindow( kRotateDialogBounds, "Rotation", B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_CLOSABLE | B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE, 0)
 {
 	//	Save reference to PictureCue
-	m_Cue = theCue;
+	fCue = theCue;
 	
 	// Default initialization
 	Init();
@@ -79,13 +79,13 @@ TRotateDialog::~TRotateDialog()
 void TRotateDialog::Init()
 {
 	//	Set realtime preview to false while initing
-	m_RealtimePreview = false;
+	fRealtimePreview = false;
 
 	//	Get current cue rotation
-	m_LastRotation = m_SavedRotation = m_Cue->GetRotation();
+	fLastRotation = fSavedRotation = fCue->GetRotation();
 	
 	//	Set real time preview to true
-	m_RealtimePreview = true;
+	fRealtimePreview = true;
 	
 	//
 	// Create dialog elements
@@ -94,9 +94,9 @@ void TRotateDialog::Init()
 	const BRect bounds = Bounds();
 	
 	// Create background view
-	m_BackView = new BView(bounds, "RotationDialogView", B_FOLLOW_ALL, B_WILL_DRAW);
-	m_BackView->SetViewColor(kGrey);
-	AddChild(m_BackView);
+	fBackView = new BView(bounds, "RotationDialogView", B_FOLLOW_ALL, B_WILL_DRAW);
+	fBackView->SetViewColor(kGrey);
+	AddChild(fBackView);
 	
 	
 	// Create Slider
@@ -107,46 +107,46 @@ void TRotateDialog::Init()
 	sliderBounds.right 	= sliderBounds.left + 255;
 	sliderBounds.bottom = sliderBounds.top + 55;
 	
-	m_Slider = new TRotateSlider(this, NULL, m_Cue, sliderBounds, "RotationSlider", "Rotation", new BMessage(ROTATE_MSG), 0, 359, B_TRIANGLE_THUMB); 	
-	m_BackView->AddChild(m_Slider); 	
-	m_Slider->SetLimitLabels("0°", "359°");
-	m_Slider->SetHashMarks(B_HASH_MARKS_TOP); 
-	m_Slider->SetHashMarkCount(10);
-	m_Slider->SetBarColor(kHeaderGrey);
-	m_Slider->UseFillColor(true, &kMediumSteelBlue);
+	fSlider = new TRotateSlider(this, NULL, fCue, sliderBounds, "RotationSlider", "Rotation", new BMessage(ROTATE_MSG), 0, 359, B_TRIANGLE_THUMB); 	
+	fBackView->AddChild(fSlider); 	
+	fSlider->SetLimitLabels("0°", "359°");
+	fSlider->SetHashMarks(B_HASH_MARKS_TOP); 
+	fSlider->SetHashMarkCount(10);
+	fSlider->SetBarColor(kHeaderGrey);
+	fSlider->UseFillColor(true, &kMediumSteelBlue);
 	
 	//	Set slider value
-	int32 sliderVal = m_SavedRotation;
-	m_Slider->SetValue(sliderVal);	
+	int32 sliderVal = fSavedRotation;
+	fSlider->SetValue(sliderVal);	
 	
 	//	Percentage Text Control
 	BRect textBounds;
-	textBounds.left 	= m_Slider->Frame().right + 5; 
+	textBounds.left 	= fSlider->Frame().right + 5; 
 	textBounds.top 		= bounds.top + 10 + ((55/2) - (25/2));
 	textBounds.right	= textBounds.left + 30;
 	textBounds.bottom	= textBounds.top +19;
-	m_RotateText = new TNumberTextControl(textBounds, NULL, "RotationText",  "0", new BMessage(ROTATE_TEXT_MSG)); 	
-	m_BackView->AddChild(m_RotateText);
+	fRotateText = new TNumberTextControl(textBounds, NULL, "RotationText",  "0", new BMessage(ROTATE_TEXT_MSG)); 	
+	fBackView->AddChild(fRotateText);
 		
 	// Set up max number of characters
-	m_RotateText->TextView()->SetMaxBytes(3);
+	fRotateText->TextView()->SetMaxBytes(3);
 	
 	//	Set text value
 	char numStr[4];
 	sprintf(numStr, "%d", sliderVal);
-	m_RotateText->SetText(numStr);
+	fRotateText->SetText(numStr);
 	    
     
 	//	Realtime Preview Checkbox
 	BRect checkRect;
-	checkRect.left		= m_Slider->Frame().left;
+	checkRect.left		= fSlider->Frame().left;
 	checkRect.right		= checkRect.left + 100;
-	checkRect.top		= m_Slider->Frame().bottom + 5;
+	checkRect.top		= fSlider->Frame().bottom + 5;
 	checkRect.bottom	= checkRect.top + 15;
 	
-	m_UpdateCheckbox = new BCheckBox( checkRect, "RealtimeUpdate", "Realtime Update", new BMessage(ROTATE_UPDATE_MSG));
-	m_BackView->AddChild(m_UpdateCheckbox);
-	m_UpdateCheckbox->SetValue(m_RealtimePreview);
+	fUpdateCheckbox = new BCheckBox( checkRect, "RealtimeUpdate", "Realtime Update", new BMessage(ROTATE_UPDATE_MSG));
+	fBackView->AddChild(fUpdateCheckbox);
+	fUpdateCheckbox->SetValue(fRealtimePreview);
 
 	//
 	// Cancel, Apply and OK buttons
@@ -158,8 +158,8 @@ void TRotateDialog::Init()
 	cancelFrame.right 	= cancelFrame.left + 60;
 	cancelFrame.bottom  -= 15;
 	cancelFrame.top 	= cancelFrame.bottom - 20;
-	m_CancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	m_BackView->AddChild(m_CancelButton);
+	fCancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	fBackView->AddChild(fCancelButton);
 	
 	// Create the Apply button
 	BRect applyFrame = Bounds();
@@ -167,8 +167,8 @@ void TRotateDialog::Init()
 	applyFrame.right 	= applyFrame.left + 60;	
 	applyFrame.bottom  	-= 15;
 	applyFrame.top 		= applyFrame.bottom - 20;
-	m_ApplyButton = new BButton(applyFrame, "Apply", "Apply", new BMessage(APPLY_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	m_BackView->AddChild(m_ApplyButton);
+	fApplyButton = new BButton(applyFrame, "Apply", "Apply", new BMessage(APPLY_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	fBackView->AddChild(fApplyButton);
 	
 	// Create the OK button
 	BRect okFrame = Bounds();
@@ -176,16 +176,16 @@ void TRotateDialog::Init()
 	okFrame.left 	=  okFrame.right - 60;	
 	okFrame.bottom  -= 15;
 	okFrame.top 	= okFrame.bottom - 20;
-	m_OKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	m_BackView->AddChild(m_OKButton);
-	m_OKButton->MakeDefault(true);
+	fOKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	fBackView->AddChild(fOKButton);
+	fOKButton->MakeDefault(true);
 	
 	//  Update slider with text control
-	m_Slider->SetTextControl(m_RotateText);	
+	fSlider->SetTextControl(fRotateText);	
 
 	//	Set realtime preview to true
-	m_RealtimePreview = true;
-	m_UpdateCheckbox->SetValue(m_RealtimePreview);
+	fRealtimePreview = true;
+	fUpdateCheckbox->SetValue(fRealtimePreview);
 	
 }
 
@@ -208,18 +208,18 @@ void TRotateDialog::MessageReceived(BMessage* message)
 		case ROTATE_MSG:
 			{
 				//	Get new value
-				int32 sliderVal = m_Slider->Value();
+				int32 sliderVal = fSlider->Value();
 				
 				//	Get text value
-				const char *numStr = m_RotateText->Text();
+				const char *numStr = fRotateText->Text();
 				int16 theVal = atoi(numStr);
 				
 				//	Update text if needed
-				if (theVal != m_Slider->Value())
+				if (theVal != fSlider->Value())
 				{
 					char newStr[3];
-					sprintf(newStr, "%d", m_Slider->Value());
-					m_RotateText->SetText(newStr);
+					sprintf(newStr, "%d", fSlider->Value());
+					fRotateText->SetText(newStr);
 				}
 			}
 			break;
@@ -232,10 +232,10 @@ void TRotateDialog::MessageReceived(BMessage* message)
 				message->FindInt32("RotateDegrees", &rotation);
 				
 				//	Update text control and adjust slider
-				if (m_Slider->Value() != rotation)
+				if (fSlider->Value() != rotation)
 				{
-					m_Slider->SetValue(rotation);
-					m_Slider->Invoke();
+					fSlider->SetValue(rotation);
+					fSlider->Invoke();
 				}
 			}
 			break;
@@ -245,7 +245,7 @@ void TRotateDialog::MessageReceived(BMessage* message)
 		case ROTATE_TEXT_MSG:
 			{
 				//	Get text value
-				const char *numStr = m_RotateText->Text();
+				const char *numStr = fRotateText->Text();
 				int16 theVal = atoi(numStr);
 				
 				//	Clip number to acceptable range
@@ -253,10 +253,10 @@ void TRotateDialog::MessageReceived(BMessage* message)
 					theVal = 359;
 				
 				//	Update text control and adjust slider
-				if (m_Slider->Value() != theVal)
+				if (fSlider->Value() != theVal)
 				{
-					m_Slider->SetValue(theVal);
-					m_Slider->Invoke();
+					fSlider->SetValue(theVal);
+					fSlider->Invoke();
 				}
 			}
 			break;
@@ -264,10 +264,10 @@ void TRotateDialog::MessageReceived(BMessage* message)
 		//	Set state of Realtime Updating
 		case ROTATE_UPDATE_MSG:
 			{
-				m_RealtimePreview = m_UpdateCheckbox->Value();
+				fRealtimePreview = fUpdateCheckbox->Value();
 				
 				//	Update stage if neccessary
-				if (m_RealtimePreview)
+				if (fRealtimePreview)
 					UpdateCue();
 			}
 			break;
@@ -276,14 +276,14 @@ void TRotateDialog::MessageReceived(BMessage* message)
 		case APPLY_MSG:
 			{
 				// Get new cue opacity				
-				float rotation =  m_Slider->Value();
+				float rotation =  fSlider->Value();
 				
 				//	Determine if cue opacity needs to be updated
-				if (rotation != m_LastRotation)
+				if (rotation != fLastRotation)
 				{
-					m_LastRotation = rotation;
+					fLastRotation = rotation;
 					
-					m_Cue->SetRotation(rotation);
+					fCue->SetRotation(rotation);
 				
 					// Redraw if necessary
 					UpdateCue();
@@ -295,14 +295,14 @@ void TRotateDialog::MessageReceived(BMessage* message)
 		case OK_MSG:
 			{
 				// Get new cue opacity				
-				float rotation =  m_Slider->Value();
+				float rotation =  fSlider->Value();
 				
 				Hide();
 				
 				//	Determine if cue opacity needs to be updated
-				if (rotation != m_SavedRotation)
+				if (rotation != fSavedRotation)
 				{
-					m_Cue->SetRotation(rotation);
+					fCue->SetRotation(rotation);
 				
 					// Redraw if necessary
 					UpdateCue();
@@ -310,7 +310,7 @@ void TRotateDialog::MessageReceived(BMessage* message)
 				
 				//	Inform cue we are gone
 				BMessage *theMessage = new BMessage(ROTATE_CLOSE_MSG);
-				m_Cue->MessageReceived(theMessage);
+				fCue->MessageReceived(theMessage);
 				delete theMessage;
 		
 				// Close the dialog 
@@ -323,14 +323,14 @@ void TRotateDialog::MessageReceived(BMessage* message)
 		case CANCEL_MSG:
 			{
 				//	Get current opacity
-				float currentRotation = m_Cue->GetRotation();
+				float currentRotation = fCue->GetRotation();
 				
 				Hide();
 				
 				//	Restore to saved opacity
-				if (currentRotation != m_SavedRotation)
+				if (currentRotation != fSavedRotation)
 				{
-					m_Cue->SetRotation(m_SavedRotation);
+					fCue->SetRotation(fSavedRotation);
 				
 					// Inform stage to redraw
 					UpdateCue();
@@ -338,7 +338,7 @@ void TRotateDialog::MessageReceived(BMessage* message)
 								
 				//	Inform cue we are gone
 				BMessage *theMessage = new BMessage(ROTATE_CLOSE_MSG);
-				m_Cue->MessageReceived(theMessage);
+				fCue->MessageReceived(theMessage);
 				delete theMessage;
 				
 				//	Close dialog
@@ -369,14 +369,14 @@ void TRotateDialog::MessageReceived(BMessage* message)
 
 void TRotateDialog::UpdateCue()
 {
-	if (m_Cue->IsOnStage())
+	if (fCue->IsOnStage())
 	{
 		TStageWindow *theStage	= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
 		TStageView 	 *stageView = theStage->GetStageView();
 		
 		theStage->Lock();
-		stageView->StageDraw( m_Cue->GetDrawArea(), GetCurrentTime());
-		stageView->Draw( m_Cue->GetDrawArea());
+		stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
+		stageView->Draw( fCue->GetDrawArea());
 		theStage->Unlock();
 	}		
 }

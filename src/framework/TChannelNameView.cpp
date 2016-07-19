@@ -43,7 +43,7 @@
 TChannelNameView::TChannelNameView( TCueChannel *channel, BRect bounds, const char *name, const char *text, uint32 resizeFlags, uint32 flags) :
 							BStringView(bounds, name, text, resizeFlags, flags)			
 {
-	m_Channel = channel;
+	fChannel = channel;
 	
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
@@ -176,7 +176,7 @@ void TChannelNameView::MessageReceived(BMessage *message)
 void TChannelNameView::MouseDown(BPoint pt)
 {
 	// Do nothing if we are playing
-	if ( ((TCueSheetWindow *)m_Channel->Window())->GetPlaybackEngine()->IsPlaying() )
+	if ( ((TCueSheetWindow *)fChannel->Window())->GetPlaybackEngine()->IsPlaying() )
 		return;
 		
 	// If the option key is down, allow user to change the text
@@ -184,7 +184,7 @@ void TChannelNameView::MouseDown(BPoint pt)
 	{
 		// Create the channel name dialog from a resource archive
 		BMessage *theMessage = GetWindowFromResource("ChannelNameWindow");
-		TChannelName *theDialog = new TChannelName(theMessage, m_Channel);
+		TChannelName *theDialog = new TChannelName(theMessage, fChannel);
 		ASSERT(theDialog);
 		
 		// Move it under the mouse
@@ -198,9 +198,9 @@ void TChannelNameView::MouseDown(BPoint pt)
 	else
 	{
 		if ( IsShiftKeyDown() == false )
-			m_Channel->GetCueSheet()->DeselectAllCues();
+			fChannel->GetCueSheet()->DeselectAllCues();
 			
-		m_Channel->SelectAllCues();
+		fChannel->SelectAllCues();
 	}
 }
 
@@ -215,6 +215,6 @@ void TChannelNameView::MouseDown(BPoint pt)
 
 void TChannelNameView::SetChannel(TCueChannel *channel)
 {
-	m_Channel = channel;
+	fChannel = channel;
 }
 

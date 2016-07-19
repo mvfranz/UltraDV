@@ -36,8 +36,8 @@ class TVideoEditorView: public BView
 				
 										
 		// Member variables
-		TVideoEditor	*m_Editor;
-		BPoint			m_DrawPoint;
+		TVideoEditor	*fEditor;
+		BPoint			fDrawPoint;
 };		
 
 #endif

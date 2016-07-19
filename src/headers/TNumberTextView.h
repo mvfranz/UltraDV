@@ -41,9 +41,9 @@ class TNumberTextView : public BTextView
 		// Member Functions
 		
 		// Member variables
-		float		m_TextSize;		// Default text point
-		BFont		m_Font;			// Default font
-		rgb_color	m_Color;		// Default color
+		float		fTextSize;		// Default text point
+		BFont		fFont;			// Default font
+		rgb_color	fColor;		// Default color
 	
 	protected:
 		void InsertText(const char *text, int32 length, int32 offset, const text_run_array *runs);		

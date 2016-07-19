@@ -39,7 +39,7 @@ class TMIDIEditorView: public BView
 		void	Init();
 	
 		// Member Variables		
-		TMIDIEditor	*m_Editor;		
+		TMIDIEditor	*fEditor;		
 		
 		// Member Functions
 								

@@ -39,7 +39,7 @@
 
 TAudioSettingsView::TAudioSettingsView(BRect bounds, TAudioSettingsDialog *parent) : BView(bounds, "VideoSettingsView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Perform default intitialization
 	Init();
@@ -68,13 +68,13 @@ void TAudioSettingsView::Init()
 	const BRect okFrame( bounds.right - 90, bounds.bottom - 35, bounds.right - 30, bounds.bottom - 55);
 	
 	// Create the Cancel button
-	m_CancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	AddChild(m_CancelButton);
+	fCancelButton = new BButton(cancelFrame, "Cancel", "Cancel", new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	AddChild(fCancelButton);
 	
 	// Create the OK button
-	m_OKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
-	AddChild(m_OKButton);
-	m_OKButton->MakeDefault(true);
+	fOKButton = new BButton(okFrame, "OK", "OK", new BMessage(OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);							 
+	AddChild(fOKButton);
+	fOKButton->MakeDefault(true);
 	
 }
 
@@ -95,7 +95,7 @@ void TAudioSettingsView::MessageReceived(BMessage *theMessage)
 	{					
 		case CANCEL_MSG:
 		case OK_MSG:
-			m_Parent->MessageReceived(theMessage);
+			fParent->MessageReceived(theMessage);
 			break;
 			
 		default:

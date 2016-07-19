@@ -38,10 +38,10 @@ TAudioEditorMenus::TAudioEditorMenus(BMenuBar* mbar, TAudioEditor *parent)
 {
 	
 	// Save the BMenuBar into our member variable
-	m_MenuBar = mbar;
+	fMenuBar = mbar;
 	
 	// Store the Editor Window
-	m_Parent = parent;
+	fParent = parent;
 	
 	//
 	// Add our individual menu items
@@ -79,38 +79,38 @@ TAudioEditorMenus::~TAudioEditorMenus()
 
 bool TAudioEditorMenus::AddFileMenu()
 {
-	m_FileMenu = new BMenu("File");
-	m_MenuBar->AddItem(m_FileMenu);
+	fFileMenu = new BMenu("File");
+	fMenuBar->AddItem(fFileMenu);
 	
 	// New...
 	BMenuItem* newItem = new BMenuItem("New...", new BMessage(FILE_NEW_MSG), 'N');
-	m_FileMenu->AddItem(newItem);
+	fFileMenu->AddItem(newItem);
 	
 	// Open...
 	BMenuItem* openItem = new BMenuItem("Open...", new BMessage(FILE_OPEN_MSG), 'O');
-	m_FileMenu->AddItem(openItem);
+	fFileMenu->AddItem(openItem);
 	
 	// Seperator01
-	m_FileMenu->AddSeparatorItem();
+	fFileMenu->AddSeparatorItem();
 	
 	// Close
 	BMenuItem* closeItem = new BMenuItem("Close", new BMessage(FILE_CLOSE_MSG), 'W');
-	m_FileMenu->AddItem(closeItem);
+	fFileMenu->AddItem(closeItem);
 	
 	// Save...
 	BMenuItem* saveItem = new BMenuItem("Save...", new BMessage(FILE_SAVE_MSG), 'S');
-	m_FileMenu->AddItem(saveItem);
+	fFileMenu->AddItem(saveItem);
 	
 	// Save As...
 	BMenuItem* saveAsItem = new BMenuItem("Save As...", new BMessage(FILE_SAVEAS_MSG));
-	m_FileMenu->AddItem(saveAsItem);
+	fFileMenu->AddItem(saveAsItem);
 	
 	// Revert
 	BMenuItem* revertItem = new BMenuItem("Revert to Saved", new BMessage(FILE_REVERT_MSG));
-	m_FileMenu->AddItem(revertItem);
+	fFileMenu->AddItem(revertItem);
 								
 	// All these items message to the application
-	m_FileMenu->SetTargetForItems(m_Parent);
+	fFileMenu->SetTargetForItems(fParent);
 	
 	return true;
 }
@@ -126,39 +126,39 @@ bool TAudioEditorMenus::AddFileMenu()
 bool TAudioEditorMenus::AddEditMenu()
 {
 
-	m_EditMenu = new BMenu("Edit");
-	m_MenuBar->AddItem(m_EditMenu);
+	fEditMenu = new BMenu("Edit");
+	fMenuBar->AddItem(fEditMenu);
 	
 	// Undo
 	BMenuItem* undoItem = new BMenuItem("Undo", new BMessage(EDIT_UNDO_MSG), 'Z');
-	m_EditMenu->AddItem(undoItem);
+	fEditMenu->AddItem(undoItem);
 	
 	// Seperator01
-	m_EditMenu->AddSeparatorItem();
+	fEditMenu->AddSeparatorItem();
 	
 	// Cut
 	BMenuItem* cutItem = new BMenuItem("Cut", new BMessage(EDIT_CUT_MSG), 'X');
-	m_EditMenu->AddItem(cutItem);
+	fEditMenu->AddItem(cutItem);
 	
 	// Copy
 	BMenuItem* copyItem = new BMenuItem("Copy", new BMessage(EDIT_COPY_MSG), 'C');
-	m_EditMenu->AddItem(copyItem);
+	fEditMenu->AddItem(copyItem);
 	
 	// Paste
 	BMenuItem* pasteItem = new BMenuItem("Paste", new BMessage(EDIT_PASTE_MSG), 'V');
-	m_EditMenu->AddItem(pasteItem);
+	fEditMenu->AddItem(pasteItem);
 	
 	// Clear
 	BMenuItem* clearItem = new BMenuItem("Clear", new BMessage(EDIT_CLEAR_MSG));
-	m_EditMenu->AddItem(clearItem);
+	fEditMenu->AddItem(clearItem);
 	
 	// Select All
 	BMenuItem* selectAllItem = new BMenuItem("Select All", new BMessage(EDIT_SELECTALL_MSG), 'A');
 	selectAllItem->SetTarget(be_app);
-	m_EditMenu->AddItem(selectAllItem);
+	fEditMenu->AddItem(selectAllItem);
 	
 	// All these items message to the window
-	m_EditMenu->SetTargetForItems(m_Parent);
+	fEditMenu->SetTargetForItems(fParent);
 
 	
 	return true;

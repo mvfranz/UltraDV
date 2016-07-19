@@ -25,14 +25,14 @@ class TArray : public TCollection
 
 	public:
 		// Member Variables
-		int16		m_BlockSize;			// Number of m_Slots to allocate when 
+		int16		fBlockSize;			// Number of fSlots to allocate when 
 											//  more space is needed			
-		int32		m_Slots;				// Total number of m_Slots allocated	
-		void		*m_Items;				// Items in the array				
+		int32		fSlots;				// Total number of fSlots allocated	
+		void		*fItems;				// Items in the array				
 				
-		int32 		m_ElementSize;			// size of each element in bytes	
-		bool		m_LockChanges;			// can't insert or delete if locked 
-		bool		m_UsingTemporary;		// TRUE if temporary element storage
+		int32 		fElementSize;			// size of each element in bytes	
+		bool		fLockChanges;			// can't insert or delete if locked 
+		bool		fUsingTemporary;		// TRUE if temporary element storage
 											// buffer is in use					
 			
 		// Member Functions

@@ -28,8 +28,8 @@ class TMuseumPrefs
 		void	Init();
 		
 		// Member Varibles
-		int16			m_Timescale;
-		TVideoSettings	m_VideoSettings;
+		int16			fTimescale;
+		TVideoSettings	fVideoSettings;
 		
 		
 	private:

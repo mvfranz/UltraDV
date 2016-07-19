@@ -74,20 +74,20 @@ class	TAudioCue : public TCueView
 		void	HidePanel();
 		
 		// Member Variables
-		TAudioEngine			*m_AudioEngine;
-		BSoundFile 				*m_SoundFile;
-		BSound					*m_Sound;
-		BSoundPlayer::play_id 	m_PlaybackID;
-		TAudioEditor			*m_Editor;
+		TAudioEngine			*fAudioEngine;
+		BSoundFile 				*fSoundFile;
+		BSound					*fSound;
+		BSoundPlayer::play_id 	fPlaybackID;
+		TAudioEditor			*fEditor;
 		
-		bool					m_UpdatePreview;
-		BBitmap 				*m_PreviewBitmap;	
+		bool					fUpdatePreview;
+		BBitmap 				*fPreviewBitmap;	
 		
-		int32			m_SamplesPerPixel;	
-		int32			m_SampleRate;
-		int32			m_NumSamples;		// Number of sample frames
-		int16			m_NumChannels;
-		int16			m_SampleSize;		// 8 or 16 bit	
+		int32			fSamplesPerPixel;	
+		int32			fSampleRate;
+		int32			fNumSamples;		// Number of sample frames
+		int16			fNumChannels;
+		int16			fSampleSize;		// 8 or 16 bit	
 };
 
 #endif

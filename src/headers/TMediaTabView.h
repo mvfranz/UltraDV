@@ -43,15 +43,15 @@ class TMediaTabView : public BView
 				kElementsButton, kThumbnailButton, kIconButton};
 			// This is the index message value of the current set view in the
 			// media tab. It defaults to the list view.
-		EChildID m_CurrentView;
+		EChildID fCurrentView;
 			// This is the array of control buttons that gets assigned to
 			// the current view. Created here but passed from child to child.
-		TRadioBitmapButton* m_buttons[3];
+		TRadioBitmapButton* fbuttons[3];
 
 		// Member functions
 		void Init();
 			// Activate or de-activate the given view. Activating means
-			// give the view control of m_buttons (as children) and make
+			// give the view control of fbuttons (as children) and make
 			// the view visible. Deactivating means remove control of the
 			// buttons and hide.
 		void ActivateView(EChildID which);

@@ -34,26 +34,26 @@ class TMuseumMenus
 		//	Accessor Functions
 		void	SetMenuBar(BMenuBar *menuBar);
 		
-		inline BMenu *GetFileMenu(){ return m_FileMenu; }
-		inline BMenu *GetEditMenu(){ return m_EditMenu; }
-		inline BMenu *GetCueSheetMenu(){ return m_CueSheetMenu; }
-		inline BMenu *GetCueMenu(){ return m_CueMenu; }		
-		inline BMenu *GetStageMenu(){ return m_StageMenu; }
-		inline BMenu *GetCaptureMenu(){ return m_CaptureMenu; }
-		inline BMenu *GetExportMenu(){ return m_ExportMenu; }
-		inline BMenu *GetWindowsMenu(){ return m_WindowsMenu; }
+		inline BMenu *GetFileMenu(){ return fFileMenu; }
+		inline BMenu *GetEditMenu(){ return fEditMenu; }
+		inline BMenu *GetCueSheetMenu(){ return fCueSheetMenu; }
+		inline BMenu *GetCueMenu(){ return fCueMenu; }		
+		inline BMenu *GetStageMenu(){ return fStageMenu; }
+		inline BMenu *GetCaptureMenu(){ return fCaptureMenu; }
+		inline BMenu *GetExportMenu(){ return fExportMenu; }
+		inline BMenu *GetWindowsMenu(){ return fWindowsMenu; }
 	
 	private:				
 		// Member variables
-		BMenuBar 	*m_MenuBar;
-		BMenu		*m_FileMenu;
-		BMenu		*m_EditMenu;
-		BMenu  		*m_CueSheetMenu;
-		BMenu		*m_CueMenu;
-		BMenu		*m_StageMenu;
-		BMenu		*m_CaptureMenu;
-		BMenu		*m_ExportMenu;
-		BMenu		*m_WindowsMenu;
+		BMenuBar 	*fMenuBar;
+		BMenu		*fFileMenu;
+		BMenu		*fEditMenu;
+		BMenu  		*fCueSheetMenu;
+		BMenu		*fCueMenu;
+		BMenu		*fStageMenu;
+		BMenu		*fCaptureMenu;
+		BMenu		*fExportMenu;
+		BMenu		*fWindowsMenu;
 		
 		bool	AddFileMenu();
 		bool 	AddEditMenu();

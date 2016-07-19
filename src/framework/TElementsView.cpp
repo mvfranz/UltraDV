@@ -82,8 +82,8 @@ void TElementsView::Init()
 	BRect sorterRect = Bounds();
 	sorterRect.right 	-= kScrollWidth+1;
 	sorterRect.bottom 	-= kScrollHeight+1;	
-	m_Sorter = new TElementsSorter(sorterRect, this);
-	AddChild(m_Sorter);
+	fSorter = new TElementsSorter(sorterRect, this);
+	AddChild(fSorter);
 
 	//
 	// Create scroll bars
@@ -92,15 +92,15 @@ void TElementsView::Init()
 	// Horizontal	
 	BRect scrollRect = Bounds();
 	scrollRect.Set(scrollRect.left, scrollRect.bottom-kScrollHeight, scrollRect.right-kScrollWidth, scrollRect.bottom);
-	m_HScroll = new TElementsScrollBarH(scrollRect, "HElementsScroll", m_Sorter, 0, 100);
-	AddChild(m_HScroll);	
+	fHScroll = new TElementsScrollBarH(scrollRect, "HElementsScroll", fSorter, 0, 100);
+	AddChild(fHScroll);	
 
 		
 	// Vertical
 	scrollRect = Bounds();
 	scrollRect.Set(scrollRect.right-kScrollWidth, scrollRect.top, scrollRect.right, scrollRect.bottom-kScrollHeight);
-	m_VScroll = new TElementsScrollBarV(scrollRect, "VElementsScroll", m_Sorter, 0, 100);
-	AddChild(m_VScroll);	
+	fVScroll = new TElementsScrollBarV(scrollRect, "VElementsScroll", fSorter, 0, 100);
+	AddChild(fVScroll);	
 		
 	AdjustScrollBars();
 }
@@ -151,12 +151,12 @@ void TElementsView::MessageReceived(BMessage *theMessage)
 			
 		case SORTER_SELECT_MSG:
 		case SORTER_INVOKE_MSG:
-			m_Sorter->MessageReceived(theMessage);
+			fSorter->MessageReceived(theMessage);
 			break;
 			
 		// Add the ref to our browser
 		case ADD_REF_MSG:
-			m_Sorter->MessageReceived(theMessage);
+			fSorter->MessageReceived(theMessage);
 			break;
 
 		default:
@@ -417,25 +417,25 @@ void TElementsView::GetDragRect(BRect *dragRect)
 void TElementsView::AdjustScrollBars()
 {	
 	BRect scrollRect = Bounds();
-	BRect scrollArea = m_Sorter->GetScrollArea();
+	BRect scrollArea = fSorter->GetScrollArea();
 			
 	// Adjust horizontal scrollbar
-	AdjustScrollBar( m_HScroll, scrollRect.Width(), 200, scrollArea.Width(), scrollRect.left);
+	AdjustScrollBar( fHScroll, scrollRect.Width(), 200, scrollArea.Width(), scrollRect.left);
 	
 	/*
 	// 	Vertical scrollbar area is total combined height of all channels
 	//	Iterate through all of the channels and calculate height
 	int32 totalHeight = 0;
-	for (int32 index = 0; index < m_CueSheetView->GetTotalChannels(); index++)
+	for (int32 index = 0; index < fCueSheetView->GetTotalChannels(); index++)
 	{
-		TCueChannel *theChannel = (TCueChannel *)m_CueSheetView->GetChannelList()->ItemAt(index);			
+		TCueChannel *theChannel = (TCueChannel *)fCueSheetView->GetChannelList()->ItemAt(index);			
 		if (theChannel)
 			totalHeight += theChannel->Bounds().Height();
 	}
 	*/
 		
 	// Adjust vertical scrollbar
-	//AdjustScrollBar( m_VScroll, scrollRect.Height()-(kTimelineHeight+kToolbarHeight+kMenuHeight+10), kTickSpacing, totalHeight+kTimelineHeight+kToolbarHeight+kMenuHeight+1, scrollRect.top);
+	//AdjustScrollBar( fVScroll, scrollRect.Height()-(kTimelineHeight+kToolbarHeight+kMenuHeight+10), kTickSpacing, totalHeight+kTimelineHeight+kToolbarHeight+kMenuHeight+1, scrollRect.top);
 
 }
 
@@ -448,9 +448,9 @@ void TElementsView::AdjustScrollBars()
 void TElementsView::MakeRoomForButtons(float w)
 {
 	// This doesn't need to be called again!
-	assert(m_HScroll->Bounds().left == 0);
+	assert(fHScroll->Bounds().left == 0);
 	// make room for the buttons 
-	m_HScroll->ResizeBy(-w, 0);
-	m_HScroll->MoveBy(w, 0);
+	fHScroll->ResizeBy(-w, 0);
+	fHScroll->MoveBy(w, 0);
 }
 

@@ -32,14 +32,14 @@
 TMIDIEngine::TMIDIEngine(BMidiStore *midiStore)
 {		
 	// Create engine's MIDI port and save BMIDIStore
-	m_MIDIPort = new BMidiPort(); 
-   	m_MIDIStore = midiStore;
+	fMIDIPort = new BMidiPort(); 
+   	fMIDIStore = midiStore;
    	
    	// Open MIDI port
-	m_MIDIPort->Open("midi2");
+	fMIDIPort->Open("midi2");
    
 	// Connect the output of the MIDIStore to the input of the MIDIPort. 
-	m_MIDIStore->Connect(m_MIDIPort);
+	fMIDIStore->Connect(fMIDIPort);
 	
 
 }
@@ -54,10 +54,10 @@ TMIDIEngine::TMIDIEngine(BMidiStore *midiStore)
 TMIDIEngine::~TMIDIEngine()
 {
 	//  Disconnect store from port
-	m_MIDIPort->Disconnect(m_MIDIStore);		
+	fMIDIPort->Disconnect(fMIDIStore);		
 	
 	// Free MIDIPort
-	delete m_MIDIPort;
+	delete fMIDIPort;
 	 	
 }
 
@@ -71,8 +71,8 @@ TMIDIEngine::~TMIDIEngine()
 
 void TMIDIEngine::Play()
 {
-	if ( !m_MIDIStore->IsRunning() )		 	
-		m_MIDIStore->Start();
+	if ( !fMIDIStore->IsRunning() )		 	
+		fMIDIStore->Start();
 }	
 
 
@@ -85,8 +85,8 @@ void TMIDIEngine::Play()
 
 void TMIDIEngine::Stop()
 {
-	if ( m_MIDIStore->IsRunning() )		 	
-		m_MIDIStore->Stop();
+	if ( fMIDIStore->IsRunning() )		 	
+		fMIDIStore->Stop();
 }
 
 
@@ -99,7 +99,7 @@ void TMIDIEngine::Stop()
 
 void TMIDIEngine::Pause()
 {
-	if ( m_MIDIStore->IsRunning() )		 	
-		m_MIDIStore->Stop();
+	if ( fMIDIStore->IsRunning() )		 	
+		fMIDIStore->Stop();
 }	
 

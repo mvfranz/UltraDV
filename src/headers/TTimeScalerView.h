@@ -54,12 +54,12 @@ class TTimeScalerView: public BView
 		int16 	GetClickRect(BPoint where);
 		
 		// Member variables
-		//TCueSheetView	*m_CueSheet;
-		BPoint			m_Location;
-		TBitmapView		*m_Indicator;
-		BRect			m_TextRect;
-		BRect			m_ControlRect;
-		BRect			m_ClickArray[kTotalTicks];
+		//TCueSheetView	*fCueSheet;
+		BPoint			fLocation;
+		TBitmapView		*fIndicator;
+		BRect			fTextRect;
+		BRect			fControlRect;
+		BRect			fClickArray[kTotalTicks];
 						
 };
 

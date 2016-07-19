@@ -50,10 +50,10 @@ const short kBorder = 6;
 TStageCue::TStageCue(TStageView *theStage, TVisualCue *theCue)
 {
 	// Save the stage
-	m_Stage = theStage;
+	fStage = theStage;
 	
 	// Save cue pointer
-	m_ChannelCue = theCue;
+	fChannelCue = theCue;
 			
 	//	Do defualt initialization
 	Init();	
@@ -81,9 +81,9 @@ TStageCue::~TStageCue()
 void TStageCue::Init()
 {
 	// We start life hidden and unselected
-	m_IsSelected = false;
+	fIsSelected = false;
 	
-	m_AntThread = NULL;
+	fAntThread = NULL;
 		
 	// Set up resize zone rects
 	SetResizeZones();		
@@ -145,7 +145,7 @@ void TStageCue::HandleMouseMessage(BMessage *message)
 void TStageCue::Draw(BRect updateRect)
 {			
 	// Only draw if selected
-	if (m_IsSelected)
+	if (fIsSelected)
 	{
 		//	Draw data selection and resizing rect directly to stage
 		DrawSelectionRect(false);
@@ -162,15 +162,15 @@ void TStageCue::Draw(BRect updateRect)
 
 void TStageCue::DrawData()
 {			
-	if (m_IsSelected)
+	if (fIsSelected)
 	{
 		//	Update offscreen drawing our selection rect
 		DrawSelectionRect(true);			
 				
 		//	Copy offscreen to the stage
-		m_Stage->Looper()->Lock();
-		m_Stage->BlitOffscreen();
-		m_Stage->Looper()->Unlock();
+		fStage->Looper()->Lock();
+		fStage->BlitOffscreen();
+		fStage->Looper()->Unlock();
 	}
 }
 
@@ -185,12 +185,12 @@ void TStageCue::DrawData()
 void TStageCue::DrawSelectionRect(bool toOffscreen)
 {
 	// Only draw if selected
-	if (m_IsSelected)
+	if (fIsSelected)
 	{
 		// Draw to offscreen
 		if (toOffscreen)
 		{			
-			BView *offView = m_Stage->GetOffscreenView();
+			BView *offView = fStage->GetOffscreenView();
 		
 			offView->Looper()->Lock();
 			offView->PushState();
@@ -199,13 +199,13 @@ void TStageCue::DrawSelectionRect(bool toOffscreen)
 			offView->SetHighColor(kWhite);
 			offView->SetDrawingMode(B_OP_INVERT);
 			offView->SetPenSize(1.0);
-			offView->StrokeRect(m_ChannelCue->CuePosition()->Enclosure());
+			offView->StrokeRect(fChannelCue->CuePosition()->Enclosure());
 			
 			//	Draw cross hatch
-			BPoint topLeft 		= m_ChannelCue->CuePosition()->Corner1();
-			BPoint topRight 	= m_ChannelCue->CuePosition()->Corner2();
-			BPoint bottomRight 	= m_ChannelCue->CuePosition()->Corner3();
-			BPoint bottomLeft 	= m_ChannelCue->CuePosition()->Corner4();
+			BPoint topLeft 		= fChannelCue->CuePosition()->Corner1();
+			BPoint topRight 	= fChannelCue->CuePosition()->Corner2();
+			BPoint bottomRight 	= fChannelCue->CuePosition()->Corner3();
+			BPoint bottomLeft 	= fChannelCue->CuePosition()->Corner4();
 			offView->StrokeLine(topLeft,  bottomRight);
 			offView->StrokeLine(topRight, bottomLeft);
 						
@@ -220,29 +220,29 @@ void TStageCue::DrawSelectionRect(bool toOffscreen)
 		//	Directly to view
 		else
 		{		
-			m_Stage->Looper()->Lock();
-			m_Stage->PushState();
+			fStage->Looper()->Lock();
+			fStage->PushState();
 	
 			// Draw main selection rect 
-			m_Stage->SetHighColor(kWhite);
-			m_Stage->SetDrawingMode(B_OP_INVERT);
-			m_Stage->SetPenSize(1.0);
-			m_Stage->StrokeRect(m_ChannelCue->CuePosition()->Enclosure());
+			fStage->SetHighColor(kWhite);
+			fStage->SetDrawingMode(B_OP_INVERT);
+			fStage->SetPenSize(1.0);
+			fStage->StrokeRect(fChannelCue->CuePosition()->Enclosure());
 						
 			//	Draw cross hatch
-			BPoint topLeft 		= m_ChannelCue->CuePosition()->Corner1();
-			BPoint topRight 	= m_ChannelCue->CuePosition()->Corner2();
-			BPoint bottomRight 	= m_ChannelCue->CuePosition()->Corner3();
-			BPoint bottomLeft 	= m_ChannelCue->CuePosition()->Corner4();
-			m_Stage->StrokeLine(topLeft,  bottomRight);
-			m_Stage->StrokeLine(topRight, bottomLeft);
+			BPoint topLeft 		= fChannelCue->CuePosition()->Corner1();
+			BPoint topRight 	= fChannelCue->CuePosition()->Corner2();
+			BPoint bottomRight 	= fChannelCue->CuePosition()->Corner3();
+			BPoint bottomLeft 	= fChannelCue->CuePosition()->Corner4();
+			fStage->StrokeLine(topLeft,  bottomRight);
+			fStage->StrokeLine(topRight, bottomLeft);
 			
 			// Draw resizing handles
-			DrawResizingHandles(m_Stage);
+			DrawResizingHandles(fStage);
 
 			//	Restore
-			m_Stage->PopState();			
-			m_Stage->Looper()->Unlock();		
+			fStage->PopState();			
+			fStage->Looper()->Unlock();		
 		}
 	}
 }		
@@ -261,7 +261,7 @@ void TStageCue::DrawResizingHandles(BView *theView)
 	theView->PushState();
 			
 	//	Determine whcih handles to draw based on stage tool mode
-	switch(m_Stage->GetToolMode())
+	switch(fStage->GetToolMode())
 	{
 		//	Draw none
 		case kMoveMode:	
@@ -342,19 +342,19 @@ void TStageCue::DrawResizeCorners(BView *theView)
 	// Stroke handles
 	BPolygon *handlePoly;
 	
-	handlePoly = m_TopLeftResize.GetBPolygon();
+	handlePoly = fTopLeftResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);	
 	delete handlePoly;
 
-	handlePoly = m_TopRightResize.GetBPolygon();
+	handlePoly = fTopRightResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);	
 	delete handlePoly;
 
-	handlePoly = m_BottomRightResize.GetBPolygon();
+	handlePoly = fBottomRightResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);	
 	delete handlePoly;
 
-	handlePoly = m_BottomLeftResize.GetBPolygon();
+	handlePoly = fBottomLeftResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);	
 	delete handlePoly;
 	
@@ -381,26 +381,26 @@ void TStageCue::DrawResizeMiddles(BView *theView)
 	theView->SetPenSize(1.0);
 
 	//	Stroke handles
-	//theView->StrokePolygon(&m_TopMiddleResize, true);
-	//theView->StrokePolygon(&m_RightMiddleResize, true);
-	//theView->StrokePolygon(&m_BottomMiddleResize, true);
-	//theView->StrokePolygon(&m_LeftMiddleResize, true);
+	//theView->StrokePolygon(&fTopMiddleResize, true);
+	//theView->StrokePolygon(&fRightMiddleResize, true);
+	//theView->StrokePolygon(&fBottomMiddleResize, true);
+	//theView->StrokePolygon(&fLeftMiddleResize, true);
 		
 	BPolygon *handlePoly;
 	
-	handlePoly = m_TopMiddleResize.GetBPolygon();
+	handlePoly = fTopMiddleResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);	
 	delete handlePoly;
 
-	handlePoly = m_RightMiddleResize.GetBPolygon();
+	handlePoly = fRightMiddleResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);	
 	delete handlePoly;
 
-	handlePoly = m_BottomMiddleResize.GetBPolygon();
+	handlePoly = fBottomMiddleResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);	
 	delete handlePoly;
 
-	handlePoly = m_LeftMiddleResize.GetBPolygon();
+	handlePoly = fLeftMiddleResize.GetBPolygon();
 	theView->StrokePolygon(handlePoly, true);	
 	delete handlePoly;
 	
@@ -428,7 +428,7 @@ void TStageCue::DrawRegistrationPoint(BView *theView)
 	const int32 kRegLineLength = 2;
 	
 	// Calculate point position
-	BPoint regPt = m_ChannelCue->CuePosition()->Registration();
+	BPoint regPt = fChannelCue->CuePosition()->Registration();
 	
 	BRect ellipse;
 	ellipse.left	= regPt.x - kRegPointHalf;
@@ -484,12 +484,12 @@ void TStageCue::MouseDown(BPoint where)
 		return;				
 	
 	// Make sure point falls within our bounds or resize zones	
-	if ( m_ChannelCue->CuePosition()->Contains(where) || PointInResizeZones(where) )
+	if ( fChannelCue->CuePosition()->Contains(where) || PointInResizeZones(where) )
 	{	
 		
 		uint32 	type;
 		int32	count = 0;
-		BMessage *message = m_Stage->Window()->CurrentMessage();
+		BMessage *message = fStage->Window()->CurrentMessage();
 		if (B_OK == message->GetInfo("clicks", &type, &count) )
 		{
 			int32 clickCount = message->FindInt32("clicks", count-1);
@@ -497,8 +497,8 @@ void TStageCue::MouseDown(BPoint where)
 			// Is this a double click?  If so, open editor
 			if (clickCount == 2)
 			{
-				//if(m_ChannelCue->HasEditor())
-				//	m_ChannelCue->OpenEditor();		
+				//if(fChannelCue->HasEditor())
+				//	fChannelCue->OpenEditor();		
 			}
 			//	Open transform dialog for current tool
 			else if ( IsOptionKeyDown() )
@@ -513,7 +513,7 @@ void TStageCue::MouseDown(BPoint where)
 
 				// Determine which button has been clicked
 				uint32 	buttons = 0;
-				BMessage *message = m_Stage->Window()->CurrentMessage();
+				BMessage *message = fStage->Window()->CurrentMessage();
 				message->FindInt32("buttons", (long *)&buttons);
 			
 				switch(buttons)
@@ -524,7 +524,7 @@ void TStageCue::MouseDown(BPoint where)
 							//	Otherwise, they are using a stage tool
 							if ( PointInResizeZones(where) )
 							{																					
-								switch(m_Stage->GetToolMode())
+								switch(fStage->GetToolMode())
 								{
 									case kMoveMode:
 										DragPicture(where);					
@@ -587,11 +587,11 @@ void TStageCue::MouseDown(BPoint where)
 void TStageCue::MouseMoved( BPoint where, uint32 code, const BMessage *a_message )
 {
 	//	Do nothing if window is not active
-	if (m_Stage->Window()->IsActive() == false)
+	if (fStage->Window()->IsActive() == false)
 		return;
 		
 	//	Determine tool mode and set proper cursor
-	switch(m_Stage->GetToolMode())
+	switch(fStage->GetToolMode())
 	{
 		case kMoveMode:
 			SetMoveCursor(where);			
@@ -648,7 +648,7 @@ void TStageCue::DragPicture(BPoint thePoint)
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);
+	fStage->GetMouse(&thePoint, &buttons, true);
 		
 	// Save point for future compare
 	savePt = thePoint;
@@ -668,12 +668,12 @@ void TStageCue::DragPicture(BPoint thePoint)
 			DrawSelectionRect(false);
 			
 			// Adjust cue's stage location
-			outline = m_ChannelCue->CuePosition()->Enclosure();
+			outline = fChannelCue->CuePosition()->Enclosure();
 			outline.left 	+= diffX;
 			outline.top  	+= diffY;
 			outline.right 	+= diffX;
 			outline.bottom  += diffY;
-			m_ChannelCue->CuePosition()->Outline(outline);
+			fChannelCue->CuePosition()->Outline(outline);
 			
 			// Update resize zones
 			SetResizeZones();
@@ -687,23 +687,23 @@ void TStageCue::DragPicture(BPoint thePoint)
 			//	Draw new bitmap position if control key is down
 			if ( IsControlKeyDown())
 			{
-				if (m_Stage->LockLooper())
+				if (fStage->LockLooper())
 				{
-					m_Stage->StageDraw(m_ChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
-					m_Stage->Draw(m_Stage->Bounds());
-					m_Stage->UnlockLooper();
+					fStage->StageDraw(fChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
+					fStage->Draw(fStage->Bounds());
+					fStage->UnlockLooper();
 				}
 			}			
 		}			
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 	}
 	
 	//	Draw new position
-	if ( m_Stage->LockLooper())
+	if ( fStage->LockLooper())
 	{
-		m_Stage->StageDraw(m_ChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
-		m_Stage->Draw(m_Stage->Bounds());
-		m_Stage->UnlockLooper();
+		fStage->StageDraw(fChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
+		fStage->Draw(fStage->Bounds());
+		fStage->UnlockLooper();
 	}		
 }
 
@@ -721,9 +721,9 @@ void TStageCue::DragPicture(BPoint thePoint)
 
 void TStageCue::Select()
 {
-	if (m_IsSelected == false)
+	if (fIsSelected == false)
 	{		
-		m_IsSelected = true;
+		fIsSelected = true;
 		
 		//	Draw selection rect directly to stage
 		DrawSelectionRect(false);
@@ -738,9 +738,9 @@ void TStageCue::Select()
 
 void TStageCue::Deselect()
 {
-	if (m_IsSelected)
+	if (fIsSelected)
 	{
-		m_IsSelected = false;		
+		fIsSelected = false;		
 	}
 }
 
@@ -798,14 +798,14 @@ void TStageCue::SetResizeZones()
 	ClearResizeZones();
 	
 	//	Do we need to adjust for rotation?
-	//if ( m_ChannelCue->GetRotation() > 0)
+	//if ( fChannelCue->GetRotation() > 0)
 	//{
 	//	TranformResizeZones();
 	//}
 	//	Standard display
 	//else
 	{
-		const BRect bounds 		= m_ChannelCue->CuePosition()->Enclosure();
+		const BRect bounds 		= fChannelCue->CuePosition()->Enclosure();
 		const int32	halfBorder 	= kBorder / 2;
 		const int32	halfWidth	= bounds.IntegerWidth() / 2;
 		const int32	halfHeight	= bounds.IntegerHeight() / 2;
@@ -814,114 +814,114 @@ void TStageCue::SetResizeZones()
 		//	Top Left	
 		thePoint.x = bounds.left-halfBorder;
 		thePoint.y = bounds.top-halfBorder;
-		m_TopLeftResize.AddPoint(thePoint);
+		fTopLeftResize.AddPoint(thePoint);
 		thePoint.x = bounds.left+halfBorder;
 		thePoint.y = bounds.top-halfBorder;
-		m_TopLeftResize.AddPoint(thePoint);
+		fTopLeftResize.AddPoint(thePoint);
 		thePoint.x = bounds.left+halfBorder;
 		thePoint.y = bounds.top+halfBorder;
-		m_TopLeftResize.AddPoint(thePoint);
+		fTopLeftResize.AddPoint(thePoint);
 		thePoint.x = bounds.left-halfBorder;
 		thePoint.y = bounds.top+halfBorder;
-		m_TopLeftResize.AddPoint(thePoint);
+		fTopLeftResize.AddPoint(thePoint);
 	
 		//	Top Middle	
 		thePoint.x = (bounds.left+halfWidth)-halfBorder;
 		thePoint.y = bounds.top-halfBorder;
-		m_TopMiddleResize.AddPoint(thePoint);
+		fTopMiddleResize.AddPoint(thePoint);
 		thePoint.x = (bounds.left+halfWidth)+halfBorder;
 		thePoint.y = bounds.top-halfBorder;	
-		m_TopMiddleResize.AddPoint(thePoint);	
+		fTopMiddleResize.AddPoint(thePoint);	
 		thePoint.x = (bounds.left+halfWidth)+halfBorder;
 		thePoint.y = bounds.top+halfBorder;
-		m_TopMiddleResize.AddPoint(thePoint);	
+		fTopMiddleResize.AddPoint(thePoint);	
 		thePoint.x = (bounds.left+halfWidth)-halfBorder;
 		thePoint.y = bounds.top+halfBorder;
-		m_TopMiddleResize.AddPoint(thePoint);
+		fTopMiddleResize.AddPoint(thePoint);
 	
 		//	Top Right	
 		thePoint.x = bounds.right-halfBorder;
 		thePoint.y = bounds.top-halfBorder;
-		m_TopRightResize.AddPoint(thePoint);
+		fTopRightResize.AddPoint(thePoint);
 		thePoint.x = bounds.right+halfBorder;
 		thePoint.y = bounds.top-halfBorder;		
-		m_TopRightResize.AddPoint(thePoint);		
+		fTopRightResize.AddPoint(thePoint);		
 		thePoint.x = bounds.right+halfBorder;
 		thePoint.y = bounds.top+halfBorder;
-		m_TopRightResize.AddPoint(thePoint);	
+		fTopRightResize.AddPoint(thePoint);	
 		thePoint.x = bounds.right-halfBorder;
 		thePoint.y = bounds.top+halfBorder;
-		m_TopRightResize.AddPoint(thePoint);	
+		fTopRightResize.AddPoint(thePoint);	
 		
 		//	Right Middle	
 		thePoint.x = bounds.right-halfBorder;
 		thePoint.y = (halfHeight+bounds.top)-halfBorder;
-		m_RightMiddleResize.AddPoint(thePoint);	
+		fRightMiddleResize.AddPoint(thePoint);	
 		thePoint.x = bounds.right+halfBorder;
 		thePoint.y = (halfHeight+bounds.top)-halfBorder;
-		m_RightMiddleResize.AddPoint(thePoint);				
+		fRightMiddleResize.AddPoint(thePoint);				
 		thePoint.x = bounds.right+halfBorder;
 		thePoint.y = (halfHeight+bounds.top)+halfBorder;
-		m_RightMiddleResize.AddPoint(thePoint);		
+		fRightMiddleResize.AddPoint(thePoint);		
 		thePoint.x = bounds.right-halfBorder;
 		thePoint.y = (halfHeight+bounds.top)+halfBorder;
-		m_RightMiddleResize.AddPoint(thePoint);		
+		fRightMiddleResize.AddPoint(thePoint);		
 		
 		//	Right Bottom	
 		thePoint.x = bounds.right-halfBorder;
 		thePoint.y = bounds.bottom-halfBorder;
-		m_BottomRightResize.AddPoint(thePoint);	
+		fBottomRightResize.AddPoint(thePoint);	
 		thePoint.x = bounds.right+halfBorder;
 		thePoint.y = bounds.bottom-halfBorder;
-		m_BottomRightResize.AddPoint(thePoint);				
+		fBottomRightResize.AddPoint(thePoint);				
 		thePoint.x = bounds.right+halfBorder;
 		thePoint.y = bounds.bottom+halfBorder;
-		m_BottomRightResize.AddPoint(thePoint);		
+		fBottomRightResize.AddPoint(thePoint);		
 		thePoint.x = bounds.right-halfBorder;
 		thePoint.y = bounds.bottom+halfBorder;
-		m_BottomRightResize.AddPoint(thePoint);		
+		fBottomRightResize.AddPoint(thePoint);		
 	
 		//	Bottom Middle
 		thePoint.x = (halfWidth+bounds.left)-halfBorder;
 		thePoint.y = bounds.bottom-halfBorder;
-		m_BottomMiddleResize.AddPoint(thePoint);	
+		fBottomMiddleResize.AddPoint(thePoint);	
 		thePoint.x = (halfWidth+bounds.left)+halfBorder;
 		thePoint.y = bounds.bottom-halfBorder;
-		m_BottomMiddleResize.AddPoint(thePoint);				
+		fBottomMiddleResize.AddPoint(thePoint);				
 		thePoint.x = (halfWidth+bounds.left)+halfBorder;
 		thePoint.y = bounds.bottom+halfBorder;
-		m_BottomMiddleResize.AddPoint(thePoint);		
+		fBottomMiddleResize.AddPoint(thePoint);		
 		thePoint.x = (halfWidth+bounds.left)-halfBorder;
 		thePoint.y = bounds.bottom+halfBorder;
-		m_BottomMiddleResize.AddPoint(thePoint);				
+		fBottomMiddleResize.AddPoint(thePoint);				
 	
 		//	Bottom Left
 		thePoint.x = bounds.left-halfBorder;
 		thePoint.y = bounds.bottom-halfBorder;
-		m_BottomLeftResize.AddPoint(thePoint);	
+		fBottomLeftResize.AddPoint(thePoint);	
 		thePoint.x = bounds.left+halfBorder;
 		thePoint.y = bounds.bottom-halfBorder;
-		m_BottomLeftResize.AddPoint(thePoint);				
+		fBottomLeftResize.AddPoint(thePoint);				
 		thePoint.x = bounds.left+halfBorder;
 		thePoint.y = bounds.bottom+halfBorder;
-		m_BottomLeftResize.AddPoint(thePoint);		
+		fBottomLeftResize.AddPoint(thePoint);		
 		thePoint.x = bounds.left-halfBorder;
 		thePoint.y = bounds.bottom+halfBorder;
-		m_BottomLeftResize.AddPoint(thePoint);				
+		fBottomLeftResize.AddPoint(thePoint);				
 		
 		//	Left Middle
 		thePoint.x = bounds.left-halfBorder;
 		thePoint.y = (halfHeight+bounds.top)-halfBorder;
-		m_LeftMiddleResize.AddPoint(thePoint);	
+		fLeftMiddleResize.AddPoint(thePoint);	
 		thePoint.x = bounds.left+halfBorder;
 		thePoint.y = (halfHeight+bounds.top)-halfBorder;
-		m_LeftMiddleResize.AddPoint(thePoint);				
+		fLeftMiddleResize.AddPoint(thePoint);				
 		thePoint.x = bounds.left+halfBorder;
 		thePoint.y = (halfHeight+bounds.top)+halfBorder;
-		m_LeftMiddleResize.AddPoint(thePoint);		
+		fLeftMiddleResize.AddPoint(thePoint);		
 		thePoint.x = bounds.left-halfBorder;
 		thePoint.y = (halfHeight+bounds.top)+halfBorder;
-		m_LeftMiddleResize.AddPoint(thePoint);
+		fLeftMiddleResize.AddPoint(thePoint);
 	}
 }
 
@@ -936,7 +936,7 @@ void TStageCue::SetResizeZones()
 void TStageCue::TranformResizeZones()
 {
 	/*
-	const BRect bounds 		= m_ChannelCue->GetDrawArea();
+	const BRect bounds 		= fChannelCue->GetDrawArea();
 	const int8	halfBorder 	= kBorder / 2;
 	const int32	halfWidth	= bounds.Width() / 2;
 	const int32	halfHeight	= bounds.Height() / 2;
@@ -947,10 +947,10 @@ void TStageCue::TranformResizeZones()
 	float sinLeft, sinRight, sinTop, sinBottom;
 		 
 	//	Get point of rotation
-	BPoint center = m_ChannelCue->GetRegistrationOffset();
+	BPoint center = fChannelCue->GetRegistrationOffset();
 
 	//	Calculate rotation angle in radians
-	double	angle 	= ((double) 3.14159265 / (double) 180.0) * (double) m_ChannelCue->GetRotation();
+	double	angle 	= ((double) 3.14159265 / (double) 180.0) * (double) fChannelCue->GetRotation();
     	
 	//	Calculate sine and cosine of rotation angle
 	double 	cosine 	= cos(angle);
@@ -989,22 +989,22 @@ void TStageCue::TranformResizeZones()
 	//	Top left		
 	thePoint.x = cosLeft - sinTop + centerXVal;
 	thePoint.y = sinLeft + cosTop + centerYVal;
-	m_TopLeftResize.AddPoint(thePoint);
+	fTopLeftResize.AddPoint(thePoint);
 	
 	//	Top right
 	thePoint.x = cosRight - sinTop + centerXVal;
 	thePoint.y = sinRight + cosTop + centerYVal;		
-	m_TopLeftResize.AddPoint(thePoint);
+	fTopLeftResize.AddPoint(thePoint);
 
 	//	Bottom right
 	thePoint.x = cosRight - sinBottom + centerXVal;
 	thePoint.y = sinRight + cosBottom + centerYVal;		
-	m_TopLeftResize.AddPoint(thePoint);
+	fTopLeftResize.AddPoint(thePoint);
 
 	//	Bottom left		
 	thePoint.x = cosLeft - sinBottom + centerXVal;
 	thePoint.y = sinLeft + cosBottom + centerYVal;		
-	m_TopLeftResize.AddPoint(thePoint);
+	fTopLeftResize.AddPoint(thePoint);
 
 
 	//
@@ -1036,22 +1036,22 @@ void TStageCue::TranformResizeZones()
 	//	Top left		
 	thePoint.x = cosLeft - sinTop + centerXVal;
 	thePoint.y = sinLeft + cosTop + centerYVal;
-	m_TopMiddleResize.AddPoint(thePoint);
+	fTopMiddleResize.AddPoint(thePoint);
 	
 	//	Top right
 	thePoint.x = cosRight - sinTop + centerXVal;
 	thePoint.y = sinRight + cosTop + centerYVal;		
-	m_TopMiddleResize.AddPoint(thePoint);
+	fTopMiddleResize.AddPoint(thePoint);
 
 	//	Bottom right
 	thePoint.x = cosRight - sinBottom + centerXVal;
 	thePoint.y = sinRight + cosBottom + centerYVal;		
-	m_TopMiddleResize.AddPoint(thePoint);
+	fTopMiddleResize.AddPoint(thePoint);
 
 	//	Bottom left		
 	thePoint.x = cosLeft - sinBottom + centerXVal;
 	thePoint.y = sinLeft + cosBottom + centerYVal;		
-	m_TopMiddleResize.AddPoint(thePoint);
+	fTopMiddleResize.AddPoint(thePoint);
 
 	
 
@@ -1084,22 +1084,22 @@ void TStageCue::TranformResizeZones()
 	//	Top left		
 	thePoint.x = cosLeft - sinTop + centerXVal;
 	thePoint.y = sinLeft + cosTop + centerYVal;
-	m_TopRightResize.AddPoint(thePoint);
+	fTopRightResize.AddPoint(thePoint);
 	
 	//	Top right
 	thePoint.x = cosRight - sinTop + centerXVal;
 	thePoint.y = sinRight + cosTop + centerYVal;		
-	m_TopRightResize.AddPoint(thePoint);
+	fTopRightResize.AddPoint(thePoint);
 
 	//	Bottom right
 	thePoint.x = cosRight - sinBottom + centerXVal;
 	thePoint.y = sinRight + cosBottom + centerYVal;		
-	m_TopRightResize.AddPoint(thePoint);
+	fTopRightResize.AddPoint(thePoint);
 
 	//	Bottom left		
 	thePoint.x = cosLeft - sinBottom + centerXVal;
 	thePoint.y = sinLeft + cosBottom + centerYVal;		
-	m_TopRightResize.AddPoint(thePoint);
+	fTopRightResize.AddPoint(thePoint);
 	
 	
 	//
@@ -1131,22 +1131,22 @@ void TStageCue::TranformResizeZones()
 	//	Top left		
 	thePoint.x = cosLeft - sinTop + centerXVal;
 	thePoint.y = sinLeft + cosTop + centerYVal;
-	m_RightMiddleResize.AddPoint(thePoint);
+	fRightMiddleResize.AddPoint(thePoint);
 	
 	//	Top right
 	thePoint.x = cosRight - sinTop + centerXVal;
 	thePoint.y = sinRight + cosTop + centerYVal;		
-	m_RightMiddleResize.AddPoint(thePoint);
+	fRightMiddleResize.AddPoint(thePoint);
 
 	//	Bottom right
 	thePoint.x = cosRight - sinBottom + centerXVal;
 	thePoint.y = sinRight + cosBottom + centerYVal;		
-	m_RightMiddleResize.AddPoint(thePoint);
+	fRightMiddleResize.AddPoint(thePoint);
 
 	//	Bottom left		
 	thePoint.x = cosLeft - sinBottom + centerXVal;
 	thePoint.y = sinLeft + cosBottom + centerYVal;		
-	m_RightMiddleResize.AddPoint(thePoint);
+	fRightMiddleResize.AddPoint(thePoint);
 	
 	
 	//
@@ -1178,22 +1178,22 @@ void TStageCue::TranformResizeZones()
 	//	Top left		
 	thePoint.x = cosLeft - sinTop + centerXVal;
 	thePoint.y = sinLeft + cosTop + centerYVal;
-	m_BottomRightResize.AddPoint(thePoint);
+	fBottomRightResize.AddPoint(thePoint);
 	
 	//	Top right
 	thePoint.x = cosRight - sinTop + centerXVal;
 	thePoint.y = sinRight + cosTop + centerYVal;		
-	m_BottomRightResize.AddPoint(thePoint);
+	fBottomRightResize.AddPoint(thePoint);
 
 	//	Bottom right
 	thePoint.x = cosRight - sinBottom + centerXVal;
 	thePoint.y = sinRight + cosBottom + centerYVal;		
-	m_BottomRightResize.AddPoint(thePoint);
+	fBottomRightResize.AddPoint(thePoint);
 
 	//	Bottom left		
 	thePoint.x = cosLeft - sinBottom + centerXVal;
 	thePoint.y = sinLeft + cosBottom + centerYVal;		
-	m_BottomRightResize.AddPoint(thePoint);
+	fBottomRightResize.AddPoint(thePoint);
 	
 	
 
@@ -1226,22 +1226,22 @@ void TStageCue::TranformResizeZones()
 	//	Top left		
 	thePoint.x = cosLeft - sinTop + centerXVal;
 	thePoint.y = sinLeft + cosTop + centerYVal;
-	m_BottomMiddleResize.AddPoint(thePoint);
+	fBottomMiddleResize.AddPoint(thePoint);
 	
 	//	Top right
 	thePoint.x = cosRight - sinTop + centerXVal;
 	thePoint.y = sinRight + cosTop + centerYVal;		
-	m_BottomMiddleResize.AddPoint(thePoint);
+	fBottomMiddleResize.AddPoint(thePoint);
 
 	//	Bottom right
 	thePoint.x = cosRight - sinBottom + centerXVal;
 	thePoint.y = sinRight + cosBottom + centerYVal;		
-	m_BottomMiddleResize.AddPoint(thePoint);
+	fBottomMiddleResize.AddPoint(thePoint);
 
 	//	Bottom left		
 	thePoint.x = cosLeft - sinBottom + centerXVal;
 	thePoint.y = sinLeft + cosBottom + centerYVal;		
-	m_BottomMiddleResize.AddPoint(thePoint);
+	fBottomMiddleResize.AddPoint(thePoint);
 	
 
 
@@ -1274,22 +1274,22 @@ void TStageCue::TranformResizeZones()
 	//	Top left		
 	thePoint.x = cosLeft - sinTop + centerXVal;
 	thePoint.y = sinLeft + cosTop + centerYVal;
-	m_BottomLeftResize.AddPoint(thePoint);
+	fBottomLeftResize.AddPoint(thePoint);
 	
 	//	Top right
 	thePoint.x = cosRight - sinTop + centerXVal;
 	thePoint.y = sinRight + cosTop + centerYVal;		
-	m_BottomLeftResize.AddPoint(thePoint);
+	fBottomLeftResize.AddPoint(thePoint);
 
 	//	Bottom right
 	thePoint.x = cosRight - sinBottom + centerXVal;
 	thePoint.y = sinRight + cosBottom + centerYVal;		
-	m_BottomLeftResize.AddPoint(thePoint);
+	fBottomLeftResize.AddPoint(thePoint);
 
 	//	Bottom left		
 	thePoint.x = cosLeft - sinBottom + centerXVal;
 	thePoint.y = sinLeft + cosBottom + centerYVal;		
-	m_BottomLeftResize.AddPoint(thePoint);
+	fBottomLeftResize.AddPoint(thePoint);
 	
 	
 	//
@@ -1321,22 +1321,22 @@ void TStageCue::TranformResizeZones()
 	//	Top left		
 	thePoint.x = cosLeft - sinTop + centerXVal;
 	thePoint.y = sinLeft + cosTop + centerYVal;
-	m_LeftMiddleResize.AddPoint(thePoint);
+	fLeftMiddleResize.AddPoint(thePoint);
 	
 	//	Top right
 	thePoint.x = cosRight - sinTop + centerXVal;
 	thePoint.y = sinRight + cosTop + centerYVal;		
-	m_LeftMiddleResize.AddPoint(thePoint);
+	fLeftMiddleResize.AddPoint(thePoint);
 
 	//	Bottom right
 	thePoint.x = cosRight - sinBottom + centerXVal;
 	thePoint.y = sinRight + cosBottom + centerYVal;		
-	m_LeftMiddleResize.AddPoint(thePoint);
+	fLeftMiddleResize.AddPoint(thePoint);
 
 	//	Bottom left		
 	thePoint.x = cosLeft - sinBottom + centerXVal;
 	thePoint.y = sinLeft + cosBottom + centerYVal;		
-	m_LeftMiddleResize.AddPoint(thePoint);
+	fLeftMiddleResize.AddPoint(thePoint);
 	*/
 }
 
@@ -1352,14 +1352,14 @@ void TStageCue::ClearResizeZones()
 {
 	TPolygon emptyPoly;
 		
-	m_TopLeftResize 		= emptyPoly;
-	m_TopMiddleResize 		= emptyPoly;
-	m_TopRightResize 		= emptyPoly;
-	m_RightMiddleResize 	= emptyPoly;
-	m_BottomRightResize 	= emptyPoly;
-	m_BottomMiddleResize 	= emptyPoly;
-	m_BottomLeftResize 		= emptyPoly;
-	m_LeftMiddleResize 		= emptyPoly;
+	fTopLeftResize 		= emptyPoly;
+	fTopMiddleResize 		= emptyPoly;
+	fTopRightResize 		= emptyPoly;
+	fRightMiddleResize 	= emptyPoly;
+	fBottomRightResize 	= emptyPoly;
+	fBottomMiddleResize 	= emptyPoly;
+	fBottomLeftResize 		= emptyPoly;
+	fLeftMiddleResize 		= emptyPoly;
 
 }
 
@@ -1372,28 +1372,28 @@ void TStageCue::ClearResizeZones()
 
 bool TStageCue::PointInResizeZones(BPoint thePoint)
 {
-	if (m_TopLeftResize.Contains(thePoint))
+	if (fTopLeftResize.Contains(thePoint))
 		return true;
 		
-	if (m_TopMiddleResize.Contains(thePoint))
+	if (fTopMiddleResize.Contains(thePoint))
 		return true;
 
-	if (m_TopRightResize.Contains(thePoint))
+	if (fTopRightResize.Contains(thePoint))
 		return true;
 
-	if (m_RightMiddleResize.Contains(thePoint))
+	if (fRightMiddleResize.Contains(thePoint))
 		return true;
 
-	if (m_BottomRightResize.Contains(thePoint))
+	if (fBottomRightResize.Contains(thePoint))
 		return true;
 
-	if (m_BottomMiddleResize.Contains(thePoint))
+	if (fBottomMiddleResize.Contains(thePoint))
 		return true;
 
-	if (m_BottomLeftResize.Contains(thePoint))
+	if (fBottomLeftResize.Contains(thePoint))
 		return true;
 
-	if (m_LeftMiddleResize.Contains(thePoint))
+	if (fLeftMiddleResize.Contains(thePoint))
 		return true;
 
 	return false;
@@ -1409,28 +1409,28 @@ bool TStageCue::PointInResizeZones(BPoint thePoint)
 
 short TStageCue::GetResizeZoneID(BPoint thePoint)
 {
-	if (m_TopLeftResize.Contains(thePoint))
+	if (fTopLeftResize.Contains(thePoint))
 		return kTopLeftResize;
 		
-	if (m_TopMiddleResize.Contains(thePoint))
+	if (fTopMiddleResize.Contains(thePoint))
 		return kTopMiddleResize;
 
-	if (m_TopRightResize.Contains(thePoint))
+	if (fTopRightResize.Contains(thePoint))
 		return kTopRightResize;
 
-	if (m_RightMiddleResize.Contains(thePoint))
+	if (fRightMiddleResize.Contains(thePoint))
 		return kRightMiddleResize;
 
-	if (m_BottomRightResize.Contains(thePoint))
+	if (fBottomRightResize.Contains(thePoint))
 		return kBottomRightResize;
 
-	if (m_BottomMiddleResize.Contains(thePoint))
+	if (fBottomMiddleResize.Contains(thePoint))
 		return kBottomMiddleResize;
 
-	if (m_BottomLeftResize.Contains(thePoint))
+	if (fBottomLeftResize.Contains(thePoint))
 		return kBottomLeftResize;
 
-	if (m_LeftMiddleResize.Contains(thePoint))
+	if (fLeftMiddleResize.Contains(thePoint))
 		return kLeftMiddleResize;
 
 	// No zone found
@@ -1491,13 +1491,13 @@ void TStageCue::Scale(BPoint thePoint)
 	}
 	
 	//	Update stage
-	m_Stage->Looper()->Lock();
-	//m_Stage->StageDraw(m_ChannelCue->GetCroppedArea(), GetCurrentTime());
-	m_Stage->Invalidate();
-	m_Stage->Looper()->Unlock();
+	fStage->Looper()->Lock();
+	//fStage->StageDraw(fChannelCue->GetCroppedArea(), GetCurrentTime());
+	fStage->Invalidate();
+	fStage->Looper()->Unlock();
 
 	//	Update bounds polygon
-	//m_ChannelCue->GetTransformedDrawPolygon(m_BoundsPolygon);			
+	//fChannelCue->GetTransformedDrawPolygon(fBoundsPolygon);			
 
 	// Update resize zones
 	SetResizeZones();	
@@ -1517,10 +1517,10 @@ void TStageCue::ScaleTopLeft( BPoint thePoint)
 	BRect cropArea;
 	BPoint oldReg, drawPt, scalePt;
 		
-	cropArea = m_ChannelCue->CuePosition()->Enclosure();		
-	oldReg 	 = m_ChannelCue->CuePosition()->Registration();
-	drawPt	 = m_ChannelCue->CuePosition()->Corner1();
-	scalePt  = m_ChannelCue->GetScale();
+	cropArea = fChannelCue->CuePosition()->Enclosure();		
+	oldReg 	 = fChannelCue->CuePosition()->Registration();
+	drawPt	 = fChannelCue->CuePosition()->Corner1();
+	scalePt  = fChannelCue->GetScale();
 	
 	const int32 bottomSide = cropArea.bottom;
 	const int32 rightSide  = cropArea.right;
@@ -1530,7 +1530,7 @@ void TStageCue::ScaleTopLeft( BPoint thePoint)
 	float	regPercY = oldReg.y / cropArea.Height();
 	
 	//	Save bitmap original size
-	const BRect origRect   = m_ChannelCue->GetOriginalArea();
+	const BRect origRect   = fChannelCue->GetOriginalArea();
 	const float origWidth  = origRect.Width();
 	const float origHeight = origRect.Height();	
 			
@@ -1538,7 +1538,7 @@ void TStageCue::ScaleTopLeft( BPoint thePoint)
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -1555,8 +1555,8 @@ void TStageCue::ScaleTopLeft( BPoint thePoint)
 					thePoint.x  = rightSide - (kBorder*2);
 							
 				//	Update the cue varibles to new settings
-				m_ChannelCue->SetDrawPointX(thePoint.x);
-				m_ChannelCue->SetScaleX((rightSide - thePoint.x) / origWidth);
+				fChannelCue->SetDrawPointX(thePoint.x);
+				fChannelCue->SetScaleX((rightSide - thePoint.x) / origWidth);
 			}
 		
 			if (thePoint.y != savePt.y)
@@ -1566,14 +1566,14 @@ void TStageCue::ScaleTopLeft( BPoint thePoint)
 					thePoint.y  = bottomSide - (kBorder*2);
 											
 				//	Update the cue varibles to new settings
-				m_ChannelCue->SetDrawPointY(thePoint.y);
-				m_ChannelCue->SetScaleY((bottomSide - thePoint.y) / origHeight);
+				fChannelCue->SetDrawPointY(thePoint.y);
+				fChannelCue->SetScaleY((bottomSide - thePoint.y) / origHeight);
 			}
 			
 			//	Normalize registration point
-			oldReg.x = m_ChannelCue->GetDrawArea().Width()  * regPercX;
-			oldReg.y = m_ChannelCue->GetDrawArea().Height() * regPercY;
-			m_ChannelCue->SetRegistration(oldReg);							
+			oldReg.x = fChannelCue->GetDrawArea().Width()  * regPercX;
+			oldReg.y = fChannelCue->GetDrawArea().Height() * regPercY;
+			fChannelCue->SetRegistration(oldReg);							
 
 			// Adjust resize zones			
 			SetResizeZones();
@@ -1586,7 +1586,7 @@ void TStageCue::ScaleTopLeft( BPoint thePoint)
 						
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		if ( thePoint.x > rightSide - (kBorder*2))
@@ -1612,10 +1612,10 @@ void TStageCue::ScaleTop(BPoint thePoint)
 	BRect cropArea;
 	BPoint oldReg, drawPt, scalePt;
 		
-	cropArea = m_ChannelCue->GetDrawArea();			
-	oldReg 	 = m_ChannelCue->CuePosition()->Registration();
-	drawPt	 = m_ChannelCue->CuePosition()->Corner1();
-	scalePt  = m_ChannelCue->GetScale();
+	cropArea = fChannelCue->GetDrawArea();			
+	oldReg 	 = fChannelCue->CuePosition()->Registration();
+	drawPt	 = fChannelCue->CuePosition()->Corner1();
+	scalePt  = fChannelCue->GetScale();
 	
 	const int32 bottomSide = cropArea.bottom;
 	
@@ -1623,14 +1623,14 @@ void TStageCue::ScaleTop(BPoint thePoint)
 	float regPercY = oldReg.y / cropArea.Height();
 	
 	//	Save bitmap original size
-	const BRect origRect   = m_ChannelCue->GetOriginalArea();
+	const BRect origRect   = fChannelCue->GetOriginalArea();
 	const float origHeight = origRect.Height();	
 	
 	// Resize the cue to the left while the mouse button is down	
 	BPoint	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -1645,13 +1645,13 @@ void TStageCue::ScaleTop(BPoint thePoint)
 				thePoint.y  = bottomSide - (kBorder*2);
 												
 			//	Update the cue varibles to new settings
-			m_ChannelCue->SetDrawPointY(thePoint.y);
-			m_ChannelCue->SetScaleY((bottomSide - thePoint.y) / origHeight);
+			fChannelCue->SetDrawPointY(thePoint.y);
+			fChannelCue->SetScaleY((bottomSide - thePoint.y) / origHeight);
 
 			//	Normalize registration point
 			BPoint newReg = oldReg;
-			newReg.y = m_ChannelCue->GetDrawArea().Height() * regPercY;
-			m_ChannelCue->SetRegistration(newReg);			
+			newReg.y = fChannelCue->GetDrawArea().Height() * regPercY;
+			fChannelCue->SetRegistration(newReg);			
 															
 			// Adjust resize zones			
 			SetResizeZones();
@@ -1663,7 +1663,7 @@ void TStageCue::ScaleTop(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		if ( thePoint.y > bottomSide - (kBorder*2))
@@ -1685,10 +1685,10 @@ void TStageCue::ScaleTopRight(BPoint thePoint)
 	BRect cropArea;
 	BPoint oldReg, drawPt, scalePt;
 		
-	cropArea = m_ChannelCue->GetDrawArea();			
-	oldReg 	 = m_ChannelCue->CuePosition()->Registration();
-	drawPt	 = m_ChannelCue->CuePosition()->Corner1();
-	scalePt  = m_ChannelCue->GetScale();
+	cropArea = fChannelCue->GetDrawArea();			
+	oldReg 	 = fChannelCue->CuePosition()->Registration();
+	drawPt	 = fChannelCue->CuePosition()->Corner1();
+	scalePt  = fChannelCue->GetScale();
 	
 	const int32 bottomSide = cropArea.bottom;
 	const int32 leftSide   = cropArea.left;
@@ -1698,7 +1698,7 @@ void TStageCue::ScaleTopRight(BPoint thePoint)
 	float	regPercY = oldReg.y / cropArea.Height();
 		
 	//	Save bitmap original size
-	const BRect origRect   = m_ChannelCue->GetOriginalArea();
+	const BRect origRect   = fChannelCue->GetOriginalArea();
 	const float origWidth  = origRect.Width();
 	const float origHeight = origRect.Height();	
 			
@@ -1706,7 +1706,7 @@ void TStageCue::ScaleTopRight(BPoint thePoint)
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -1723,7 +1723,7 @@ void TStageCue::ScaleTopRight(BPoint thePoint)
 					thePoint.x  = leftSide + (kBorder*2);
 							
 				//	Update the cue varibles to new settings
-				m_ChannelCue->SetScaleX((thePoint.x-leftSide) / origWidth);					
+				fChannelCue->SetScaleX((thePoint.x-leftSide) / origWidth);					
 			}
 			
 			if (thePoint.y != savePt.y)
@@ -1733,14 +1733,14 @@ void TStageCue::ScaleTopRight(BPoint thePoint)
 					thePoint.y  = bottomSide - (kBorder*2);
 							
 				//	Update the cue varibles to new settings
-				m_ChannelCue->SetDrawPointY(thePoint.y);
-				m_ChannelCue->SetScaleY((bottomSide - thePoint.y) / origHeight);
+				fChannelCue->SetDrawPointY(thePoint.y);
+				fChannelCue->SetScaleY((bottomSide - thePoint.y) / origHeight);
 			}
 			
 			//	Normalize registration point
-			oldReg.x = m_ChannelCue->GetDrawArea().Width()  * regPercX;
-			oldReg.y = m_ChannelCue->GetDrawArea().Height() * regPercY;
-			m_ChannelCue->SetRegistration(oldReg);							
+			oldReg.x = fChannelCue->GetDrawArea().Width()  * regPercX;
+			oldReg.y = fChannelCue->GetDrawArea().Height() * regPercY;
+			fChannelCue->SetRegistration(oldReg);							
 
 			// Adjust resize zones			
 			SetResizeZones();
@@ -1753,7 +1753,7 @@ void TStageCue::ScaleTopRight(BPoint thePoint)
 						
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		if ( thePoint.x < leftSide + (kBorder*2))
@@ -1778,10 +1778,10 @@ void TStageCue::ScaleRight(BPoint thePoint)
 	BRect cropArea;
 	BPoint oldReg, drawPt, scalePt;
 		
-	cropArea = m_ChannelCue->GetDrawArea();			
-	oldReg 	 = m_ChannelCue->CuePosition()->Registration();
-	drawPt	 = m_ChannelCue->CuePosition()->Corner1();
-	scalePt  = m_ChannelCue->GetScale();
+	cropArea = fChannelCue->GetDrawArea();			
+	oldReg 	 = fChannelCue->CuePosition()->Registration();
+	drawPt	 = fChannelCue->CuePosition()->Corner1();
+	scalePt  = fChannelCue->GetScale();
 	
 	const int32 leftSide = cropArea.left;	
 			
@@ -1789,14 +1789,14 @@ void TStageCue::ScaleRight(BPoint thePoint)
 	float regPercX = oldReg.x / cropArea.Width();
 			
 	//	Save bitmap original size
-	const BRect origRect  = m_ChannelCue->GetOriginalArea();
+	const BRect origRect  = fChannelCue->GetOriginalArea();
 	const float origWidth = origRect.Width();	
 	
 	// Resize the cue to the right while the mouse button is down	
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -1811,12 +1811,12 @@ void TStageCue::ScaleRight(BPoint thePoint)
 				thePoint.x  = leftSide + (kBorder*2);
 						
 			//	Update the cue varibles to new settings
-			m_ChannelCue->SetScaleX((thePoint.x-leftSide) / origWidth);
+			fChannelCue->SetScaleX((thePoint.x-leftSide) / origWidth);
 
 			//	Normalize registration point
 			BPoint newReg = oldReg;
-			newReg.x = m_ChannelCue->GetDrawArea().Width() * regPercX;
-			m_ChannelCue->SetRegistration(newReg);			
+			newReg.x = fChannelCue->GetDrawArea().Width() * regPercX;
+			fChannelCue->SetRegistration(newReg);			
 						
 			// Adjust resize zones			
 			SetResizeZones();
@@ -1828,7 +1828,7 @@ void TStageCue::ScaleRight(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		if ( thePoint.x < leftSide + (kBorder*2))
@@ -1849,10 +1849,10 @@ void TStageCue::ScaleBottomRight(BPoint thePoint)
 	BRect cropArea;
 	BPoint oldReg, drawPt, scalePt;
 		
-	cropArea = m_ChannelCue->GetDrawArea();			
-	oldReg 	 = m_ChannelCue->CuePosition()->Registration();
-	drawPt	 = m_ChannelCue->CuePosition()->Corner1();
-	scalePt  = m_ChannelCue->GetScale();
+	cropArea = fChannelCue->GetDrawArea();			
+	oldReg 	 = fChannelCue->CuePosition()->Registration();
+	drawPt	 = fChannelCue->CuePosition()->Corner1();
+	scalePt  = fChannelCue->GetScale();
 	
 	const int32 topSide  = cropArea.top;
 	const int32 leftSide = cropArea.left;			
@@ -1862,7 +1862,7 @@ void TStageCue::ScaleBottomRight(BPoint thePoint)
 	float	regPercY = oldReg.y / cropArea.Height();
 
 	//	Save bitmap original size
-	const BRect origRect   = m_ChannelCue->GetOriginalArea();
+	const BRect origRect   = fChannelCue->GetOriginalArea();
 	const float origWidth  = origRect.Width();
 	const float origHeight = origRect.Height();	
 			
@@ -1870,7 +1870,7 @@ void TStageCue::ScaleBottomRight(BPoint thePoint)
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -1887,7 +1887,7 @@ void TStageCue::ScaleBottomRight(BPoint thePoint)
 					thePoint.x  = leftSide + (kBorder*2);
 							
 				//	Update the cue varibles to new settings
-				m_ChannelCue->SetScaleX((thePoint.x-leftSide) / origWidth);
+				fChannelCue->SetScaleX((thePoint.x-leftSide) / origWidth);
 			}
 			
 			if (thePoint.y != savePt.y)
@@ -1897,13 +1897,13 @@ void TStageCue::ScaleBottomRight(BPoint thePoint)
 					thePoint.y  = topSide + (kBorder*2);
 											
 				//	Update the cue varibles to new settings
-				m_ChannelCue->SetScaleY((thePoint.y - topSide) / origHeight);
+				fChannelCue->SetScaleY((thePoint.y - topSide) / origHeight);
 			}
 
 			//	Normalize registration point
-			oldReg.x = m_ChannelCue->GetDrawArea().Width()  * regPercX;
-			oldReg.y = m_ChannelCue->GetDrawArea().Height() * regPercY;
-			m_ChannelCue->SetRegistration(oldReg);			
+			oldReg.x = fChannelCue->GetDrawArea().Width()  * regPercX;
+			oldReg.y = fChannelCue->GetDrawArea().Height() * regPercY;
+			fChannelCue->SetRegistration(oldReg);			
 									
 			// Adjust resize zones			
 			SetResizeZones();
@@ -1915,7 +1915,7 @@ void TStageCue::ScaleBottomRight(BPoint thePoint)
 			savePt = thePoint;							
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		if ( thePoint.x < leftSide + (kBorder*2))
@@ -1941,10 +1941,10 @@ void TStageCue::ScaleBottom(BPoint thePoint)
 	BRect cropArea;
 	BPoint oldReg, drawPt, scalePt;
 		
-	cropArea = m_ChannelCue->GetDrawArea();			
-	oldReg 	 = m_ChannelCue->CuePosition()->Registration();
-	drawPt	 = m_ChannelCue->CuePosition()->Corner1();
-	scalePt  = m_ChannelCue->GetScale();
+	cropArea = fChannelCue->GetDrawArea();			
+	oldReg 	 = fChannelCue->CuePosition()->Registration();
+	drawPt	 = fChannelCue->CuePosition()->Corner1();
+	scalePt  = fChannelCue->GetScale();
 	
 	int32 topSide  = cropArea.top;
 	
@@ -1952,14 +1952,14 @@ void TStageCue::ScaleBottom(BPoint thePoint)
 	float regPercY = oldReg.y / cropArea.Height();
 	
 	//	Save bitmap original size
-	const BRect origRect   = m_ChannelCue->GetOriginalArea();
+	const BRect origRect   = fChannelCue->GetOriginalArea();
 	const float origHeight = origRect.Height();	
 	
 	// Resize the cue to the right while the mouse button is down	
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -1974,12 +1974,12 @@ void TStageCue::ScaleBottom(BPoint thePoint)
 				thePoint.y  = topSide + (kBorder*2);
 						
 			//	Update the cue variables to new settings
-			m_ChannelCue->SetScaleY((thePoint.y - topSide) / origHeight);
+			fChannelCue->SetScaleY((thePoint.y - topSide) / origHeight);
 
 			//	Normalize registration point
 			BPoint newReg = oldReg;
-			newReg.y = m_ChannelCue->GetDrawArea().Height() * regPercY;
-			m_ChannelCue->SetRegistration(newReg);			
+			newReg.y = fChannelCue->GetDrawArea().Height() * regPercY;
+			fChannelCue->SetRegistration(newReg);			
 			
 			// Adjust resize zones			
 			SetResizeZones();
@@ -1991,7 +1991,7 @@ void TStageCue::ScaleBottom(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		if ( thePoint.y < topSide + (kBorder*2))
@@ -2012,10 +2012,10 @@ void TStageCue::ScaleBottomLeft(BPoint thePoint)
 	BRect cropArea;
 	BPoint oldReg, drawPt, scalePt;
 		
-	cropArea = m_ChannelCue->GetDrawArea();			
-	oldReg 	 = m_ChannelCue->CuePosition()->Registration();
-	drawPt	 = m_ChannelCue->CuePosition()->Corner1();
-	scalePt  = m_ChannelCue->GetScale();
+	cropArea = fChannelCue->GetDrawArea();			
+	oldReg 	 = fChannelCue->CuePosition()->Registration();
+	drawPt	 = fChannelCue->CuePosition()->Corner1();
+	scalePt  = fChannelCue->GetScale();
 	
 	const int32 topSide  	= cropArea.top;
 	const int32 rightSide	= cropArea.right;
@@ -2025,7 +2025,7 @@ void TStageCue::ScaleBottomLeft(BPoint thePoint)
 	float	regPercY = oldReg.y / cropArea.Height();
 
 	//	Save bitmap original size
-	const BRect origRect   = m_ChannelCue->GetOriginalArea();
+	const BRect origRect   = fChannelCue->GetOriginalArea();
 	const float origWidth  = origRect.Width();
 	const float origHeight = origRect.Height();	
 			
@@ -2033,7 +2033,7 @@ void TStageCue::ScaleBottomLeft(BPoint thePoint)
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -2050,8 +2050,8 @@ void TStageCue::ScaleBottomLeft(BPoint thePoint)
 					thePoint.x  = rightSide - (kBorder*2);
 											
 				//	Update the cue variables to new settings
-				m_ChannelCue->SetScaleX((rightSide - thePoint.x) / origWidth);
-				m_ChannelCue->SetDrawPointX(thePoint.x);
+				fChannelCue->SetScaleX((rightSide - thePoint.x) / origWidth);
+				fChannelCue->SetDrawPointX(thePoint.x);
 			}
 			
 			if (thePoint.y != savePt.y)
@@ -2061,13 +2061,13 @@ void TStageCue::ScaleBottomLeft(BPoint thePoint)
 					thePoint.y  = topSide + (kBorder*2);
 											
 				//	Update the cue variables to new settings
-				m_ChannelCue->SetScaleY((thePoint.y - topSide) / origHeight);			
+				fChannelCue->SetScaleY((thePoint.y - topSide) / origHeight);			
 			}
 			
 			//	Normalize registration point
-			oldReg.x = m_ChannelCue->GetDrawArea().Width()  * regPercX;
-			oldReg.y = m_ChannelCue->GetDrawArea().Height() * regPercY;
-			m_ChannelCue->SetRegistration(oldReg);			
+			oldReg.x = fChannelCue->GetDrawArea().Width()  * regPercX;
+			oldReg.y = fChannelCue->GetDrawArea().Height() * regPercY;
+			fChannelCue->SetRegistration(oldReg);			
 			
 			// Adjust resize zones			
 			SetResizeZones();
@@ -2080,7 +2080,7 @@ void TStageCue::ScaleBottomLeft(BPoint thePoint)
 						
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		if ( thePoint.x > rightSide - (kBorder*2))
@@ -2106,10 +2106,10 @@ void TStageCue::ScaleLeft(BPoint thePoint)
 	BRect  cropArea;
 	BPoint oldReg, drawPt, scalePt;
 
-	cropArea = m_ChannelCue->GetDrawArea();			
-	oldReg 	 = m_ChannelCue->CuePosition()->Registration();
-	drawPt	 = m_ChannelCue->CuePosition()->Corner1();
-	scalePt  = m_ChannelCue->GetScale();
+	cropArea = fChannelCue->GetDrawArea();			
+	oldReg 	 = fChannelCue->CuePosition()->Registration();
+	drawPt	 = fChannelCue->CuePosition()->Corner1();
+	scalePt  = fChannelCue->GetScale();
 	
 	int32 rightSide = cropArea.right;
 	
@@ -2117,14 +2117,14 @@ void TStageCue::ScaleLeft(BPoint thePoint)
 	float	regPercX = oldReg.x / cropArea.Width();
 	
 	//	Save bitmap original size
-	const BRect origRect  = m_ChannelCue->GetOriginalArea();
+	const BRect origRect  = fChannelCue->GetOriginalArea();
 	const float origWidth = origRect.Width();	
 	
 	// Resize the cue to the left while the mouse button is down	
 	BPoint	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -2139,13 +2139,13 @@ void TStageCue::ScaleLeft(BPoint thePoint)
 				thePoint.x  = rightSide - (kBorder*2);
 						
 			//	Update the cue varibles to new settings
-			m_ChannelCue->SetScaleX((rightSide - thePoint.x) / origWidth);
-			m_ChannelCue->SetDrawPointX(thePoint.x);
+			fChannelCue->SetScaleX((rightSide - thePoint.x) / origWidth);
+			fChannelCue->SetDrawPointX(thePoint.x);
 
 			//	Normalize registration point
 			BPoint newReg = oldReg;
-			newReg.x = m_ChannelCue->GetDrawArea().Width() * regPercX;
-			m_ChannelCue->SetRegistration(newReg);			
+			newReg.x = fChannelCue->GetDrawArea().Width() * regPercX;
+			fChannelCue->SetRegistration(newReg);			
 									
 			// Adjust resize zones			
 			SetResizeZones();
@@ -2157,7 +2157,7 @@ void TStageCue::ScaleLeft(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		if ( thePoint.x > rightSide - (kBorder*2))
@@ -2221,13 +2221,13 @@ void TStageCue::Crop(BPoint thePoint)
 	}
 	
 	//	Update stage
-	m_Stage->Looper()->Lock();
-	//m_Stage->StageDraw(m_ChannelCue->GetCroppedArea(), GetCurrentTime());
-	m_Stage->Invalidate();
-	m_Stage->Looper()->Unlock();
+	fStage->Looper()->Lock();
+	//fStage->StageDraw(fChannelCue->GetCroppedArea(), GetCurrentTime());
+	fStage->Invalidate();
+	fStage->Looper()->Unlock();
 
 	//	Update bounds polygon
-	m_ChannelCue->GetTransformedDrawPolygon(m_BoundsPolygon);			
+	fChannelCue->GetTransformedDrawPolygon(fBoundsPolygon);			
 
 	// Update resize zones
 	SetResizeZones();	
@@ -2244,14 +2244,14 @@ void TStageCue::Crop(BPoint thePoint)
 void TStageCue::CropTopLeft(BPoint thePoint)
 {
 	// Setup variables
-	BBitmap 	 *theBitmap 		= m_ChannelCue->GetBitmap();
+	BBitmap 	 *theBitmap 		= fChannelCue->GetBitmap();
 	const BRect	 bmapBounds 		= theBitmap->Bounds();
 
 	BRect	*croppedAreaPtr;
 	BPoint 	drawPt;
 	
-	croppedAreaPtr = m_ChannelCue->GetCroppedAreaPtr();		
-	drawPt = m_ChannelCue->CuePosition()->Corner1();
+	croppedAreaPtr = fChannelCue->GetCroppedAreaPtr();		
+	drawPt = fChannelCue->CuePosition()->Corner1();
 		
 	//	Calculate constraint parameters.
 	bool	constrainX;
@@ -2279,7 +2279,7 @@ void TStageCue::CropTopLeft(BPoint thePoint)
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -2367,10 +2367,10 @@ void TStageCue::CropTopLeft(BPoint thePoint)
 				//	Normalize registration point												
 				BPoint newReg;
 				newReg.x 		= croppedAreaPtr->Width() / 2;
-				newReg.x 		+= croppedAreaPtr->left - m_ChannelCue->GetOriginalArea().left;
+				newReg.x 		+= croppedAreaPtr->left - fChannelCue->GetOriginalArea().left;
 				newReg.y 		= croppedAreaPtr->Height() / 2;
-				newReg.y 		+= croppedAreaPtr->top - m_ChannelCue->GetOriginalArea().top;
-				m_ChannelCue->SetRegistration(newReg);				
+				newReg.y 		+= croppedAreaPtr->top - fChannelCue->GetOriginalArea().top;
+				fChannelCue->SetRegistration(newReg);				
 				
 				// Adjust resize zones			
 				SetResizeZones();
@@ -2383,12 +2383,12 @@ void TStageCue::CropTopLeft(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds		
 		if (IsShiftKeyDown())
 		{
-			const BRect drawArea = m_ChannelCue->GetDrawArea();
+			const BRect drawArea = fChannelCue->GetDrawArea();
 			
 			if (constrainX)
 			{
@@ -2412,8 +2412,8 @@ void TStageCue::CropTopLeft(BPoint thePoint)
 			thePoint.x = max(thePoint.x, bmapBounds.left + drawPt.x);	
 			thePoint.y = max(thePoint.y, bmapBounds.top + drawPt.y);
 						
-			thePoint.x = min(thePoint.x, m_ChannelCue->GetDrawArea().right - (kBorder*2));
-			thePoint.y = min(thePoint.y, m_ChannelCue->GetDrawArea().bottom - (kBorder*2));
+			thePoint.x = min(thePoint.x, fChannelCue->GetDrawArea().right - (kBorder*2));
+			thePoint.y = min(thePoint.y, fChannelCue->GetDrawArea().bottom - (kBorder*2));
 		}		
 	}				
 }
@@ -2429,20 +2429,20 @@ void TStageCue::CropTopLeft(BPoint thePoint)
 void TStageCue::CropTop( BPoint thePoint)
 {
 	// Setup variables
-	BBitmap 	 *theBitmap = m_ChannelCue->GetBitmap();
+	BBitmap 	 *theBitmap = fChannelCue->GetBitmap();
 	const BRect	 bmapBounds = theBitmap->Bounds();
 	
 	BRect	*croppedAreaPtr;
 	BPoint 	drawPt;
 	
-	croppedAreaPtr = m_ChannelCue->GetCroppedAreaPtr();		
-	drawPt = m_ChannelCue->CuePosition()->Corner1();
+	croppedAreaPtr = fChannelCue->GetCroppedAreaPtr();		
+	drawPt = fChannelCue->CuePosition()->Corner1();
 	
 	// Resize the cue to the right while the mouse button is down	
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -2465,10 +2465,10 @@ void TStageCue::CropTop( BPoint thePoint)
 				croppedAreaPtr->top = min(croppedAreaPtr->top, bmapBounds.bottom - (kBorder*2));
 				
 				//	Normalize registration point												
-				BPoint newReg 	= m_ChannelCue->CuePosition()->Registration();
+				BPoint newReg 	= fChannelCue->CuePosition()->Registration();
 				newReg.y 		= croppedAreaPtr->Height() / 2;
-				newReg.y 		+= croppedAreaPtr->top - m_ChannelCue->GetOriginalArea().top;
-				m_ChannelCue->SetRegistration(newReg);				
+				newReg.y 		+= croppedAreaPtr->top - fChannelCue->GetOriginalArea().top;
+				fChannelCue->SetRegistration(newReg);				
 				
 				// Adjust resize zones			
 				SetResizeZones();
@@ -2481,11 +2481,11 @@ void TStageCue::CropTop( BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		thePoint.y = max(thePoint.y, bmapBounds.top + drawPt.y);
-		thePoint.y = min(thePoint.y, m_ChannelCue->GetDrawArea().bottom - (kBorder*2));
+		thePoint.y = min(thePoint.y, fChannelCue->GetDrawArea().bottom - (kBorder*2));
 	}		
 }
 
@@ -2500,14 +2500,14 @@ void TStageCue::CropTop( BPoint thePoint)
 void TStageCue::CropTopRight(BPoint thePoint)
 {
 	// Setup variables
-	BBitmap 	 *theBitmap = m_ChannelCue->GetBitmap();
+	BBitmap 	 *theBitmap = fChannelCue->GetBitmap();
 	const BRect	 bmapBounds = theBitmap->Bounds();
 
 	BRect	*croppedAreaPtr;
 	BPoint 	drawPt;
 	
-	croppedAreaPtr = m_ChannelCue->GetCroppedAreaPtr();		
-	drawPt = m_ChannelCue->CuePosition()->Corner1();
+	croppedAreaPtr = fChannelCue->GetCroppedAreaPtr();		
+	drawPt = fChannelCue->CuePosition()->Corner1();
 	
 	//	Calculate constraint parameters.  Use cropped area left and bottom side 
 	//	and bitmap bounds right and top side		
@@ -2528,7 +2528,7 @@ void TStageCue::CropTopRight(BPoint thePoint)
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -2602,10 +2602,10 @@ void TStageCue::CropTopRight(BPoint thePoint)
 				//	Normalize registration point												
 				BPoint newReg;
 				newReg.x 		= croppedAreaPtr->Width() / 2;
-				newReg.x 		+= croppedAreaPtr->left - m_ChannelCue->GetOriginalArea().left;
+				newReg.x 		+= croppedAreaPtr->left - fChannelCue->GetOriginalArea().left;
 				newReg.y 		= croppedAreaPtr->Height() / 2;
-				newReg.y 		+= croppedAreaPtr->top - m_ChannelCue->GetOriginalArea().top;
-				m_ChannelCue->SetRegistration(newReg);				
+				newReg.y 		+= croppedAreaPtr->top - fChannelCue->GetOriginalArea().top;
+				fChannelCue->SetRegistration(newReg);				
 				
 				// Adjust resize zones			
 				SetResizeZones();
@@ -2618,24 +2618,24 @@ void TStageCue::CropTopRight(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		if (IsShiftKeyDown())
 		{
 			thePoint.y = max(thePoint.y, bmapBounds.top + drawPt.y);
-			thePoint.y = min(thePoint.y, m_ChannelCue->GetDrawArea().bottom - (kBorder*2));
+			thePoint.y = min(thePoint.y, fChannelCue->GetDrawArea().bottom - (kBorder*2));
 
 			thePoint.x = min(thePoint.x, (bmapBounds.right + drawPt.x) - constrainPix );
-			thePoint.x = max(thePoint.x, m_ChannelCue->GetDrawArea().left+(kBorder*2));
+			thePoint.x = max(thePoint.x, fChannelCue->GetDrawArea().left+(kBorder*2));
 		}
 		else
 		{
 			thePoint.x = min(thePoint.x, bmapBounds.right + drawPt.x);
 			thePoint.y = max(thePoint.y, bmapBounds.top + drawPt.y);
 						
-			thePoint.x = max(thePoint.x, m_ChannelCue->GetDrawArea().left+(kBorder*2));
-			thePoint.y = min(thePoint.y, m_ChannelCue->GetDrawArea().bottom - (kBorder*2));
+			thePoint.x = max(thePoint.x, fChannelCue->GetDrawArea().left+(kBorder*2));
+			thePoint.y = min(thePoint.y, fChannelCue->GetDrawArea().bottom - (kBorder*2));
 		}
 	}
 }
@@ -2651,20 +2651,20 @@ void TStageCue::CropTopRight(BPoint thePoint)
 void TStageCue::CropRight(BPoint thePoint)
 {
 	// Setup variables
-	BBitmap 	 *theBitmap 	 = m_ChannelCue->GetBitmap();
+	BBitmap 	 *theBitmap 	 = fChannelCue->GetBitmap();
 	const BRect	 bmapBounds 	 = theBitmap->Bounds();
 	
 	BRect	*croppedAreaPtr;
 	BPoint 	drawPt;
 	
-	croppedAreaPtr = m_ChannelCue->GetCroppedAreaPtr();		
-	drawPt = m_ChannelCue->CuePosition()->Corner1();
+	croppedAreaPtr = fChannelCue->GetCroppedAreaPtr();		
+	drawPt = fChannelCue->CuePosition()->Corner1();
 	
 	// Resize the cue to the right while the mouse button is down	
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -2687,10 +2687,10 @@ void TStageCue::CropRight(BPoint thePoint)
 				croppedAreaPtr->right = max( croppedAreaPtr->right, croppedAreaPtr->left + (kBorder*2));
 
 				//	Normalize registration point												
-				BPoint newReg 	= m_ChannelCue->CuePosition()->Registration();
+				BPoint newReg 	= fChannelCue->CuePosition()->Registration();
 				newReg.x 		= croppedAreaPtr->Width() / 2;
-				newReg.x 		+= croppedAreaPtr->left - m_ChannelCue->GetOriginalArea().left;
-				m_ChannelCue->SetRegistration(newReg);				
+				newReg.x 		+= croppedAreaPtr->left - fChannelCue->GetOriginalArea().left;
+				fChannelCue->SetRegistration(newReg);				
 
 				// Adjust resize zones			
 				SetResizeZones();
@@ -2703,11 +2703,11 @@ void TStageCue::CropRight(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		thePoint.x = min(thePoint.x, bmapBounds.right + drawPt.x);
-		thePoint.x = max(thePoint.x, m_ChannelCue->GetDrawArea().left+(kBorder*2));
+		thePoint.x = max(thePoint.x, fChannelCue->GetDrawArea().left+(kBorder*2));
 	}		
 }
 
@@ -2721,20 +2721,20 @@ void TStageCue::CropRight(BPoint thePoint)
 void TStageCue::CropBottomRight(BPoint thePoint)
 {
 	// Setup variables
-	BBitmap 	 *theBitmap = m_ChannelCue->GetBitmap();
+	BBitmap 	 *theBitmap = fChannelCue->GetBitmap();
 	const BRect	 bmapBounds = theBitmap->Bounds();
 
 	BRect	*croppedAreaPtr;
 	BPoint 	drawPt;
 	
-	croppedAreaPtr = m_ChannelCue->GetCroppedAreaPtr();		
-	drawPt = m_ChannelCue->CuePosition()->Corner1();
+	croppedAreaPtr = fChannelCue->GetCroppedAreaPtr();		
+	drawPt = fChannelCue->CuePosition()->Corner1();
 	
 	// Resize the cue to the right while the mouse button is down	
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -2780,10 +2780,10 @@ void TStageCue::CropBottomRight(BPoint thePoint)
 			//	Normalize registration point												
 			BPoint newReg;
 			newReg.x 		= croppedAreaPtr->Width() / 2;
-			newReg.x 		+= croppedAreaPtr->left - m_ChannelCue->GetOriginalArea().left;
+			newReg.x 		+= croppedAreaPtr->left - fChannelCue->GetOriginalArea().left;
 			newReg.y 		= croppedAreaPtr->Height() / 2;
-			newReg.y 		+= croppedAreaPtr->top - m_ChannelCue->GetOriginalArea().top;
-			m_ChannelCue->SetRegistration(newReg);				
+			newReg.y 		+= croppedAreaPtr->top - fChannelCue->GetOriginalArea().top;
+			fChannelCue->SetRegistration(newReg);				
 			
 			// Adjust resize zones			
 			SetResizeZones();
@@ -2795,14 +2795,14 @@ void TStageCue::CropBottomRight(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		thePoint.x = min(thePoint.x, bmapBounds.right + drawPt.x);
 		thePoint.y = min(thePoint.y, bmapBounds.bottom + drawPt.y);
 				
-		thePoint.x = max(thePoint.x, m_ChannelCue->GetDrawArea().left + (kBorder*2));
-		thePoint.y = max(thePoint.y, m_ChannelCue->GetDrawArea().top + (kBorder*2));
+		thePoint.x = max(thePoint.x, fChannelCue->GetDrawArea().left + (kBorder*2));
+		thePoint.y = max(thePoint.y, fChannelCue->GetDrawArea().top + (kBorder*2));
 	}	
 }
 
@@ -2818,20 +2818,20 @@ void TStageCue::CropBottomRight(BPoint thePoint)
 void TStageCue::CropBottom(BPoint thePoint)
 {
 	// Setup variables
-	BBitmap 	 *theBitmap = m_ChannelCue->GetBitmap();
+	BBitmap 	 *theBitmap = fChannelCue->GetBitmap();
 	const BRect	 bmapBounds = theBitmap->Bounds();
 
 	BRect	*croppedAreaPtr;
 	BPoint 	drawPt;
 	
-	croppedAreaPtr = m_ChannelCue->GetCroppedAreaPtr();		
-	drawPt = m_ChannelCue->CuePosition()->Corner1();
+	croppedAreaPtr = fChannelCue->GetCroppedAreaPtr();		
+	drawPt = fChannelCue->CuePosition()->Corner1();
 	
 	// Resize the cue to the right while the mouse button is down	
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -2853,10 +2853,10 @@ void TStageCue::CropBottom(BPoint thePoint)
 				croppedAreaPtr->bottom = min(croppedAreaPtr->bottom, bmapBounds.bottom);
 				croppedAreaPtr->bottom = max(croppedAreaPtr->bottom, croppedAreaPtr->top + (kBorder*2));
 
-				BPoint newReg 	= m_ChannelCue->CuePosition()->Registration();
+				BPoint newReg 	= fChannelCue->CuePosition()->Registration();
 				newReg.y 		= croppedAreaPtr->Height() / 2;
-				newReg.y 		+= croppedAreaPtr->top - m_ChannelCue->GetOriginalArea().top;
-				m_ChannelCue->SetRegistration(newReg);				
+				newReg.y 		+= croppedAreaPtr->top - fChannelCue->GetOriginalArea().top;
+				fChannelCue->SetRegistration(newReg);				
 				
 				// Adjust resize zones			
 				SetResizeZones();
@@ -2869,12 +2869,12 @@ void TStageCue::CropBottom(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		thePoint.y = min(thePoint.y, bmapBounds.bottom + drawPt.y);
 				
-		thePoint.y = max(thePoint.y, m_ChannelCue->GetDrawArea().top + (kBorder*2));
+		thePoint.y = max(thePoint.y, fChannelCue->GetDrawArea().top + (kBorder*2));
 	}		
 }
 
@@ -2888,20 +2888,20 @@ void TStageCue::CropBottom(BPoint thePoint)
 void TStageCue::CropBottomLeft(BPoint thePoint)
 {
 	// Setup variables
-	BBitmap 	 *theBitmap = m_ChannelCue->GetBitmap();
+	BBitmap 	 *theBitmap = fChannelCue->GetBitmap();
 	const BRect	 bmapBounds = theBitmap->Bounds();
 
 	BRect	*croppedAreaPtr;
 	BPoint 	drawPt;
 	
-	croppedAreaPtr = m_ChannelCue->GetCroppedAreaPtr();		
-	drawPt = m_ChannelCue->CuePosition()->Corner1();
+	croppedAreaPtr = fChannelCue->GetCroppedAreaPtr();		
+	drawPt = fChannelCue->CuePosition()->Corner1();
 	
 	// Resize while the mouse button is down	
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -2947,10 +2947,10 @@ void TStageCue::CropBottomLeft(BPoint thePoint)
 			//	Normalize registration point												
 			BPoint newReg;
 			newReg.x 		= croppedAreaPtr->Width() / 2;
-			newReg.x 		+= croppedAreaPtr->left - m_ChannelCue->GetOriginalArea().left;
+			newReg.x 		+= croppedAreaPtr->left - fChannelCue->GetOriginalArea().left;
 			newReg.y 		= croppedAreaPtr->Height() / 2;
-			newReg.y 		+= croppedAreaPtr->top - m_ChannelCue->GetOriginalArea().top;
-			m_ChannelCue->SetRegistration(newReg);				
+			newReg.y 		+= croppedAreaPtr->top - fChannelCue->GetOriginalArea().top;
+			fChannelCue->SetRegistration(newReg);				
 			
 			// Adjust resize zones			
 			SetResizeZones();
@@ -2962,14 +2962,14 @@ void TStageCue::CropBottomLeft(BPoint thePoint)
 			savePt = thePoint;			
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		thePoint.x = max(thePoint.x, bmapBounds.left + drawPt.x);	
 		thePoint.y = min(thePoint.y, bmapBounds.bottom + drawPt.y);
 								
-		thePoint.x = min(thePoint.x, m_ChannelCue->GetDrawArea().right - (kBorder*2));	
-		thePoint.y = max(thePoint.y, m_ChannelCue->GetDrawArea().top + (kBorder*2));
+		thePoint.x = min(thePoint.x, fChannelCue->GetDrawArea().right - (kBorder*2));	
+		thePoint.y = max(thePoint.y, fChannelCue->GetDrawArea().top + (kBorder*2));
 	}				
 }
 
@@ -2985,14 +2985,14 @@ void TStageCue::CropBottomLeft(BPoint thePoint)
 void TStageCue::CropLeft(BPoint thePoint)
 {
 	// Setup variables
-	BBitmap 	 *theBitmap = m_ChannelCue->GetBitmap();
+	BBitmap 	 *theBitmap = fChannelCue->GetBitmap();
 	const BRect	 bmapBounds = theBitmap->Bounds();
 	
 	BRect	*croppedAreaPtr;
 	BPoint 	drawPt;
 	
-	croppedAreaPtr 	= m_ChannelCue->GetCroppedAreaPtr();		
-	drawPt 			= m_ChannelCue->CuePosition()->Corner1();
+	croppedAreaPtr 	= fChannelCue->GetCroppedAreaPtr();		
+	drawPt 			= fChannelCue->CuePosition()->Corner1();
 	
 	
 	
@@ -3000,7 +3000,7 @@ void TStageCue::CropLeft(BPoint thePoint)
 	BPoint 	savePt;
 	uint32	buttons = 0;
 	
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 			
 	while (buttons)
@@ -3023,10 +3023,10 @@ void TStageCue::CropLeft(BPoint thePoint)
 				croppedAreaPtr->left = min(croppedAreaPtr->left, bmapBounds.right - (kBorder*2));
 
 				//	Normalize registration point												
-				BPoint newReg 	= m_ChannelCue->CuePosition()->Registration();
+				BPoint newReg 	= fChannelCue->CuePosition()->Registration();
 				newReg.x 		= croppedAreaPtr->Width() / 2;
-				newReg.x 		+= croppedAreaPtr->left - m_ChannelCue->GetOriginalArea().left;
-				m_ChannelCue->SetRegistration(newReg);				
+				newReg.x 		+= croppedAreaPtr->left - fChannelCue->GetOriginalArea().left;
+				fChannelCue->SetRegistration(newReg);				
 
 				// Adjust resize zones			
 				SetResizeZones();
@@ -3039,12 +3039,12 @@ void TStageCue::CropLeft(BPoint thePoint)
 			savePt = thePoint;																						
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);
+		fStage->GetMouse(&thePoint, &buttons, true);
 		
 		// Clip the point back within the proper bounds
 		thePoint.x = max(thePoint.x, bmapBounds.left + drawPt.x);	
 
-		thePoint.x = min(thePoint.x, m_ChannelCue->GetDrawArea().right - (kBorder*2));		
+		thePoint.x = min(thePoint.x, fChannelCue->GetDrawArea().right - (kBorder*2));		
 	}		
 }
 
@@ -3070,13 +3070,13 @@ void TStageCue::Rotate(BPoint thePoint)
 	uint32	buttons  = 0;
 	
 	//	Get pointer to stage
-	BView *offView = m_Stage->GetOffscreenView();		
+	BView *offView = fStage->GetOffscreenView();		
 	
 	//	Get cues visual center point
-	const BPoint centerPt = m_ChannelCue->GetRegistrationOffset();
+	const BPoint centerPt = fChannelCue->GetRegistrationOffset();
 	
 	//	Get mouse position
-	m_Stage->GetMouse(&thePoint, &buttons, true);	
+	fStage->GetMouse(&thePoint, &buttons, true);	
 	savePt = thePoint;
 
 	//	Save our start point
@@ -3092,7 +3092,7 @@ void TStageCue::Rotate(BPoint thePoint)
 	saveDegrees = theta * (180 / M_PI);
 				
 	//	Grab a pointer to the cue's rotate dialog
-	TRotateDialog *theDialog = m_ChannelCue->GetRotateDialog();
+	TRotateDialog *theDialog = fChannelCue->GetRotateDialog();
 	
 	while (buttons)
 	{				
@@ -3100,7 +3100,7 @@ void TStageCue::Rotate(BPoint thePoint)
 		if (thePoint != savePt)
 		{											
 			//	Get current rotation degrees
-			rotation = m_ChannelCue->GetRotation();
+			rotation = fChannelCue->GetRotation();
 		
 			//	Calculate new angle
 			x21 = startPt.x  - centerPt.x; 
@@ -3161,7 +3161,7 @@ void TStageCue::Rotate(BPoint thePoint)
 				DrawSelectionRect(false);
 				
 				//	Update degrees of rotation
-				m_ChannelCue->SetRotation(rotation);
+				fChannelCue->SetRotation(rotation);
 				
 				// Adjust resize zones			
 				SetResizeZones();
@@ -3186,17 +3186,17 @@ void TStageCue::Rotate(BPoint thePoint)
 			savePt = thePoint;						
 		}
 		
-		m_Stage->GetMouse(&thePoint, &buttons, true);		
+		fStage->GetMouse(&thePoint, &buttons, true);		
 	}
 	
 	//	Draw updated bitmap
-	m_Stage->Looper()->Lock();
-	//m_Stage->StageDraw(m_ChannelCue->GetCroppedArea(), GetCurrentTime());
-	m_Stage->Invalidate();
-	m_Stage->Looper()->Unlock();
+	fStage->Looper()->Lock();
+	//fStage->StageDraw(fChannelCue->GetCroppedArea(), GetCurrentTime());
+	fStage->Invalidate();
+	fStage->Looper()->Unlock();
 	
 	//	Update bounds polygon
-	m_ChannelCue->GetTransformedDrawPolygon(m_BoundsPolygon);			
+	fChannelCue->GetTransformedDrawPolygon(fBoundsPolygon);			
 }
 
 #pragma mark -
@@ -3244,30 +3244,30 @@ void TStageCue::Mirror(BPoint thePoint)
 
 void TStageCue::MirrorHorizontal(BPoint thePoint)
 {
-	BRect 		 *croppedAreaPtr 	= m_ChannelCue->GetCroppedAreaPtr();		
+	BRect 		 *croppedAreaPtr 	= fChannelCue->GetCroppedAreaPtr();		
 		
 	// 	Get current miror value					
-	bool theVal = m_ChannelCue->GetMirrorH();
+	bool theVal = fChannelCue->GetMirrorH();
 
 	// 	Set new mirror value
 	if (theVal)
-		m_ChannelCue->SetMirrorH(false);
+		fChannelCue->SetMirrorH(false);
 	else
-		m_ChannelCue->SetMirrorH(true);
+		fChannelCue->SetMirrorH(true);
 								
 	// Adjust resize zones			
 	SetResizeZones();
 	
-	//	Update m_ChannelCue's internal bitmap
-	m_ChannelCue->Unmute();
-	m_ChannelCue->RenderData(GetCurrentTime(), m_ChannelCue->GetDrawArea());
-	m_ChannelCue->Mute();
+	//	Update fChannelCue's internal bitmap
+	fChannelCue->Unmute();
+	fChannelCue->RenderData(GetCurrentTime(), fChannelCue->GetDrawArea());
+	fChannelCue->Mute();
 	
 	// Force a stage draw
-	m_Stage->Looper()->Lock();
-	m_Stage->StageDraw(*croppedAreaPtr, GetCurrentTime());
-	m_Stage->Invalidate();
-	m_Stage->Looper()->Unlock();
+	fStage->Looper()->Lock();
+	fStage->StageDraw(*croppedAreaPtr, GetCurrentTime());
+	fStage->Invalidate();
+	fStage->Looper()->Unlock();
 }
 
 //---------------------------------------------------------------------
@@ -3279,30 +3279,30 @@ void TStageCue::MirrorHorizontal(BPoint thePoint)
 
 void TStageCue::MirrorVertical(BPoint thePoint)
 {
-	BRect 		 *croppedAreaPtr 	= m_ChannelCue->GetCroppedAreaPtr();		
+	BRect 		 *croppedAreaPtr 	= fChannelCue->GetCroppedAreaPtr();		
 		
 	// 	Get current miror value					
-	bool theVal = m_ChannelCue->GetMirrorV();
+	bool theVal = fChannelCue->GetMirrorV();
 
 	// 	Set new mirror value
 	if (theVal)
-		m_ChannelCue->SetMirrorV(false);
+		fChannelCue->SetMirrorV(false);
 	else
-		m_ChannelCue->SetMirrorV(true);
+		fChannelCue->SetMirrorV(true);
 								
 	// Adjust resize zones			
 	SetResizeZones();
 	
-	//	Update m_ChannelCue's internal bitmap
-	m_ChannelCue->Unmute();
-	m_ChannelCue->RenderData(GetCurrentTime(), m_ChannelCue->GetDrawArea());
-	m_ChannelCue->Mute();
+	//	Update fChannelCue's internal bitmap
+	fChannelCue->Unmute();
+	fChannelCue->RenderData(GetCurrentTime(), fChannelCue->GetDrawArea());
+	fChannelCue->Mute();
 	
 	// Force a stage draw
-	m_Stage->Looper()->Lock();
-	m_Stage->StageDraw(*croppedAreaPtr, GetCurrentTime());
-	m_Stage->Invalidate();
-	m_Stage->Looper()->Unlock();
+	fStage->Looper()->Lock();
+	fStage->StageDraw(*croppedAreaPtr, GetCurrentTime());
+	fStage->Invalidate();
+	fStage->Looper()->Unlock();
 }
 */
 
@@ -3319,7 +3319,7 @@ void TStageCue::MirrorVertical(BPoint thePoint)
 
 void TStageCue::SetMoveCursor(BPoint thePoint)
 {
-	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );	
+	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );	
 }
 
 
@@ -3332,7 +3332,7 @@ void TStageCue::SetMoveCursor(BPoint thePoint)
 
 void TStageCue::SetRotateCursor(BPoint thePoint)
 {
-	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );	
+	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );	
 }
 
 
@@ -3353,32 +3353,32 @@ void TStageCue::SetCropCursor(BPoint thePoint)
 		{			 			
 			case kTopLeftResize:
 			case kBottomRightResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_ResizeDiagRightCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeDiagRightCursor );
 				break;
 				
 			case kTopRightResize:
 			case kBottomLeftResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_ResizeDiagLeftCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeDiagLeftCursor );
 				break;
 				
 			case kTopMiddleResize:
 			case kBottomMiddleResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_SizeVertCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeVertCursor );
 				break;
 											
 			case kLeftMiddleResize:
 			case kRightMiddleResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_SizeHorzCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeHorzCursor );
 				break;
 				
 			default:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 				break;		
 		}	
 	}
 	else
 	{
-		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 	}	
 }
 
@@ -3399,32 +3399,32 @@ void TStageCue::SetScaleCursor(BPoint thePoint)
 		{			 			
 			case kTopLeftResize:
 			case kBottomRightResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_ResizeDiagRightCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeDiagRightCursor );
 				break;
 				
 			case kTopRightResize:
 			case kBottomLeftResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_ResizeDiagLeftCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fResizeDiagLeftCursor );
 				break;
 				
 			case kTopMiddleResize:
 			case kBottomMiddleResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_SizeVertCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeVertCursor );
 				break;
 											
 			case kLeftMiddleResize:
 			case kRightMiddleResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_SizeHorzCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeHorzCursor );
 				break;
 				
 			default:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 				break;		
 		}	
 	}
 	else
 	{
-		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 	}			
 }
 
@@ -3448,17 +3448,17 @@ void TStageCue::SetShearCursor(BPoint thePoint)
 			case kTopRightResize:
 			case kBottomRightResize:			
 			case kBottomLeftResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_SizeHorzCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeHorzCursor );
 				break;
 
 			default:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 				break;		
 		}	
 	}
 	else
 	{
-		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 	}	
 }
 
@@ -3472,7 +3472,7 @@ void TStageCue::SetShearCursor(BPoint thePoint)
 
 void TStageCue::SetSkewCursor(BPoint thePoint)
 {
-	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 }
 
 
@@ -3485,7 +3485,7 @@ void TStageCue::SetSkewCursor(BPoint thePoint)
 
 void TStageCue::SetPerspectiveCursor(BPoint thePoint)
 {
-	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+	be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 }
 
 
@@ -3505,22 +3505,22 @@ void TStageCue::SetMirrorCursor(BPoint thePoint)
 		{			 						
 			case kTopMiddleResize:
 			case kBottomMiddleResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_SizeVertCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeVertCursor );
 				break;
 											
 			case kLeftMiddleResize:
 			case kRightMiddleResize:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_SizeHorzCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fSizeHorzCursor );
 				break;
 				
 			default:
-				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+				be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 				break;		
 		}	
 	}
 	else
 	{
-		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->m_MoveCursor );
+		be_app->SetCursor(&static_cast<MuseumApp *>(be_app)->fMoveCursor );
 	}			
 }
 
@@ -3532,12 +3532,12 @@ void TStageCue::SetMirrorCursor(BPoint thePoint)
 //	SetChannelCue
 //---------------------------------------------------------------------
 //
-//	Set m_ChannelCue
+//	Set fChannelCue
 //
 		
 void TStageCue::SetChannelCue(TVisualCue *theCue)
 {
-	m_ChannelCue = theCue;
+	fChannelCue = theCue;
 }
 
 
@@ -3556,12 +3556,12 @@ void TStageCue::OpenStageCueMenu(BPoint menuPt)
 	BMenuItem 	*selected;
 		
 	// Create the menu and mark the current transition
-	TStageCueMenu *theMenu = new TStageCueMenu(this->m_ChannelCue);
+	TStageCueMenu *theMenu = new TStageCueMenu(this->fChannelCue);
 	
 	if (theMenu)
 	{	
 		// Set menu location point		
-		m_Stage->ConvertToScreen(&menuPt);
+		fStage->ConvertToScreen(&menuPt);
 		selected = theMenu->Go(menuPt);
 		
 		// Check and see if we have a menu message
@@ -3580,21 +3580,21 @@ void TStageCue::OpenStageCueMenu(BPoint menuPt)
 			//if ( selected->Message()->FindInt32("DrawingMode", &drawingMode) == B_OK)
 			//{			
 				// Lock offscreen 								
-				//m_OffscreenView->Looper()->Lock();
+				//fOffscreenView->Looper()->Lock();
 				
 				// Save drawing mode
-				//m_ChannelCue->SetDrawingMode( (drawing_mode)drawingMode );
+				//fChannelCue->SetDrawingMode( (drawing_mode)drawingMode );
 				
 				// Only redraw if mode has changed		
-				//if ( m_OffscreenView->DrawingMode() != m_ChannelCue->DrawingMode() )
+				//if ( fOffscreenView->DrawingMode() != fChannelCue->DrawingMode() )
 				//{
 					//	Draw the bitmap into the offscreen using the new mode.
-				//	m_OffscreenView->SetDrawingMode(m_ChannelCue->DrawingMode());			
-				//	m_OffscreenView->DrawBitmap(m_Bitmap);
-				//	m_OffscreenView->Sync();			
+				//	fOffscreenView->SetDrawingMode(fChannelCue->DrawingMode());			
+				//	fOffscreenView->DrawBitmap(fBitmap);
+				//	fOffscreenView->Sync();			
 				//	Invalidate();
 				//}
-				//m_OffscreenView->Looper()->Unlock();
+				//fOffscreenView->Looper()->Unlock();
 			//}									
 		}
 			
@@ -3613,7 +3613,7 @@ void TStageCue::OpenStageCueMenu(BPoint menuPt)
 
 void TStageCue::OpenCurrentToolDialog()
 {
-	switch(m_Stage->GetToolMode())
+	switch(fStage->GetToolMode())
 	{
 		case kMoveMode:
 			break;
@@ -3621,7 +3621,7 @@ void TStageCue::OpenCurrentToolDialog()
 		case kRotateMode:
 			{
 				BMessage *theMessage = new BMessage(STAGE_CUE_ROTATE_MSG);
-				m_ChannelCue->MessageReceived(theMessage);
+				fChannelCue->MessageReceived(theMessage);
 				delete theMessage;
 			}
 			break;
@@ -3632,7 +3632,7 @@ void TStageCue::OpenCurrentToolDialog()
 		case kScaleMode:
 			{
 				BMessage *theMessage = new BMessage(STAGE_CUE_SCALE_MSG);
-				m_ChannelCue->MessageReceived(theMessage);
+				fChannelCue->MessageReceived(theMessage);
 				delete theMessage;
 			}
 			break;

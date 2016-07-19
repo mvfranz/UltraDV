@@ -84,57 +84,57 @@ TTextCue::~TTextCue()
 void TTextCue::Init()
 {	
 	// Set up default duration in microseconds
-	m_Duration = 1000;
+	fDuration = 1000;
 	
 	// Editor is closed
-	m_EditorOpen = false;
+	fEditorOpen = false;
 	
 	// Set up default settings
-	m_IsLocked 			= false;	
-	m_IsSelected 		= false;	
-	m_LowColor 			= kWhite;	
-	m_HighColor 		= kBlack;	
-	m_IsPrepared 		= false;
-	m_IsPlaying 		= false;	
-	m_HasDuration 		= true;	
-	m_CanStretch		= true;		
-	m_CanEnvelope		= false;
-	m_IsVisible 		= true;
-	m_CanCrop			= true;	
-	m_CanTransition		= true;	
-	m_CanPath			= true;	
-	m_HasEditor			= true;	
-	m_CanWindow			= false;
-	m_CanLoop			= false;
+	fIsLocked 			= false;	
+	fIsSelected 		= false;	
+	fLowColor 			= kWhite;	
+	fHighColor 		= kBlack;	
+	fIsPrepared 		= false;
+	fIsPlaying 		= false;	
+	fHasDuration 		= true;	
+	fCanStretch		= true;		
+	fCanEnvelope		= false;
+	fIsVisible 		= true;
+	fCanCrop			= true;	
+	fCanTransition		= true;	
+	fCanPath			= true;	
+	fHasEditor			= true;	
+	fCanWindow			= false;
+	fCanLoop			= false;
 			
 	// 	Set up area rectangles.  We create an initital rect the size of the stage
 	//	and then inset by ten pixels
 	BRect textBounds = static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage()->Bounds();
 	textBounds.InsetBy(10, 10);
-	m_Bitmap = new BBitmap(textBounds, B_RGB_32_BIT);
+	fBitmap = new BBitmap(textBounds, B_RGB_32_BIT);
 				
 	// Default initialization
 	TVisualCue::Init();
 	
 	// Add the cue to the cue channel
-	if ( m_Channel->CanInsertCue(this, m_InsertTime, true))
+	if ( fChannel->CanInsertCue(this, fInsertTime, true))
 	{
-		m_Channel->InsertCue(this, m_InsertTime);		
+		fChannel->InsertCue(this, fInsertTime);		
 		Select();
 		
 		// We are now fully instantiated
-		m_IsInstantiated = true;
+		fIsInstantiated = true;
 	}
 	
 	// Set expanded status
-	if (m_Channel->IsExpanded())
+	if (fChannel->IsExpanded())
 	{
-		m_IsExpanded = false;
+		fIsExpanded = false;
 		Expand();
 	}
 	else
 	{
-		m_IsExpanded = true;
+		fIsExpanded = true;
 		Contract();		
 	}		
 }
@@ -276,13 +276,13 @@ void TTextCue::OpenEditor()
 
 void TTextCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = GetAppIcons()->m_TextUpIcon;
+	BBitmap *cueIcon = GetAppIcons()->fTextUpIcon;
 
 	if (cueIcon)
 	{
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
 		area.OffsetBy(kResizeZoneWidth+5, 0);		
-		m_CueIcon = new TBitmapView(area, "CueIcon", cueIcon, false);
-		AddChild(m_CueIcon);		
+		fCueIcon = new TBitmapView(area, "CueIcon", cueIcon, false);
+		AddChild(fCueIcon);		
 	}	
 }

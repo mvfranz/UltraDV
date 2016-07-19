@@ -36,7 +36,7 @@
 
 TNumberBevelTextView::TNumberBevelTextView( BRect bounds, char *name, uint32 resizing, BMessage *theMessage) : BView(bounds, name, resizing, B_WILL_DRAW)
 {		
-	m_Message = theMessage;
+	fMessage = theMessage;
 	
 	// Perform default initialization
 	Init();
@@ -51,8 +51,8 @@ TNumberBevelTextView::TNumberBevelTextView( BRect bounds, char *name, uint32 res
 
 TNumberBevelTextView::~TNumberBevelTextView()
 {	
-	if (m_Message)
-		delete m_Message;
+	if (fMessage)
+		delete fMessage;
 }
 
 
@@ -68,10 +68,10 @@ void TNumberBevelTextView::Init()
 	// Create child TNumberTextView
 	BRect bounds = Bounds();
 	//bounds.InsetBy(2, 2);
-	m_TextView = new TNumberTextView( bounds, "TimeTextView", B_FOLLOW_ALL);
-	AddChild(m_TextView);
+	fTextView = new TNumberTextView( bounds, "TimeTextView", B_FOLLOW_ALL);
+	AddChild(fTextView);
 	
-	m_TextView->SetTextRect(Bounds());
+	fTextView->SetTextRect(Bounds());
 }
 
 
@@ -88,7 +88,7 @@ void TNumberBevelTextView::Draw(BRect inRect)
 	PopState();
 			
 	// Draw text
-	m_TextView->Draw(inRect);
+	fTextView->Draw(inRect);
 	
 	// Draw standard Be Style bevel
 	BPoint startPt, endPt;
@@ -96,7 +96,7 @@ void TNumberBevelTextView::Draw(BRect inRect)
 	bounds.InsetBy(1, 1);
 	
 	// Draw blue outline is text view has focus
-	if (m_TextView->IsFocus())
+	if (fTextView->IsFocus())
 	{
 		SetHighColor(kBeFocusBlue);		
 		StrokeRect(bounds);	
@@ -151,7 +151,7 @@ void TNumberBevelTextView::Draw(BRect inRect)
 
 void TNumberBevelTextView::MouseDown(BPoint where)
 {
-	m_TextView->MakeFocus(true);
+	fTextView->MakeFocus(true);
 	
 	BView::MouseDown(where);	
 }
@@ -203,7 +203,7 @@ void TNumberBevelTextView::MakeFocus(bool focusState)
 {
 	// Send message to parent that we have focus
 	if (focusState)
-		Window()->PostMessage(m_Message, NULL);
+		Window()->PostMessage(fMessage, NULL);
 		
 	BView::MakeFocus(focusState);
 }

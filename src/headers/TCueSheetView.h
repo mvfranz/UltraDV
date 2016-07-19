@@ -97,22 +97,22 @@ class TCueSheetView: public BView
 		void 	SetLiveUpdate(bool drag);
 				
 		// Accessor function
-		inline 	TCueSheetWindow *GetParent(){ ASSERT(m_Parent); return m_Parent; }
+		inline 	TCueSheetWindow *GetParent(){ ASSERT(fParent); return fParent; }
 		inline 	BList 			*GetChannelList(){ printf("TCSV:GetChannelList.h: before return\n"); 
-									ASSERT(m_ChannelList);
-									return m_ChannelList; }
-		inline 	int32 			GetTotalChannels(){ return m_ChannelList->CountItems(); }
+									ASSERT(fChannelList);
+									return fChannelList; }
+		inline 	int32 			GetTotalChannels(){ return fChannelList->CountItems(); }
 				
-		inline	uint32		StartTime(){ return m_StartTime; }
-		inline	uint32		Duration(){ return m_Duration; }
-		inline	uint32		GetExportStartTime(){ return m_ExportStartTime; }
-		inline	uint32		GetExportStopTime(){ return m_ExportStopTime; }
-		inline	uint32		GetCurrentTime(){ return m_CurrentTime; }		
+		inline	uint32		StartTime(){ return fStartTime; }
+		inline	uint32		Duration(){ return fDuration; }
+		inline	uint32		GetExportStartTime(){ return fExportStartTime; }
+		inline	uint32		GetExportStopTime(){ return fExportStopTime; }
+		inline	uint32		GetCurrentTime(){ return fCurrentTime; }		
 		
-		inline	int16			GetResolution(){ return m_Resolution; }
-		inline	timecode_type	GetTimeFormat(){ return m_TimeFormat; }
-		inline	bool			IsDirty(){ return m_IsDirty; }
-		inline	bool			GetLiveUpdate(){ return m_LiveUpdate; }
+		inline	int16			GetResolution(){ return fResolution; }
+		inline	timecode_type	GetTimeFormat(){ return fTimeFormat; }
+		inline	bool			IsDirty(){ return fIsDirty; }
+		inline	bool			GetLiveUpdate(){ return fLiveUpdate; }
 		
 		// Member variables
 				
@@ -133,32 +133,32 @@ class TCueSheetView: public BView
 		void 	HandleCuePaste(BMessage *theMessage);
 						
 		// Member variables
-		int16			m_Resolution;
-		timecode_type	m_TimeFormat;
+		int16			fResolution;
+		timecode_type	fTimeFormat;
 	
-		uint32			m_StartTime;
-		uint32			m_Duration;
-		uint32			m_CurrentTime;
+		uint32			fStartTime;
+		uint32			fDuration;
+		uint32			fCurrentTime;
 		
-		uint32			m_ExportStartTime;
-		uint32			m_ExportStopTime;
+		uint32			fExportStartTime;
+		uint32			fExportStopTime;
 		
-		bool			m_IsDirty;			// Used to track user save state
+		bool			fIsDirty;			// Used to track user save state
 		
-		rgb_color		m_StageColor;
+		rgb_color		fStageColor;
 		
-		TCueSheetWindow	*m_Parent;
-		BList 			*m_ChannelList;		
+		TCueSheetWindow	*fParent;
+		BList 			*fChannelList;		
 		
-		bool			m_StageToFront;
-		bool			m_SnapToGrid;
-		bool			m_ShowDuration;		
-		bool			m_HideMenu;
-		bool			m_StageGridOn;
-		bool			m_CenterStage;
-		bool			m_IsCompressedView;
-		bool			m_HideCursor;
-		bool			m_LiveUpdate;
+		bool			fStageToFront;
+		bool			fSnapToGrid;
+		bool			fShowDuration;		
+		bool			fHideMenu;
+		bool			fStageGridOn;
+		bool			fCenterStage;
+		bool			fIsCompressedView;
+		bool			fHideCursor;
+		bool			fLiveUpdate;
 };
 
 #endif

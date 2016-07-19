@@ -39,7 +39,7 @@
 TStageSetup::TStageSetup(TStageWindow *theStage, BMessage *theMessage) : BWindow(theMessage)
 {
 		
-	m_Stage = theStage;
+	fStage = theStage;
 	
 	// Default initialization
 	Init();
@@ -66,53 +66,53 @@ TStageSetup::~TStageSetup()
 
 void TStageSetup::Init()
 {		
-	m_Stage->Lock();
+	fStage->Lock();
 	
 	// Save the current stade color
-	m_SaveColor = m_Stage->GetStageView()->ViewColor();
+	fSaveColor = fStage->GetStageView()->ViewColor();
 	
 	// Get dialog items			
-	m_DimesionsBox 	= (BBox *)FindView("DimensionBox");
-	m_SettingsBox	= (BBox *)FindView("SettingsBox");
-	m_ColorBox		= (BBox *)FindView("ColorBox");
+	fDimesionsBox 	= (BBox *)FindView("DimensionBox");
+	fSettingsBox	= (BBox *)FindView("SettingsBox");
+	fColorBox		= (BBox *)FindView("ColorBox");
 	
-	m_Width 		= (BTextControl *)FindView("WidthText");
-	m_Height 		= (BTextControl *)FindView("HeightText");
-	m_XPos  		= (BTextControl *)FindView("XPosText");
-	m_YPos 			= (BTextControl *)FindView("YPosText");
+	fWidth 		= (BTextControl *)FindView("WidthText");
+	fHeight 		= (BTextControl *)FindView("HeightText");
+	fXPos  		= (BTextControl *)FindView("XPosText");
+	fYPos 			= (BTextControl *)FindView("YPosText");
 	
-	m_TitleText 	= (BTextControl *)FindView("TitleText");
+	fTitleText 	= (BTextControl *)FindView("TitleText");
 	
-	m_CenterCheck 	= (BCheckBox *)FindView("CenterCheck");
-	m_TitleCheck	= (BCheckBox *)FindView("TitleCheck");	
+	fCenterCheck 	= (BCheckBox *)FindView("CenterCheck");
+	fTitleCheck	= (BCheckBox *)FindView("TitleCheck");	
 	
-	m_StageColor 	= (BColorControl *)FindView("StageColor");
+	fStageColor 	= (BColorControl *)FindView("StageColor");
 	
 	// Set up dialog items
 	char 	tmpStr[64];
 	int32	tmpNum;
 	
 	// Width
-	tmpNum = m_Stage->Bounds().Width();
+	tmpNum = fStage->Bounds().Width();
 	sprintf(tmpStr, "%d", tmpNum);
-	m_Width->SetText( tmpStr );
+	fWidth->SetText( tmpStr );
 	
 	// Height
-	tmpNum = m_Stage->Bounds().Height();
+	tmpNum = fStage->Bounds().Height();
 	sprintf(tmpStr, "%d", tmpNum);
-	m_Height->SetText( tmpStr );
+	fHeight->SetText( tmpStr );
 	
 	// X Position
-	tmpNum = m_Stage->Frame().left;
+	tmpNum = fStage->Frame().left;
 	sprintf(tmpStr, "%d", tmpNum);
-	m_XPos->SetText( tmpStr );
+	fXPos->SetText( tmpStr );
 
 	// Y Position
-	tmpNum = m_Stage->Frame().top;
+	tmpNum = fStage->Frame().top;
 	sprintf(tmpStr, "%d", tmpNum);
-	m_YPos->SetText( tmpStr );
+	fYPos->SetText( tmpStr );
 	
-	m_Stage->Unlock();
+	fStage->Unlock();
 }
 
 
@@ -137,11 +137,11 @@ void TStageSetup::MessageReceived(BMessage* message)
 		// Restore backgorund color if changed
 		case CANCEL_MSG:
 			{
-				m_Stage->Lock();
-				rgb_color newColor = m_Stage->GetStageView()->ViewColor();
-				m_Stage->GetStageView()->SetViewColor(m_SaveColor);
-				m_Stage->GetStageView()->Invalidate();
-				m_Stage->Unlock();
+				fStage->Lock();
+				rgb_color newColor = fStage->GetStageView()->ViewColor();
+				fStage->GetStageView()->SetViewColor(fSaveColor);
+				fStage->GetStageView()->Invalidate();
+				fStage->Unlock();
 				Lock();
 				Quit();
 			}
@@ -153,10 +153,10 @@ void TStageSetup::MessageReceived(BMessage* message)
 			
 		// Update the stage color
 		case STAGE_COLOR_MSG:
-			m_Stage->Lock();
-			m_Stage->GetStageView()->SetViewColor( m_StageColor->ValueAsColor() );
-			m_Stage->GetStageView()->Invalidate();
-			m_Stage->Unlock();
+			fStage->Lock();
+			fStage->GetStageView()->SetViewColor( fStageColor->ValueAsColor() );
+			fStage->GetStageView()->Invalidate();
+			fStage->Unlock();
 			break;
 	
 		default:
@@ -179,13 +179,13 @@ void TStageSetup::GetDialogSettings()
 	// Get new stage size
 	int32 width, height, xpos, ypos;
 	
-	width = atoi(m_Width->Text());
-	height = atoi(m_Height->Text());
-	xpos = atoi(m_XPos->Text());
-	ypos = atoi(m_YPos->Text());
+	width = atoi(fWidth->Text());
+	height = atoi(fHeight->Text());
+	xpos = atoi(fXPos->Text());
+	ypos = atoi(fYPos->Text());
 
-	m_Stage->ResizeTo(width, height);
-	m_Stage->MoveTo(xpos, ypos);
+	fStage->ResizeTo(width, height);
+	fStage->MoveTo(xpos, ypos);
 		
 }
 

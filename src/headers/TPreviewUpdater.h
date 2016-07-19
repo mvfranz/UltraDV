@@ -25,17 +25,17 @@ class TPreviewUpdater
 		TPreviewUpdater(BHandler *theTarget, BMessage *theMessage, uint32 theInterval);
 		~TPreviewUpdater();
 		
-		int32	GeTPreviewUpdaterThread(){ return m_TimerThread; }
+		int32	GeTPreviewUpdaterThread(){ return fTimerThread; }
 		
 	private:
 		static int32 	start_timer(void *arg);
 		int32 			Timer();
 
-		BHandler 	*m_Target;
-		BMessage 	*m_Message;
-		BMessenger 	*m_Messenger;
-		uint32		m_Interval;
-		thread_id	m_TimerThread;
+		BHandler 	*fTarget;
+		BMessage 	*fMessage;
+		BMessenger 	*fMessenger;
+		uint32		fInterval;
+		thread_id	fTimerThread;
 		
 };
 

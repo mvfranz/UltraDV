@@ -37,11 +37,11 @@ TChaser::TChaser( void (*ticked_func)(void *arg, TTick *t), void *arg, const cha
 		TThread(name, aPriority)
 {
   	Ticked 			= ticked_func;
-  	m_Caller 		= arg;
-  	m_IsStopping 	= false;
-  	m_AreaAddress 	= NULL;
-  	m_AreaID 		= -1;
-  	m_PortID 		= -1;
+  	fCaller 		= arg;
+  	fIsStopping 	= false;
+  	fAreaAddress 	= NULL;
+  	fAreaID 		= -1;
+  	fPortID 		= -1;
   	
   	// Begin listening
   	Start();
@@ -55,8 +55,8 @@ TChaser::TChaser( void (*ticked_func)(void *arg, TTick *t), void *arg, const cha
 //
 status_t TChaser::Start()
 {
-	m_PortID = create_port(MAX_QUEUED_MSGS, "tickInPort");
-	if (m_PortID < 0)
+	fPortID = create_port(MAX_QUEUED_MSGS, "tickInPort");
+	if (fPortID < 0)
 	  	return PortID();
 	  	
 	return Run();
@@ -71,7 +71,7 @@ status_t TChaser::Start()
 
 void TChaser::Stop()
 {
-	m_IsStopping = true;
+	fIsStopping = true;
 	int32 dummy;
 	
 	WaitForExit(&dummy);
@@ -95,7 +95,7 @@ status_t TChaser::ThreadMain()
 		if (err < 0 && err != B_INTERRUPTED)
 	  		break;
 
-		ssize_t msgSize = port_buffer_size(m_PortID);
+		ssize_t msgSize = port_buffer_size(fPortID);
 		if (msgSize < 0) 
 		{
 	  		err = msgSize;
@@ -104,7 +104,7 @@ status_t TChaser::ThreadMain()
 		
 		if (msgSize == sizeof(i)) 
 		{
-	  		err = read_port(m_PortID, &msg, &i, sizeof(i));
+	  		err = read_port(fPortID, &msg, &i, sizeof(i));
 	  		if (err < 0)
 	  		{
 				continue;
@@ -121,29 +121,29 @@ status_t TChaser::ThreadMain()
    					
    					if(appinfo.team != areainfo.team)
    					{
-   						m_AreaID = clone_area( 	"TChaser area", 
-												(void **)&m_AreaAddress, 
+   						fAreaID = clone_area( 	"TChaser area", 
+												(void **)&fAreaAddress, 
                      							B_ANY_ADDRESS, 
                   								B_READ_AREA, 
                   								i);
                   	}
                   	else
                   	{
-                  		m_AreaID = i;
-                  		m_AreaAddress = (char *)areainfo.address;
+                  		fAreaID = i;
+                  		fAreaAddress = (char *)areainfo.address;
                   	}
                 }
       			
-      			if (m_AreaID < B_OK)
+      			if (fAreaID < B_OK)
       			{
-         			return m_AreaID; 
+         			return fAreaID; 
          		}
      		}
 	  		
 	  		if (msg == TICK_MSG)
 	  		{
-	  			t = (TTick *)(m_AreaAddress + (sizeof(TTick) * i));
-				(*Ticked)(m_Caller, t);
+	  			t = (TTick *)(fAreaAddress + (sizeof(TTick) * i));
+				(*Ticked)(fCaller, t);
      		}
 		}
   	}

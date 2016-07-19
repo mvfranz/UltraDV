@@ -51,13 +51,13 @@ class TActionCuePaletteView: public BView
 		
 		
 		// Member variables
-		TCueButton	*m_ActionCueButton;
-		TCueButton	*m_ButtonCueButton;
-		TCueButton	*m_CDCueButton;
-		TCueButton	*m_ControlCueButton;
-		TCueButton	*m_MarkerCueButton;
-		TCueButton	*m_PauseCueButton;
-		TCueButton	*m_VideoCueButton;				
+		TCueButton	*fActionCueButton;
+		TCueButton	*fButtonCueButton;
+		TCueButton	*fCDCueButton;
+		TCueButton	*fControlCueButton;
+		TCueButton	*fMarkerCueButton;
+		TCueButton	*fPauseCueButton;
+		TCueButton	*fVideoCueButton;				
 
 };		
 

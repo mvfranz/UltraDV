@@ -45,7 +45,7 @@ class TExportTimeView: public BView
 		void 	Init();
 						
 		// Member variables
-		TCueSheetWindow	*m_CueSheetWindow;		
+		TCueSheetWindow	*fCueSheetWindow;		
 };		
 
 #endif

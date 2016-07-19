@@ -49,8 +49,8 @@
 
 TSorterList::TSorterList(BRect bounds, TSorterContainer *parent, SorterType	theType) : BListView(bounds, "SorterList", B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP_BOTTOM)
 {
-	m_Parent 	= parent;
-	m_Type 		= theType;
+	fParent 	= parent;
+	fType 		= theType;
 	 
 	// Perform default initialization
 	Init();
@@ -83,7 +83,7 @@ void TSorterList::Init()
 	SetFontSize(kSorterFontSize);
 				
 	// We are inactive
-	m_IsActive = false;	
+	fIsActive = false;	
 }
 
 
@@ -234,7 +234,7 @@ void TSorterList::KeyDown(const char *bytes, int32 numBytes)
 			case B_BACKSPACE:	
 				{
 					if ( CurrentSelection() >= 0)
-						m_Parent->DeleteItem( CurrentSelection() );	
+						fParent->DeleteItem( CurrentSelection() );	
 				}
 				break;
 				
@@ -271,7 +271,7 @@ bool TSorterList::InitiateDrag(BPoint point, int32 index, bool wasSelected)
 		{
 			// 	Get bitmap based on item type.  Get this from the IconSorter, which is the
 			//	first sorter in our SorterList
-			BList  *sorterList =  static_cast<TElementsSorter *>(m_Parent->Parent())->GetSorterList();
+			BList  *sorterList =  static_cast<TElementsSorter *>(fParent->Parent())->GetSorterList();
 			if (sorterList)
 			{
 				TSorterContainer *theContainer =  static_cast<TSorterContainer *>(sorterList->ItemAt(0));
@@ -342,7 +342,7 @@ bool TSorterList::InitiateDrag(BPoint point, int32 index, bool wasSelected)
 
 void TSorterList::MakeActive(bool theState)
 {
-	m_IsActive = theState;
+	fIsActive = theState;
 	
 	// Force redraw	
 	Invalidate();			
@@ -488,7 +488,7 @@ void TSorterList::HandleRefsMessage(BMessage *theMessage)
 			if (nodeInfo.InitCheck() == B_NO_ERROR)
 			{
 				// Get info based on sorter type
-				switch (m_Type)
+				switch (fType)
 				{
 					case kIconSorter:
 						AddIconsToDataList(&theEntry, nodeInfo);
@@ -872,23 +872,23 @@ void TSorterList::AddIconsToDataList(BEntry *theEntry, BNodeInfo &nodeInfo)
 	// Load icons based upon file type
 	if (IsAudio(nodeInfo))
 	{
-		sorterIcons.m_MiniIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_AudioIcon16;
-		sorterIcons.m_LargeIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_AudioIcon32;
+		sorterIcons.fMiniIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon16;
+		sorterIcons.fLargeIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon32;
 	}
 	else if (IsImage(nodeInfo))
 	{
-		sorterIcons.m_MiniIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_PictureIcon16;
-		sorterIcons.m_LargeIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_PictureIcon32;
+		sorterIcons.fMiniIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fPictureIcon16;
+		sorterIcons.fLargeIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fPictureIcon32;
 	}
 	else if (IsText(nodeInfo))
 	{
-		sorterIcons.m_MiniIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_TextIcon16;
-		sorterIcons.m_LargeIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_TextIcon32;
+		sorterIcons.fMiniIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fTextIcon16;
+		sorterIcons.fLargeIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fTextIcon32;
 	}
 	else if (IsVideo(nodeInfo))
 	{
-		sorterIcons.m_MiniIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_MovieIcon16;
-		sorterIcons.m_LargeIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_MovieIcon32;
+		sorterIcons.fMiniIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fMovieIcon16;
+		sorterIcons.fLargeIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fMovieIcon32;
 	}
 
 	// Setup rect
@@ -919,7 +919,7 @@ void TSorterList::AddIconsToDataList(BEntry *theEntry, BNodeInfo &nodeInfo)
 	
 void TSorterList::Sort()
 {
-	switch (m_Type)
+	switch (fType)
 	{
 		case kNameSorter:
 			SortItems( *SortByName );

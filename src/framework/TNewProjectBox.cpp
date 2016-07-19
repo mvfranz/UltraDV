@@ -95,15 +95,15 @@ void TNewProjectBox::Draw(BRect bounds)
 				SetFontSize(10);
 				textPt.x += 10;
 				textPt.y += 15;
-				DrawString(preset->m_Description01, textPt);
+				DrawString(preset->fDescription01, textPt);
 				textPt.y += 15;
-				DrawString(preset->m_Description02, textPt);
+				DrawString(preset->fDescription02, textPt);
 				textPt.y += 15;
-				DrawString(preset->m_Description03, textPt);
+				DrawString(preset->fDescription03, textPt);
 				textPt.y += 15;
-				DrawString(preset->m_Description04, textPt);
+				DrawString(preset->fDescription04, textPt);
 				textPt.y += 15;
-				DrawString(preset->m_Description05, textPt);
+				DrawString(preset->fDescription05, textPt);
 				
 				// Timebase
 				SetFontSize(12);
@@ -113,7 +113,7 @@ void TNewProjectBox::Draw(BRect bounds)
 				SetFontSize(10);
 				textPt.x += 10;
 				textPt.y += 15;
-				//DrawString(preset->m_Timebase, textPt);
+				//DrawString(preset->fTimebase, textPt);
 				DrawString("24fps", textPt);
 				
 				// Frame Size
@@ -125,7 +125,7 @@ void TNewProjectBox::Draw(BRect bounds)
 				textPt.x += 10;
 				textPt.y += 15;
 				char tmpStr[65];
-				sprintf(tmpStr, "%d x %d", preset->m_FrameWidth, preset->m_FrameHeight);
+				sprintf(tmpStr, "%d x %d", preset->fFrameWidth, preset->fFrameHeight);
 				DrawString(tmpStr, textPt);
 				
 				// Video Compression
@@ -148,8 +148,8 @@ void TNewProjectBox::Draw(BRect bounds)
 				textPt.y += 15;
 				DrawString("Unknown", textPt);
 
-				//video_compressor_type	m_VideoCompressor;
-				//audio_compressor_type	m_AudioCompressor;				
+				//video_compressor_type	fVideoCompressor;
+				//audio_compressor_type	fAudioCompressor;				
 			}
 		}
 	} 

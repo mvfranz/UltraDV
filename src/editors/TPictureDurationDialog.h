@@ -33,9 +33,9 @@ class TPictureDurationDialog : public BWindow
 		void			Init();		
 		
 		// Member Variables
-		BView 					*m_TextParent;
-		TCueTimeText 			*m_TextView;
-		TCueView				*m_Cue;
+		BView 					*fTextParent;
+		TCueTimeText 			*fTextView;
+		TCueView				*fCue;
 	
 };
 

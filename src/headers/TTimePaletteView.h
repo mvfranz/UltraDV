@@ -36,7 +36,7 @@ class TTimePaletteView: public BView
 		void 	FrameResized(float new_width, float new_height);
 		void 	MessageReceived(BMessage* message);
 		
-		TTimeText	*GetTimeText(){ return m_TimeText; }
+		TTimeText	*GetTimeText(){ return fTimeText; }
 				
 		// Member variables	
 		
@@ -45,8 +45,8 @@ class TTimePaletteView: public BView
 		void 	Init();
 		
 		// Member variables
-		TTimeText	*m_TimeText;
-		TBitmapView	*m_LocatorBitmap;
+		TTimeText	*fTimeText;
+		TBitmapView	*fLocatorBitmap;
 		
 };		
 

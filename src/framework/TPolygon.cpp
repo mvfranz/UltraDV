@@ -29,13 +29,13 @@
 
 TPolygon::TPolygon(const BPoint *ptArray, int32 numPoints)
 {
-	m_PointList = new BList();
+	fPointList = new BList();
 		
 	//	Copy data over
 	for (int32 index = 0; index < numPoints; index++)
 	{
 		BPoint tmpPt = ptArray[index];
-		m_PointList->AddItem(&tmpPt);
+		fPointList->AddItem(&tmpPt);
 	}
 }
 
@@ -49,7 +49,7 @@ TPolygon::TPolygon(const BPoint *ptArray, int32 numPoints)
 
 TPolygon::TPolygon()
 {
-	m_PointList = new BList();
+	fPointList = new BList();
 }
 
 
@@ -62,19 +62,19 @@ TPolygon::TPolygon()
 
 TPolygon::TPolygon( BRect rect )
 {	
-	m_PointList = new BList();
+	fPointList = new BList();
 	
 	//	Copy data over
 	BPoint tmpPt;
 	
 	tmpPt.Set(rect.left, rect.top);
-	m_PointList->AddItem(&tmpPt);
+	fPointList->AddItem(&tmpPt);
 	tmpPt.Set(rect.right, rect.top);
-	m_PointList->AddItem(&tmpPt);
+	fPointList->AddItem(&tmpPt);
 	tmpPt.Set(rect.right, rect.bottom);
-	m_PointList->AddItem(&tmpPt);
+	fPointList->AddItem(&tmpPt);
 	tmpPt.Set(rect.left, rect.bottom);
-	m_PointList->AddItem(&tmpPt);
+	fPointList->AddItem(&tmpPt);
 }
 
 
@@ -87,14 +87,14 @@ TPolygon::TPolygon( BRect rect )
 
 TPolygon::TPolygon( TPolygon *polygon )
 {
-	m_PointList = new BList();
+	fPointList = new BList();
 	
 	BList *ptList = polygon->GetPointList();
 	
 	//	Copy data over
 	for (int32 index = 0; index < ptList->CountItems(); index++)
 	{
-		m_PointList->AddItem( ptList->ItemAt(index) );
+		fPointList->AddItem( ptList->ItemAt(index) );
 	}
 }
 
@@ -108,13 +108,13 @@ TPolygon::TPolygon( TPolygon *polygon )
 TPolygon::~TPolygon()
 {
 	// Clean up point array
-	for (int32 index = 0; index < m_PointList->CountItems(); index++)
+	for (int32 index = 0; index < fPointList->CountItems(); index++)
 	{
-		BPoint *thePt = (BPoint *)m_PointList->ItemAt(index);
+		BPoint *thePt = (BPoint *)fPointList->ItemAt(index);
 		delete thePt;		
 	}
 	
-	delete m_PointList;
+	delete fPointList;
 }
 
 
@@ -135,7 +135,7 @@ void TPolygon::AddPoint(BPoint thePt)
 	BPoint *newPt = new BPoint(thePt);
 	
 	//	Add it to the list
-	m_PointList->AddItem(newPt);	
+	fPointList->AddItem(newPt);	
 }
 
 
@@ -151,7 +151,7 @@ void TPolygon::AddPoints(BPoint *ptList, int32 numPoints)
 	for( int32 index = 0; index < numPoints; index++)
 	{
 		BPoint tmpPt = ptList[index];		
-		m_PointList->AddItem(&tmpPt);	
+		fPointList->AddItem(&tmpPt);	
 	}		
 }
 
@@ -166,13 +166,13 @@ void TPolygon::AddPoints(BPoint *ptList, int32 numPoints)
 void TPolygon::GetRect(BRect *theRect)
 {	
 		
-	if ( m_PointList->CountItems() >= 4)
+	if ( fPointList->CountItems() >= 4)
 	{
 		//	Copy data over
-		BPoint topLeft 		= *(BPoint *)m_PointList->ItemAt(0);
-		BPoint topRight 	= *(BPoint *)m_PointList->ItemAt(1);
-		BPoint bottomRight 	= *(BPoint *)m_PointList->ItemAt(2);
-		BPoint bottomLeft 	= *(BPoint *)m_PointList->ItemAt(3);
+		BPoint topLeft 		= *(BPoint *)fPointList->ItemAt(0);
+		BPoint topRight 	= *(BPoint *)fPointList->ItemAt(1);
+		BPoint bottomRight 	= *(BPoint *)fPointList->ItemAt(2);
+		BPoint bottomLeft 	= *(BPoint *)fPointList->ItemAt(3);
 		
 		theRect->left 	= topLeft.x;
 		theRect->top 	= topLeft.y;
@@ -196,9 +196,9 @@ BPolygon *TPolygon::GetBPolygon()
 	
 	BPoint *tmpPt;
 	
-	for (int32 index = 0; index < m_PointList->CountItems(); index++)
+	for (int32 index = 0; index < fPointList->CountItems(); index++)
 	{
-		tmpPt = (BPoint *)m_PointList->ItemAt(index);
+		tmpPt = (BPoint *)fPointList->ItemAt(index);
 		thePolygon->AddPoints(tmpPt, 1);
 	}
 	
@@ -228,10 +228,10 @@ bool TPolygon::Contains( BPoint mousePt)
 	BPoint		 *vertex0, *vertex1; 
 	
 	//	Get number of points in polygon
-	int32 numVerts = m_PointList->CountItems();
+	int32 numVerts = fPointList->CountItems();
 
-	vertex0 = (BPoint *)m_PointList->ItemAt(numVerts - 1);
-	vertex1 = (BPoint *)m_PointList->ItemAt(0); 
+	vertex0 = (BPoint *)fPointList->ItemAt(numVerts - 1);
+	vertex1 = (BPoint *)fPointList->ItemAt(0); 
 	
 	//	Get test bit for above/below X axis
 	yflag0 	= ( vertex0->y >= mousePt.y ); 
@@ -274,7 +274,7 @@ bool TPolygon::Contains( BPoint mousePt)
 		yflag0 	= yflag1; 
 		
 		vertex0 = vertex1; 
-		vertex1 = (BPoint *)m_PointList->ItemAt(index); 
+		vertex1 = (BPoint *)fPointList->ItemAt(index); 
     } 
 
 	return( inside_flag ) ; 
@@ -293,10 +293,10 @@ bool TPolygon::Contains( BPoint mousePt)
 TPolygon &TPolygon::operator = (TPolygon &from)
 {
 	//	Free assignment polygon of any data
-	if (m_PointList->CountItems() > 0)
+	if (fPointList->CountItems() > 0)
 	{
-		delete m_PointList;
-		m_PointList = new BList();
+		delete fPointList;
+		fPointList = new BList();
 	}
 	
 	//	Assign data
@@ -305,7 +305,7 @@ TPolygon &TPolygon::operator = (TPolygon &from)
 	for (int32 index = 0; index < srcList->CountItems(); index++)
 	{
 		BPoint *thePt = (BPoint *)srcList->ItemAt(index);
-		m_PointList->AddItem(thePt);				
+		fPointList->AddItem(thePt);				
 	}	
 	
 	return *this;

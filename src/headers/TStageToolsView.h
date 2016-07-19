@@ -53,16 +53,16 @@ class TStageToolsView: public BView
 		void 	UpdateStatusText(uint32 theTool);
 		
 		// Member variables
-		TStageTools 		*m_Parent;
+		TStageTools 		*fParent;
 		
-		TStageToolButton	*m_MoveTool;
-		TStageToolButton	*m_RotateTool;
-		TStageToolButton	*m_CropTool;
-		TStageToolButton	*m_ScaleTool;
-		TStageToolButton	*m_ShearTool;
-		TStageToolButton	*m_SkewTool;
-		TStageToolButton	*m_PerspectiveTool;
-		TStageToolButton	*m_MirrorTool;
+		TStageToolButton	*fMoveTool;
+		TStageToolButton	*fRotateTool;
+		TStageToolButton	*fCropTool;
+		TStageToolButton	*fScaleTool;
+		TStageToolButton	*fShearTool;
+		TStageToolButton	*fSkewTool;
+		TStageToolButton	*fPerspectiveTool;
+		TStageToolButton	*fMirrorTool;
 
 };	
 

@@ -93,9 +93,9 @@ void TAboutBox::Init()
 	
 	// Create the OK button
 	const BRect okFrame( ( (Bounds().right - Bounds().left)/2)-30 , Bounds().bottom-30, ((Bounds().right-Bounds().left)/2)+30,  Bounds().bottom-10);
-	m_OKButton = new BButton(okFrame, "OK","OK", new BMessage(ABOUT_OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);						 
-	bm->AddChild(m_OKButton);
-	m_OKButton->MakeDefault(true);
+	fOKButton = new BButton(okFrame, "OK","OK", new BMessage(ABOUT_OK_MSG), B_FOLLOW_RIGHT|B_FOLLOW_BOTTOM);						 
+	bm->AddChild(fOKButton);
+	fOKButton->MakeDefault(true);
 }
 
 

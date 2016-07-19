@@ -32,7 +32,7 @@ class TVideoCaptureToolbar: public BView
 		void Init();
 		
 		// Member Variables						
-		TBitmapButton	*m_RecordButton; 
+		TBitmapButton	*fRecordButton; 
 };
 
 #endif

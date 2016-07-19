@@ -37,7 +37,7 @@ const int kSliderHeight = 13;
 
 TVideoEditorTransport::TVideoEditorTransport(TVideoEditor *editor, BMessage *message) : BView(message)
 {	
-	m_Editor = editor;
+	fEditor = editor;
 	
 	// Perform default initialization
 	Init();
@@ -68,10 +68,10 @@ void TVideoEditorTransport::Init()
 	
 	// Set up slider rect and location
 	const BRect bounds  = Bounds();
-	m_SliderRect.left 	= bounds.left+2;
-	m_SliderRect.right 	= m_SliderRect.left + kSliderWidth;
-	m_SliderRect.top 	= bounds.top + 4;
-	m_SliderRect.bottom = m_SliderRect.top + kSliderHeight;
+	fSliderRect.left 	= bounds.left+2;
+	fSliderRect.right 	= fSliderRect.left + kSliderWidth;
+	fSliderRect.top 	= bounds.top + 4;
+	fSliderRect.bottom = fSliderRect.top + kSliderHeight;
 	
 }
 
@@ -168,37 +168,37 @@ void TVideoEditorTransport::DrawSlider()
 	
 	// Fill
 	SetHighColor(kLightGrey);
-	FillRect(m_SliderRect);
+	FillRect(fSliderRect);
 	
 	// Black outline
 	SetHighColor(kBlack);
-	StrokeRect(m_SliderRect);
+	StrokeRect(fSliderRect);
 	
 	// White highlight
 	SetHighColor(kWhite);
-	startPt.Set(m_SliderRect.left+1, m_SliderRect.bottom-1);	
-	endPt.Set(m_SliderRect.left+1, m_SliderRect.top+1);	
+	startPt.Set(fSliderRect.left+1, fSliderRect.bottom-1);	
+	endPt.Set(fSliderRect.left+1, fSliderRect.top+1);	
 	StrokeLine(startPt, endPt);
-	endPt.Set(m_SliderRect.right-1, m_SliderRect.top+1);	
+	endPt.Set(fSliderRect.right-1, fSliderRect.top+1);	
 	StrokeLine(endPt);
 	
 	// Grey shadow
 	SetHighColor(kMediumGrey);
-	endPt.Set(m_SliderRect.right-1, m_SliderRect.bottom-1);	
+	endPt.Set(fSliderRect.right-1, fSliderRect.bottom-1);	
 	StrokeLine(endPt);
-	endPt.Set(m_SliderRect.left+1, m_SliderRect.bottom-1);	
+	endPt.Set(fSliderRect.left+1, fSliderRect.bottom-1);	
 	StrokeLine(endPt);
 	
 	// Draw thumb notches
 	SetHighColor(kDarkGrey);
-	startPt.Set(m_SliderRect.left+2, m_SliderRect.top+2);	
-	endPt.Set(m_SliderRect.left+2, m_SliderRect.bottom-2);	
+	startPt.Set(fSliderRect.left+2, fSliderRect.top+2);	
+	endPt.Set(fSliderRect.left+2, fSliderRect.bottom-2);	
 	StrokeLine(startPt, endPt);
-	startPt.Set(m_SliderRect.left+5, m_SliderRect.top+2);	
-	endPt.Set(m_SliderRect.left+5, m_SliderRect.bottom-2);	
+	startPt.Set(fSliderRect.left+5, fSliderRect.top+2);	
+	endPt.Set(fSliderRect.left+5, fSliderRect.bottom-2);	
 	StrokeLine(startPt, endPt);
-	startPt.Set(m_SliderRect.left+8, m_SliderRect.top+2);	
-	endPt.Set(m_SliderRect.left+8, m_SliderRect.bottom-2);	
+	startPt.Set(fSliderRect.left+8, fSliderRect.top+2);	
+	endPt.Set(fSliderRect.left+8, fSliderRect.bottom-2);	
 	StrokeLine(startPt, endPt);
 
 	PopState();

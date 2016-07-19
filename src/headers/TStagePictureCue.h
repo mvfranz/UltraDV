@@ -72,19 +72,19 @@ class TStagePictureCue : public TStageCue
 		void 	OpenStageCueMenu(BPoint menuPt);
 		
 		// Member Variables	
-		BRect		m_BitmapArea;		
-		TTransition	*m_Transition;
+		BRect		fBitmapArea;		
+		TTransition	*fTransition;
 		
 		
 		// Resize control zones
-		BRect		m_TopLeftResize;
-		BRect		m_TopMiddleResize;
-		BRect		m_TopRightResize;
-		BRect		m_RightMiddleResize;
-		BRect		m_BottomRightResize;
-		BRect		m_BottomMiddleResize;
-		BRect		m_BottomLeftResize;
-		BRect		m_LeftMiddleResize;
+		BRect		fTopLeftResize;
+		BRect		fTopMiddleResize;
+		BRect		fTopRightResize;
+		BRect		fRightMiddleResize;
+		BRect		fBottomRightResize;
+		BRect		fBottomMiddleResize;
+		BRect		fBottomLeftResize;
+		BRect		fLeftMiddleResize;
 												
 };
 

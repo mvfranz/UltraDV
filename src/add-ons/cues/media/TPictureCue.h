@@ -69,7 +69,7 @@ class __declspec(dllexport) TPictureCue : public TVisualCue
 		//	Accessor Functions
 										
 		// Member Variables
-		TPictureCueEditor	*m_Editor;
+		TPictureCueEditor	*fEditor;
 		
 	protected:
 				

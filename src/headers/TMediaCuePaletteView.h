@@ -42,13 +42,13 @@ class TMediaCuePaletteView: public BView
 		
 		
 		// Member variables
-		TCueButton	*m_AnimCueButton;
-		TCueButton	*m_AudioCueButton;
-		TCueButton	*m_MIDICueButton;
-		TCueButton	*m_MovieCueButton;
-		TCueButton	*m_PictureCueButton;
-		TCueButton	*m_SlideCueButton;
-		TCueButton	*m_TextCueButton;				
+		TCueButton	*fAnimCueButton;
+		TCueButton	*fAudioCueButton;
+		TCueButton	*fMIDICueButton;
+		TCueButton	*fMovieCueButton;
+		TCueButton	*fPictureCueButton;
+		TCueButton	*fSlideCueButton;
+		TCueButton	*fTextCueButton;				
 
 };		
 

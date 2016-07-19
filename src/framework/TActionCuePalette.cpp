@@ -82,10 +82,10 @@ void TActionCuePalette::Init()
 	Lock();
 		
 	// Create MediaCueView and add it to the window
-	m_CueView = new TActionCuePaletteView(Bounds());
+	fCueView = new TActionCuePaletteView(Bounds());
 	
 	// Add view to frame
-	AddChild(m_CueView);
+	AddChild(fCueView);
 	
 	Unlock();
 	

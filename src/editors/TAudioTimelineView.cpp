@@ -38,7 +38,7 @@
 TAudioTimelineView::TAudioTimelineView(BRect bounds, TAudioEditor *parent) : BView(bounds, "AudioTimelineView", B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Set CueSheet parent
-	m_AudioEditor = parent;
+	fAudioEditor = parent;
 	
 	// Perform default initialization
 	Init();
@@ -54,7 +54,7 @@ TAudioTimelineView::TAudioTimelineView(BRect bounds, TAudioEditor *parent) : BVi
 TAudioTimelineView::~TAudioTimelineView()
 {
 	// Free Indicator
-	delete m_Indicator;
+	delete fIndicator;
 }
 
 
@@ -74,23 +74,23 @@ void TAudioTimelineView::Init()
 	BRect bounds = Bounds();
 	
 	// Set up indicator zone
-	m_IndicatorZone.Set( bounds.left, bounds.top, bounds.right, bounds.top + kIndicatorZoneHeight);
+	fIndicatorZone.Set( bounds.left, bounds.top, bounds.right, bounds.top + kIndicatorZoneHeight);
 	
 	// Set up indicator rect
-	m_IndicatorRect.Set( bounds.left, bounds.top, bounds.left+kIndicatorWidth, bounds.top+kIndicatorHeight);
+	fIndicatorRect.Set( bounds.left, bounds.top, bounds.left+kIndicatorWidth, bounds.top+kIndicatorHeight);
 	
 	// Load position indicator	
-	m_Indicator = GetIcon16FromResource("Position");
+	fIndicator = GetIcon16FromResource("Position");
 	
 	// Set white bits to B_TRANSPARENT_8_BIT	
 	// gzr: to do... Why does 63 == white?
-	int32 bitsLength = m_Indicator->BitsLength();
+	int32 bitsLength = fIndicator->BitsLength();
 	for ( int32 index = 0; index < bitsLength; index++)
 	{
-		unsigned char color = ((unsigned char *)m_Indicator->Bits())[index];
+		unsigned char color = ((unsigned char *)fIndicator->Bits())[index];
 		if (color == 63)	
 		{	
-			((unsigned char *)m_Indicator->Bits())[index] = B_TRANSPARENT_8_BIT;
+			((unsigned char *)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
 		}
 	}	
 }
@@ -111,15 +111,15 @@ void TAudioTimelineView::MouseDown(BPoint where)
 	
 	// Clip out Header and right side of indicator zone
 	BRect clipRect = Bounds();
-	clipRect.right = m_IndicatorZone.right;
+	clipRect.right = fIndicatorZone.right;
 		
 	// Set up redraw color
 	rgb_color saveColor = HighColor();
 	SetHighColor(kBeShadow);
 							
-	// Constrain mouse x to the m_IndicatorZone
-	if (where.x > m_IndicatorZone.right)
-		where.x = m_IndicatorZone.right;
+	// Constrain mouse x to the fIndicatorZone
+	if (where.x > fIndicatorZone.right)
+		where.x = fIndicatorZone.right;
 		
 	// Trap the mouse down and move the indicator
 	
@@ -136,9 +136,9 @@ void TAudioTimelineView::MouseDown(BPoint where)
 			savePt = mousePt;
 																	
 			// Update tracking rect
-			BRect oldRect = m_IndicatorRect;
-			m_IndicatorRect.left = mousePt.x - (kIndicatorWidth/2);
-			m_IndicatorRect.right = m_IndicatorRect.left + kIndicatorWidth;	
+			BRect oldRect = fIndicatorRect;
+			fIndicatorRect.left = mousePt.x - (kIndicatorWidth/2);
+			fIndicatorRect.right = fIndicatorRect.left + kIndicatorWidth;	
 	
 			// Erase old indicator position and draw new position. 
 			oldRect.bottom-=2;
@@ -147,7 +147,7 @@ void TAudioTimelineView::MouseDown(BPoint where)
 			DrawIndicator();	
 			
 			// Tell time display where we are				
-			BPoint drawPt( m_IndicatorRect.left + (m_IndicatorRect.Width() / 2)+1, m_IndicatorRect.top);
+			BPoint drawPt( fIndicatorRect.left + (fIndicatorRect.Width() / 2)+1, fIndicatorRect.top);
 			UpdateTimeTick(drawPt);
 				
 		}
@@ -158,12 +158,12 @@ void TAudioTimelineView::MouseDown(BPoint where)
 		// Let other events pass			
 		snooze(20 * 1000);
 								
-		// Clip mouse from going into header or past m_IndicatorZone
-		if ( mousePt.x  <  m_IndicatorZone.left )
-			mousePt.x = m_IndicatorZone.left;
+		// Clip mouse from going into header or past fIndicatorZone
+		if ( mousePt.x  <  fIndicatorZone.left )
+			mousePt.x = fIndicatorZone.left;
 			
-		if ( mousePt.x  >  m_IndicatorZone.right )
-			mousePt.x = m_IndicatorZone.right;
+		if ( mousePt.x  >  fIndicatorZone.right )
+			mousePt.x = fIndicatorZone.right;
 	
 	}
 
@@ -326,15 +326,15 @@ void TAudioTimelineView::Draw(BRect updateRect)
 	//
 	
 	// Draw indicator zone	
-	if ( updateRect.Intersects( m_IndicatorZone) )
+	if ( updateRect.Intersects( fIndicatorZone) )
 	{
-		BRect indicatorRect(updateRect.left, m_IndicatorZone.top, updateRect.right, m_IndicatorZone.bottom);
+		BRect indicatorRect(updateRect.left, fIndicatorZone.top, updateRect.right, fIndicatorZone.bottom);
 		SetHighColor(kBeShadow);	
 		FillRect(indicatorRect);
 		
 		SetHighColor(kBlack);
-		startPt.Set(updateRect.left, m_IndicatorZone.bottom);
-		endPt.Set(updateRect.right, m_IndicatorZone.bottom);
+		startPt.Set(updateRect.left, fIndicatorZone.bottom);
+		endPt.Set(updateRect.right, fIndicatorZone.bottom);
 		StrokeLine(startPt, endPt);		
 	}
 	
@@ -357,8 +357,8 @@ void TAudioTimelineView::Draw(BRect updateRect)
 	for ( long index = 0; index <= numTicks; index++)
 	{
 		// Draw ticks		
-		startPt.Set( kTickSpacing * index, m_IndicatorZone.bottom);
-		endPt.Set( startPt.x, m_IndicatorZone.bottom+kTickHeight);
+		startPt.Set( kTickSpacing * index, fIndicatorZone.bottom);
+		endPt.Set( startPt.x, fIndicatorZone.bottom+kTickHeight);
 		StrokeLine(startPt, endPt);	
 	}
 	
@@ -367,8 +367,8 @@ void TAudioTimelineView::Draw(BRect updateRect)
 
 	// Draw border line on left
 	SetHighColor(kBlack);
-	startPt.Set(m_IndicatorZone.left, Bounds().top);
-	endPt.Set(m_IndicatorZone.left, Bounds().bottom);
+	startPt.Set(fIndicatorZone.left, Bounds().top);
+	endPt.Set(fIndicatorZone.left, Bounds().bottom);
 	StrokeLine(startPt, endPt);	
 	
 	// Draw border line on right
@@ -404,12 +404,12 @@ void TAudioTimelineView::UpdateTimeTick(BPoint where)
 	PushState();
 				
 	// Force mouseX to be within the indicator zone bounds
-	if (where.x > m_IndicatorZone.right) 
-		where.x = m_IndicatorZone.right; 
+	if (where.x > fIndicatorZone.right) 
+		where.x = fIndicatorZone.right; 
 		
 	// 	Only proceed if we have moved in the X coordinate space.  We don't care about Y.
 	//	This avoids flicker in the time indicator palette
-	if (where.x == m_LastTick.x)
+	if (where.x == fLastTick.x)
 		return;
 	
 	// 	Cleanup and draw indicator and save position for next pass through	
@@ -418,8 +418,8 @@ void TAudioTimelineView::UpdateTimeTick(BPoint where)
 	SetDrawingMode(B_OP_INVERT);
 	
 	// Erase last indicator tick
-	startPt.Set(m_LastTick.x, bounds.top);
-	endPt.Set(m_LastTick.x, bounds.bottom);
+	startPt.Set(fLastTick.x, bounds.top);
+	endPt.Set(fLastTick.x, bounds.bottom);
 	StrokeLine(startPt, endPt);
 	
 	// Draw the new indicator tick
@@ -428,17 +428,17 @@ void TAudioTimelineView::UpdateTimeTick(BPoint where)
 	StrokeLine(startPt, endPt);
 	
 	// Save position
-	m_LastTick = where;
+	fLastTick = where;
 	
 	// Send a message to the Time Palette telling it about the new tick time
 	BMessage *message = new BMessage(NEW_TIME_MSG);
 							
 	// Get insert time based on point.x
-	/*double theTime = PixelsToTime((where.x), m_CueSheetWindow->GetCueSheetView()->m_TimeFormat, m_CueSheetWindow->GetCueSheetView()->m_Resolution);
+	/*double theTime = PixelsToTime((where.x), fCueSheetWindow->GetCueSheetView()->fTimeFormat, fCueSheetWindow->GetCueSheetView()->fResolution);
 	
 	// We are going to pass all the arguments needed for TimeToString
 	message->AddInt32("TheTime", theTime);
-	message->AddInt16("TimeFormat", m_CueSheetWindow->GetCueSheetView()->m_TimeFormat);		
+	message->AddInt16("TimeFormat", fCueSheetWindow->GetCueSheetView()->fTimeFormat);		
 	((MuseumApp *)be_app)->GetTimePalette()->PostMessage(message, NULL);*/
 	
 	// Restore environment
@@ -463,8 +463,8 @@ void TAudioTimelineView::DrawIndicator()
 	PushState();
 		
 	SetDrawingMode(B_OP_OVER);
-	BPoint drawPt(m_IndicatorRect.left, m_IndicatorRect.top);
-	DrawBitmap(m_Indicator, drawPt);
+	BPoint drawPt(fIndicatorRect.left, fIndicatorRect.top);
+	DrawBitmap(fIndicator, drawPt);
 	
 	// Make sure it isn't outside the timeline bounds
 	ClipIndicatorRect();
@@ -473,11 +473,11 @@ void TAudioTimelineView::DrawIndicator()
 	// We do this by sending a message out to the audio editor view
 	// and they will draw the line where indicated	
 	BMessage *message = new BMessage(UPDATE_AUDIOINDICATOR_MSG);
-	drawPt.Set( m_IndicatorRect.left + (m_IndicatorRect.Width() / 2), m_IndicatorRect.top);
+	drawPt.Set( fIndicatorRect.left + (fIndicatorRect.Width() / 2), fIndicatorRect.top);
 	message->AddPoint("IndicatorPoint", drawPt);
 
 	// Force message into the application	
-	m_AudioEditor->GetEditorView()->MessageReceived(message);
+	fAudioEditor->GetEditorView()->MessageReceived(message);
 	delete message;
 	
 	// Restore environment
@@ -500,7 +500,7 @@ void TAudioTimelineView::SetTimelineViewBounds(BRect bounds)
 	ResizeTo( bounds.Width(), Frame().Height()); 
 	
 	// Resize indicator zone
-	m_IndicatorZone.Set( Bounds().left, Bounds().top, bounds.right, bounds.top + kIndicatorZoneHeight);	
+	fIndicatorZone.Set( Bounds().left, Bounds().top, bounds.right, bounds.top + kIndicatorZoneHeight);	
 	
 	// Redraw
 	Invalidate();
@@ -521,10 +521,10 @@ void TAudioTimelineView::ClipIndicatorRect()
 	/*
 	BRect bounds = Frame();
 
-	if (m_IndicatorRect.left <= bounds.left)
-		m_IndicatorRect.left = bounds.left +10 ;
+	if (fIndicatorRect.left <= bounds.left)
+		fIndicatorRect.left = bounds.left +10 ;
 
-	if (m_IndicatorRect.right > bounds.right)
-		m_IndicatorRect.right = bounds.right;
+	if (fIndicatorRect.right > bounds.right)
+		fIndicatorRect.right = bounds.right;
 	*/
 }

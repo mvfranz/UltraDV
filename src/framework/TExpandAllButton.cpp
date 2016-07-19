@@ -40,17 +40,17 @@
 TExpandAllButton::TExpandAllButton(TToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap = onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap = onBitmap;
 		
 	// Store target and handler
-	m_Handler = handler;
+	fHandler = handler;
 	
 	// Perform default initialization
 	Init();
@@ -65,10 +65,10 @@ TExpandAllButton::TExpandAllButton(TToolbar *parent, BRect bounds, const char *n
 TExpandAllButton::TExpandAllButton(BMessage *data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
-	m_OffBitmap = GetIcon16FromResource("ExpandDown");
-	m_OnBitmap  = GetIcon16FromResource("ExpandUp");
+	fOffBitmap = GetIcon16FromResource("ExpandDown");
+	fOnBitmap  = GetIcon16FromResource("ExpandUp");
 }
 
 
@@ -81,8 +81,8 @@ TExpandAllButton::TExpandAllButton(BMessage *data) : BView(data)
 TExpandAllButton::~TExpandAllButton()
 {
 	// Free data
-	delete m_OffBitmap;
-	delete m_OnBitmap;
+	delete fOffBitmap;
+	delete fOnBitmap;
 }
 
 
@@ -160,11 +160,11 @@ status_t TExpandAllButton::Archive(BMessage *data, bool deep) const
 
 void TExpandAllButton::Draw(BRect updateRect)
 {
-	// Draw proper bitmap state, if m_State is true, draw on bitmap
-	if (m_MouseDown)
-		DrawBitmap(m_OffBitmap, B_ORIGIN);		
+	// Draw proper bitmap state, if fState is true, draw on bitmap
+	if (fMouseDown)
+		DrawBitmap(fOffBitmap, B_ORIGIN);		
 	else
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
 
 
@@ -197,10 +197,10 @@ void TExpandAllButton::MouseDown(BPoint where)
 
 void TExpandAllButton::AttachedToWindow()
 {			
-	if(m_Parent == NULL)
+	if(fParent == NULL)
 	{
-		m_Parent 	= (TToolbar *)Parent();
-		m_Handler 	= (TToolbar *)Parent();					
+		fParent 	= (TToolbar *)Parent();
+		fHandler 	= (TToolbar *)Parent();					
 	}
 	
 	//	Pass up to parent
@@ -222,7 +222,7 @@ void TExpandAllButton::DoClick()
 	
 	// We will always be in the up osition when we start.
 	// First, set the button state to down and force a redraw...
-	m_MouseDown = true; 
+	fMouseDown = true; 
 	Draw(Bounds()); 
 			
 	// Create and send message to channel and header		
@@ -234,7 +234,7 @@ void TExpandAllButton::DoClick()
 	snooze(100 * 1000);
 	
 	// Restore and invalidate
-	m_MouseDown = false; 
+	fMouseDown = false; 
 	Draw(Bounds()); 
 }
 

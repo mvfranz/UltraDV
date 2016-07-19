@@ -27,16 +27,16 @@
 
 // Macros for calculating item offsets and addresses.	
 // They are all one-based indices						
-#define ASSERT_INDEX(index)	ASSERT( (index > 0)&&(index <= m_NumItems))
-#define ITEM_OFFSET(index) ((index-1) * m_ElementSize)
-//#define ITEM_PTR(index) (&((char *)*m_Items)[ ITEM_OFFSET(index) ])
-#define ITEM_PTR(index) (&((char *)m_Items)[ ITEM_OFFSET(index) ])
+#define ASSERT_INDEX(index)	ASSERT( (index > 0)&&(index <= fNumItems))
+#define ITEM_OFFSET(index) ((index-1) * fElementSize)
+//#define ITEM_PTR(index) (&((char *)*fItems)[ ITEM_OFFSET(index) ])
+#define ITEM_PTR(index) (&((char *)fItems)[ ITEM_OFFSET(index) ])
 
 // Macro for obtaining a pointer to temporary storage for one 		
 // element The temporary storage is an extra slot kept at the		
 // end of the item handle.											
-//#define TMP_ITEM_PTR	(&((char*)*m_Items)[ ITEM_OFFSET(m_NumItems+1) ])
-#define TMP_ITEM_PTR	(&((char*)m_Items)[ ITEM_OFFSET(m_NumItems+1) ])
+//#define TMP_ITEM_PTR	(&((char*)*fItems)[ ITEM_OFFSET(fNumItems+1) ])
+#define TMP_ITEM_PTR	(&((char*)fItems)[ ITEM_OFFSET(fNumItems+1) ])
 
 
 
@@ -51,15 +51,15 @@
 
 TArray::TArray( int32 anElementSize) : TCollection()
 {	
-	m_BlockSize 		= 3;
-	m_ElementSize 		= anElementSize;						
-	m_Slots 			= 0;
-	m_LockChanges 		= false;
-	m_UsingTemporary 	= false;
+	fBlockSize 		= 3;
+	fElementSize 		= anElementSize;						
+	fSlots 			= 0;
+	fLockChanges 		= false;
+	fUsingTemporary 	= false;
 		
-	//m_Items = malloc( m_ElementSize );
-	m_Items = malloc( sizeof(m_ElementSize) * m_ElementSize );
-	ASSERT( m_Items);
+	//fItems = malloc( fElementSize );
+	fItems = malloc( sizeof(fElementSize) * fElementSize );
+	ASSERT( fItems);
 				
 }
 	
@@ -74,7 +74,7 @@ TArray::TArray( int32 anElementSize) : TCollection()
 TArray::~TArray()
 {
 	// Free item memory	
-	free(m_Items);				
+	free(fItems);				
 
 }
 
@@ -83,13 +83,13 @@ TArray::~TArray()
 //	SetBlockSize
 //---------------------------------------------------------------------
 //
-//	Set the m_BlockSize which specifies the number of empty m_Slots to
+//	Set the fBlockSize which specifies the number of empty fSlots to
 //	allocate when more space is needed.
 //
 
 void	TArray::SetBlockSize(short aBlockSize)
 {
-	m_BlockSize = aBlockSize;				
+	fBlockSize = aBlockSize;				
 	
 }	
 	
@@ -120,8 +120,8 @@ void TArray::SetArrayItem( void *itemPtr, int32 index)
 
 void TArray::Store( const void *itemPtr, int32 index)
 {	
-	//BlockMoveData( itemPtr, ITEM_PTR( index), m_ElementSize);		
-	memcpy( ITEM_PTR(index), itemPtr, m_ElementSize);		
+	//BlockMoveData( itemPtr, ITEM_PTR( index), fElementSize);		
+	memcpy( ITEM_PTR(index), itemPtr, fElementSize);		
 }
 
 
@@ -151,8 +151,8 @@ void TArray::GetArrayItem( void *itemPtr, int32 index)
 
 void TArray::Retrieve( void *itemPtr, int32 index)
 {	
-	//BlockMoveData( ITEM_PTR( index), itemPtr, m_ElementSize);
-	memcpy( itemPtr, ITEM_PTR( index),  m_ElementSize);
+	//BlockMoveData( ITEM_PTR( index), itemPtr, fElementSize);
+	memcpy( itemPtr, ITEM_PTR( index),  fElementSize);
 }
 
 
@@ -169,24 +169,24 @@ void TArray::Retrieve( void *itemPtr, int32 index)
 void TArray::InsertAtIndex( void *itemPtr, int32 index)
 {	
 	ASSERT(index > 0);
-	ASSERT( m_LockChanges == false);
+	ASSERT( fLockChanges == false);
 	
-	if (m_LockChanges) return;
+	if (fLockChanges) return;
 			
-	if (m_NumItems >= m_Slots)				// Check if we need more space		
+	if (fNumItems >= fSlots)				// Check if we need more space		
 		MoreSlots();
 
-	if (index <= m_NumItems) 
+	if (index <= fNumItems) 
 	{									// Move items at position >= index	
 										//   down one slot, unless it is	
 										//   the last item					
-		//BlockMoveData( ITEM_PTR( index), ITEM_PTR( index + 1), (m_NumItems - index + 1) * m_ElementSize);
-		memcpy( ITEM_PTR( index + 1), ITEM_PTR( index), (m_NumItems - index + 1) * m_ElementSize);
+		//BlockMoveData( ITEM_PTR( index), ITEM_PTR( index + 1), (fNumItems - index + 1) * fElementSize);
+		memcpy( ITEM_PTR( index + 1), ITEM_PTR( index), (fNumItems - index + 1) * fElementSize);
 	}
 	else
-		index = m_NumItems + 1;
+		index = fNumItems + 1;
 		
-	m_NumItems++;							// There's another item in the list	
+	fNumItems++;							// There's another item in the list	
 
 										// Stick new object in the empty slot
 	Store( itemPtr, index);
@@ -205,26 +205,26 @@ void TArray::InsertAtIndex( void *itemPtr, int32 index)
 void TArray::DeleteItem( int32 index)
 {
 	ASSERT_INDEX( index);
-	ASSERT( m_LockChanges == false);
+	ASSERT( fLockChanges == false);
 
-	if (m_LockChanges) return;
+	if (fLockChanges) return;
 
 	// We're gonna get rid of an item	
-	m_NumItems--;							
+	fNumItems--;							
 	
 	// Shift items following the object	
-	if (index <= m_NumItems) 
+	if (index <= fNumItems) 
 	{			
 		//  to remove up one slot, thereby	overwriting it					
-		// BlockMoveData( ITEM_PTR( index+1), ITEM_PTR( index), (m_NumItems - index + 1) * m_ElementSize);
-		memcpy( ITEM_PTR( index), ITEM_PTR( index+1), (m_NumItems - index + 1) * m_ElementSize);
+		// BlockMoveData( ITEM_PTR( index+1), ITEM_PTR( index), (fNumItems - index + 1) * fElementSize);
+		memcpy( ITEM_PTR( index), ITEM_PTR( index+1), (fNumItems - index + 1) * fElementSize);
 	}
 		
-	// The number of free m_Slots is greater than the m_BlockSize.	
+	// The number of free fSlots is greater than the fBlockSize.	
 	// Reduce the size of the items handle.						
-	if (m_Slots > m_NumItems + m_BlockSize) 
+	if (fSlots > fNumItems + fBlockSize) 
 	{
-		Resize( m_Slots-m_BlockSize);
+		Resize( fSlots-fBlockSize);
 	}		
 }
 
@@ -233,15 +233,15 @@ void TArray::DeleteItem( int32 index)
 //	Resize
 //---------------------------------------------------------------------
 //
-//	Resize an array to the desired number of m_Slots. m_NumItems is not affected.
+//	Resize an array to the desired number of fSlots. fNumItems is not affected.
 //
 
 void TArray::Resize( int32 numSlots)
 {
 	// Be sure to take the scratch element storage at the beginning 
 	// of the buffer into account when resizing	the item buffer														
-	realloc( m_Items,  (numSlots+1L) * m_ElementSize);	
-	m_Slots = numSlots;
+	realloc( fItems,  (numSlots+1L) * fElementSize);	
+	fSlots = numSlots;
 }
 
 
@@ -250,12 +250,12 @@ void TArray::Resize( int32 numSlots)
 //	MoreSlots
 //---------------------------------------------------------------------
 //
-//	Grows the array by m_BlockSize m_Slots.
+//	Grows the array by fBlockSize fSlots.
 //
 
 void TArray::MoreSlots()
 {
-	Resize( m_Slots + m_BlockSize);	
+	Resize( fSlots + fBlockSize);	
 }	
 
 
@@ -283,7 +283,7 @@ void TArray::MoveItemToIndex( int32 currentIndex, int32 newIndex)
 	/* exactly one item at the end of the items handle. In order	*/
 	/* to guard against the two methods simultaneously using the	*/
 	/* temporary buffer, we mark it in use by setting the			*/
-	/* m_UsingTemporary instance variable.							*/
+	/* fUsingTemporary instance variable.							*/
 	
 	CopyToTemporary( currentIndex);
 	
@@ -291,16 +291,16 @@ void TArray::MoveItemToIndex( int32 currentIndex, int32 newIndex)
 	{									
 		// Element is before target location. Shift items between current	
 		//   and target locations down one											
-		//BlockMoveData( ITEM_PTR( currentIndex+1), ITEM_PTR( currentIndex), (newIndex - currentIndex) * m_ElementSize);
-		memcpy( ITEM_PTR( currentIndex), ITEM_PTR( currentIndex+1), (newIndex - currentIndex) * m_ElementSize);
+		//BlockMoveData( ITEM_PTR( currentIndex+1), ITEM_PTR( currentIndex), (newIndex - currentIndex) * fElementSize);
+		memcpy( ITEM_PTR( currentIndex), ITEM_PTR( currentIndex+1), (newIndex - currentIndex) * fElementSize);
 									
 	}
 	else if (currentIndex > newIndex)
 	{									
 		// Element is after target location.
 		// Shift items between target and current locations up one	
-		//BlockMoveData( ITEM_PTR( newIndex), ITEM_PTR( newIndex+1), (currentIndex - newIndex) * m_ElementSize);
-		memcpy( ITEM_PTR( newIndex+1), ITEM_PTR( newIndex), (currentIndex - newIndex) * m_ElementSize);							
+		//BlockMoveData( ITEM_PTR( newIndex), ITEM_PTR( newIndex+1), (currentIndex - newIndex) * fElementSize);
+		memcpy( ITEM_PTR( newIndex+1), ITEM_PTR( newIndex), (currentIndex - newIndex) * fElementSize);							
 	}
 	
 	// copy element into new position 	
@@ -317,17 +317,17 @@ void TArray::MoveItemToIndex( int32 currentIndex, int32 newIndex)
 //	SetLockChanges
 //---------------------------------------------------------------------
 //
-// Set the m_LockChanges instance variable and return its old value. Setting
-// m_LockChanges to true prevents the InsertAtIndex and Delete methods
+// Set the fLockChanges instance variable and return its old value. Setting
+// fLockChanges to true prevents the InsertAtIndex and Delete methods
 // from operating.
 //
 
 
 bool TArray::SetLockChanges( bool fLockChanges)
 {
-	bool wasLocked = m_LockChanges;
+	bool wasLocked = fLockChanges;
 	
-	m_LockChanges = fLockChanges;
+	fLockChanges = fLockChanges;
 	
 	return wasLocked;
 
@@ -354,15 +354,15 @@ int32 TArray::Search( void *itemPtr, CompareFunc compare)
 	int32			foundIndex = BAD_INDEX;
 	
 	
-	items = (char*) m_Items;
-	for (i = 0; i < m_NumItems; i++)
+	items = (char*) fItems;
+	for (i = 0; i < fNumItems; i++)
 	{
 		if (compare( itemPtr, items) == 0)
 		{
 			foundIndex = i+1;
 			break;
 		}
-		items += m_ElementSize;
+		items += fElementSize;
 	}
 		
 	return foundIndex;
@@ -385,8 +385,8 @@ void TArray::Swap( int32 index1, int32 index2)
 	ASSERT_INDEX( index2);
 	
 	CopyToTemporary( index1);
-	//BlockMoveData( ITEM_PTR( index2), ITEM_PTR( index1), m_ElementSize);
-	memcpy( ITEM_PTR( index2), ITEM_PTR( index1), m_ElementSize);
+	//BlockMoveData( ITEM_PTR( index2), ITEM_PTR( index1), fElementSize);
+	memcpy( ITEM_PTR( index2), ITEM_PTR( index1), fElementSize);
 	CopyFromTemporary( index2);
 	
 }
@@ -402,12 +402,12 @@ void TArray::Swap( int32 index1, int32 index2)
 
 void TArray::CopyToTemporary( int32 index)
 {
-	ASSERT( m_UsingTemporary == false);
+	ASSERT( fUsingTemporary == false);
 	
-	m_UsingTemporary = true;
+	fUsingTemporary = true;
 	
-	//BlockMoveData( ITEM_PTR( index), TMP_ITEM_PTR, m_ElementSize);
-	memcpy( TMP_ITEM_PTR, ITEM_PTR( index), m_ElementSize);
+	//BlockMoveData( ITEM_PTR( index), TMP_ITEM_PTR, fElementSize);
+	memcpy( TMP_ITEM_PTR, ITEM_PTR( index), fElementSize);
 
 }
 
@@ -421,12 +421,12 @@ void TArray::CopyToTemporary( int32 index)
 
 void TArray::CopyFromTemporary( int32 index)
 {
-	ASSERT( m_UsingTemporary == true);
+	ASSERT( fUsingTemporary == true);
 
-	m_UsingTemporary = false;
+	fUsingTemporary = false;
 	
-	//BlockMoveData( TMP_ITEM_PTR, ITEM_PTR( index), m_ElementSize);
-	memcpy( ITEM_PTR(index), TMP_ITEM_PTR, m_ElementSize);
+	//BlockMoveData( TMP_ITEM_PTR, ITEM_PTR( index), fElementSize);
+	memcpy( ITEM_PTR(index), TMP_ITEM_PTR, fElementSize);
 }
 
 
@@ -464,7 +464,7 @@ CObject *TArray::Copy(void)
 	
 	TRY
 	{
-		itemsCopy = theCopy->m_Items;
+		itemsCopy = theCopy->fItems;
 		
 		savedAlloc = SetAllocation( kAllocCanFail);
 		err = HandToHand( &itemsCopy);
@@ -472,7 +472,7 @@ CObject *TArray::Copy(void)
 		
 		FailOSErr( err);
 		
-		theCopy->m_Items = itemsCopy;
+		theCopy->fItems = itemsCopy;
 	}
 	CATCH
 	{
@@ -481,7 +481,7 @@ CObject *TArray::Copy(void)
 		// clear the item handle so disposing of the
 		// copy doesn't dispose of this array's item handle
 		
-		theCopy->m_Items = NULL;
+		theCopy->fItems = NULL;
 		theCopy->Dispose();
 	}
 	ENDTRY;

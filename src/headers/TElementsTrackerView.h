@@ -37,7 +37,7 @@ class TElementsTrackerView: public BView
 		void 	Init();
 				
 		// Member variables
-		TElementsView	*m_Parent;
+		TElementsView	*fParent;
 };		
 
 #endif

@@ -38,7 +38,7 @@ class TChannelNameView : public BStringView
 		void 		SetChannel(TCueChannel *channel);
 
 	private:
-		TCueChannel	*m_Channel;
+		TCueChannel	*fChannel;
 };
 
 #endif

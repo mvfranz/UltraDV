@@ -37,12 +37,12 @@ class TPolygon
 		TPolygon& operator = (TPolygon &frpm);
 
 		//	Inlines
-		inline BList *GetPointList(){ return m_PointList; }
+		inline BList *GetPointList(){ return fPointList; }
 		
 	private:
 	
 	protected:
-		BList	*m_PointList;		
+		BList	*fPointList;		
 };
 
 #endif

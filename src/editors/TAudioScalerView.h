@@ -60,12 +60,12 @@ class TAudioScalerView: public BView
 		int16 	GetClickRect(BPoint where);
 		
 		// Member variables
-		TAudioEditorView	*m_Editor;
-		BPoint				m_Location;
-		TBitmapView			*m_Indicator;
-		BRect				m_TextRect;
-		BRect				m_ControlRect;
-		BRect				m_ClickArray[kTotalTicks];
+		TAudioEditorView	*fEditor;
+		BPoint				fLocation;
+		TBitmapView			*fIndicator;
+		BRect				fTextRect;
+		BRect				fControlRect;
+		BRect				fClickArray[kTotalTicks];
 						
 };
 

@@ -46,8 +46,8 @@ class TAudioEditor: public BWindow
 		bool 		QuitRequested();
 		
 		// Accessor Functions
-		inline 	TAudioTimelineView *GetTimeline(){ return m_Timeline; }	
-		inline 	TAudioEditorView *GetEditorView(){ return m_EditorView; }	
+		inline 	TAudioTimelineView *GetTimeline(){ return fTimeline; }	
+		inline 	TAudioEditorView *GetEditorView(){ return fEditorView; }	
 		
 	private:	
 		friend class TAudioEditorView;
@@ -57,37 +57,37 @@ class TAudioEditor: public BWindow
 		void 	HandleEditMenu(BMessage *message);
 		
 		// Member Variables
-		TAudioEditorMenus	*m_EditorMenu;
-		bool				m_NewFile;
-		bool				m_IsClosing;
+		TAudioEditorMenus	*fEditorMenu;
+		bool				fNewFile;
+		bool				fIsClosing;
 							
-		TAudioCue			*m_AudioCue;
-		BView				*m_Background;
-		TAudioEditorToolbar	*m_Toolbar;
-		TAudioTimelineView	*m_Timeline;
-		TAudioEditorView	*m_EditorView;
+		TAudioCue			*fAudioCue;
+		BView				*fBackground;
+		TAudioEditorToolbar	*fToolbar;
+		TAudioTimelineView	*fTimeline;
+		TAudioEditorView	*fEditorView;
 		
-		BScrollBar			*m_VScroll;
-		BScrollBar			*m_HScroll;
+		BScrollBar			*fVScroll;
+		BScrollBar			*fHScroll;
 		
-		TAudioScalerView	*m_AudioScaler;
+		TAudioScalerView	*fAudioScaler;
 		
-		entry_ref			m_FileRef;
-		BFilePanel			*m_FileSavePanel;
+		entry_ref			fFileRef;
+		BFilePanel			*fFileSavePanel;
 			
 		// Sound Data Variables
-		BSound			*m_Sound;					
-		int32 			m_CaretTime;
-		bool			m_IsPlaying;
-		int32			m_StartTime;
-		int32			m_SamplesPerPixel;	
-		int32			m_SampleRate;
-		int32			m_NumSamples;		// Number of sample frames
-		int16			m_NumChannels;
-		int16			m_SampleSize;		// 8 or 16 bit
-		int32			m_SDataOffset;		// offset into file for sample data
-		int32			m_SelectStart;		// Selection points in samples frames
-		int32			m_SelectEnd;
+		BSound			*fSound;					
+		int32 			fCaretTime;
+		bool			fIsPlaying;
+		int32			fStartTime;
+		int32			fSamplesPerPixel;	
+		int32			fSampleRate;
+		int32			fNumSamples;		// Number of sample frames
+		int16			fNumChannels;
+		int16			fSampleSize;		// 8 or 16 bit
+		int32			fSDataOffset;		// offset into file for sample data
+		int32			fSelectStart;		// Selection points in samples frames
+		int32			fSelectEnd;
 			
 		// Member Functions
 		void	Init();		

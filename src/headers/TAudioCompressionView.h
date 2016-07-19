@@ -33,12 +33,12 @@ class TAudioCompressionView: public BView
 		
 				
 		// Member variables
-		BMenuField 			*m_CompressorMenuField;
-		TAudioLevelsView	*m_AudioLevelsView;
-		BBox				*m_VolumeBox;
+		BMenuField 			*fCompressorMenuField;
+		TAudioLevelsView	*fAudioLevelsView;
+		BBox				*fVolumeBox;
 		
-		TLevelsSlider		*m_InputSlider;
-		TLevelsSlider		*m_OutputSlider;
+		TLevelsSlider		*fInputSlider;
+		TLevelsSlider		*fOutputSlider;
 			
 };	
 

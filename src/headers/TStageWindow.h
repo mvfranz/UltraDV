@@ -32,12 +32,12 @@ class TStageWindow: public BWindow
 		void	MessageReceived(BMessage* message);	
 		
 		// Accessor Functions
-		inline TCueSheetWindow 	*GetCueSheet(){ return m_CueSheet; }
-		inline TStageView 	   	*GetStageView(){ return m_StageView; }
+		inline TCueSheetWindow 	*GetCueSheet(){ return fCueSheet; }
+		inline TStageView 	   	*GetStageView(){ return fStageView; }
 				
 	private:
-		TCueSheetWindow *m_CueSheet;
-		TStageView		*m_StageView;
+		TCueSheetWindow *fCueSheet;
+		TStageView		*fStageView;
 			
 		void		Init();			
 };

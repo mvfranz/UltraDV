@@ -52,10 +52,10 @@ const short kAudioScalerWidth = 170;
 TAudioEditor::TAudioEditor(BRect bounds, entry_ref *ref, TAudioCue *theCue): BWindow(bounds, "Untitled", B_DOCUMENT_WINDOW, 0,0)
 {
 	// Save file ref
-	m_FileRef = *ref;
+	fFileRef = *ref;
 	
 	// Save cue
-	m_AudioCue = theCue;
+	fAudioCue = theCue;
 	
 	// 	Set up indicator flag specifying whether or not this file is a new capture
 	//	or a previuosly saved file.  If a file originates from the /boot/var/tmp
@@ -72,9 +72,9 @@ TAudioEditor::TAudioEditor(BRect bounds, entry_ref *ref, TAudioCue *theCue): BWi
 	entry.GetNodeRef(&nref);
 	         
 	if ( ref->directory == nref.node)
-		m_NewFile = true;
+		fNewFile = true;
 	else
-		m_NewFile = false;
+		fNewFile = false;
 	
 	// Default initialization
 	Init();
@@ -89,14 +89,14 @@ TAudioEditor::TAudioEditor(BRect bounds, entry_ref *ref, TAudioCue *theCue): BWi
 
 TAudioEditor::~TAudioEditor()
 {
-	if (m_IsPlaying)
+	if (fIsPlaying)
 	{
-		//m_Engine->Stop();
+		//fEngine->Stop();
 	}
 		
 	// Inform cue that we have been closed
-	if (m_AudioCue)
-		m_AudioCue->SetEditorOpen(false);	
+	if (fAudioCue)
+		fAudioCue->SetEditorOpen(false);	
 }
 
 
@@ -111,62 +111,62 @@ TAudioEditor::~TAudioEditor()
 void TAudioEditor::Init()
 {
 	//	Create BSound
-	m_Sound = new BSound(&m_FileRef);
+	fSound = new BSound(&fFileRef);
 	
 	//	Check for error
 				
 	// Set up state variables
-	m_IsClosing		= false;
-	m_SelectStart 	= 0;
-	m_SelectEnd 	= 0;
-	m_CaretTime 	= 0;
-	m_IsPlaying 	= false;
+	fIsClosing		= false;
+	fSelectStart 	= 0;
+	fSelectEnd 	= 0;
+	fCaretTime 	= 0;
+	fIsPlaying 	= false;
 					
 	// Create menubar
 	BRect mbarRect 	= Bounds();
 	mbarRect.bottom = mbarRect.top+kMenuHeight;
 	BMenuBar *mbar 	= new BMenuBar(mbarRect, "mbar");
-	m_EditorMenu 	= new TAudioEditorMenus(mbar, this);	
+	fEditorMenu 	= new TAudioEditorMenus(mbar, this);	
 	AddChild(mbar);
 
 	// Create Toolbar
 	BRect bounds = Bounds();
 	BRect toolBounds(bounds.left, bounds.top+kMenuHeight , bounds.right - (B_V_SCROLL_BAR_WIDTH+1), bounds.top+kMenuHeight+kAudioToolbarHeight);
-	m_Toolbar = new TAudioEditorToolbar(this, toolBounds);
-	AddChild(m_Toolbar);
-	m_Toolbar->Show();
+	fToolbar = new TAudioEditorToolbar(this, toolBounds);
+	AddChild(fToolbar);
+	fToolbar->Show();
 	
 	// Create Background View.  It hold all the other views...
 	BRect bgRect   	= Bounds();
-	bgRect.top		= m_Toolbar->Frame().bottom+1;
+	bgRect.top		= fToolbar->Frame().bottom+1;
 	bgRect.right   	-= (B_V_SCROLL_BAR_WIDTH+1);
 	bgRect.bottom  	-= (B_H_SCROLL_BAR_HEIGHT+1);
-	m_Background = new BView(bgRect, "Container", B_FOLLOW_ALL, B_WILL_DRAW);
-	AddChild(m_Background);
-	m_Background->SetViewColor(kWhite);
-	m_Background->Show();	
+	fBackground = new BView(bgRect, "Container", B_FOLLOW_ALL, B_WILL_DRAW);
+	AddChild(fBackground);
+	fBackground->SetViewColor(kWhite);
+	fBackground->Show();	
 	
 	// 	Create Timeline.  It is always located below the toolbar.
 	//	This is where the time is indicated and the playback head resides
-	BRect timeRect 	= m_Background->Bounds();
+	BRect timeRect 	= fBackground->Bounds();
 	timeRect.right	= 500;
 	timeRect.bottom = timeRect.top+kTimelineHeight;
-	m_Timeline = new TAudioTimelineView(timeRect, this);
-	m_Background->AddChild(m_Timeline);
-	m_Timeline->Show();
+	fTimeline = new TAudioTimelineView(timeRect, this);
+	fBackground->AddChild(fTimeline);
+	fTimeline->Show();
 		
 	// Init sound file attributes
 	InitSoundfileAttributes();
 	
 	// Rewind sound file
-	// m_Engine->m_SoundFile->SeekToFrame(0);
+	// fEngine->fSoundFile->SeekToFrame(0);
 		
 	// Create editor view.  It should be the width of the sound in pixels	
-	float right = m_NumSamples / m_SamplesPerPixel;
-	BRect audioBounds( bounds.left, m_Timeline->Frame().bottom+1, right, bounds.bottom-(B_H_SCROLL_BAR_HEIGHT+1) );
-	m_EditorView = new TAudioEditorView(this, audioBounds);
-	m_Background->AddChild(m_EditorView);
-	m_EditorView->Show();
+	float right = fNumSamples / fSamplesPerPixel;
+	BRect audioBounds( bounds.left, fTimeline->Frame().bottom+1, right, bounds.bottom-(B_H_SCROLL_BAR_HEIGHT+1) );
+	fEditorView = new TAudioEditorView(this, audioBounds);
+	fBackground->AddChild(fEditorView);
+	fEditorView->Show();
 	
 	//
 	// Create scroll bars
@@ -175,25 +175,25 @@ void TAudioEditor::Init()
 	// Horizontal	
 	BRect scrollRect = Bounds();
 	scrollRect.Set(scrollRect.left + kAudioScalerWidth, scrollRect.bottom-B_H_SCROLL_BAR_HEIGHT, scrollRect.right-B_V_SCROLL_BAR_WIDTH, scrollRect.bottom);
-	m_HScroll = new BScrollBar(scrollRect, "HAudioScroll", m_Background, 0, right, B_HORIZONTAL);
-	AddChild(m_HScroll);	
+	fHScroll = new BScrollBar(scrollRect, "HAudioScroll", fBackground, 0, right, B_HORIZONTAL);
+	AddChild(fHScroll);	
 		
 	// Vertical
 	scrollRect = Bounds();
 	scrollRect.Set(scrollRect.right-B_V_SCROLL_BAR_WIDTH, scrollRect.top+kAudioToolbarHeight+kMenuHeight+1, scrollRect.right, scrollRect.bottom-B_H_SCROLL_BAR_HEIGHT);
-	m_VScroll = new BScrollBar(scrollRect, "VAudioScroll", m_EditorView, 0, right, B_VERTICAL);
-	AddChild(m_VScroll);	
+	fVScroll = new BScrollBar(scrollRect, "VAudioScroll", fEditorView, 0, right, B_VERTICAL);
+	AddChild(fVScroll);	
 	
 	// Create TimeScaler
 	BRect scalerRect(Bounds().left, Bounds().bottom - B_H_SCROLL_BAR_HEIGHT, kAudioScalerWidth, Bounds().bottom);
-	m_AudioScaler = new TAudioScalerView(scalerRect, m_EditorView);
-	AddChild(m_AudioScaler);
+	fAudioScaler = new TAudioScalerView(scalerRect, fEditorView);
+	AddChild(fAudioScaler);
 	
 	// Update view size based on sound file attributes
-	m_EditorView->SetAudioViewBounds();	
+	fEditorView->SetAudioViewBounds();	
 	
 	// Resize toolbar based on editor view settings
-	m_Toolbar->ResizeTo(Bounds().right, m_Toolbar->Frame().Height() );	
+	fToolbar->ResizeTo(Bounds().right, fToolbar->Frame().Height() );	
 	
 	// Set minimum window size and then open it to max	
 	float maxWidthHeight = kAudioEditorHeight+kAudioToolbarHeight+kTimelineHeight;		
@@ -217,11 +217,11 @@ void TAudioEditor::MessageReceived(BMessage* message)
 	switch (message->what)
 	{
 		case AUDIO_PLAY_BUTTON_MSG:		
-			//m_SoundID = m_Engine->StartPlaying(m_Sound);
+			//fSoundID = fEngine->StartPlaying(fSound);
 			break;
 			
 		case AUDIO_STOP_BUTTON_MSG:
-			//m_Engine->Stop();
+			//fEngine->Stop();
 			break;			
 		
 		// These messages come from the BFilePanel when saving an audio file
@@ -275,16 +275,16 @@ void TAudioEditor::MessageReceived(BMessage* message)
 void TAudioEditor::InitSoundfileAttributes()
 {
 	// Get total channels
-	//m_NumChannels = m_Engine->m_SoundFile->CountChannels();	
+	//fNumChannels = fEngine->fSoundFile->CountChannels();	
 					
 	// Determine number of samples
-	//m_NumSamples = ( m_Engine->m_SoundFile->CountFrames() * m_Engine->m_SoundFile->FrameSize() ) / m_NumChannels;
+	//fNumSamples = ( fEngine->fSoundFile->CountFrames() * fEngine->fSoundFile->FrameSize() ) / fNumChannels;
 	
 	// Determine samples per pixel
-	//m_SamplesPerPixel = m_NumSamples / Bounds().Width() + 1;	
+	//fSamplesPerPixel = fNumSamples / Bounds().Width() + 1;	
 	
 	// Get sample size
-	//m_SampleSize = m_Engine->m_SoundFile->SampleSize();	
+	//fSampleSize = fEngine->fSoundFile->SampleSize();	
 }
 
 
@@ -380,7 +380,7 @@ bool TAudioEditor::QuitRequested()
 {
 	bool retVal = true;
 	
-	if ( m_NewFile == true)
+	if ( fNewFile == true)
 	{
 		// Ask user to save file
 		int32 userVal = SaveAlert();
@@ -402,7 +402,7 @@ bool TAudioEditor::QuitRequested()
 			case 2:
 				{
 					ShowFileSavePanel();
-					m_IsClosing = true;
+					fIsClosing = true;
 					retVal = false;
 				}
 				break;
@@ -413,10 +413,10 @@ bool TAudioEditor::QuitRequested()
 	}
 	
 	// Delete temp file if necessary
-	if (retVal && m_NewFile)
+	if (retVal && fNewFile)
 	{
 		// Delete temp file
-		BEntry entry(&m_FileRef);
+		BEntry entry(&fFileRef);
 		
 		if ( entry.InitCheck() == B_OK)
 			entry.Remove();		
@@ -446,15 +446,15 @@ void TAudioEditor::ShowFileSavePanel()
 	// 	If the panel has already been constructed, show the panel
 	// 	Otherwise, create the panel.  We do need to reset it's messenger to 
 	//	point at the correct window
-	if (m_FileSavePanel)
+	if (fFileSavePanel)
 	{
-		m_FileSavePanel->SetTarget(messenger);
-		m_FileSavePanel->Show();
+		fFileSavePanel->SetTarget(messenger);
+		fFileSavePanel->Show();
 	}
 	else
 	{
 		// Construct a file panel and set it to modal
-	 	m_FileSavePanel = new BFilePanel( B_SAVE_PANEL, &messenger, NULL, B_FILE_NODE, false, NULL, NULL, true, true );
+	 	fFileSavePanel = new BFilePanel( B_SAVE_PANEL, &messenger, NULL, B_FILE_NODE, false, NULL, NULL, true, true );
 	 
 	 	// Set it to application's home directory
 	 	app_info appInfo;
@@ -462,13 +462,13 @@ void TAudioEditor::ShowFileSavePanel()
 	 	BEntry entry(&appInfo.ref);
 	 	BDirectory parentDir;
 	 	entry.GetParent(&parentDir);
-	 	m_FileSavePanel->SetPanelDirectory(&parentDir);
+	 	fFileSavePanel->SetPanelDirectory(&parentDir);
 	 		
 		// Center Panel
-		CenterWindow(m_FileSavePanel->Window());
+		CenterWindow(fFileSavePanel->Window());
 	}
 			
-	m_FileSavePanel->Show();
+	fFileSavePanel->Show();
 }
 
 
@@ -516,7 +516,7 @@ void TAudioEditor::Save(BMessage *message)
 	BDirectory saveDir(&theRef);
 													
 	// Save out data
-	if (m_NewFile == false)
+	if (fNewFile == false)
 	{
 		// Create the file.
 		BFile *saveFile = new BFile();
@@ -525,7 +525,7 @@ void TAudioEditor::Save(BMessage *message)
 		if (myErr != B_OK)
 			return;
 
-		//BFile soundFile(m_FileRef);
+		//BFile soundFile(fFileRef);
 		//soundFile->SeekSet(0, 
 		//saveFile->Write(  );
 		
@@ -537,10 +537,10 @@ void TAudioEditor::Save(BMessage *message)
 		info.SetType("audio/raw");
 		
 		// Set icons
-		BBitmap *smallIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_AudioIcon16;
+		BBitmap *smallIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon16;
 		info.SetIcon( smallIcon, B_MINI_ICON);	
 		
-		BBitmap *largeIcon	= static_cast<MuseumApp *>(be_app)->m_MuseumIcons->m_AudioIcon32;	
+		BBitmap *largeIcon	= static_cast<MuseumApp *>(be_app)->fMuseumIcons->fAudioIcon32;	
 		info.SetIcon( largeIcon, B_LARGE_ICON);
 		
 		// Clean up 
@@ -551,7 +551,7 @@ void TAudioEditor::Save(BMessage *message)
 	else
 	{	
 		// Get entry of source data
-		BEntry entry(&m_FileRef);
+		BEntry entry(&fFileRef);
 		
 		// Move data from temp to new location
 		BDirectory moveDir(&theRef);
@@ -561,7 +561,7 @@ void TAudioEditor::Save(BMessage *message)
 		entry.Rename(theString); 
 		
 		// Update newFile flag
-		m_NewFile = false;
+		fNewFile = false;
 		
 		// Get updated entry_ref
 		entry_ref newRef;
@@ -579,7 +579,7 @@ void TAudioEditor::Save(BMessage *message)
 	// Set window title to new filename
 	SetTitle(theString);
 	
-	if (m_IsClosing)
+	if (fIsClosing)
 	{
 		Lock();
 		Quit();

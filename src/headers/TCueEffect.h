@@ -84,7 +84,7 @@ using namespace std;
 struct TEffectState : public BArchivable {
 	virtual ~TEffectState() {}
 
-	// These are needed by TKeyFrame to allow its m_state field
+	// These are needed by TKeyFrame to allow its fstate field
 	// to be compared and copied. NOTE: Using the operator== and
 	// operator< would be weird because the subclass decls would 
 	// not be comparing objects of the same type. This seems clearer.
@@ -150,11 +150,11 @@ public:
 
 		// Timing (within a cue). If the start time or duration changes,
 		// the base class version eliminates any stranded key frames.
-	uint32 StartTime() const			{ return m_startTime; }
+	uint32 StartTime() const			{ return fstartTime; }
 	virtual void StartTime(uint32 time);
-	uint32 EndTime() const			{ return m_startTime + m_duration; }
-	void EndTime(uint32 time)		{ Duration(time - m_startTime); }
-	uint32 Duration() const			{ return m_duration; }
+	uint32 EndTime() const			{ return fstartTime + fduration; }
+	void EndTime(uint32 time)		{ Duration(time - fstartTime); }
+	uint32 Duration() const			{ return fduration; }
 	void Duration(uint32 time);
 		
 	// NOTE: See subclasses for actual effects application methods
@@ -176,8 +176,8 @@ public:
 		// Add a new key frame at 'time'
 	TKeyFrameIterator MarkKeyFrame(uint32 time);
 		// Report on the effect's key frames
-	TKeyFrameIterator FirstKeyFrame() const 	{ return m_keyFrames.begin(); }
-	TKeyFrameIterator EndOfKeyFrames() const	{ return m_keyFrames.end(); }
+	TKeyFrameIterator FirstKeyFrame() const 	{ return fkeyFrames.begin(); }
+	TKeyFrameIterator EndOfKeyFrames() const	{ return fkeyFrames.end(); }
 		// Remove the indicated key frame
 	void RemoveKeyFrame(TKeyFrameIterator kf);
 		// Move a key frame to a new time. Returns the new iterator.
@@ -209,7 +209,7 @@ protected:
 		// Use our friend status with TKeyFrame to give subclasses
 		// access to this pointer. This lets them see the value
 	const TEffectState* KeyFrameState(TKeyFrameIterator kf) const 
-						{ return (*kf).m_state; }
+						{ return (*kf).fstate; }
 		// And this lets them change it. The value of 'state' is copied
 		// into the current key frame state variable. Return value indicates
 		// if an actual change was required.
@@ -239,7 +239,7 @@ private:
 	// Methods
 		// Return the last key frame in the bunch, the one that marks the 
 		// end of the effect. NOTE: this isn't a const function so 
-		// m_keyFrames.end() will return a non-const iterator, which we 
+		// fkeyFrames.end() will return a non-const iterator, which we 
 		// want for a return type.
 	TKeyFrameIterator_vol LastKeyFrame() const;
 		// Find the volatile version of the key frame iterator. We only
@@ -249,10 +249,10 @@ private:
 
 	// Data
 		// when the effect starts and how long it lasts
-	uint32 m_startTime;
-	uint32 m_duration;
+	uint32 fstartTime;
+	uint32 fduration;
 		// key frames within the passing of the effect
-	TKeyFrameContainer m_keyFrames;
+	TKeyFrameContainer fkeyFrames;
 };
 
 #endif		// !TCUEEFFECT_H

@@ -38,28 +38,28 @@ class TAudioLevelsView : public BView
 		// Member Functions
 		static int32	update(void *data);
 		void			Update();
-		static bool		stream_func(void *data, char *buf, size_t size, void *header);
+		static bool		streaffunc(void *data, char *buf, size_t size, void *header);
 
 		void			DrawGreyBoxesLeft();
 		void			DrawGreyBoxesRight();
 		
 		// Member Varibles
-		BLocker			*m_BufferLock;
-		float			*m_LeftBuffer;
-		float			*m_RightBuffer;
+		BLocker			*fBufferLock;
+		float			*fLeftBuffer;
+		float			*fRightBuffer;
 		
-		bool			m_Ready;
-		bool			m_Done;
-		thread_id		m_UpdateThread;
+		bool			fReady;
+		bool			fDone;
+		thread_id		fUpdateThread;
 		
-		int8			m_Stream;
-		int8			m_Speed;
-		int8			m_OldSpeed;
+		int8			fStream;
+		int8			fSpeed;
+		int8			fOldSpeed;
 		
-		//BADCStream		*m_ADCStream;
-		//BDACStream		*m_DACStream;
+		//BADCStream		*fADCStream;
+		//BDACStream		*fDACStream;
 		
-		//BSubscriber		*m_Subscriber;		
+		//BSubscriber		*fSubscriber;		
 };
 
 #endif

@@ -41,7 +41,7 @@
 
 TVideoCompressionView::TVideoCompressionView(TVideoSettingsTabView *parent, BMessage *archive) : BView(archive)
 {
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Perform default initialization
 	Init();
@@ -72,22 +72,22 @@ void TVideoCompressionView::Init()
 	SetViewColor(kBeGrey);
 	
 	// Find view items
-	m_CompressorMenuField 	= (BMenuField *)FindView("CompressorMenuField");
-	m_DepthMenuField 		= (BMenuField *)FindView("DepthMenuField");
+	fCompressorMenuField 	= (BMenuField *)FindView("CompressorMenuField");
+	fDepthMenuField 		= (BMenuField *)FindView("DepthMenuField");
 	
-	m_QualityString 	= (BStringView *)FindView("QualityString");
+	fQualityString 	= (BStringView *)FindView("QualityString");
 		
-	m_FPSTextControl 	= (BTextControl *)FindView("FPSTextControl");
+	fFPSTextControl 	= (BTextControl *)FindView("FPSTextControl");
 	
-	m_KeyframeCheckBox		= (BCheckBox *)FindView("KeyframeCheckBox");
-	m_KeyframeTextControl 	= (BTextControl *)FindView("KeyframeTextControl");
+	fKeyframeCheckBox		= (BCheckBox *)FindView("KeyframeCheckBox");
+	fKeyframeTextControl 	= (BTextControl *)FindView("KeyframeTextControl");
 	
-	m_LimitDataRateCheckBox		= (BCheckBox *)FindView("LimitDataRateCheckBox");
-	m_LimitDataRateTextControl 	= (BTextControl *)FindView("LimitDataRateTextControl");
+	fLimitDataRateCheckBox		= (BCheckBox *)FindView("LimitDataRateCheckBox");
+	fLimitDataRateTextControl 	= (BTextControl *)FindView("LimitDataRateTextControl");
 	
 	//	Set up  preview view bounds.  Use attached view in BBox to set up size
 	BView *previewView	= (BView *)FindView("PreviewView");
-	m_PreviewRect = previewView->Frame();
+	fPreviewRect = previewView->Frame();
 	RemoveChild(previewView);
 	delete previewView;
 
@@ -98,7 +98,7 @@ void TVideoCompressionView::Init()
 	BMenu *theMenu;
 	
 	// Setup compressors menu
-	theMenu = m_CompressorMenuField->Menu();
+	theMenu = fCompressorMenuField->Menu();
 	if (theMenu)
 	{
 		// None
@@ -196,7 +196,7 @@ void TVideoCompressionView::Init()
 	}
 	
 	// Setup compressors menu
-	theMenu = m_DepthMenuField->Menu();
+	theMenu = fDepthMenuField->Menu();
 	if (theMenu)
 	{
 		// 8-bit
@@ -220,16 +220,16 @@ void TVideoCompressionView::Init()
 	
 	// Create quality slider
 	BRect sliderFrame;
-	sliderFrame.left 	= m_QualityString->Frame().right+10;
-	sliderFrame.top 	= m_QualityString->Frame().top - 4;	
+	sliderFrame.left 	= fQualityString->Frame().right+10;
+	sliderFrame.top 	= fQualityString->Frame().top - 4;	
 	sliderFrame.right 	= sliderFrame.left + 100;
 	sliderFrame.bottom 	= sliderFrame.top + 10;
 	
-	m_QualitySlider = new TMuseumSlider(sliderFrame, "Quality", NULL, new BMessage(VID_RAW_MSG), -100, +100);
-	//m_QualitySlider->SetModificationMessage(new BMessage(msg_brightness));
-	//m_QualitySlider->SetTarget(fSource);
-	//m_QualitySlider->SetLimitLabels("Least", "Best");
-	AddChild(m_QualitySlider);
+	fQualitySlider = new TMuseumSlider(sliderFrame, "Quality", NULL, new BMessage(VID_RAW_MSG), -100, +100);
+	//fQualitySlider->SetModificationMessage(new BMessage(msg_brightness));
+	//fQualitySlider->SetTarget(fSource);
+	//fQualitySlider->SetLimitLabels("Least", "Best");
+	AddChild(fQualitySlider);
 	
 	// Inform VideoSource
 	ApplyToSource();
@@ -252,12 +252,12 @@ void TVideoCompressionView::AttachedToWindow()
 	
 	//	Get pointer to previewView and attach to BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");		
-	TVideoPreviewView *previewView = m_Parent->GetParent()->GetParent()->PreviewView();	
+	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();	
 	if (previewView)
 	{
 		previewBox->AddChild(previewView);
-		previewView->MoveTo(m_PreviewRect.left, m_PreviewRect.top);
-		previewView->ResizeTo(m_PreviewRect.Width(), m_PreviewRect.Height());
+		previewView->MoveTo(fPreviewRect.left, fPreviewRect.top);
+		previewView->ResizeTo(fPreviewRect.Width(), fPreviewRect.Height());
 		previewView->Show();
 	}
 	
@@ -277,7 +277,7 @@ void TVideoCompressionView::DetachedFromWindow()
 	
 	//	Get pointer to previewView and detach from BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");		
-	TVideoPreviewView *previewView = m_Parent->GetParent()->GetParent()->PreviewView();	
+	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();	
 	if (previewView)
 	{
 		previewView->Hide();

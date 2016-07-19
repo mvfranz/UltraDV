@@ -57,17 +57,17 @@ TTimePalette::~TTimePalette()
 {
 
 	//	Signal threads to quit
-	m_TimeToQuit = true;
+	fTimeToQuit = true;
 	
 	//	Quit service thread
-	if (write_port_etc(m_Port, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
-		kill_thread(m_ServiceThread);
+	if (write_port_etc(fPort, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
+		kill_thread(fServiceThread);
 	
 	status_t result;
-	wait_for_thread(m_ServiceThread, &result);
+	wait_for_thread(fServiceThread, &result);
 
 	//	Wait for Run thread
-	wait_for_thread(m_RunThread, &result);		
+	wait_for_thread(fRunThread, &result);		
 }
 
 
@@ -86,26 +86,26 @@ void TTimePalette::Init()
 	Lock();
 	
 	//	Set up member variables
-	m_TimeToQuit	= false;
-	m_IsPlaying 	= false;
-	m_IsStopping	= false;
+	fTimeToQuit	= false;
+	fIsPlaying 	= false;
+	fIsStopping	= false;
 
 	// Create MediaCueView and add it to the window
-	m_TimeView = new TTimePaletteView(Bounds());
+	fTimeView = new TTimePaletteView(Bounds());
 	
 	// Add view to frame
-	AddChild(m_TimeView);
+	AddChild(fTimeView);
 	
 	//	Create our port
-	m_Port = create_port(2, "LocatorPort");
+	fPort = create_port(2, "LocatorPort");
 			
 	//	Create port service thread
-	m_ServiceThread = spawn_thread(service_routine, "Locator:Service", B_NORMAL_PRIORITY, this);
-	resume_thread(m_ServiceThread);	
+	fServiceThread = spawn_thread(service_routine, "Locator:Service", B_NORMAL_PRIORITY, this);
+	resume_thread(fServiceThread);	
 	
 	//	Create run thread
-	m_RunThread = spawn_thread(run_routine, "Locator::Run", B_NORMAL_PRIORITY, this);	
-	resume_thread(m_RunThread);
+	fRunThread = spawn_thread(run_routine, "Locator::Run", B_NORMAL_PRIORITY, this);	
+	resume_thread(fRunThread);
 	
 	Unlock();	
 }
@@ -156,7 +156,7 @@ bool TTimePalette::QuitRequested()
 
 port_id TTimePalette::ControlPort() const
 {
-	return m_Port;
+	return fPort;
 }
 
 
@@ -200,14 +200,14 @@ status_t TTimePalette::service_routine(void * data)
 
 void TTimePalette::ServiceRoutine()
 {
-	while (!m_TimeToQuit)
+	while (!fTimeToQuit)
 	{
 		//	Read message
 		status_t 		err  = 0;
 		int32 			code = 0;
 		char 			msg[B_MEDIA_MESSAGE_SIZE];
 		
-		err = read_port_etc(m_Port, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);		
+		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);		
 		
 		if (err == B_TIMED_OUT) 
 			continue;
@@ -253,7 +253,7 @@ void TTimePalette::RunRoutine()
 {
 	char text[12];	
 	
-	while(!m_TimeToQuit)
+	while(!fTimeToQuit)
 	{
 		snooze(50000);
 	
@@ -263,8 +263,8 @@ void TTimePalette::RunRoutine()
 			//	Update text						
 			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);						
 			Lock();
-			m_TimeView->GetTimeText()->SetText(text);
-			m_TimeView->GetTimeText()->Sync();
+			fTimeView->GetTimeText()->SetText(text);
+			fTimeView->GetTimeText()->Sync();
 			Unlock();
 		}		
 	}

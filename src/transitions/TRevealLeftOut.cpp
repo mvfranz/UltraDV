@@ -90,7 +90,7 @@ BBitmap *TRevealLeftOut::TransformBitmap(uint32 time, const BBitmap *source,
 			const TCuePosition &registration, DisplayQuality quality)
 {
 	//	Only create offscreen at first pass
-	if (!m_Inited)
+	if (!fInited)
 	{
 		BRect offRect = registration.Enclosure();
 		offRect.OffsetTo(0, 0);
@@ -123,22 +123,22 @@ BBitmap *TRevealLeftOut::TransformBitmap(uint32 time, const BBitmap *source,
 	dstRect.right 	-= dstRect.Width() * percentDone / 1000;
 		
 	// Draw bitmap
-	if (m_OffscreenView->LockLooper())
+	if (fOffscreenView->LockLooper())
 	{
 		//	Clear offscreen
-		m_OffscreenView->SetHighColor(B_TRANSPARENT_32_BIT);		
-		m_OffscreenView->FillRect(m_OffscreenView->Bounds());
-		m_OffscreenView->Sync();
+		fOffscreenView->SetHighColor(B_TRANSPARENT_32_BIT);		
+		fOffscreenView->FillRect(fOffscreenView->Bounds());
+		fOffscreenView->Sync();
 		
 		//	Do transitioned data
-		m_OffscreenView->DrawBitmap(source, srcRect, dstRect);
-		m_OffscreenView->Sync();
+		fOffscreenView->DrawBitmap(source, srcRect, dstRect);
+		fOffscreenView->Sync();
 
-		m_OffscreenView->UnlockLooper();	
+		fOffscreenView->UnlockLooper();	
 	}
 		
 	//	Clone offscreen
-	BBitmap *newBitmap = CloneBitmap(*m_OffscreenBitmap);
+	BBitmap *newBitmap = CloneBitmap(*fOffscreenBitmap);
 	ASSERT(newBitmap);
 		
 	return newBitmap;

@@ -32,7 +32,7 @@ class TExportText : public BStringView
 
 	private:
 	
-		TExportTimeView	*m_Parent;
+		TExportTimeView	*fParent;
 };
 
 #endif

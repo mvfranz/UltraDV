@@ -36,7 +36,7 @@
 
 TVideoEditorShuttle::TVideoEditorShuttle(TVideoEditor *editor, BMessage *message) : BView(message)
 {	
-	m_Editor = editor;
+	fEditor = editor;
 	
 	// Perform default initialization
 	Init();

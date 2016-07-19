@@ -44,11 +44,11 @@ class TAudioZoomOutButton: public BView
 		
 		
 		// Member variables
-		TAudioEditorToolbar	*m_Parent;
-		BHandler			*m_Handler;
-		bool				m_MouseDown;
-		BBitmap				*m_OffBitmap;
-		BBitmap				*m_OnBitmap;
+		TAudioEditorToolbar	*fParent;
+		BHandler			*fHandler;
+		bool				fMouseDown;
+		BBitmap				*fOffBitmap;
+		BBitmap				*fOnBitmap;
 		
 };		
 

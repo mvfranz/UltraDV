@@ -47,8 +47,8 @@ class TSorterList : public BListView //public BView
 		// Member variables	
 		
 		// Inlines
-		inline	SorterType		 	GetType(){ return m_Type; }
-		inline 	TSorterContainer	*GetParent(){ return m_Parent; }
+		inline	SorterType		 	GetType(){ return fType; }
+		inline 	TSorterContainer	*GetParent(){ return fParent; }
 		
 	private:				
 		// Member functions
@@ -74,9 +74,9 @@ class TSorterList : public BListView //public BView
 		void 	OpenEditor();
 		
 		// Member variables		
-		SorterType			m_Type;
-		TSorterContainer	*m_Parent;
-		bool				m_IsActive;
+		SorterType			fType;
+		TSorterContainer	*fParent;
+		bool				fIsActive;
 };		
 
 

@@ -54,47 +54,47 @@ class TCueSheetWindow: public BWindow
 		void	SetPanelOpen(bool theVal);
 		
 		// Accessor Functions
-		inline TCueSheetPrefs		*GetCueSheetPrefs(){ return &m_CueSheetPrefs; }
-		inline TPlaybackEngine		*GetPlaybackEngine(){ return m_PlaybackEngine; }
-		inline TAudioEngine			*GetAudioEngine(){ return m_AudioEngine; }
-		inline TStageWindow			*GetStage(){ return m_StageWindow; }
-		inline THeaderContainerView *GetHeaderContainer() { return m_HeaderContainer; }
-		inline TCueSheetView 		*GetCueSheetView() { return m_CueSheetView; }
-		inline TExportTimeView 		*GetExportTimeView() { return m_ExportTimeView; }
-		inline TExportZone 			*GetExportZone() { return m_ExportZone; }
-		inline TTimelineView 		*GetTimeline() { return m_Timeline; }
-		inline TCueSheetScrollBarH 	*GetScrollH() { return m_HScroll; }
-		inline TCueSheetScrollBarV 	*GetScrollV() { return m_VScroll; }
-		inline	bool				IsPanelOpen(){ return m_PanelOpen; }
-		inline	int32				GetID(){ return m_ID; }
-		inline	void				SetID(int32 theID){  m_ID = theID; }
-		inline	TMuseumMenus		*GetMenu(){ return m_AppMenu; }
-		inline	BFile				*GetFile(){ return m_File; } 
+		inline TCueSheetPrefs		*GetCueSheetPrefs(){ return &fCueSheetPrefs; }
+		inline TPlaybackEngine		*GetPlaybackEngine(){ return fPlaybackEngine; }
+		inline TAudioEngine			*GetAudioEngine(){ return fAudioEngine; }
+		inline TStageWindow			*GetStage(){ return fStageWindow; }
+		inline THeaderContainerView *GetHeaderContainer() { return fHeaderContainer; }
+		inline TCueSheetView 		*GetCueSheetView() { return fCueSheetView; }
+		inline TExportTimeView 		*GetExportTimeView() { return fExportTimeView; }
+		inline TExportZone 			*GetExportZone() { return fExportZone; }
+		inline TTimelineView 		*GetTimeline() { return fTimeline; }
+		inline TCueSheetScrollBarH 	*GetScrollH() { return fHScroll; }
+		inline TCueSheetScrollBarV 	*GetScrollV() { return fVScroll; }
+		inline	bool				IsPanelOpen(){ return fPanelOpen; }
+		inline	int32				GetID(){ return fID; }
+		inline	void				SetID(int32 theID){  fID = theID; }
+		inline	TMuseumMenus		*GetMenu(){ return fAppMenu; }
+		inline	BFile				*GetFile(){ return fFile; } 
 		
 		// Member Variables
 							
 	private:				
 		// Member variables
-		TUndoEngine				*m_UndoEngine;
-		TPlaybackEngine			*m_PlaybackEngine;
-		TAudioEngine			*m_AudioEngine;
-		TCueSheetPrefs	 		m_CueSheetPrefs;					
-		TStageWindow			*m_StageWindow;
-		THeaderContainerView 	*m_HeaderContainer;
-		TToolbar			 	*m_Toolbar;		
-		TCueSheetTimeView	 	*m_TimeZone;
-		TExportTimeView			*m_ExportTimeView;
-		TExportZone				*m_ExportZone;
-		TTimelineView		 	*m_Timeline;
-		TCueSheetView 		 	*m_CueSheetView;
-		TCueSheetScrollBarH	 	*m_HScroll;
-		TCueSheetScrollBarV	 	*m_VScroll;
-		TTimeScalerView		 	*m_TimeScaler;
-		TMuseumMenus		 	*m_AppMenu;
+		TUndoEngine				*fUndoEngine;
+		TPlaybackEngine			*fPlaybackEngine;
+		TAudioEngine			*fAudioEngine;
+		TCueSheetPrefs	 		fCueSheetPrefs;					
+		TStageWindow			*fStageWindow;
+		THeaderContainerView 	*fHeaderContainer;
+		TToolbar			 	*fToolbar;		
+		TCueSheetTimeView	 	*fTimeZone;
+		TExportTimeView			*fExportTimeView;
+		TExportZone				*fExportZone;
+		TTimelineView		 	*fTimeline;
+		TCueSheetView 		 	*fCueSheetView;
+		TCueSheetScrollBarH	 	*fHScroll;
+		TCueSheetScrollBarV	 	*fVScroll;
+		TTimeScalerView		 	*fTimeScaler;
+		TMuseumMenus		 	*fAppMenu;
 		
-		int32					m_ID;		
-		BFile					*m_File;
-		bool					m_PanelOpen;
+		int32					fID;		
+		BFile					*fFile;
+		bool					fPanelOpen;
 		
 		// Member functions
 		void	Init();	

@@ -33,9 +33,9 @@ class TChannelName : public BWindow
 		virtual void			Init();		
 		
 		// Member Variables
-		TCueChannel 	*m_Channel;
-		BView 			*m_TextParent;
-		BTextControl 	*m_TextView;
+		TCueChannel 	*fChannel;
+		BView 			*fTextParent;
+		BTextControl 	*fTextView;
 	
 };
 

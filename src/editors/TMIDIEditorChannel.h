@@ -38,7 +38,7 @@ class TMIDIEditorChannel: public BView
 		// Member Functions
 	
 		// Member Variables		
-		TMIDIEditor	*m_Parent;		
+		TMIDIEditor	*fParent;		
 		
 		// Member Functions
 								

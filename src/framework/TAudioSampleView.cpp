@@ -44,7 +44,7 @@
 
 TAudioSampleView::TAudioSampleView(TAudioSettingsTabView *parent, BMessage *archive) : BView(archive)
 {
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Perform default initialization
 	Init();
@@ -63,39 +63,39 @@ void TAudioSampleView::Init()
 	SetViewColor(kBeGrey); 
 	
 	// Locate view items	
-	m_RateMenuField 	= (BMenuField *)FindView("RateMenuField");
-	m_DepthMenuField 	= (BMenuField *)FindView("DepthMenuField");
-	m_TypeMenuField 	= (BMenuField *)FindView("TypeMenuField");
-	m_VolumeBox			= (BBox *)FindView("VolumeBox");
+	fRateMenuField 	= (BMenuField *)FindView("RateMenuField");
+	fDepthMenuField 	= (BMenuField *)FindView("DepthMenuField");
+	fTypeMenuField 	= (BMenuField *)FindView("TypeMenuField");
+	fVolumeBox			= (BBox *)FindView("VolumeBox");
 	
 	// Set up Input Slider
 	BView *inputView = (BView *)FindView("InputView");
-	m_InputSlider = new TLevelsSlider(inputView->Frame(), kAudioInputSlider);
-	m_VolumeBox->AddChild(m_InputSlider);
-	m_VolumeBox->RemoveChild(inputView);
+	fInputSlider = new TLevelsSlider(inputView->Frame(), kAudioInputSlider);
+	fVolumeBox->AddChild(fInputSlider);
+	fVolumeBox->RemoveChild(inputView);
 	delete inputView;
-	m_InputSlider->Show();
+	fInputSlider->Show();
 
 	// Set up Output Slider
 	BView *outputView = (BView *)FindView("OutputView");
-	m_OutputSlider = new TLevelsSlider(outputView->Frame(), kAudioOutputSlider);
-	m_VolumeBox->AddChild(m_OutputSlider);
-	m_VolumeBox->RemoveChild(outputView);
+	fOutputSlider = new TLevelsSlider(outputView->Frame(), kAudioOutputSlider);
+	fVolumeBox->AddChild(fOutputSlider);
+	fVolumeBox->RemoveChild(outputView);
 	delete outputView;
-	m_OutputSlider->Show();
+	fOutputSlider->Show();
 	
 	// Set up level indicator
 	BView 	*levelsView 	= (BMenuField *)FindView("LevelsView");
-	m_AudioLevelsView = new TAudioLevelsView(levelsView->Frame());
-	m_VolumeBox->RemoveChild(levelsView);
+	fAudioLevelsView = new TAudioLevelsView(levelsView->Frame());
+	fVolumeBox->RemoveChild(levelsView);
 	delete levelsView;
-	m_VolumeBox->AddChild(m_AudioLevelsView);
+	fVolumeBox->AddChild(fAudioLevelsView);
 	
 	// Setup menus
 	BMenu *theMenu;
 	
 	// Setup Rate menu
-	theMenu = m_RateMenuField->Menu();
+	theMenu = fRateMenuField->Menu();
 	if (theMenu)
 	{
 		// 11.025 kHz
@@ -116,7 +116,7 @@ void TAudioSampleView::Init()
 	
 
 	// Setup Depth menu
-	theMenu = m_DepthMenuField->Menu();
+	theMenu = fDepthMenuField->Menu();
 	if (theMenu)
 	{
 		// 8-bit
@@ -133,7 +133,7 @@ void TAudioSampleView::Init()
 
 
 	// Setup type menu
-	theMenu = m_TypeMenuField->Menu();
+	theMenu = fTypeMenuField->Menu();
 	if (theMenu)
 	{
 		// Mono
@@ -220,7 +220,7 @@ void TAudioSampleView::AttachedToWindow()
 	//
 	
 	// Device Menu
-	BMenu *rateMenu = m_RateMenuField->Menu();
+	BMenu *rateMenu = fRateMenuField->Menu();
 	if (rateMenu)
 	{
 		BMenuItem *elevenItem = rateMenu->FindItem(SAMP_11_MSG);

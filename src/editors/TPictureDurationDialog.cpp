@@ -38,7 +38,7 @@
 TPictureDurationDialog::TPictureDurationDialog(BMessage *theMessage, TCueView *theCue) : BWindow(theMessage)
 {	
 	// Save transition rate
-	m_Cue = theCue;
+	fCue = theCue;
 	
 	// Default initialization
 	Init();
@@ -65,30 +65,30 @@ TPictureDurationDialog::~TPictureDurationDialog()
 void TPictureDurationDialog::Init()
 {
 	/*// Get main view
-	m_TextParent = FindView("PictureDurationView");
+	fTextParent = FindView("PictureDurationView");
 	
 	// Find text view and swap it out for our own TNumberBevelTextView
-	BTextView *theView = (BTextView *)m_TextParent->FindView("PictureDurationText");
+	BTextView *theView = (BTextView *)fTextParent->FindView("PictureDurationText");
 	BRect frame = theView->Frame();
 	frame.InsetBy(-1, -1);
-	m_TextView = new TCueTimeText(this, START_TIME_TEXT_FOCUS_MSG, frame, "PictureDurationText", 
+	fTextView = new TCueTimeText(this, START_TIME_TEXT_FOCUS_MSG, frame, "PictureDurationText", 
 										 theView->ResizingMode(), kTextBevel );		
 
 	// Set up time values
 	char timeStr[64];
 	
-	TimeToString(m_Cue->Duration(), GetCurrentTimeFormat(), timeStr, false);
-	m_TextView->m_Time = m_Cue->Duration();
+	TimeToString(fCue->Duration(), GetCurrentTimeFormat(), timeStr, false);
+	fTextView->fTime = fCue->Duration();
 	
-	m_TextView->SetText(timeStr);
-	m_TextParent->AddChild(m_TextView);
+	fTextView->SetText(timeStr);
+	fTextParent->AddChild(fTextView);
 	
 	// Free original text control
-	m_TextParent->RemoveChild(theView);
+	fTextParent->RemoveChild(theView);
 	delete theView;
 			
 	// Make the text active focus
-	m_TextView->MakeFocus(true);*/	
+	fTextView->MakeFocus(true);*/	
 }
 
 		
@@ -111,10 +111,10 @@ void TPictureDurationDialog::MessageReceived(BMessage* message)
 		case OK_MSG:
 			{
 				// Verify that all values are good
-				//m_TextView->CheckLastEdit();
+				//fTextView->CheckLastEdit();
 				
 				// Get new rate
-				//int32 theTime = m_TextView->m_Time;		
+				//int32 theTime = fTextView->fTime;		
 							
 				// Close dialog
 				Hide();

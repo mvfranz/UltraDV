@@ -40,11 +40,11 @@
 TAudioEditorView::TAudioEditorView(TAudioEditor *parent, BRect bounds) : BView(bounds, "AudioEditorView", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS)
 {
 	// Save parent
-	m_Parent = parent;		
+	fParent = parent;		
 	
 	// Set up member varibales
-	m_UpdatePreview = true;
-	m_PreviewBitmap	= NULL;	
+	fUpdatePreview = true;
+	fPreviewBitmap	= NULL;	
 	
 	// We handle our own drawing
 	SetViewColor(B_TRANSPARENT_32_BIT);
@@ -60,13 +60,13 @@ TAudioEditorView::TAudioEditorView(TAudioEditor *parent, BRect bounds) : BView(b
 TAudioEditorView::~TAudioEditorView()
 {	
 	// Clean up old preview
-	if (m_PreviewBitmap)
+	if (fPreviewBitmap)
 	{
-		m_PreviewBitmap->Lock();
-		BView *oldView = m_PreviewBitmap->ChildAt(0);
-		m_PreviewBitmap->RemoveChild(oldView);
+		fPreviewBitmap->Lock();
+		BView *oldView = fPreviewBitmap->ChildAt(0);
+		fPreviewBitmap->RemoveChild(oldView);
 		delete oldView;
-		delete m_PreviewBitmap;
+		delete fPreviewBitmap;
 	}		
 }
 
@@ -274,24 +274,24 @@ void TAudioEditorView::Draw(BRect updateRect)
 	//const BRect bounds = Bounds();
 	
 	// Do we need to update the cached waveform?
-	if (m_UpdatePreview)
+	if (fUpdatePreview)
 	{
 		// Clean up old preview
-		if (m_PreviewBitmap)
+		if (fPreviewBitmap)
 		{
-			m_PreviewBitmap->Lock();
-			BView *oldView = m_PreviewBitmap->ChildAt(0);
-			m_PreviewBitmap->RemoveChild(oldView);
+			fPreviewBitmap->Lock();
+			BView *oldView = fPreviewBitmap->ChildAt(0);
+			fPreviewBitmap->RemoveChild(oldView);
 			delete oldView;
-			delete m_PreviewBitmap;
+			delete fPreviewBitmap;
 		}
 		
 		// Create preview bitmap the size of the view
-		m_PreviewBitmap = new BBitmap( updateRect, B_CMAP8, true);
+		fPreviewBitmap = new BBitmap( updateRect, B_CMAP8, true);
 		
 		// Create preview view
 		BView *previewView = new BView(updateRect, "PreviewView", B_FOLLOW_ALL, 0);
-		m_PreviewBitmap->AddChild(previewView);
+		fPreviewBitmap->AddChild(previewView);
 		
 		// Draw waveform into bitmap
 		CreateWaveFormCache(previewView, updateRect);
@@ -299,12 +299,12 @@ void TAudioEditorView::Draw(BRect updateRect)
 		previewView->Sync();
 		previewView->Looper()->Unlock();
 						
-		m_UpdatePreview = false;
+		fUpdatePreview = false;
 	}
 	
 	// Draw the cached waveform bitmap		
 	BPoint drawPt(updateRect.left, updateRect.top);
-	DrawBitmap(m_PreviewBitmap, updateRect, updateRect);
+	DrawBitmap(fPreviewBitmap, updateRect, updateRect);
 	
 	// Restore environment
 	PopState();	
@@ -332,23 +332,23 @@ void TAudioEditorView::DrawIndicatorTick(BPoint drawPt)
 	SetDrawingMode(B_OP_INVERT);
 	
 	// Save point into tracking member variable points
-	m_TickPt = drawPt;
+	fTickPt = drawPt;
 
 	// If point is at new location, go ahead and draw
-	if (m_TickPt.x != m_OldTickPt.x)
+	if (fTickPt.x != fOldTickPt.x)
 	{			
 		// Erase last indicator tick. Clip out the outline lines 
-		startPt.Set(m_OldTickPt.x, bounds.top+1);
-		endPt.Set(m_OldTickPt.x, bounds.bottom-1);
+		startPt.Set(fOldTickPt.x, bounds.top+1);
+		endPt.Set(fOldTickPt.x, bounds.bottom-1);
 		StrokeLine(startPt, endPt);
 		
 		// Draw the new indicator tick. Clip out the outline lines 
-		startPt.Set(m_TickPt.x, bounds.top+1);
-		endPt.Set(m_TickPt.x, bounds.bottom-1);
+		startPt.Set(fTickPt.x, bounds.top+1);
+		endPt.Set(fTickPt.x, bounds.bottom-1);
 		StrokeLine(startPt, endPt);
 		
 		// Save tick location for next compare
-		m_OldTickPt = m_TickPt;
+		fOldTickPt = fTickPt;
 	}
 	
 	// Restore environment
@@ -371,16 +371,16 @@ void TAudioEditorView::SetAudioViewBounds()
 
 	// Set up bounds...
 	BRect bounds = Bounds();
-	bounds.right = m_Parent->m_NumSamples / m_Parent->m_SamplesPerPixel;
+	bounds.right = fParent->fNumSamples / fParent->fSamplesPerPixel;
 
 	// Resize toolbar and view...	
 	ResizeTo( bounds.Width(), bounds.Height()); 
-	m_Parent->m_Timeline->SetTimelineViewBounds(bounds);
+	fParent->fTimeline->SetTimelineViewBounds(bounds);
 	
 	// Adjust scroll bars
-	m_Parent->m_HScroll->SetRange( 0, bounds.Width() );
-	//m_Parent->m_HScroll->SetProportion(1.0);
-	//m_VScroll
+	fParent->fHScroll->SetRange( 0, bounds.Width() );
+	//fParent->fHScroll->SetProportion(1.0);
+	//fVScroll
 }
 
 
@@ -411,18 +411,18 @@ void TAudioEditorView::CreateWaveFormCache(BView *previewView, const BRect bound
 	float viewMiddle = previewView->Bounds().Height() / 2;
 		
 	// Don't draw past end of file
-	if (m_Parent->m_SamplesPerPixel * (bounds.left + 1) < m_Parent->m_NumSamples)
+	if (fParent->fSamplesPerPixel * (bounds.left + 1) < fParent->fNumSamples)
 	{
 			
 		// Get pointer to sound file
-		BSoundFile *soundFile = m_Parent->m_Engine->m_SoundFile;
+		BSoundFile *soundFile = fParent->fEngine->fSoundFile;
 												
 		// Create buffer the size of the number of pixels per sample * the sounds frame size	
-		int32 bufferSize = m_Parent->m_SamplesPerPixel * soundFile->FrameSize();	
+		int32 bufferSize = fParent->fSamplesPerPixel * soundFile->FrameSize();	
 		char *soundBuffer = (char *)malloc(bufferSize);
 		
 		// Save current position, rewind the buffer and seek to proper frame position
-		off_t frameIndex = m_Parent->m_Engine->m_SoundFile->FrameIndex();
+		off_t frameIndex = fParent->fEngine->fSoundFile->FrameIndex();
 		off_t seekVal = soundFile->SeekToFrame( bounds.left * bufferSize);
 		if ( seekVal >= 0 )
 		{
@@ -434,7 +434,7 @@ void TAudioEditorView::CreateWaveFormCache(BView *previewView, const BRect bound
 			for (int32 currentPos = bounds.left; currentPos < bounds.right; currentPos++) 
 			{
 				// Exit if we have passed the end of the file		
-				if ( m_Parent->m_SamplesPerPixel * (currentPos + 1) < m_Parent->m_NumSamples)		
+				if ( fParent->fSamplesPerPixel * (currentPos + 1) < fParent->fNumSamples)		
 				{
 									
 					// Read data into buffer
@@ -448,11 +448,11 @@ void TAudioEditorView::CreateWaveFormCache(BView *previewView, const BRect bound
 					// Make sure we have some data
 					if (framesRead > 0)
 					{									 			
-						if ( m_Parent->m_SampleSize == 1)
+						if ( fParent->fSampleSize == 1)
 						{
 							// Go through each sample at this pixel and find the high and low points				
 							char *ptr 	= (char *)soundBuffer;
-							int32 endPt =  m_Parent->m_SamplesPerPixel * m_Parent->m_NumChannels;
+							int32 endPt =  fParent->fSamplesPerPixel * fParent->fNumChannels;
 							
 							for (int32 index = 0; index < framesRead; index++) 
 							{
@@ -470,7 +470,7 @@ void TAudioEditorView::CreateWaveFormCache(BView *previewView, const BRect bound
 						else
 						{
 							int16 *ptr 	= (int16 *)soundBuffer;
-							int32 endPt =  m_Parent->m_SamplesPerPixel * m_Parent->m_NumChannels;
+							int32 endPt =  fParent->fSamplesPerPixel * fParent->fNumChannels;
 			
 							for (int32 index = 0; index < framesRead; index++) 
 							{
@@ -541,7 +541,7 @@ void TAudioEditorView::CreateWaveFormCache(BView *previewView, const BRect bound
 
 int32 TAudioEditorView::SamplesToPixels(int32 theSamples)
 {
-	return (theSamples / m_Parent->m_SamplesPerPixel);
+	return (theSamples / fParent->fSamplesPerPixel);
 }
 
 
@@ -554,7 +554,7 @@ int32 TAudioEditorView::SamplesToPixels(int32 theSamples)
 
 int32 TAudioEditorView::PixelsToSamples(int32 thePixels)
 {
-	return (thePixels * m_Parent->m_SamplesPerPixel);
+	return (thePixels * fParent->fSamplesPerPixel);
 }
 				
 			
@@ -568,10 +568,10 @@ int32 TAudioEditorView::PixelsToSamples(int32 thePixels)
 
 void TAudioEditorView::ZoomIn()				
 {
-	if ( m_Parent->m_SamplesPerPixel > 1)
+	if ( fParent->fSamplesPerPixel > 1)
 	{
 		// Adjust samples per pixel
-		m_Parent->m_SamplesPerPixel /= 2;
+		fParent->fSamplesPerPixel /= 2;
 		
 		// Resize view and toolbar
 		SetAudioViewBounds();
@@ -582,7 +582,7 @@ void TAudioEditorView::ZoomIn()
 		//itsPane->ScrollTo(&lp, FALSE);
 		
 		// Force redraw and create main bitmap
-		m_UpdatePreview = true;
+		fUpdatePreview = true;
 	}			
 }
 
@@ -604,7 +604,7 @@ void TAudioEditorView::ZoomOut()
 	//if ( Window()->Bounds().Width() > Frame().Width()) 
 	{
 		// Adjust sample per pixel
-		m_Parent->m_SamplesPerPixel *= 2;
+		fParent->fSamplesPerPixel *= 2;
 		
 		// Resize view and toolbar width
 		SetAudioViewBounds();
@@ -616,7 +616,7 @@ void TAudioEditorView::ZoomOut()
 		//itsPane->ScrollTo(&lp, FALSE);
 						
 		// Force redraw and create main bitmap
-		m_UpdatePreview = true;
+		fUpdatePreview = true;
 
 	}	
 }

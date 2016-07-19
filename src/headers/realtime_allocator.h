@@ -82,18 +82,18 @@ public:
 		return (size+31)&~31;
 	}
 	realtime_allocator() {
-		m_area = NULL;
+		farea = NULL;
 	}
 	~realtime_allocator() {
-		delete m_area;
+		delete farea;
 	}
 	template<class Other>
 	realtime_allocator(const realtime_allocator<Other> & other) {
-		m_area = NULL;
+		farea = NULL;
 		//	We only allow copying of unused allocators, as that is the
 		//	behaviour exhibited under testing <map> and <set>. Anything
 		//	more would bring re-entrancy issues in the picture.
-		//	assert(other.m_area == NULL);
+		//	assert(other.farea == NULL);
 	}
 
 //	This flavor was specified by the standard
@@ -101,16 +101,16 @@ public:
 //		return malloc(size*sizeof(Type));
 //	}
 	Type * allocate(size_t size) {
-		if (!m_area) {
+		if (!farea) {
 			init_object();
 		}
 		size_t siz = size*sizeof(Type);
-		assert(siz <= m_size);
-		if (m_free == NULL) {
+		assert(siz <= fsize);
+		if (ffree == NULL) {
 			throw bad_alloc();
 		}
-		Type * ret = reinterpret_cast<Type *>(m_free);
-		m_free = *((char **)m_free);
+		Type * ret = reinterpret_cast<Type *>(ffree);
+		ffree = *((char **)ffree);
 		return ret;
 	}
 //	This flavor was specified by the standard
@@ -118,13 +118,13 @@ public:
 //		free(p);
 //	}
 	void deallocate(void * p, size_t size) {
-		assert(size*sizeof(Type) <= m_size);
-		assert((p >= m_start) && (p < (m_start+(m_size*m_blocks))) && (((((char *)p)-m_start) % m_size) == 0));
-		*(char **)p = m_free;
-		m_free = (char *)p;
+		assert(size*sizeof(Type) <= fsize);
+		assert((p >= fstart) && (p < (fstart+(fsize*fblocks))) && (((((char *)p)-fstart) % fsize) == 0));
+		*(char **)p = ffree;
+		ffree = (char *)p;
 	}
 	inline size_type max_size() const {
-		return m_blocks;
+		return fblocks;
 	}
 
 private:
@@ -133,39 +133,39 @@ private:
 
 	class area_ref;
 
-	area_ref * m_area;
-	size_t m_size;
-	char * m_start;
-	char * m_free;
-	int m_blocks;
+	area_ref * farea;
+	size_t fsize;
+	char * fstart;
+	char * ffree;
+	int fblocks;
 
 	void init_object() {
-		m_size = round_size(sizeof(Type));
-		size_t s = NUM_BLOCKS*m_size;
-		m_blocks = NUM_BLOCKS;
+		fsize = round_size(sizeof(Type));
+		size_t s = NUM_BLOCKS*fsize;
+		fblocks = NUM_BLOCKS;
 		if (s > 65536) {
-			m_blocks = NUM_BLOCKS/4;
+			fblocks = NUM_BLOCKS/4;
 		}
-		m_start = NULL;
-		size_t pad_size = (m_size*m_blocks+B_PAGE_SIZE-1)&~(B_PAGE_SIZE-1);
+		fstart = NULL;
+		size_t pad_size = (fsize*fblocks+B_PAGE_SIZE-1)&~(B_PAGE_SIZE-1);
 		char name[32];
 		sprintf(name, "RTA:%.27s", typeid(Type).name());
-		area_id area = create_area(name, (void **)&m_start,
+		area_id area = create_area(name, (void **)&fstart,
 			B_ANY_ADDRESS, pad_size, B_FULL_LOCK, B_READ_AREA|B_WRITE_AREA);
 		if (area < 0) {
 			throw runtime_error("Could not allocate area in allocator::init_object()");
 		}
-		m_free = m_start;
+		ffree = fstart;
 		// create linked free list
-		char ** ptr = (char **)m_free;
-		char * next = m_free+m_size;
-		for (int ix=0; ix<m_blocks-1; ix++) {
+		char ** ptr = (char **)ffree;
+		char * next = ffree+fsize;
+		for (int ix=0; ix<fblocks-1; ix++) {
 			*ptr = next;
-			next += m_size;
-			ptr += m_size/sizeof(char *);
+			next += fsize;
+			ptr += fsize/sizeof(char *);
 		}
 		*ptr = NULL;
-		m_area = new area_ref(area);
+		farea = new area_ref(area);
 	}
 
 	//	Class area_ref is used to actually reference the area we allocate
@@ -173,12 +173,12 @@ private:
 	class area_ref {
 	public:
 		area_ref(area_id area, int32 ref_count = 1) {
-			m_area = area;
-			m_ref_count = ref_count;
+			farea = area;
+			fref_count = ref_count;
 		}
 		~area_ref() {
-			if (atomic_add(&m_ref_count, -1) == 1) {
-				delete_area(m_area);
+			if (atomic_add(&fref_count, -1) == 1) {
+				delete_area(farea);
 			}
 		}
 	private:
@@ -186,8 +186,8 @@ private:
 		area_ref(const area_ref & other);
 		const area_ref & operator=(const area_ref & other);
 
-		area_id m_area;
-		int32 m_ref_count;
+		area_id farea;
+		int32 fref_count;
 	};
 
 };

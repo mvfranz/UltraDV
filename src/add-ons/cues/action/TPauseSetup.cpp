@@ -16,7 +16,7 @@
 TPauseSetup::TPauseSetup(BWindow *parent, BMessage *theMessage) :
 		BWindow(theMessage){
 
-	m_Editor = parent;
+	fEditor = parent;
 }
 
 TPauseSetup::~TPauseSetup(){

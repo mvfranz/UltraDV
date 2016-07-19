@@ -43,11 +43,11 @@ class TAudioZoomInButton: public BView
 		void 	DoClick();
 		
 		// Member variables
-		TAudioEditorToolbar	*m_Parent;
-		BHandler			*m_Handler;
-		bool				m_MouseDown;
-		BBitmap				*m_OffBitmap;
-		BBitmap				*m_OnBitmap;
+		TAudioEditorToolbar	*fParent;
+		BHandler			*fHandler;
+		bool				fMouseDown;
+		BBitmap				*fOffBitmap;
+		BBitmap				*fOnBitmap;
 		
 };		
 

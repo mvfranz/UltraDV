@@ -43,17 +43,17 @@ typedef enum
 // VideoCompressionSettings
 typedef struct
 {
-	int32	m_Compressor;
+	int32	fCompressor;
 
 } VideoCompressionSettings;
 
 // VideoImageSettings
 typedef struct
 {
-	int32 m_HueValue;
-	int32 m_SaturationValue;
-	int32 m_BrightnessValue;
-	int32 m_ContrastValue;				
+	int32 fHueValue;
+	int32 fSaturationValue;
+	int32 fBrightnessValue;
+	int32 fContrastValue;				
 } VideoImageSettings;
 
 
@@ -106,20 +106,20 @@ typedef enum
 // VideoFilters
 typedef struct
 {
-	bool 	m_GammaCorrection;
-	bool 	m_LumaCoring;
-	bool	m_ErrorDiffusion;
-	bool	m_LumaComb;
-	bool	m_ChromaComb;
+	bool 	fGammaCorrection;
+	bool 	fLumaCoring;
+	bool	fErrorDiffusion;
+	bool	fLumaComb;
+	bool	fChromaComb;
 } VideoFilters;
 	
 // VideoSourceSettings
 typedef struct
 {
-	VideoDigitizer	m_Digitizer;
-	VideoInput		m_Input;
-	VideoFormat		m_Format;
-	VideoFilters	m_Filters;
+	VideoDigitizer	fDigitizer;
+	VideoInput		fInput;
+	VideoFormat		fFormat;
+	VideoFilters	fFilters;
 }VideoSourceSettings;
 
 // Video Settings Class
@@ -131,9 +131,9 @@ class TVideoSettings
 		~TVideoSettings();
 		
 		// Member Variables	
-		VideoCompressionSettings	m_VideoCompressionSettings;
-		VideoImageSettings			m_VideoImageSettings;
-		VideoSourceSettings			m_VideoSourceSettings;
+		VideoCompressionSettings	fVideoCompressionSettings;
+		VideoImageSettings			fVideoImageSettings;
+		VideoSourceSettings			fVideoSourceSettings;
 	
 	private:
 		// Member Functions

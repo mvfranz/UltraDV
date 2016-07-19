@@ -40,17 +40,17 @@
 TContractAllButton::TContractAllButton(TToolbar *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap  = onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap  = onBitmap;
 		
 	// Store target and handler
-	m_Handler = handler;
+	fHandler = handler;
 	
 	// Perform default initialization
 	Init();
@@ -65,10 +65,10 @@ TContractAllButton::TContractAllButton(TToolbar *parent, BRect bounds, const cha
 TContractAllButton::TContractAllButton(BMessage *data) : BView(data)
 {
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 		
-	m_OffBitmap = GetIcon16FromResource("ContractDown");
-	m_OnBitmap  = GetIcon16FromResource("ContractUp");
+	fOffBitmap = GetIcon16FromResource("ContractDown");
+	fOnBitmap  = GetIcon16FromResource("ContractUp");
 
 }
 
@@ -82,8 +82,8 @@ TContractAllButton::TContractAllButton(BMessage *data) : BView(data)
 TContractAllButton::~TContractAllButton()
 {
 	// Free data
-	delete m_OffBitmap;
-	delete m_OnBitmap;
+	delete fOffBitmap;
+	delete fOnBitmap;
 }
 
 
@@ -161,11 +161,11 @@ status_t TContractAllButton::Archive(BMessage *data, bool deep) const
 
 void TContractAllButton::Draw(BRect updateRect)
 {
-	// Draw proper bitmap state, if m_State is true, draw on bitmap
-	if (m_MouseDown)
-		DrawBitmap(m_OffBitmap, B_ORIGIN);		
+	// Draw proper bitmap state, if fState is true, draw on bitmap
+	if (fMouseDown)
+		DrawBitmap(fOffBitmap, B_ORIGIN);		
 	else
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 }
 
 
@@ -197,10 +197,10 @@ void TContractAllButton::MouseDown(BPoint where)
 
 void TContractAllButton::AttachedToWindow()
 {			
-	if(m_Parent == NULL)
+	if(fParent == NULL)
 	{
-		m_Parent 	= (TToolbar *)Parent();
-		m_Handler 	= (TToolbar *)Parent();					
+		fParent 	= (TToolbar *)Parent();
+		fHandler 	= (TToolbar *)Parent();					
 	}
 	
 	//	Pass up to parent
@@ -223,7 +223,7 @@ void TContractAllButton::DoClick()
 	
 	// We will always be in the up position when we start.
 	// First, set the button state to down and force a redraw...
-	m_MouseDown = true; 
+	fMouseDown = true; 
 	Draw(Bounds()); 
 			
 	// Create and send message to channel and header		
@@ -236,6 +236,6 @@ void TContractAllButton::DoClick()
 	snooze(100 * 1000);
 	
 	// Restore and invalidate
-	m_MouseDown = false; 
+	fMouseDown = false; 
 	Draw(Bounds()); 
 }

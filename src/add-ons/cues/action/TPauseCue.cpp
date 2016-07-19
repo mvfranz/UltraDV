@@ -76,16 +76,16 @@ TPauseCue::TPauseCue(BMessage *data) : TCueView(data)
 	LoadCueIcon();	
 	
 	// Set up default settings
-	m_IsLocked 		= false;	
-	m_IsSelected 	= false;
-	m_Editor		= NULL;
+	fIsLocked 		= false;	
+	fIsSelected 	= false;
+	fEditor		= NULL;
 	
 	// Add member variables
-	data->FindInt16("PauseType", &m_PauseType);
-	data->FindInt32("PauseDuration", &m_PauseDuration);
-	//data->FindInt8("Key", &m_Key);
-	data->FindInt32("Message", &m_Message);
-	data->FindBool("ShowCursor", &m_ShowCursor);				
+	data->FindInt16("PauseType", &fPauseType);
+	data->FindInt32("PauseDuration", &fPauseDuration);
+	//data->FindInt8("Key", &fKey);
+	data->FindInt32("Message", &fMessage);
+	data->FindBool("ShowCursor", &fShowCursor);				
 
 }
 
@@ -110,51 +110,51 @@ void TPauseCue::Init()
 {	
 	
 	// Set up default settings
-	m_IsLocked = false;
+	fIsLocked = false;
 	
-	m_IsSelected = false;
+	fIsSelected = false;
 	
-	m_LowColor 		= kWhite;	
-	m_HighColor 	= kBlack;	
-	m_IsPrepared 	= false;
-	m_IsPlaying 	= false;
+	fLowColor 		= kWhite;	
+	fHighColor 	= kBlack;	
+	fIsPrepared 	= false;
+	fIsPlaying 	= false;
 	
 	// Set up default duration
-	m_Duration 			= 1000;
-	m_HasDuration 		= false;
+	fDuration 			= 1000;
+	fHasDuration 		= false;
 	
-	m_CanStretch		= false;	// true if cue is stretchable
-	m_CanWindow			= false;	// true if cue can window into file
-	m_CanLoop			= false;	// true if cue can loop
-	m_CanEnvelope		= false;	// true if cue can volume envelope
-	m_HasDuration		= true;		// true if cue has a duration
-	m_IsVisible 		= false;	// true if cue is visual
-	m_CanCrop			= false;	// true if cue can visual crop
-	m_CanTransition 	= false;	// true if cue can transition
-	m_CanPath			= false;	// true if cue can path
-	m_HasEditor			= true;		// true if cue has internal editor
+	fCanStretch		= false;	// true if cue is stretchable
+	fCanWindow			= false;	// true if cue can window into file
+	fCanLoop			= false;	// true if cue can loop
+	fCanEnvelope		= false;	// true if cue can volume envelope
+	fHasDuration		= true;		// true if cue has a duration
+	fIsVisible 		= false;	// true if cue is visual
+	fCanCrop			= false;	// true if cue can visual crop
+	fCanTransition 	= false;	// true if cue can transition
+	fCanPath			= false;	// true if cue can path
+	fHasEditor			= true;		// true if cue has internal editor
 		
 	// Pause cue defaults
-	m_PauseType			= kSecondsPause;
-	m_PauseDuration		= 1000;
-	m_ShowCursor 		= true;
-	m_Key				= 'A';
-	m_Message			= NULL;	
-	m_PauseTimer		= NULL;
+	fPauseType			= kSecondsPause;
+	fPauseDuration		= 1000;
+	fShowCursor 		= true;
+	fKey				= 'A';
+	fMessage			= NULL;	
+	fPauseTimer		= NULL;
 	
 	// Default initialization
 	TCueView::Init();
 	
 	// Add the cue to the cue channel
-	if ( m_Channel->CanInsertCue(this, m_InsertPoint, true))
+	if ( fChannel->CanInsertCue(this, fInsertPoint, true))
 	{
-		m_Channel->AddChild(this);
-		m_Channel->InsertCue(this, m_InsertPoint, m_InsertTime);		
+		fChannel->AddChild(this);
+		fChannel->InsertCue(this, fInsertPoint, fInsertTime);		
 		Select();								
 	}
 
 	// We are now fully instantiated
-	m_IsInstantiated = true;
+	fIsInstantiated = true;
 }
 
 
@@ -212,11 +212,11 @@ status_t TPauseCue::Archive(BMessage *data, bool deep) const
 		data->AddString("class", "TPauseCue");
 		
 		// Add member variables
-		data->AddInt16("PauseType", m_PauseType);
-		data->AddInt32("PauseDuration", m_PauseDuration);
-		data->AddInt8("Key", m_Key);
-		data->AddInt32("Message", m_Message);
-		data->AddBool("ShowCursor", m_ShowCursor);				
+		data->AddInt16("PauseType", fPauseType);
+		data->AddInt32("PauseDuration", fPauseDuration);
+		data->AddInt8("Key", fKey);
+		data->AddInt32("Message", fMessage);
+		data->AddBool("ShowCursor", fShowCursor);				
 	}
 	
 	Looper()->Unlock();
@@ -364,32 +364,32 @@ void TPauseCue::OpenEditor()
 #ifdef ABH
 
 	// If editor is already open, bring it to front
-	if (m_EditorOpen)
+	if (fEditorOpen)
 	{
 
-		if (m_Editor)
+		if (fEditor)
 		{	
-			m_Editor->Show();
-			m_Editor->Activate(true);
+			fEditor->Show();
+			fEditor->Activate(true);
 		}
 
 	}
 	else
 	{		
 		BRect bounds(50, 50, 350, 350);
-		m_EditorOpen = true;
+		fEditorOpen = true;
 		
 		BMessage *theMessage = GetWindowFromResource("PauseSettingsWindow");
 		ASSERT(theMessage);
-		m_Editor = new TPauseSetup(this, theMessage);
+		fEditor = new TPauseSetup(this, theMessage);
 		
-		if (m_Editor)
+		if (fEditor)
 		{
-			CenterWindow((BWindow *)m_Editor);
-			m_Editor->Show();
+			CenterWindow((BWindow *)fEditor);
+			fEditor->Show();
 		}
 		else
-			m_EditorOpen = false;
+			fEditorOpen = false;
 	}
 #endif
 
@@ -415,25 +415,25 @@ void TPauseCue::Preroll(TPlaybackEvent *playbackEvent, double currentTime)
 	//	PAUSE_EVENT
 					
 	// Get times
-	double cueStartTime = m_StartTime;
-	double cueEndTime 	 = m_StartTime + m_Duration;
+	double cueStartTime = fStartTime;
+	double cueEndTime 	 = fStartTime + fDuration;
 		
 	//	If the startTime == currentTime, check for pause duration
 	if (cueStartTime == currentTime)
 	{																			
 		// Set up cue event
 		TCueEvent *cueEvent = new TCueEvent;
-		cueEvent->m_Time = currentTime;
-		cueEvent->m_Cue = this;
+		cueEvent->fTime = currentTime;
+		cueEvent->fCue = this;
 		
 		BMessage *pauseMsg = new BMessage(PAUSE_EVENT);
 		
-		pauseMsg->AddInt16("PauseType", m_PauseType); 
-		pauseMsg->AddInt32("PauseDuration", m_PauseDuration); 
+		pauseMsg->AddInt16("PauseType", fPauseType); 
+		pauseMsg->AddInt32("PauseDuration", fPauseDuration); 
 				
-		cueEvent->m_Events.AddItem( pauseMsg);
+		cueEvent->fEvents.AddItem( pauseMsg);
 				
-		playbackEvent->m_CueEvents.AddItem(cueEvent);
+		playbackEvent->fCueEvents.AddItem(cueEvent);
 	}
 						
 }
@@ -473,18 +473,18 @@ void TPauseCue::Pause()
 
 void TPauseCue::DoPause(TPlaybackEngine *theEngine)
 {
-	if (m_PauseTimer)
+	if (fPauseTimer)
 	{
-		delete m_PauseTimer;
-		m_PauseTimer = NULL;
+		delete fPauseTimer;
+		fPauseTimer = NULL;
 	}
 		
-	switch(m_PauseType)
+	switch(fPauseType)
 	{
 		case kSecondsPause:
 			{
 				theEngine->Pause();
-				snooze(m_PauseDuration * 1000);
+				snooze(fPauseDuration * 1000);
 				theEngine->Resume();
 				/*
 				BMessage *timerMsg = new BMessage(PAUSE_DONE_MSG);
@@ -492,7 +492,7 @@ void TPauseCue::DoPause(TPlaybackEngine *theEngine)
 				{
 					timerMsg->AddPointer("PlaybackEngine", theEngine);
 					theEngine->Pause();
-					m_PauseTimer = new TTimer(this, timerMsg, m_PauseDuration * 1000);
+					fPauseTimer = new TTimer(this, timerMsg, fPauseDuration * 1000);
 				}
 				*/
 			}
@@ -555,7 +555,7 @@ void TPauseCue::LoadCueIcon()
 	{
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
 		area.OffsetBy(kResizeZoneWidth+5, 0);		
-		m_CueIcon = new TBitmapView(area, "PauseCue",cueIcon, false);
-		AddChild(m_CueIcon);		
+		fCueIcon = new TBitmapView(area, "PauseCue",cueIcon, false);
+		AddChild(fCueIcon);		
 	}	
 }

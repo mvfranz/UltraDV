@@ -39,7 +39,7 @@
 
 TPictureCueEditorToolbar::TPictureCueEditorToolbar(BRect bounds, TCueView *theCue) : BView(bounds, "PictureEditToolbar", B_FOLLOW_TOP | B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW)
 {
-	m_Cue = theCue;
+	fCue = theCue;
 	
 	// Default Initialization
 	Init();
@@ -84,16 +84,16 @@ void TPictureCueEditorToolbar::Init()
 	bounds.right 	= bounds.left + (kToolButtonWidth-1);
 	bounds.top 	 	= Bounds().top + kButtonTopOffset;
 	bounds.bottom 	= bounds.top + (kToolButtonWidth-1);		
-	m_DurationButton = new TBitmapButton(bounds, "DurationButton", deltaUp, deltaDn, this, new BMessage(PICTURE_DURATION_MSG)); 
-	AddChild(m_DurationButton);
-	m_DurationButton->Show();
-	m_DurationButton->SetTarget(Window());
+	fDurationButton = new TBitmapButton(bounds, "DurationButton", deltaUp, deltaDn, this, new BMessage(PICTURE_DURATION_MSG)); 
+	AddChild(fDurationButton);
+	fDurationButton->Show();
+	fDurationButton->SetTarget(Window());
 					
 	// Set up duration text
-	m_DurationRect.left 	= bounds.right + kButtonLeftOffset;
-	m_DurationRect.right 	= m_DurationRect.left + 80;	
-	m_DurationRect.top 		= bounds.top;
-	m_DurationRect.bottom 	= m_DurationRect.top + 15;
+	fDurationRect.left 	= bounds.right + kButtonLeftOffset;
+	fDurationRect.right 	= fDurationRect.left + 80;	
+	fDurationRect.top 		= bounds.top;
+	fDurationRect.bottom 	= fDurationRect.top + 15;
 	
 }
 
@@ -139,8 +139,8 @@ void TPictureCueEditorToolbar::Draw(BRect updateRect)
 	
 	// Draw text area
 	SetHighColor(kBlack);
-	FillRect(m_DurationRect);
-	BRect bounds = m_DurationRect;
+	FillRect(fDurationRect);
+	BRect bounds = fDurationRect;
 	
 	SetHighColor(kTextHilite);
 	startPt.Set(bounds.right, bounds.top);
@@ -164,8 +164,8 @@ void TPictureCueEditorToolbar::Draw(BRect updateRect)
 	BFont font(be_plain_font); 
 	font.SetSize(12.0); 
 	SetFont(&font);
-	BPoint textPt(m_DurationRect.left+8, m_DurationRect.top + (m_DurationRect.Height()/2) + 4 );
-	TimeToString(m_Cue->Duration(), GetCurrentTimeFormat(), durationStr, false);
+	BPoint textPt(fDurationRect.left+8, fDurationRect.top + (fDurationRect.Height()/2) + 4 );
+	TimeToString(fCue->Duration(), GetCurrentTimeFormat(), durationStr, false);
 	DrawString(durationStr, textPt);		
 		
 	// Restore Environment

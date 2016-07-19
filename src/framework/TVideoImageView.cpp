@@ -45,7 +45,7 @@
 
 TVideoImageView::TVideoImageView(TVideoSettingsTabView *parent, BMessage *archive) : BView(archive)
 {
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Perform default initialization
 	Init();
@@ -64,66 +64,66 @@ void TVideoImageView::Init()
 	SetViewColor(kBeGrey);
 
 	// Locate view items
-	m_HueString 		= (BStringView *)FindView("HueString");
-	m_SaturationString 	= (BStringView *)FindView("SaturationString");
-	m_BrightnessString 	= (BStringView *)FindView("BrightnessString");
-	m_ContrastString 	= (BStringView *)FindView("ContrastString");
-	m_DefaultsButton   	= (BButton *)FindView("DefaultsButton");
+	fHueString 		= (BStringView *)FindView("HueString");
+	fSaturationString 	= (BStringView *)FindView("SaturationString");
+	fBrightnessString 	= (BStringView *)FindView("BrightnessString");
+	fContrastString 	= (BStringView *)FindView("ContrastString");
+	fDefaultsButton   	= (BButton *)FindView("DefaultsButton");
 	
 	//	Set up  preview view bounds.  Use attached view in BBox to set up size
 	BView *previewView	= (BView *)FindView("PreviewView");
-	m_PreviewRect = previewView->Frame();
+	fPreviewRect = previewView->Frame();
 	RemoveChild(previewView);
 	delete previewView;
 		
 	// Create Hue slider
 	BRect sliderFrame;
-	sliderFrame.left 	= m_BrightnessString->Frame().right+10;
-	sliderFrame.top 	= m_HueString->Frame().top - 4;	
+	sliderFrame.left 	= fBrightnessString->Frame().right+10;
+	sliderFrame.top 	= fHueString->Frame().top - 4;	
 	sliderFrame.right 	= sliderFrame.left + 100;
 	sliderFrame.bottom 	= sliderFrame.top + 10;
 	
-	m_HueSlider = new TVideoSettingsSlider(sliderFrame, "Hue", NULL, new BMessage(HUE_SLIDER_MSG), -100, +100);
-	m_HueSlider->SetModificationMessage(new BMessage(HUE_SLIDER_MSG));
-	m_HueSlider->SetTarget(m_Parent->GetParent());
-	AddChild(m_HueSlider);
-	m_HueSlider->SetValue(m_Parent->GetParent()->GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_HueValue);	
+	fHueSlider = new TVideoSettingsSlider(sliderFrame, "Hue", NULL, new BMessage(HUE_SLIDER_MSG), -100, +100);
+	fHueSlider->SetModificationMessage(new BMessage(HUE_SLIDER_MSG));
+	fHueSlider->SetTarget(fParent->GetParent());
+	AddChild(fHueSlider);
+	fHueSlider->SetValue(fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoImageSettings.fHueValue);	
 	
 	// Create Saturation slider
-	sliderFrame.left 	= m_BrightnessString->Frame().right+10;
-	sliderFrame.top 	= m_SaturationString->Frame().top - 4;	
+	sliderFrame.left 	= fBrightnessString->Frame().right+10;
+	sliderFrame.top 	= fSaturationString->Frame().top - 4;	
 	sliderFrame.right 	= sliderFrame.left + 100;
 	sliderFrame.bottom 	= sliderFrame.top + 10;
 	
-	m_SaturationSlider = new TVideoSettingsSlider(sliderFrame, "Saturation", NULL, new BMessage(SATURATION_SLIDER_MSG), -100, +100);
-	m_SaturationSlider->SetModificationMessage(new BMessage(SATURATION_SLIDER_MSG));
-	m_SaturationSlider->SetTarget(m_Parent->GetParent());
-	AddChild(m_SaturationSlider);
-	m_SaturationSlider->SetValue(m_Parent->GetParent()->GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_SaturationValue);	
+	fSaturationSlider = new TVideoSettingsSlider(sliderFrame, "Saturation", NULL, new BMessage(SATURATION_SLIDER_MSG), -100, +100);
+	fSaturationSlider->SetModificationMessage(new BMessage(SATURATION_SLIDER_MSG));
+	fSaturationSlider->SetTarget(fParent->GetParent());
+	AddChild(fSaturationSlider);
+	fSaturationSlider->SetValue(fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoImageSettings.fSaturationValue);	
 	
 	// Create Brightness slider
-	sliderFrame.left 	= m_BrightnessString->Frame().right+10;
-	sliderFrame.top 	= m_BrightnessString->Frame().top - 4;	
+	sliderFrame.left 	= fBrightnessString->Frame().right+10;
+	sliderFrame.top 	= fBrightnessString->Frame().top - 4;	
 	sliderFrame.right 	= sliderFrame.left + 100;
 	sliderFrame.bottom 	= sliderFrame.top + 10;
 	
-	m_BrightnessSlider = new TVideoSettingsSlider(sliderFrame, "Brightness", NULL, new BMessage(BRIGHTNESS_SLIDER_MSG), -100, +100);
-	m_BrightnessSlider->SetModificationMessage(new BMessage(BRIGHTNESS_SLIDER_MSG));
-	m_BrightnessSlider->SetTarget(m_Parent->GetParent());
-	AddChild(m_BrightnessSlider);
-	m_BrightnessSlider->SetValue(m_Parent->GetParent()->GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_BrightnessValue);
+	fBrightnessSlider = new TVideoSettingsSlider(sliderFrame, "Brightness", NULL, new BMessage(BRIGHTNESS_SLIDER_MSG), -100, +100);
+	fBrightnessSlider->SetModificationMessage(new BMessage(BRIGHTNESS_SLIDER_MSG));
+	fBrightnessSlider->SetTarget(fParent->GetParent());
+	AddChild(fBrightnessSlider);
+	fBrightnessSlider->SetValue(fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoImageSettings.fBrightnessValue);
 	
 	// Create Contrast slider
-	sliderFrame.left 	= m_BrightnessString->Frame().right+10;
-	sliderFrame.top 	= m_ContrastString->Frame().top - 4;	
+	sliderFrame.left 	= fBrightnessString->Frame().right+10;
+	sliderFrame.top 	= fContrastString->Frame().top - 4;	
 	sliderFrame.right 	= sliderFrame.left + 100;
 	sliderFrame.bottom 	= sliderFrame.top + 10;
 	
-	m_ContrastSlider = new TVideoSettingsSlider(sliderFrame, "Contrast", NULL, new BMessage(CONTRAST_SLIDER_MSG), -100, +100);
-	m_ContrastSlider->SetModificationMessage(new BMessage(CONTRAST_SLIDER_MSG));
-	m_ContrastSlider->SetTarget(m_Parent->GetParent());
-	AddChild(m_ContrastSlider);
-	m_ContrastSlider->SetValue(m_Parent->GetParent()->GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_ContrastValue);
+	fContrastSlider = new TVideoSettingsSlider(sliderFrame, "Contrast", NULL, new BMessage(CONTRAST_SLIDER_MSG), -100, +100);
+	fContrastSlider->SetModificationMessage(new BMessage(CONTRAST_SLIDER_MSG));
+	fContrastSlider->SetTarget(fParent->GetParent());
+	AddChild(fContrastSlider);
+	fContrastSlider->SetValue(fParent->GetParent()->GetParent()->fTempVideoSettings.fVideoImageSettings.fContrastValue);
 	
 	//	Inform message targets
 	ApplyToSource();
@@ -149,12 +149,12 @@ void TVideoImageView::AttachedToWindow()
 	
 	//	Get pointer to previewView and attach to BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");		
-	TVideoPreviewView *previewView = m_Parent->GetParent()->GetParent()->PreviewView();	
+	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();	
 	if (previewView)
 	{
 		previewBox->AddChild(previewView);
-		previewView->MoveTo(m_PreviewRect.left, m_PreviewRect.top);
-		previewView->ResizeTo(m_PreviewRect.Width(), m_PreviewRect.Height());
+		previewView->MoveTo(fPreviewRect.left, fPreviewRect.top);
+		previewView->ResizeTo(fPreviewRect.Width(), fPreviewRect.Height());
 		previewView->Show();
 	}
 	
@@ -174,7 +174,7 @@ void TVideoImageView::DetachedFromWindow()
 	
 	//	Get pointer to previewView and detach from BBox
 	BBox *previewBox = (BBox *)FindView("PreviewBox");		
-	TVideoPreviewView *previewView = m_Parent->GetParent()->GetParent()->PreviewView();	
+	TVideoPreviewView *previewView = fParent->GetParent()->GetParent()->PreviewView();	
 	if (previewView)
 	{
 		previewView->Hide();
@@ -197,8 +197,8 @@ void TVideoImageView::DetachedFromWindow()
 
 void TVideoImageView::ApplyToSource()
 {
-	m_HueSlider->Invoke();	
-	m_SaturationSlider->Invoke();	
-	m_BrightnessSlider->Invoke();	
-	m_ContrastSlider->Invoke();	
+	fHueSlider->Invoke();	
+	fSaturationSlider->Invoke();	
+	fBrightnessSlider->Invoke();	
+	fContrastSlider->Invoke();	
 }

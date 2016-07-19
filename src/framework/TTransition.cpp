@@ -79,27 +79,27 @@ TransitionCallback	transitionInTable[] =
 
 TTransition::TTransition( TVisualCue *srcView, BView *dstView, TStageView *theStage, int16 transitionID, uint32 duration, bool transitionIn)
 {
-	m_DstBitmap = NULL;
+	fDstBitmap = NULL;
 		
 	ASSERT(srcView);
 	ASSERT(dstView);
 	
 	// Set up class variables
-	m_SrcView 			= srcView;
-	m_DstView 			= dstView;
-	m_Stage				= theStage;
-	m_ID				= transitionID;
-	m_Duration 			= duration;
-	m_StartTime			= 0;	
-	m_SrcBitmap 		= srcView->GetBitmap();
-	m_IsTransitionIn	= transitionIn;
+	fSrcView 			= srcView;
+	fDstView 			= dstView;
+	fStage				= theStage;
+	fID				= transitionID;
+	fDuration 			= duration;
+	fStartTime			= 0;	
+	fSrcBitmap 		= srcView->GetBitmap();
+	fIsTransitionIn	= transitionIn;
 	
 	// Clear region
-	m_TransitionRegion.MakeEmpty();
+	fTransitionRegion.MakeEmpty();
 		
 	//	gzr: to do... The transitions are pulled from an array of transition procs.  We need
 	//	to modify this to work with an add-on architecture
-	m_TransitionCallback = transitionInTable[m_ID];
+	fTransitionCallback = transitionInTable[fID];
 }
 
 
@@ -115,21 +115,21 @@ TTransition::~TTransition()
 	Stop();
 			
 	// Free composite
-	if (m_DstBitmap)
+	if (fDstBitmap)
 	{
-		delete m_DstBitmap;
-		m_DstBitmap = NULL;
+		delete fDstBitmap;
+		fDstBitmap = NULL;
 	}
 }
 
 // ABH missing functions
 #ifdef ABH
 bool TTransition::HasTransitionIn(){
-	return m_IsTransitionIn;	// ABH is this right???
+	return fIsTransitionIn;	// ABH is this right???
 }
 
 bool TTransition::HasTransitionOut(){
-	return m_IsTransitionOut;
+	return fIsTransitionOut;
 }
 
 #endif
@@ -143,10 +143,10 @@ bool TTransition::HasTransitionOut(){
 void TTransition::Init()
 {
 
-	BRect	r1 = m_SrcRect;
-	BRect 	r2 = m_DstRect;
+	BRect	r1 = fSrcRect;
+	BRect 	r2 = fDstRect;
 	
-	m_IsDone = false;			
+	fIsDone = false;			
 }
 
 
@@ -158,7 +158,7 @@ void TTransition::Init()
 
 void TTransition::SetStartTime(uint32 startTime)
 {
-	m_StartTime = startTime;
+	fStartTime = startTime;
 }
 
 
@@ -170,7 +170,7 @@ void TTransition::SetStartTime(uint32 startTime)
 
 void TTransition::SetDuration(uint32 duration)
 {
-	m_Duration = duration;
+	fDuration = duration;
 }
 
 
@@ -183,8 +183,8 @@ void TTransition::SetDuration(uint32 duration)
 
 void TTransition::SetTransitionID(int32 theID)
 {	
-	m_ID = theID;
-	m_TransitionCallback = transitionInTable[m_ID];
+	fID = theID;
+	fTransitionCallback = transitionInTable[fID];
 }
 
 
@@ -197,8 +197,8 @@ void TTransition::SetTransitionID(int32 theID)
 
 void TTransition::Stop()
 {	
-	m_IsDone 	= true;
-	m_StartTime = 0;		
+	fIsDone 	= true;
+	fStartTime = 0;		
 }
 
 
@@ -211,8 +211,8 @@ void TTransition::Stop()
 
 void TTransition::Reset()
 {
-	m_IsDone 	= false;
-	m_StartTime = 0;	
+	fIsDone 	= false;
+	fStartTime = 0;	
 }
 
 
@@ -226,19 +226,19 @@ void TTransition::Reset()
 void TTransition::TransitionTask()
 {
 	
-	if (m_IsDone == true)
+	if (fIsDone == true)
 		return;
 		
-	uint32 startTime 	= m_StartTime;
+	uint32 startTime 	= fStartTime;
 	uint32 currentTime 	= GetCurrentTime();
 	uint32 taskTime 	= currentTime - startTime;
-	uint32 endTime 		= m_StartTime + m_Duration;
+	uint32 endTime 		= fStartTime + fDuration;
 		
 	// percentDone is on a scale of 0 to 1000.  Check for overflow...
 	int32  percentDone;
 	
 	if ( currentTime < endTime)
-		percentDone = taskTime * 1000L / m_Duration;
+		percentDone = taskTime * 1000L / fDuration;
 	else
 		percentDone = 1001;
 	
@@ -248,32 +248,32 @@ void TTransition::TransitionTask()
 	// Sanity check. Make sure negative values do not get through...
 	if (percentDone < 0)
 	{
-		m_IsDone = true;
+		fIsDone = true;
 		Reset();
 		return;
 	}
 		
 	// Create composite for transition out
-	//if (m_IsTransitionIn == false)
+	//if (fIsTransitionIn == false)
 	//{
-		//if (m_DstBitmap)
-		//	delete m_DstBitmap;
+		//if (fDstBitmap)
+		//	delete fDstBitmap;
 			
-		//m_DstBitmap = m_Stage->CreateComposite(1, m_SrcView->GetChannel()->GetID(), currentTime, m_SrcView->GetCroppedArea());
-		//ASSERT(m_DstBitmap);
+		//fDstBitmap = fStage->CreateComposite(1, fSrcView->GetChannel()->GetID(), currentTime, fSrcView->GetCroppedArea());
+		//ASSERT(fDstBitmap);
 	//}
 
 	// Check for completions
 	if (percentDone == 1000)	
 	{
-		m_TransitionCallback(m_SrcView, m_DstView, m_SrcBitmap, m_DstBitmap, &m_TransitionRegion, percentDone, END_TRANSITION);
-		m_IsDone = true;
+		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, END_TRANSITION);
+		fIsDone = true;
 		Reset();
 	}
 	else
 	{
 		// Do the transition
-		m_TransitionCallback(m_SrcView, m_DstView, m_SrcBitmap, m_DstBitmap, &m_TransitionRegion, percentDone, RUN_TRANSITION);
+		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, RUN_TRANSITION);
 	}	
 }
 	
@@ -288,18 +288,18 @@ void TTransition::TransitionTask()
 void TTransition::DrawData(uint32 theTime, BView *offView)
 {
 	
-	if (m_IsDone == true)
+	if (fIsDone == true)
 		return;
 		
-	uint32 startTime = m_StartTime;
+	uint32 startTime = fStartTime;
 	uint32 taskTime  = theTime - startTime;
-	uint32 endTime 	 = m_StartTime + m_Duration;
+	uint32 endTime 	 = fStartTime + fDuration;
 		
 	// percentDone is on a scale of 0 to 1000.  Check for overflow...
 	int32  percentDone;
 	
 	if ( theTime < endTime)
-		percentDone = taskTime * 1000L / m_Duration;
+		percentDone = taskTime * 1000L / fDuration;
 	else
 		percentDone = 1001;
 	
@@ -309,32 +309,32 @@ void TTransition::DrawData(uint32 theTime, BView *offView)
 	// Sanity check. Make sure negative values do not get through...
 	if (percentDone < 0)
 	{
-		m_IsDone = true;
+		fIsDone = true;
 		Reset();
 		return;
 	}
 		
 	// Create composite for transition out
-	if (m_IsTransitionIn == false)
+	if (fIsTransitionIn == false)
 	{
-		//if (m_DstBitmap)
-		//	delete m_DstBitmap;
+		//if (fDstBitmap)
+		//	delete fDstBitmap;
 			
-		//m_DstBitmap = m_Stage->CreateComposite(1, m_SrcView->GetChannel()->GetID(), theTime, m_SrcView->GetCroppedArea());
-		//ASSERT(m_DstBitmap);
+		//fDstBitmap = fStage->CreateComposite(1, fSrcView->GetChannel()->GetID(), theTime, fSrcView->GetCroppedArea());
+		//ASSERT(fDstBitmap);
 	}
 
 	// Check for completions
 	if (percentDone == 1000)	
 	{
-		m_TransitionCallback(m_SrcView, m_DstView, m_SrcBitmap, m_DstBitmap, &m_TransitionRegion, percentDone, END_TRANSITION);
-		m_IsDone = true;
+		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, END_TRANSITION);
+		fIsDone = true;
 		Reset();
 	}
 	else
 	{
 		// Do the transition
-		m_TransitionCallback(m_SrcView, m_DstView, m_SrcBitmap, m_DstBitmap, &m_TransitionRegion, percentDone, RUN_TRANSITION);
+		fTransitionCallback(fSrcView, fDstView, fSrcBitmap, fDstBitmap, &fTransitionRegion, percentDone, RUN_TRANSITION);
 	}	
 }
 

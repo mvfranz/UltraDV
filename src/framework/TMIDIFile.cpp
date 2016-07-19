@@ -39,9 +39,9 @@ HeaderChunk		sgHdr;			// Copy of header chunk
 
 TMIDIFile::TMIDIFile(entry_ref *ref, uint32 openMode) : BFile(ref, openMode)
 {		
-	//m_DiskBuffer = NULL;
+	//fDiskBuffer = NULL;
 	// Initialize header
-	ReadHeader(&m_Header);		
+	ReadHeader(&fHeader);		
 }
 
 
@@ -53,8 +53,8 @@ TMIDIFile::TMIDIFile(entry_ref *ref, uint32 openMode) : BFile(ref, openMode)
 
 TMIDIFile::~TMIDIFile()
 {
-	//if (m_DiskBuffer)
-	//	free(m_DiskBuffer);
+	//if (fDiskBuffer)
+	//	free(fDiskBuffer);
 }
 
 
@@ -82,8 +82,8 @@ void TMIDIFile::ReadHeader(HeaderChunk *header)
 	sgHdr = *header;									
 		
 	// Read any excess header info
-	if (m_MidiChunkHeader.length > sizeof(HeaderChunk))		
-		Read(buf, m_MidiChunkHeader.length - sizeof(HeaderChunk));		
+	if (fMidiChunkHeader.length > sizeof(HeaderChunk))		
+		Read(buf, fMidiChunkHeader.length - sizeof(HeaderChunk));		
 } 
 
 
@@ -120,14 +120,14 @@ int32 TMIDIFile::ReadConductor(TMIDIConductor *condTrack)
 	// Load in header
 	ReadMidiChunkHeader();
 	
-	if ( m_MidiChunkHeader.chunkType != TRACK_CHUNK_TYPE )
+	if ( fMidiChunkHeader.chunkType != TRACK_CHUNK_TYPE )
 		return -1;
 	
-	m_BufferRemainder = m_MidiChunkHeader.length;
+	fBufferRemainder = fMidiChunkHeader.length;
 	
 	try
 	{	
-		// Read track data into m_DiskBuffer
+		// Read track data into fDiskBuffer
 		FillBuffer();					
 	}
 	catch(...)
@@ -239,8 +239,8 @@ int32 TMIDIFile::ReadConductor(TMIDIConductor *condTrack)
 	}
 	
 	// Clean up buffer
-	//if (m_DiskBuffer)
-	//	free(m_DiskBuffer);
+	//if (fDiskBuffer)
+	//	free(fDiskBuffer);
 	
 	return totalTime;					
 	
@@ -315,12 +315,12 @@ int16 TMIDIFile::ReadByte()
 {
 	int16 	value;
 	
-	if (m_DiskBuffer) 
+	if (fDiskBuffer) 
 	{
 		// Index into disk buffer
-		value = *((unsigned char *)m_DiskBuffer + m_BufferLocation);
+		value = *((unsigned char *)fDiskBuffer + fBufferLocation);
 		
-		if (++m_BufferLocation >= m_BufferSize && m_BufferRemainder)
+		if (++fBufferLocation >= fBufferSize && fBufferRemainder)
 			FillBuffer();									
 			
 		return (value);
@@ -342,25 +342,25 @@ void	TMIDIFile::FillBuffer()
 {
 	int32	howMuch;
 	
-	//if (m_DiskBuffer)
+	//if (fDiskBuffer)
 	//{
-		//free(m_DiskBuffer);
-		//m_DiskBuffer = NULL;
+		//free(fDiskBuffer);
+		//fDiskBuffer = NULL;
 	//}	
 	
 	// Allocate a new disk buffer
-	//m_DiskBuffer = malloc(BUFF_SIZE);
-	//ASSERT(m_DiskBuffer);
-	//m_DiskBuffer = new BMallocIO();
-	//m_DiskBuffer->SetSize(BUFF_SIZE);
+	//fDiskBuffer = malloc(BUFF_SIZE);
+	//ASSERT(fDiskBuffer);
+	//fDiskBuffer = new BMallocIO();
+	//fDiskBuffer->SetSize(BUFF_SIZE);
 	
-	howMuch = m_BufferRemainder > BUFF_SIZE ? BUFF_SIZE : m_BufferRemainder;
+	howMuch = fBufferRemainder > BUFF_SIZE ? BUFF_SIZE : fBufferRemainder;
 	
-	Read(m_DiskBuffer, howMuch);
+	Read(fDiskBuffer, howMuch);
 	
-	m_BufferRemainder 	-= howMuch;
-	m_BufferSize 		= howMuch;
-	m_BufferLocation 	= 0;			// Reset index	
+	fBufferRemainder 	-= howMuch;
+	fBufferSize 		= howMuch;
+	fBufferLocation 	= 0;			// Reset index	
 } 
 
 
@@ -377,13 +377,13 @@ void	TMIDIFile::SkipNBytes(int32 nBytes)
 	int32 	remainder;
 	
 	// Just bump index
-	m_BufferLocation += nBytes;									
+	fBufferLocation += nBytes;									
 	
-	if (m_BufferLocation > m_BufferSize) 
+	if (fBufferLocation > fBufferSize) 
 	{
-		remainder = m_BufferLocation - m_BufferSize;
+		remainder = fBufferLocation - fBufferSize;
 		FillBuffer();
-		m_BufferLocation = remainder;
+		fBufferLocation = remainder;
 	}		
 } 
 
@@ -398,7 +398,7 @@ void	TMIDIFile::SkipNBytes(int32 nBytes)
 
 void TMIDIFile::ReadMidiChunkHeader()
 {
-	Read( &m_MidiChunkHeader, sizeof(MidiChunkHeader) );
+	Read( &fMidiChunkHeader, sizeof(MidiChunkHeader) );
 }
 
 
@@ -438,15 +438,15 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 	// Read in header info	
 	ReadMidiChunkHeader();
 	
-	if (m_MidiChunkHeader.chunkType != TRACK_CHUNK_TYPE)
+	if (fMidiChunkHeader.chunkType != TRACK_CHUNK_TYPE)
 		return -1;
 		
-	m_BufferRemainder = m_MidiChunkHeader.length;
+	fBufferRemainder = fMidiChunkHeader.length;
 	
 
 	try
 	{	
-		// Read track data into m_DiskBuffer
+		// Read track data into fDiskBuffer
 		FillBuffer();					
 	}
 	catch(...)
@@ -614,8 +614,8 @@ int32 TMIDIFile::ReadNextTrack(TMIDITrack *dataTrack)
 	free(itemBuffer);
 
 	// Clean up buffers
-	//if (m_DiskBuffer)
-	//	free(m_DiskBuffer);
+	//if (fDiskBuffer)
+	//	free(fDiskBuffer);
 
 	return totalTime;
 

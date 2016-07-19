@@ -53,9 +53,9 @@ class TElementsView: public BView
 		void 	AdjustScrollBars();
 				
 		// Member variables
-		TElementsSorter			*m_Sorter;
-		TElementsScrollBarH		*m_HScroll;
-		TElementsScrollBarV		*m_VScroll;
+		TElementsSorter			*fSorter;
+		TElementsScrollBarH		*fHScroll;
+		TElementsScrollBarV		*fVScroll;
 		
 		
 };		

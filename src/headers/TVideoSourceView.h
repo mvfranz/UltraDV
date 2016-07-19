@@ -41,16 +41,16 @@ class TVideoSourceView: public BView
 		void SetInputMenuItem(BMenu *theMenu);
 						
 		// Member variables
-		BRect					m_PreviewRect;
-		TVideoSettingsTabView 	*m_Parent;
-		BMenuField 				*m_DigitizerMenuField;
-		BMenuField 				*m_InputMenuField;	
-		BMenuField 				*m_FormatMenuField;
-		BCheckBox				*m_GammaCorrectionCheckBox;
-		BCheckBox				*m_LumaCoringCheckBox;
-		BCheckBox				*m_ErrorDiffusionCheckBox;
-		BCheckBox				*m_LumaCombCheckBox;
-		BCheckBox				*m_ChromaCombCheckBox;
+		BRect					fPreviewRect;
+		TVideoSettingsTabView 	*fParent;
+		BMenuField 				*fDigitizerMenuField;
+		BMenuField 				*fInputMenuField;	
+		BMenuField 				*fFormatMenuField;
+		BCheckBox				*fGammaCorrectionCheckBox;
+		BCheckBox				*fLumaCoringCheckBox;
+		BCheckBox				*fErrorDiffusionCheckBox;
+		BCheckBox				*fLumaCombCheckBox;
+		BCheckBox				*fChromaCombCheckBox;
 			
 };
 

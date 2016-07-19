@@ -11,8 +11,8 @@
 //
 //---------------------------------------------------------------------
 
-#ifndef __TSorterIconListItem__
-#define __TSorterIconListItem__ 
+#ifndef __TSorterIconListItef_
+#define __TSorterIconListItef_ 
 
 // Includes
 #include "TSorterContainer.h"
@@ -33,18 +33,18 @@ class TSorterIconListItem : public BListItem
 		// Member variables	
 		
 		// Inlines
-		BBitmap *GetMiniIcon(){ return m_Icons.m_MiniIcon; }
-		BBitmap *GetLargeIcon(){ return m_Icons.m_LargeIcon; }
+		BBitmap *GetMiniIcon(){ return fIcons.fMiniIcon; }
+		BBitmap *GetLargeIcon(){ return fIcons.fLargeIcon; }
 		
 	private:				
 		// Member functions
 		void 	Init();
 						
 		// Member variables	
-		SorterType		m_Type;
-		char 			*m_DataString;
-		entry_ref		m_EntryRef;	
-		TSorterIcons	m_Icons;
+		SorterType		fType;
+		char 			*fDataString;
+		entry_ref		fEntryRef;	
+		TSorterIcons	fIcons;
 };		
 
 #endif

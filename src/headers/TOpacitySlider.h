@@ -36,11 +36,11 @@ class TOpacitySlider : public TSlider
 		
 	private:
 		//	Member Variables
-		TOpacityDialog		*m_Dialog;
-		TNumberTextControl 	*m_TextControl;
-		TVisualCue			*m_Cue;
-		TStageWindow 		*m_Stage;
-		TStageView 	 		*m_StageView;
+		TOpacityDialog		*fDialog;
+		TNumberTextControl 	*fTextControl;
+		TVisualCue			*fCue;
+		TStageWindow 		*fStage;
+		TStageView 	 		*fStageView;
 	
 	
 	protected:

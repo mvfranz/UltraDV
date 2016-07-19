@@ -34,8 +34,8 @@ class TAudioSettingsDialog: public BWindow
 		void		Init();	
 		
 		// Member Variable
-		TAudioSettingsView		*m_BGView;
-		TAudioSettingsTabView 	*m_TabView;
+		TAudioSettingsView		*fBGView;
+		TAudioSettingsTabView 	*fTabView;
 };
 
 #endif

@@ -34,7 +34,7 @@ TVideoSettingsSlider::TVideoSettingsSlider( BRect frame, const char *name, const
 				  							TMuseumSlider(frame, name, label, message, minValue, maxValue, thumbType, resizingMode, flags)
 {
 	// Set up member variables
-	//m_Parent = parent;
+	//fParent = parent;
 
 }
 
@@ -83,8 +83,8 @@ void TVideoSettingsSlider::SetValue(int32 value)
 
     if (strcmp("Brightness", Name()) == 0) 
 	{
-		m_Parent->GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_BrightnessValue = theMessage->FindInt32("be:value");
-		m_VideoSource->VideoControls()->SetBrightness(theMessage->FindInt32("be:value"));
+		fParent->GetParent()->fTempVideoSettings.fVideoImageSettings.fBrightnessValue = theMessage->FindInt32("be:value");
+		fVideoSource->VideoControls()->SetBrightness(theMessage->FindInt32("be:value"));
     } 
     else if (strcmp("Contrast", Name()) == 0) 
     {
@@ -110,17 +110,17 @@ void TVideoSettingsSlider::SetValue(int32 value)
 			break;	
 				
 		case CONTRAST_SLIDER_MSG:
-			GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_ContrastValue = theMessage->FindInt32("be:value");
-			m_VideoSource->VideoControls()->SetContrast(theMessage->FindInt32("be:value"));
+			GetParent()->fTempVideoSettings.fVideoImageSettings.fContrastValue = theMessage->FindInt32("be:value");
+			fVideoSource->VideoControls()->SetContrast(theMessage->FindInt32("be:value"));
 			break;	
 				
 		case HUE_SLIDER_MSG:
-			GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_HueValue = theMessage->FindInt32("be:value");
-			m_VideoSource->VideoControls()->SetHue(theMessage->FindInt32("be:value"));
+			GetParent()->fTempVideoSettings.fVideoImageSettings.fHueValue = theMessage->FindInt32("be:value");
+			fVideoSource->VideoControls()->SetHue(theMessage->FindInt32("be:value"));
 			break;	
 				
 		case SATURATION_SLIDER_MSG:
-			GetParent()->m_TempVideoSettings.m_VideoImageSettings.m_SaturationValue = theMessage->FindInt32("be:value");
-			m_VideoSource->VideoControls()->SetSaturation(theMessage->FindInt32("be:value"));
+			GetParent()->fTempVideoSettings.fVideoImageSettings.fSaturationValue = theMessage->FindInt32("be:value");
+			fVideoSource->VideoControls()->SetSaturation(theMessage->FindInt32("be:value"));
 			break;
 			*/

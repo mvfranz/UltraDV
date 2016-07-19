@@ -11,8 +11,8 @@
 //
 //---------------------------------------------------------------------
 
-#ifndef __TSorterListItem__
-#define __TSorterListItem__ 
+#ifndef __TSorterListItef_
+#define __TSorterListItef_ 
 
 // Forward Declarations
 #include "TSorterContainer.h"
@@ -31,10 +31,10 @@ class TSorterListItem : public BListItem
 		void	Update(BView *owner, const BFont *font);			
 		
 		// Inlines
-		inline char 		*GetDataString(){ return m_DataString; }
-		inline entry_ref 	*GetEntryRef(){ return &m_EntryRef; }
-		inline SorterType 	GetType(){ return m_Type; }
-		inline DataType 	GetDataType(){ return m_DataType; }
+		inline char 		*GetDataString(){ return fDataString; }
+		inline entry_ref 	*GetEntryRef(){ return &fEntryRef; }
+		inline SorterType 	GetType(){ return fType; }
+		inline DataType 	GetDataType(){ return fDataType; }
 		
 		// Member variables	
 		
@@ -43,11 +43,11 @@ class TSorterListItem : public BListItem
 		void 	Init();
 						
 		// Member variables		
-		SorterType	m_Type;
-		char 		*m_DataString;
-		entry_ref	m_EntryRef;
-		TCueView	*m_Cue;
-		DataType	m_DataType;
+		SorterType	fType;
+		char 		*fDataString;
+		entry_ref	fEntryRef;
+		TCueView	*fCue;
+		DataType	fDataType;
 };		
 
 #endif

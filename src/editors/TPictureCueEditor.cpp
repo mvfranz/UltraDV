@@ -43,7 +43,7 @@ const int16 kPictureCueEditorToolbarHeight = 23;
 TPictureCueEditor::TPictureCueEditor(BRect bounds, TPictureCue *theCue): BWindow(bounds, "Picture Editor", B_DOCUMENT_WINDOW, 0,0)
 {
 	// Save cue
-	m_Cue = theCue;
+	fCue = theCue;
 
 	// Default initialization
 	bool retVal = Init();
@@ -61,14 +61,14 @@ TPictureCueEditor::~TPictureCueEditor()
 {
 	
 	// Inform cue that we have been closed
-	m_Cue->SetEditorOpen(false);	
+	fCue->SetEditorOpen(false);	
 	
 	// CLose dialog if needed
-	if (m_Dialog)
+	if (fDialog)
 	{
-		m_Dialog->Lock();
-		m_Dialog->Quit();
-		m_Dialog = NULL;
+		fDialog->Lock();
+		fDialog->Quit();
+		fDialog = NULL;
 	}
 }
 
@@ -85,54 +85,54 @@ bool TPictureCueEditor::Init()
 	Lock();
 	
 	// Initialize member variables
-	m_Dialog = NULL;
+	fDialog = NULL;
 	
 	const BRect bounds = Bounds();
 	
 	// Load in image data from file
 	bool retVal = true;
-	m_Bitmap = m_Cue->GetBitmap();
+	fBitmap = fCue->GetBitmap();
 	
 	// Create toolbar
 	BRect toolbarBounds = bounds;		
 	toolbarBounds.bottom = toolbarBounds.top + kPictureCueEditorToolbarHeight;
-	m_Toolbar = new TPictureCueEditorToolbar(toolbarBounds, m_Cue);
-	AddChild(m_Toolbar);
-	m_Toolbar->Show();
+	fToolbar = new TPictureCueEditorToolbar(toolbarBounds, fCue);
+	AddChild(fToolbar);
+	fToolbar->Show();
 	
 	// Create Background View.  It hold all the other views...
 	BRect bgRect   	= bounds;
-	bgRect.top 		= m_Toolbar->Frame().bottom+1;
+	bgRect.top 		= fToolbar->Frame().bottom+1;
 	bgRect.right   	-= (B_V_SCROLL_BAR_WIDTH+1);
 	bgRect.bottom  	-= (B_H_SCROLL_BAR_HEIGHT+1);
-	m_Background = new BView(bgRect, "Container", B_FOLLOW_ALL, B_WILL_DRAW);
-	AddChild(m_Background);
-	m_Background->SetViewColor(kWhite);
-	m_Background->Show();	
+	fBackground = new BView(bgRect, "Container", B_FOLLOW_ALL, B_WILL_DRAW);
+	AddChild(fBackground);
+	fBackground->SetViewColor(kWhite);
+	fBackground->Show();	
 			
 	// Create editor view.
 	if (retVal == true)
 	{
-		m_EditorView = new TPictureCueEditorView(m_Bitmap);
-		m_Background->AddChild(m_EditorView);
-		m_EditorView->Show();
+		fEditorView = new TPictureCueEditorView(fBitmap);
+		fBackground->AddChild(fEditorView);
+		fEditorView->Show();
 	}
 	
 	// Vertical	Scroll Bar
 	BRect scrollRect = Bounds();
 	scrollRect.Set(scrollRect.right-B_V_SCROLL_BAR_WIDTH , scrollRect.top+kPictureCueEditorToolbarHeight+1, scrollRect.right, scrollRect.bottom-B_H_SCROLL_BAR_HEIGHT);
-	m_VScroll = new BScrollBar(scrollRect, "VScroll", m_Background, 0, 1000, B_VERTICAL);
-	AddChild(m_VScroll);	
+	fVScroll = new BScrollBar(scrollRect, "VScroll", fBackground, 0, 1000, B_VERTICAL);
+	AddChild(fVScroll);	
 	
 	// Horizontal	Scroll Bar
 	scrollRect = Bounds();
 	scrollRect.Set(scrollRect.left, scrollRect.bottom-B_H_SCROLL_BAR_HEIGHT, scrollRect.right-B_V_SCROLL_BAR_WIDTH, scrollRect.bottom);
-	m_HScroll = new BScrollBar(scrollRect, "HScroll", m_Background, 0, 1000, B_HORIZONTAL);
-	AddChild(m_HScroll);	
+	fHScroll = new BScrollBar(scrollRect, "HScroll", fBackground, 0, 1000, B_HORIZONTAL);
+	AddChild(fHScroll);	
 		
 	// Now set the window to the size of the bitmap
 	// Set minimum window size and then open it to max	
-	SetSizeLimits(50, m_Bitmap->Bounds().Width()+B_V_SCROLL_BAR_WIDTH, 50, m_Bitmap->Bounds().Height()+B_H_SCROLL_BAR_HEIGHT);
+	SetSizeLimits(50, fBitmap->Bounds().Width()+B_V_SCROLL_BAR_WIDTH, 50, fBitmap->Bounds().Height()+B_H_SCROLL_BAR_HEIGHT);
 	Zoom();
 				
 	AdjustScrollBars();
@@ -197,10 +197,10 @@ void TPictureCueEditor::MessageReceived(BMessage* message)
 void TPictureCueEditor::AdjustScrollBars()
 {
 	BRect bounds 	= Bounds();
-	BRect area 		= m_Bitmap->Bounds();
+	BRect area 		= fBitmap->Bounds();
 	
-	AdjustScrollBar(m_HScroll, bounds.Width(), bounds.Width() - 4.0, area.Width()+1, bounds.left);
-	AdjustScrollBar(m_VScroll, bounds.Height(), bounds.Height() - 4.0, area.Height()+1, bounds.top);
+	AdjustScrollBar(fHScroll, bounds.Width(), bounds.Width() - 4.0, area.Width()+1, bounds.left);
+	AdjustScrollBar(fVScroll, bounds.Height(), bounds.Height() - 4.0, area.Height()+1, bounds.top);
 }
 
 
@@ -217,23 +217,23 @@ void TPictureCueEditor::AdjustScrollBars()
 void TPictureCueEditor::ShowDurationDialog()
 {
 	// Is the window already created?
-	if (m_Dialog)
+	if (fDialog)
 	{
-		m_Dialog->Show();
-		m_Dialog->Activate(true);		
+		fDialog->Show();
+		fDialog->Activate(true);		
 	}
 	// If not, create it
 	else
 	{
 		// Create the channel name dialog from a resource archive
 		BMessage *theMessage = GetWindowFromResource("PictureDurationWindow");
-		m_Dialog = new TPictureDurationDialog(theMessage, m_Cue);
-		ASSERT(m_Dialog);
+		fDialog = new TPictureDurationDialog(theMessage, fCue);
+		ASSERT(fDialog);
 		
 		// Center it
-		CenterWindow(m_Dialog);
+		CenterWindow(fDialog);
 		
 		// Show the dialog
-		m_Dialog->Show();		
+		fDialog->Show();		
 	}
 }

@@ -43,9 +43,9 @@
 
 TSorterContainer::TSorterContainer(BRect bounds, char *title, SorterType theType, int16 theID) : BView(bounds, "SorterContainer", B_FOLLOW_LEFT|B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW)
 {	
-	m_Title = title;
-	m_Type 	= theType;
-	m_ID	= theID;
+	fTitle = title;
+	fType 	= theType;
+	fID	= theID;
 	
 	// Perform default initialization
 	Init();
@@ -78,24 +78,24 @@ void TSorterContainer::Init()
 	// Create the SorterBar
 	BRect sortBarRect = Bounds();
 	sortBarRect.bottom = sortBarRect.top + kSortbarHeight;
-	m_SorterBar = new TSorterBar(sortBarRect, m_Title, this, m_Type);
-	AddChild(m_SorterBar);
+	fSorterBar = new TSorterBar(sortBarRect, fTitle, this, fType);
+	AddChild(fSorterBar);
 			
 	// Create the SorterList
 	BRect sorterRect = Bounds();
 	sorterRect.top = sortBarRect.bottom+1;
-	m_SorterList = new TSorterList(sorterRect, this, m_Type);
-	AddChild(m_SorterList);
+	fSorterList = new TSorterList(sorterRect, this, fType);
+	AddChild(fSorterList);
 	
 	// Set up messages
 	BMessage *selectMsg = new BMessage(SORTER_SELECT_MSG);
-	m_SorterList->SetSelectionMessage(selectMsg);
+	fSorterList->SetSelectionMessage(selectMsg);
 
 	BMessage *invokeMsg = new BMessage(SORTER_INVOKE_MSG);
-	m_SorterList->SetInvocationMessage(invokeMsg);
+	fSorterList->SetInvocationMessage(invokeMsg);
 			
 	// We start life inactive
-	m_IsActive = false;
+	fIsActive = false;
 		
 }
 
@@ -135,15 +135,15 @@ void TSorterContainer::MessageReceived(BMessage *theMessage)
 			Parent()->MessageReceived(theMessage);
 			break;
 			
-		// Add our m_ID to the message and inform parent
+		// Add our fID to the message and inform parent
 		case SORTER_CLICK_MSG:								
-			theMessage->AddInt16("ID", m_ID);
-			m_SorterList->Sort();
+			theMessage->AddInt16("ID", fID);
+			fSorterList->Sort();
 			Parent()->MessageReceived(theMessage);
 			break;
 		
 		case SORTER_RESIZE_MSG:
-			theMessage->AddInt16("ID", m_ID);			
+			theMessage->AddInt16("ID", fID);			
 			Parent()->MessageReceived(theMessage);
 			break;
 							
@@ -153,8 +153,8 @@ void TSorterContainer::MessageReceived(BMessage *theMessage)
 			
 		// Pass this to our child views
 		case SORTER_REFS_MSG:
-			m_SorterBar->MessageReceived(theMessage);
-			m_SorterList->MessageReceived(theMessage);
+			fSorterBar->MessageReceived(theMessage);
+			fSorterList->MessageReceived(theMessage);
 			break;
 				
 		default:
@@ -233,11 +233,11 @@ void TSorterContainer::DeleteItem( int32 theItem )
 
 void TSorterContainer::MakeActive(bool theState)
 {
-	m_IsActive = theState;
+	fIsActive = theState;
 	
 	// Inform children
-	m_SorterBar->MakeActive(theState);
-	m_SorterList->MakeActive(theState);	
+	fSorterBar->MakeActive(theState);
+	fSorterList->MakeActive(theState);	
 }
 
 
@@ -259,9 +259,9 @@ void TSorterContainer::HandleScrollVMessage(BMessage *theMessage)
 		theMessage->FindFloat( "LastValue", &lastValue);
 		
 		if (negative)
-			m_SorterList->ScrollBy(0, -(lastValue - newValue));		
+			fSorterList->ScrollBy(0, -(lastValue - newValue));		
 		else
-			m_SorterList->ScrollBy(0, newValue - lastValue);
+			fSorterList->ScrollBy(0, newValue - lastValue);
 	}
 }
 
@@ -275,7 +275,7 @@ void TSorterContainer::HandleScrollVMessage(BMessage *theMessage)
 
 void TSorterContainer::Sort()
 {
-	m_SorterList->Sort();
+	fSorterList->Sort();
 }
 
 
@@ -288,5 +288,5 @@ void TSorterContainer::Sort()
 
 void TSorterContainer::Synchronize(TSorterContainer *syncSource)
 {
-	m_SorterList->Synchronize(syncSource->GetSorterList() );
+	fSorterList->Synchronize(syncSource->GetSorterList() );
 }

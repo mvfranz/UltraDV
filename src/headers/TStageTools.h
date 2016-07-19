@@ -35,16 +35,16 @@ class TStageTools: public BWindow
 		bool 	QuitRequested();
 		
 		//	Accessor Functions
-		TStageToolsView		*GetToolsView(){ return m_ToolsView; }
-		TStatusView			*GetStatusView(){ return m_ToolsStatusView; }
+		TStageToolsView		*GetToolsView(){ return fToolsView; }
+		TStatusView			*GetStatusView(){ return fToolsStatusView; }
 		
 	private:
 		// Member functions
 		virtual void		Init();
 		
 		// Member variables
-		TStageToolsView		*m_ToolsView;
-		TStatusView			*m_ToolsStatusView;
+		TStageToolsView		*fToolsView;
+		TStatusView			*fToolsStatusView;
 		
 };
 

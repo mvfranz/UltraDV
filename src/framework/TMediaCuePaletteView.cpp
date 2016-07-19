@@ -98,12 +98,12 @@ void TMediaCuePaletteView::Init()
 	cueRect.bottom 	=  cueRect.top + (kCueIconHeight-1);
 	
 	// Load bitmaps
-	offBitmap 	= GetAppIcons()->m_AnimationUpIcon;
-	onBitmap 	= GetAppIcons()->m_AnimationDnIcon;
+	offBitmap 	= GetAppIcons()->fAnimationUpIcon;
+	onBitmap 	= GetAppIcons()->fAnimationDnIcon;
 	
 	// Create button
-	m_AnimCueButton = new TCueButton(cueRect, "Animation Cue", offBitmap, onBitmap, theMessage, kAnimationCue);
-	AddChild(m_AnimCueButton);
+	fAnimCueButton = new TCueButton(cueRect, "Animation Cue", offBitmap, onBitmap, theMessage, kAnimationCue);
+	AddChild(fAnimCueButton);
                              
     //
     //	Audio Cue
@@ -113,12 +113,12 @@ void TMediaCuePaletteView::Init()
 	cueRect.right 	= cueRect.left + (kCueIconWidth-1);
 		
     // Load bitmaps
-	offBitmap 	= GetAppIcons()->m_AudioUpIcon;
-	onBitmap 	= GetAppIcons()->m_AudioDnIcon;
+	offBitmap 	= GetAppIcons()->fAudioUpIcon;
+	onBitmap 	= GetAppIcons()->fAudioDnIcon;
 	
 	// Create button
-	m_AudioCueButton = new TCueButton(cueRect, "Audio Cue", offBitmap, onBitmap, theMessage, kAudioCue);
-	AddChild(m_AudioCueButton);
+	fAudioCueButton = new TCueButton(cueRect, "Audio Cue", offBitmap, onBitmap, theMessage, kAudioCue);
+	AddChild(fAudioCueButton);
 	
 	
     //
@@ -135,12 +135,12 @@ void TMediaCuePaletteView::Init()
 	cueRect.bottom 	= cueRect.top + (kCueIconHeight-1);
 	
     // Load bitmaps
-	offBitmap 	= GetAppIcons()->m_MIDIUpIcon;
-	onBitmap 	= GetAppIcons()->m_MIDIDnIcon;
+	offBitmap 	= GetAppIcons()->fMIDIUpIcon;
+	onBitmap 	= GetAppIcons()->fMIDIDnIcon;
 	
 	// Create button
-	m_MIDICueButton = new TCueButton(cueRect, "MIDI Cue", offBitmap, onBitmap, theMessage, kMIDICue);
-	AddChild(m_MIDICueButton);
+	fMIDICueButton = new TCueButton(cueRect, "MIDI Cue", offBitmap, onBitmap, theMessage, kMIDICue);
+	AddChild(fMIDICueButton);
 	
     
     // Movie Cue
@@ -151,12 +151,12 @@ void TMediaCuePaletteView::Init()
 	cueRect.right 	= cueRect.left + (kCueIconWidth-1);
     
     // Load bitmaps
-	offBitmap 	= GetAppIcons()->m_MovieUpIcon;
-	onBitmap 	= GetAppIcons()->m_MovieDnIcon;
+	offBitmap 	= GetAppIcons()->fMovieUpIcon;
+	onBitmap 	= GetAppIcons()->fMovieDnIcon;
 	
 	// Create button
-	m_MovieCueButton = new TCueButton(cueRect, "Movie Cue", offBitmap, onBitmap, theMessage, kMovieCue);
-	AddChild(m_MovieCueButton);
+	fMovieCueButton = new TCueButton(cueRect, "Movie Cue", offBitmap, onBitmap, theMessage, kMovieCue);
+	AddChild(fMovieCueButton);
 	
     
     //
@@ -174,12 +174,12 @@ void TMediaCuePaletteView::Init()
 
 				 
     // Load bitmaps
-	offBitmap 	= GetAppIcons()->m_PictureUpIcon;
-	onBitmap 	= GetAppIcons()->m_PictureDnIcon;
+	offBitmap 	= GetAppIcons()->fPictureUpIcon;
+	onBitmap 	= GetAppIcons()->fPictureDnIcon;
 		
 	// Create button
-	m_PictureCueButton = new TCueButton(cueRect, "Picture Cue", offBitmap, onBitmap, theMessage, kPictureCue);
-	AddChild(m_PictureCueButton);
+	fPictureCueButton = new TCueButton(cueRect, "Picture Cue", offBitmap, onBitmap, theMessage, kPictureCue);
+	AddChild(fPictureCueButton);
 	
 	    
     // Text Cue
@@ -190,11 +190,11 @@ void TMediaCuePaletteView::Init()
 	cueRect.right 	= cueRect.left + (kCueIconWidth-1);
 
 	// Load bitmaps
-	offBitmap 	= GetAppIcons()->m_TextUpIcon;
-	onBitmap 	= GetAppIcons()->m_TextDnIcon;
+	offBitmap 	= GetAppIcons()->fTextUpIcon;
+	onBitmap 	= GetAppIcons()->fTextDnIcon;
 	
 	// Create button
-	m_TextCueButton = new TCueButton(cueRect, "Text Cue", offBitmap, onBitmap, theMessage, kTextCue);
-	AddChild(m_TextCueButton);
+	fTextCueButton = new TCueButton(cueRect, "Text Cue", offBitmap, onBitmap, theMessage, kTextCue);
+	AddChild(fTextCueButton);
        	
 }

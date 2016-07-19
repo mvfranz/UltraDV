@@ -29,7 +29,7 @@
 TCollection::TCollection()
 {	
 	// Start off with no items		
-	m_NumItems = 0L;						
+	fNumItems = 0L;						
 }
 	
 //---------------------------------------------------------------------
@@ -52,7 +52,7 @@ TCollection::~TCollection()
 
 long TCollection::GetNumItems()
 {
-	return( m_NumItems);
+	return( fNumItems);
 }
 	
 
@@ -66,5 +66,5 @@ long TCollection::GetNumItems()
 
 bool TCollection::IsEmpty()
 {	
-	return( m_NumItems == 0L );	
+	return( fNumItems == 0L );	
 }

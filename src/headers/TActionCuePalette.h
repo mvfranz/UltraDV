@@ -32,7 +32,7 @@ class TActionCuePalette: public BWindow
 		virtual void		Init();
 		
 		// Member variables
-		TActionCuePaletteView	*m_CueView;
+		TActionCuePaletteView	*fCueView;
 		
 };
 

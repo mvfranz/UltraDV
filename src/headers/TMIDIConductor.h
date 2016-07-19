@@ -96,20 +96,20 @@ class TMIDIConductor : public BList
 		void 	CalcMarkerTimes();
 						
 		// Member Variables
-		TMIDICue	*m_Parent;			// Parent cue
-		BList		*m_MarkerList;
+		TMIDICue	*fParent;			// Parent cue
+		BList		*fMarkerList;
 		
 	protected:
 
 			
 		// Member Variables
-		int32	m_CurrentEvent;		// Index to current play event
-		int32	m_CurrentDelta;		// How many ticks till our next play event
-		int32	m_CurrentLocation;	// Absolute location when loading file
-		int32	m_TotalTime;		// Total number of clocks in track
-		int32	m_PlayTime;			// Ticks remaining in play
-		int32	m_LastTempo;		// Last tempo change encountered when locating		
-		int16	m_TempoRatio;
+		int32	fCurrentEvent;		// Index to current play event
+		int32	fCurrentDelta;		// How many ticks till our next play event
+		int32	fCurrentLocation;	// Absolute location when loading file
+		int32	fTotalTime;		// Total number of clocks in track
+		int32	fPlayTime;			// Ticks remaining in play
+		int32	fLastTempo;		// Last tempo change encountered when locating		
+		int16	fTempoRatio;
 };
 
 #endif

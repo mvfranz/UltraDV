@@ -41,7 +41,7 @@ class TRefFilter : public BRefFilter
 
 		
 	private:
-		FilterType m_FilterType;
+		FilterType fFilterType;
 
 };
 

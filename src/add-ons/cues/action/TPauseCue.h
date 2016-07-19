@@ -67,11 +67,11 @@ class TPauseCue : public TCueView
 		
 				
 		// Member Variables
-		int16	m_PauseType;
-		int32	m_PauseDuration;
-		char 	m_Key;
-		int32	m_Message;
-		bool  	m_ShowCursor;
+		int16	fPauseType;
+		int32	fPauseDuration;
+		char 	fKey;
+		int32	fMessage;
+		bool  	fShowCursor;
 				
 	private:
 		// Member Functions
@@ -81,12 +81,12 @@ class TPauseCue : public TCueView
 		
 		void 	LoadCueIcon();
 		
-		TTimer	*m_PauseTimer;
+		TTimer	*fPauseTimer;
 
 	protected:
 				
 		// Member Variables
-		TPauseSetup	*m_Editor;											
+		TPauseSetup	*fEditor;											
 };
 
 #endif

@@ -58,8 +58,8 @@ typedef enum
 
 typedef struct
 {
-	BBitmap *m_MiniIcon;
-	BBitmap *m_LargeIcon;
+	BBitmap *fMiniIcon;
+	BBitmap *fLargeIcon;
 } TSorterIcons;
 
 // Forward declarations
@@ -88,11 +88,11 @@ class TSorterContainer: public BView
 		void 	Sort();
 		
 		// Inlines
-		inline TSorterBar	*GetSorterBar(){ return m_SorterBar; }
-		inline TSorterList	*GetSorterList(){ return m_SorterList; }
-		inline bool			IsActive(){ return m_IsActive; }
-		inline int16		GetID(){ return m_ID; }
-		inline SorterType	GetType(){ return m_Type; }
+		inline TSorterBar	*GetSorterBar(){ return fSorterBar; }
+		inline TSorterList	*GetSorterList(){ return fSorterList; }
+		inline bool			IsActive(){ return fIsActive; }
+		inline int16		GetID(){ return fID; }
+		inline SorterType	GetType(){ return fType; }
 		
 		// Member variables	
 		
@@ -105,13 +105,13 @@ class TSorterContainer: public BView
 				
 				
 		// Member variables			
-		char 		*m_Title;
-		int16		m_ID;	
-		bool		m_IsActive;	
-		BView		*m_ScrollArea;		
-		TSorterBar	*m_SorterBar;
-		TSorterList	*m_SorterList;
-		SorterType	m_Type;	
+		char 		*fTitle;
+		int16		fID;	
+		bool		fIsActive;	
+		BView		*fScrollArea;		
+		TSorterBar	*fSorterBar;
+		TSorterList	*fSorterList;
+		SorterType	fType;	
 };		
 
 // Message

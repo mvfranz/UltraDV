@@ -43,17 +43,17 @@
 TLockButton::TLockButton(TCueChannel *parent, BRect bounds, const char *name, BBitmap *offBitmap, BBitmap *onBitmap, BHandler *handler) : BView(bounds, name, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW)
 {
 	// Save parent view
-	m_Channel = parent;
+	fChannel = parent;
 	
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 	
 	// Store bitmaps
-	m_OffBitmap = offBitmap;
-	m_OnBitmap = onBitmap;
+	fOffBitmap = offBitmap;
+	fOnBitmap = onBitmap;
 		
 	// Store target and handler
-	m_Handler = handler;
+	fHandler = handler;
 	
 	// Perform default initialization
 	Init();
@@ -68,14 +68,14 @@ TLockButton::TLockButton(TCueChannel *parent, BRect bounds, const char *name, BB
 
 TLockButton::TLockButton(BMessage *data) : BView(data)
 {	
-	m_Handler = NULL;
+	fHandler = NULL;
 	
 	// Set MouseDown/MouseUp flag
-	m_MouseDown = false;
+	fMouseDown = false;
 
 	// Set bitmaps
-	m_OffBitmap	= GetAppIcons()->m_UnlockDark;
-	m_OnBitmap 	= GetAppIcons()->m_LockDark;
+	fOffBitmap	= GetAppIcons()->fUnlockDark;
+	fOnBitmap 	= GetAppIcons()->fLockDark;
 }
 
 
@@ -168,11 +168,11 @@ status_t TLockButton::Archive(BMessage *data, bool deep) const
 
 void TLockButton::Draw(BRect updateRect)
 {
-	// Draw proper bitmap state, if m_State is true, draw on bitmap
-	if (m_Channel->IsLocked() )
-		DrawBitmap(m_OnBitmap, B_ORIGIN);
+	// Draw proper bitmap state, if fState is true, draw on bitmap
+	if (fChannel->IsLocked() )
+		DrawBitmap(fOnBitmap, B_ORIGIN);
 	else
-		DrawBitmap(m_OffBitmap, B_ORIGIN);
+		DrawBitmap(fOffBitmap, B_ORIGIN);
 }
 
 
@@ -192,12 +192,12 @@ void TLockButton::MouseDown(BPoint where)
 	
 	// Create and send message to channel		
 	BMessage *message = new BMessage(LOCK_CHANNEL_MSG);
-	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, m_Channel);
+	(static_cast<MuseumApp *>(be_app)->GetCueSheet())->PostMessage(message, fChannel);
 	delete message;
 		
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this
-	m_MouseDown = true; 
+	fMouseDown = true; 
 }
 
 
@@ -213,7 +213,7 @@ void TLockButton::MouseUp(BPoint where)
 	
 	// Set flag that we have been clicked. When the MouseUp method
 	// is implimented we can remove this		
-	m_MouseDown = false; 
+	fMouseDown = false; 
 }
 
 #pragma mark -
@@ -230,10 +230,10 @@ void TLockButton::MouseUp(BPoint where)
 
 void TLockButton::AttachedToWindow()
 {			
-	if (m_Handler == NULL)
+	if (fHandler == NULL)
 	{
 		// Set target
-		m_Handler = (TCueSheetWindow *)Window();
+		fHandler = (TCueSheetWindow *)Window();
 
 	}	
 	//	Pass up to parent
@@ -252,5 +252,5 @@ void TLockButton::AttachedToWindow()
 
 void TLockButton::SetChannel(TCueChannel *channel)
 {
-	m_Channel = channel;	
+	fChannel = channel;	
 }

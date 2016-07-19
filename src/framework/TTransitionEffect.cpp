@@ -33,14 +33,14 @@ const char kTransitionName[] = "BaseTransition";
 TTransitionEffect::TTransitionEffect(bool transitionIn) : TVisualEffect()
 {
 	//	Offscreen drawing
-	m_OffscreenBitmap 	= NULL;
-	m_OffscreenView 	= NULL;
+	fOffscreenBitmap 	= NULL;
+	fOffscreenView 	= NULL;
 	
 	//	Are we an In or Out Transition
-	m_TransitionIn = transitionIn;
+	fTransitionIn = transitionIn;
 		
 	//	Variable set when we initialize our offscreen
-	m_Inited = false;
+	fInited = false;
 }
 
 TTransitionEffect::TTransitionEffect(BMessage* msg) : TVisualEffect(msg)
@@ -51,12 +51,12 @@ TTransitionEffect::TTransitionEffect(BMessage* msg) : TVisualEffect(msg)
 TTransitionEffect::~TTransitionEffect()
 {
 	//	Free offscreen
-	if (m_OffscreenBitmap)
+	if (fOffscreenBitmap)
  	{
- 		m_OffscreenBitmap->Lock();	
- 		m_OffscreenBitmap->RemoveChild(m_OffscreenView);
- 		delete m_OffscreenView;	
- 		delete m_OffscreenBitmap;	
+ 		fOffscreenBitmap->Lock();	
+ 		fOffscreenBitmap->RemoveChild(fOffscreenView);
+ 		delete fOffscreenView;	
+ 		delete fOffscreenBitmap;	
  	}
 }
 
@@ -178,23 +178,23 @@ void TTransitionEffect::InitOffscreen(BRect offRect)
 {
 
 	//	Only create offscreen at first pass
-	if (!m_Inited)
+	if (!fInited)
 	{		
 		// Create offscreen bitmap and view
-		m_OffscreenBitmap 	= new BBitmap(offRect, B_RGB_32_BIT, true);
-		m_OffscreenView 	= new BView( m_OffscreenBitmap->Bounds(), "TransitionOffscreen", B_FOLLOW_ALL, B_WILL_DRAW);
+		fOffscreenBitmap 	= new BBitmap(offRect, B_RGB_32_BIT, true);
+		fOffscreenView 	= new BView( fOffscreenBitmap->Bounds(), "TransitionOffscreen", B_FOLLOW_ALL, B_WILL_DRAW);
 		
 		// Add child and fill with background color
-		m_OffscreenBitmap->Lock();
-		m_OffscreenBitmap->AddChild(m_OffscreenView);
-		m_OffscreenView->SetViewColor(B_TRANSPARENT_32_BIT);
-		m_OffscreenView->SetHighColor(B_TRANSPARENT_32_BIT);		
-		m_OffscreenView->FillRect(m_OffscreenView->Bounds());
-		m_OffscreenView->Sync();
-		m_OffscreenBitmap->Unlock();
+		fOffscreenBitmap->Lock();
+		fOffscreenBitmap->AddChild(fOffscreenView);
+		fOffscreenView->SetViewColor(B_TRANSPARENT_32_BIT);
+		fOffscreenView->SetHighColor(B_TRANSPARENT_32_BIT);		
+		fOffscreenView->FillRect(fOffscreenView->Bounds());
+		fOffscreenView->Sync();
+		fOffscreenBitmap->Unlock();
 		
 		//	Set inited flag to true
-		m_Inited = true;
+		fInited = true;
 	}
 }
 

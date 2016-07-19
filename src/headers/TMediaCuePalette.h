@@ -34,8 +34,8 @@ class TMediaCuePalette: public BWindow
 		virtual void		Init();
 		
 		// Member variables
-		TMediaCuePaletteView	*m_CueView;
-		TPaletteStatusView		*m_CueStatusView;
+		TMediaCuePaletteView	*fCueView;
+		TPaletteStatusView		*fCueStatusView;
 		
 };
 

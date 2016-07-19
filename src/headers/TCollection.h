@@ -29,7 +29,7 @@ class TCollection
 		virtual bool		IsEmpty();		// Is the collection empty?
 				
 		// Member Variables 
-		int32		m_NumItems;				// Number of items in collection
+		int32		fNumItems;				// Number of items in collection
 
 
 };

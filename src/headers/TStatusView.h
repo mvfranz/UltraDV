@@ -28,7 +28,7 @@ class TStatusView: public BView
 		void 	Init();
 					
 		// Member variables
-		char m_Text[256];				
+		char fText[256];				
 };
 
 #define UPDATE_STATUS_TEXT_MSG	'upST'

@@ -68,21 +68,21 @@ class TPreset : public BArchivable
 		void	WriteToFile(char *theName);
 	
 		// Inlines
-		inline char 			*GetName(){ return m_Name; }
-		inline timecode_type		GetTimebase(){ return m_Timebase; }
+		inline char 			*GetName(){ return fName; }
+		inline timecode_type		GetTimebase(){ return fTimebase; }
 		
 		// Member Variables		
-		char					m_Name[65];		
-		char					m_Description01[40];
-		char					m_Description02[40];
-		char					m_Description03[40];
-		char					m_Description04[40];
-		char					m_Description05[40];		
-		timecode_type			m_Timebase;
-		video_compressor_type	m_VideoCompressor;
-		audio_compressor_type	m_AudioCompressor;
-		int32					m_FrameWidth;
-		int32					m_FrameHeight;
+		char					fName[65];		
+		char					fDescription01[40];
+		char					fDescription02[40];
+		char					fDescription03[40];
+		char					fDescription04[40];
+		char					fDescription05[40];		
+		timecode_type			fTimebase;
+		video_compressor_type	fVideoCompressor;
+		audio_compressor_type	fAudioCompressor;
+		int32					fFrameWidth;
+		int32					fFrameHeight;
 
 	private:
 				

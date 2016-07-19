@@ -34,8 +34,8 @@ class TChaser : public TThread
 		virtual	void		Stop();
 			
 		// Inlines
-		inline bool 	IsStopping() { return m_IsStopping; }
-		inline port_id 	PortID() const { return m_PortID; }
+		inline bool 	IsStopping() { return fIsStopping; }
+		inline port_id 	PortID() const { return fPortID; }
 	
 	private:
 		// Member Functions
@@ -43,11 +43,11 @@ class TChaser : public TThread
 		void				(*Ticked)(void *arg, TTick *t);		//points to ticked_func
 	
 		// Memeber Variables
-		void		*m_Caller;
-		char		*m_AreaAddress;
-		area_id		m_AreaID;
-		port_id		m_PortID;
-		bool		m_IsStopping;
+		void		*fCaller;
+		char		*fAreaAddress;
+		area_id		fAreaID;
+		port_id		fPortID;
+		bool		fIsStopping;
 };
 
 #endif

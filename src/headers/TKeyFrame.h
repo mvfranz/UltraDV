@@ -44,11 +44,11 @@ public:
 	int32 Time() const;
 	
 private:
-		// Time within the cue effect; i.e., m_time will never >
-		// TCueEffect::m_duration
-	int32 m_time;
+		// Time within the cue effect; i.e., ftime will never >
+		// TCueEffect::fduration
+	int32 ftime;
 		// This is the type specific state information. 
-	TEffectState* m_state;
+	TEffectState* fstate;
 		// Let the TCueEffect get at the time and state variables
 	friend class TCueEffect;
 };

@@ -27,19 +27,19 @@
 #include <support/Debug.h>		// for ASSERT()
 
 // Class Constants
-	// Name used for m_entryRef in a message
+	// Name used for fentryRef in a message
 const char* TCueData::kRefTagName = "ref";
 	// Contains all the MIME types supported by this class
-TCueData::TTypeVector TCueData::sm_types;
+TCueData::TTypeVector TCueData::sftypes;
 	// The default file name
-string TCueData::sm_defaultName;
+string TCueData::sfdefaultName;
 	// The 'up' and 'down' cue icons
-BBitmap* TCueData::sm_upIcon;
-BBitmap* TCueData::sm_downIcon;
+BBitmap* TCueData::sfupIcon;
+BBitmap* TCueData::sfdownIcon;
 	// Type information
-bool TCueData::sm_isVisual;
-bool TCueData::sm_isAudible;
-bool TCueData::sm_canStretch;
+bool TCueData::sfisVisual;
+bool TCueData::sfisAudible;
+bool TCueData::sfcanStretch;
 
 //---------------------------------------------------------------------
 //	Constructor/destructor
@@ -52,7 +52,7 @@ TCueData::TCueData()
 
 TCueData::TCueData(BMessage* msg)
 {
-	msg->FindRef(kRefTagName, &m_entryRef);
+	msg->FindRef(kRefTagName, &fentryRef);
 }
 
 TCueData::~TCueData()
@@ -85,7 +85,7 @@ status_t TCueData::Archive(BMessage* data, bool deep) const
 	// so we don't add the class name data
 
 	// Add the file ref
-	data->AddRef(kRefTagName, &m_entryRef);
+	data->AddRef(kRefTagName, &fentryRef);
 	return B_OK;
 }
 
@@ -122,7 +122,7 @@ bool TCueData::IsValidFile(const entry_ref& ref) const
 	
 status_t TCueData::SetTo(const entry_ref& ref)
 {
-	m_entryRef = ref;
+	fentryRef = ref;
 	return B_NO_ERROR;
 }
 
@@ -135,7 +135,7 @@ status_t TCueData::SetTo(const entry_ref& ref)
 void TCueData::Unset(void)
 {
 	// initialize to the default
-	m_entryRef = entry_ref();
+	fentryRef = entry_ref();
 }
 	
 //---------------------------------------------------------------------
@@ -157,7 +157,7 @@ string TCueData::Info() const
 	
 bool TCueData::NodeChangedMessage(BMessage* msg)
 {
-	// TODO: do we need to respond? Update m_entryRef perhaps?
+	// TODO: do we need to respond? Update fentryRef perhaps?
 	return false;
 }
 

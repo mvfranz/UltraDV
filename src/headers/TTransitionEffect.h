@@ -51,7 +51,7 @@ class TTransitionEffect : public TVisualEffect
 		virtual BBitmap *Icon();
 		
 		//	Inlines
-		inline bool TransitionIn(){ return m_TransitionIn; }
+		inline bool TransitionIn(){ return fTransitionIn; }
 
 	protected:				
 		// Have the subclass create a new effect state 
@@ -65,10 +65,10 @@ class TTransitionEffect : public TVisualEffect
 		void	InitOffscreen(BRect offRect);
 
 		//	Member Variables
-		bool	m_TransitionIn;
-		BBitmap *m_OffscreenBitmap;
-		BView	*m_OffscreenView;
-		bool	m_Inited;			
+		bool	fTransitionIn;
+		BBitmap *fOffscreenBitmap;
+		BView	*fOffscreenView;
+		bool	fInited;			
 };
 
 #endif

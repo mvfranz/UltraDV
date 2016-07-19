@@ -78,9 +78,9 @@ TPictureCue::TPictureCue(entry_ref &theRef, int16 id,  TCueChannel *parent, BRec
 	TVisualCue(theRef, id, parent, bounds, startTime, "PictureCue")
 {	
 	// Init member variables 
-	m_Editor			= NULL;
-	m_Bitmap 			= NULL;
-	m_TransformBitmap	= NULL;
+	fEditor			= NULL;
+	fBitmap 			= NULL;
+	fTransformBitmap	= NULL;
 	
 	//
 	// Attempt to load data file
@@ -130,9 +130,9 @@ TPictureCue::TPictureCue(BMessage *theMessage) : TVisualCue(theMessage)
 	LoadCueIcon();	
 	
 	// Init member varibles
-	m_Editor 			= NULL;
-	m_Bitmap 			= NULL;
-	m_TransformBitmap	= NULL;
+	fEditor 			= NULL;
+	fBitmap 			= NULL;
+	fTransformBitmap	= NULL;
 	
 	// Find our data in the archive
 	
@@ -141,7 +141,7 @@ TPictureCue::TPictureCue(BMessage *theMessage) : TVisualCue(theMessage)
 		
 	// 	Create a BMessage that includes the entry_ref to send to our open routine
 	BMessage *fileMessage = new BMessage(B_REFS_RECEIVED);
-	theMessage->AddRef("refs", &m_FileRef);
+	theMessage->AddRef("refs", &fFileRef);
 	
 	bool retVal = LoadPictureFile(fileMessage);
 	/*
@@ -160,7 +160,7 @@ TPictureCue::TPictureCue(BMessage *theMessage) : TVisualCue(theMessage)
 	delete fileMessage;
 	
 	// We are now fully instantiated
-	m_IsInstantiated = true;	
+	fIsInstantiated = true;	
 
 }
 
@@ -173,18 +173,18 @@ TPictureCue::TPictureCue(BMessage *theMessage) : TVisualCue(theMessage)
 TPictureCue::~TPictureCue()
 {
 	// Close editor
-	if ( m_EditorOpen && m_Editor)
+	if ( fEditorOpen && fEditor)
 	{
-		m_Editor->Hide();
-		m_Editor->Lock();
-		m_Editor->Quit();
+		fEditor->Hide();
+		fEditor->Lock();
+		fEditor->Quit();
 	}
 	
 	// Delete image file reference
-	if (m_File)
+	if (fFile)
 	{
-		delete 	m_File;
-		m_File = NULL;
+		delete 	fFile;
+		fFile = NULL;
 	}				
 }
 
@@ -201,24 +201,24 @@ void TPictureCue::Init()
 	TVisualCue::Init();
 		
 	// Add the cue to the cue channel
-	if ( m_Channel->CanInsertCue(this, m_InsertTime, true))
+	if ( fChannel->CanInsertCue(this, fInsertTime, true))
 	{
-		m_Channel->InsertCue(this, m_InsertTime);		
+		fChannel->InsertCue(this, fInsertTime);		
 		Select();								
 			
 		// We are now fully instantiated
-		m_IsInstantiated = true;		
+		fIsInstantiated = true;		
 	}
 	
 	// Set expanded status
-	if (m_Channel->IsExpanded())
+	if (fChannel->IsExpanded())
 	{
-		m_IsExpanded = false;
+		fIsExpanded = false;
 		Expand();
 	}
 	else
 	{
-		m_IsExpanded = true;
+		fIsExpanded = true;
 		Contract();		
 	}
 	
@@ -283,7 +283,7 @@ status_t TPictureCue::Archive(BMessage *data, bool deep) const
 void TPictureCue::Draw(BRect updateRect)
 {
 	// Return if were not done cooking...
-	if (!m_IsInstantiated)
+	if (!fIsInstantiated)
 		return;
 
 	// Pass up to parent
@@ -302,31 +302,31 @@ void TPictureCue::RenderBitmapData()
 {
 	
 	//	Handle effects stack
-	if (m_EffectsList->CountItems() > 0)
+	if (fEffectsList->CountItems() > 0)
 	{
 		//	If we are here, the effect must be a VisualEffect
-		for (int32 index = 0; index < m_EffectsList->CountItems(); index++)
+		for (int32 index = 0; index < fEffectsList->CountItems(); index++)
 		{
 			//	Get the effects in the list
-			TCueEffectView *effectView = (TCueEffectView *)m_EffectsList->ItemAt(index);			
+			TCueEffectView *effectView = (TCueEffectView *)fEffectsList->ItemAt(index);			
 			if (effectView)
 			{
 				TVisualEffect *effect = (TVisualEffect *)effectView->Effect();
 				
 				//	Setup transformation bitmap buffer
-				if (m_TransformBitmap)
+				if (fTransformBitmap)
 				{
-					delete m_TransformBitmap;
-					m_TransformBitmap = NULL;
+					delete fTransformBitmap;
+					fTransformBitmap = NULL;
 				}
 				
 				//	Get current time and convert to cue local time
 				uint32 theTime = GetCurrentTime();
-				theTime -= m_StartTime;
+				theTime -= fStartTime;
 				
 				//	Is it in the effects time span?
 				if ( (theTime >= effect->StartTime()) && (theTime <= effect->EndTime()) )
-					m_TransformBitmap = effect->TransformBitmap(theTime, m_Bitmap, *m_CuePosition, kBestQuality);
+					fTransformBitmap = effect->TransformBitmap(theTime, fBitmap, *fCuePosition, kBestQuality);
 			}
 		}
 	}
@@ -340,10 +340,10 @@ void TPictureCue::RenderBitmapData()
 	//
 		
 	//	Setup transformation bitmap buffer
-	//if (m_TransformBitmap)
+	//if (fTransformBitmap)
 	//{
-	//	delete m_TransformBitmap;
-	//	m_TransformBitmap = NULL;
+	//	delete fTransformBitmap;
+	//	fTransformBitmap = NULL;
 	//}
 			
 	//	gzr: to do... The right way to do this is rotate, scale, translate
@@ -363,14 +363,14 @@ void TPictureCue::RenderBitmapData()
 	//
 	
 	//	Handle bitmap created by earlier transformations
-	//if (m_TransformBitmap)
+	//if (fTransformBitmap)
 	//{			
-	//	CompositeBitmapToStage(m_TransformBitmap);
+	//	CompositeBitmapToStage(fTransformBitmap);
 	//}
 	//	Handle basic source bitmap
 	//else
 	//{
-	//	CompositeBitmapToStage(m_Bitmap);
+	//	CompositeBitmapToStage(fBitmap);
 	//}	
 }
 
@@ -512,7 +512,7 @@ void TPictureCue::CompositeBitmapToStage(BBitmap *srcBitmap)
 			//if ( PtInLine(includePt, lineStart, lineEnd) )
 			{
 				//	Draw opaque
-				if (m_Transparency == 1.0)
+				if (fTransparency == 1.0)
 				{
 					*(uint32 *)offRowPtr =  *(uint32 *)srcRowPtr;
 				}
@@ -530,9 +530,9 @@ void TPictureCue::CompositeBitmapToStage(BBitmap *srcBitmap)
 					//	gzr: to do... Determine a more efficient way to perform this clipping.
 					//	Perhaps I need to determine polygon line start and end points and 
 					//	do a compare that way.
-					*(uint32 *)offRowPtr =  (uint32) (((*(uint32 *)offRowPtr & kBlueMask)  + (*(uint32 *)srcRowPtr & kBlueMask))  * m_Transparency) & kBlueMask |
-											(uint32) (((*(uint32 *)offRowPtr & kGreenMask) + (*(uint32 *)srcRowPtr & kGreenMask)) * m_Transparency) & kGreenMask |
-											(uint32) (((*(uint32 *)offRowPtr & kRedMask)   + (*(uint32 *)srcRowPtr & kRedMask))	  * m_Transparency) & kRedMask;
+					*(uint32 *)offRowPtr =  (uint32) (((*(uint32 *)offRowPtr & kBlueMask)  + (*(uint32 *)srcRowPtr & kBlueMask))  * fTransparency) & kBlueMask |
+											(uint32) (((*(uint32 *)offRowPtr & kGreenMask) + (*(uint32 *)srcRowPtr & kGreenMask)) * fTransparency) & kGreenMask |
+											(uint32) (((*(uint32 *)offRowPtr & kRedMask)   + (*(uint32 *)srcRowPtr & kRedMask))	  * fTransparency) & kRedMask;
 				}
 			}
 						
@@ -564,7 +564,7 @@ void TPictureCue::MessageReceived(BMessage *message)
 		case B_OK:
 		case B_REFS_RECEIVED:
 			{
-				m_Panel->Hide();
+				fPanel->Hide();
 				
 				// Attempt to load image
 				if ( LoadPictureFile(message) )
@@ -600,7 +600,7 @@ void TPictureCue::ShowPanel()
 		
 	// 	Create messenger to send panel messages to our channel.  We cannot send it to 
 	//  ourself as we are not part of the view heirarchy.
- 	BMessenger *messenger = new BMessenger( m_Channel,  ((MuseumApp *)be_app)->GetCueSheet());
+ 	BMessenger *messenger = new BMessenger( fChannel,  ((MuseumApp *)be_app)->GetCueSheet());
 	
 	// Create message containing pointer to ourself
 	BMessage *message = new BMessage();
@@ -610,7 +610,7 @@ void TPictureCue::ShowPanel()
  	TRefFilter *refFilter = new TRefFilter(kImageFilter);
  	
  	// Construct a file panel and set it to modal
- 	m_Panel = new BFilePanel( B_OPEN_PANEL, messenger, NULL, B_FILE_NODE, false, message, refFilter, true, true );
+ 	fPanel = new BFilePanel( B_OPEN_PANEL, messenger, NULL, B_FILE_NODE, false, message, refFilter, true, true );
  
  	// Set it to application's home directory
  	app_info appInfo;
@@ -618,11 +618,11 @@ void TPictureCue::ShowPanel()
  	BEntry entry(&appInfo.ref);
  	BDirectory parentDir;
  	entry.GetParent(&parentDir);
- 	m_Panel->SetPanelDirectory(&parentDir);
+ 	fPanel->SetPanelDirectory(&parentDir);
  		
 	// Center Panel
-	CenterWindow(m_Panel->Window());
-	m_Panel->Show();
+	CenterWindow(fPanel->Window());
+	fPanel->Show();
 	
 	// Clean up
 	delete messenger;
@@ -641,15 +641,15 @@ void TPictureCue::ShowPanel()
 
 void TPictureCue::HidePanel()
 {	
-	if(m_Panel)
+	if(fPanel)
 	{
 		// Clean up any RefFilters
-		TRefFilter *theFilter = static_cast<TRefFilter *>( m_Panel->RefFilter() );
+		TRefFilter *theFilter = static_cast<TRefFilter *>( fPanel->RefFilter() );
 		if (theFilter)
 			delete theFilter;
 			
-		delete m_Panel;
-		m_Panel = NULL;				
+		delete fPanel;
+		fPanel = NULL;				
 	}
 	
 	TVisualCue::HidePanel();
@@ -669,17 +669,17 @@ bool TPictureCue::LoadPictureFile(BMessage *message)
 	
 	status_t myErr;
 	
-	message->FindRef("refs", 0, &m_FileRef);
+	message->FindRef("refs", 0, &fFileRef);
 	
 	// Resolve possible symlink...
-	BEntry entry(&m_FileRef, true);
-	entry.GetRef(&m_FileRef);
+	BEntry entry(&fFileRef, true);
+	entry.GetRef(&fFileRef);
 	
 	// Create BFile from ref...
-	m_File = new BFile(&m_FileRef, B_READ_ONLY);
+	fFile = new BFile(&fFileRef, B_READ_ONLY);
 	
 	//	Check that we have a valid file
-	if (m_File->InitCheck() == B_NO_INIT)
+	if (fFile->InitCheck() == B_NO_INIT)
 		return false;
 		
 	// Try to determine the file type by looking at MIME type
@@ -690,12 +690,12 @@ bool TPictureCue::LoadPictureFile(BMessage *message)
 	BTranslatorRoster *theTranslator = ((MuseumApp *)be_app)->GetTranslator();
 	
 	// We got an attribute.
-	if (B_OK <= m_File->ReadAttr("BEOS:TYPE", B_STRING_TYPE, 0, mimeStr, B_FILE_NAME_LENGTH) )
-		myErr = theTranslator->Identify(m_File, NULL, &info, 0, mimeStr);
+	if (B_OK <= fFile->ReadAttr("BEOS:TYPE", B_STRING_TYPE, 0, mimeStr, B_FILE_NAME_LENGTH) )
+		myErr = theTranslator->Identify(fFile, NULL, &info, 0, mimeStr);
          	
 	// Try without MIME type hint
 	if (myErr != B_OK)
-		myErr = theTranslator->Identify(m_File, NULL, &info);
+		myErr = theTranslator->Identify(fFile, NULL, &info);
 	
 	//	Unrecognized file format.  Inform the user and exit
 	if (myErr != B_OK)
@@ -706,7 +706,7 @@ bool TPictureCue::LoadPictureFile(BMessage *message)
 			case B_NO_TRANSLATOR:	
 			case B_BAD_VALUE:		
 			case B_NOT_INITIALIZED:
-				UnhandledImageFormat(&m_FileRef);
+				UnhandledImageFormat(&fFileRef);
 				return false;	
 			
 			default:
@@ -724,18 +724,18 @@ bool TPictureCue::LoadPictureFile(BMessage *message)
 			{			
 				// Create bitmap
 				BBitmapStream bitmapStream;
-				status_t myErr = theTranslator->Translate(m_File, &info, NULL, &bitmapStream, B_TRANSLATOR_BITMAP);
+				status_t myErr = theTranslator->Translate(fFile, &info, NULL, &bitmapStream, B_TRANSLATOR_BITMAP);
 				if (myErr)
 				{
-					UnhandledImageFormat(&m_FileRef);
+					UnhandledImageFormat(&fFileRef);
 					return false;
 				}
 				
 				// Get data
-				myErr = bitmapStream.DetachBitmap(&m_Bitmap);
+				myErr = bitmapStream.DetachBitmap(&fBitmap);
 				if (myErr)
 				{
-					UnhandledImageFormat(&m_FileRef);
+					UnhandledImageFormat(&fFileRef);
 					return false;					
 				}
 			}								
@@ -744,10 +744,10 @@ bool TPictureCue::LoadPictureFile(BMessage *message)
 		/*
 		case B_TRANSLATOR_PICTURE:
 			{
-				status_t myErr = theTranslator->Translate(m_File, NULL, NULL, &outStream, B_TRANSLATOR_PICTURE);
+				status_t myErr = theTranslator->Translate(fFile, NULL, NULL, &outStream, B_TRANSLATOR_PICTURE);
 				if (myErr != B_OK)
 				{
-					UnhandledImageFormat(&m_FileRef);
+					UnhandledImageFormat(&fFileRef);
 					return false;
 				}
 												
@@ -755,13 +755,13 @@ bool TPictureCue::LoadPictureFile(BMessage *message)
 				long offset = 0;
 				long size = outStream.BufferLength();
 				const void *data = outStream.Buffer();
-				m_Picture = new BPicture( (char *) data+offset, size);
+				fPicture = new BPicture( (char *) data+offset, size);
 			}
 			break;
 		*/
 	
 		default:
-			UnhandledImageFormat(&m_FileRef);
+			UnhandledImageFormat(&fFileRef);
 			return false;				
 	}
 					
@@ -783,24 +783,24 @@ void TPictureCue::OpenEditor()
 {
 
 	// If editor is already open, bring it to front
-	if (m_EditorOpen)
+	if (fEditorOpen)
 	{
-		if (m_Editor)
+		if (fEditor)
 		{	
-			m_Editor->Show();
-			m_Editor->Activate(true);
+			fEditor->Show();
+			fEditor->Activate(true);
 		}
 	}
 	else
 	{		
 		BRect bounds(50, 50, 350, 350);
-		m_EditorOpen = true;
-		m_Editor = new TPictureCueEditor(bounds, this);
+		fEditorOpen = true;
+		fEditor = new TPictureCueEditor(bounds, this);
 		
-		if (m_Editor)
-			m_Editor->Show();
+		if (fEditor)
+			fEditor->Show();
 		else
-			m_EditorOpen = false;
+			fEditorOpen = false;
 	}
 }
 
@@ -829,7 +829,7 @@ void TPictureCue::PrerollCue(uint32 theTime)
 
 void TPictureCue::PlayCue(uint32 theTime)
 {
-	//DrawData(theTime, m_CroppedArea, m_StageOffscreen);
+	//DrawData(theTime, fCroppedArea, fStageOffscreen);
 	
 	TCueView::PlayCue(theTime);
 }
@@ -885,7 +885,7 @@ void TPictureCue::ResumeCue()
 
 void TPictureCue::HandlePlayback(uint32 theTime)
 {
-	RenderData(theTime, m_CuePosition->Enclosure(false));
+	RenderData(theTime, fCuePosition->Enclosure(false));
 }
 
 #pragma mark -
@@ -900,14 +900,14 @@ void TPictureCue::HandlePlayback(uint32 theTime)
 
 void TPictureCue::LoadCueIcon()
 {
-	BBitmap *cueIcon = GetAppIcons()->m_PictureUpIcon;
+	BBitmap *cueIcon = GetAppIcons()->fPictureUpIcon;
 
 	if (cueIcon)
 	{
 		BRect area(0, 0+(kTimeTextHeight+kTimeTextOffset+3), kCueIconWidth-1, (kCueIconWidth-1)+(kTimeTextHeight+kTimeTextOffset+3));
 		area.OffsetBy(kResizeZoneWidth+5, 0);		
-		m_CueIcon = new TBitmapView(area, "CueIcon", cueIcon, false);
-		AddChild(m_CueIcon);		
+		fCueIcon = new TBitmapView(area, "CueIcon", cueIcon, false);
+		AddChild(fCueIcon);		
 	}
 	
 	//	Pass up to parent
@@ -927,8 +927,8 @@ void TPictureCue::LoadCueIcon()
 BBitmap *TPictureCue::GetBitmap(uint32 theTime)
 {
 	// Return modified bitmap if we have created it
-	if (m_TransformBitmap)
-		return m_TransformBitmap;
+	if (fTransformBitmap)
+		return fTransformBitmap;
 	else
-		return m_Bitmap;
+		return fBitmap;
 }

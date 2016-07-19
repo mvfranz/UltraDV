@@ -34,11 +34,11 @@ class TPasteCues : public BWindow
 		virtual void			Init();		
 		
 		// Member Variables
-		TCueSheetView		*m_CueSheet;
-		BList				*m_CueList;		// Pointer to BList of cues to pasted
-		BView				*m_BackView;
-		TCueTimeText		*m_PasteTime;
-		TNumberTextControl 	*m_ChannelText;
+		TCueSheetView		*fCueSheet;
+		BList				*fCueList;		// Pointer to BList of cues to pasted
+		BView				*fBackView;
+		TCueTimeText		*fPasteTime;
+		TNumberTextControl 	*fChannelText;
 			
 };
 

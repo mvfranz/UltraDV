@@ -47,7 +47,7 @@
 TElementsSorter::TElementsSorter(BRect bounds, TElementsView *parent) : 
 	BView(bounds, "ElementsSorter", B_FOLLOW_ALL, B_WILL_DRAW)
 {
-	m_Parent = parent;
+	fParent = parent;
 	
 	// Perform default initialization
 	Init();
@@ -64,10 +64,10 @@ TElementsSorter::~TElementsSorter()
 {
 
 	// Clear out our sorter list
-	if (m_SorterList)
+	if (fSorterList)
 	{
-	    for (int32 index = 0; index < m_SorterList->CountItems(); index++){
-	  	TSorterContainer * theSorter = static_cast<TSorterContainer *>(m_SorterList->ItemAt(index));
+	    for (int32 index = 0; index < fSorterList->CountItems(); index++){
+	  	TSorterContainer * theSorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(index));
 		    if (theSorter)
 			delete theSorter;
 		}
@@ -90,7 +90,7 @@ void TElementsSorter::Init()
 	SetViewColor(kWhite);
 		
 	// Create list to holder sorters
-	m_SorterList = new BList();
+	fSorterList = new BList();
 	
 			
 	// Create our sorters.  We need several for the following attributes:
@@ -109,86 +109,86 @@ void TElementsSorter::Init()
 	// Icon
 	BRect iconRect 	= Bounds();
 	iconRect.right 	= iconRect.left + kDefaultIconSorterWidth;
-	m_IconSorter 	= new TSorterContainer(iconRect, "Icon", kIconSorter, theID);
-	AddChild(m_IconSorter);
-	m_SorterList->AddItem(m_IconSorter);	
+	fIconSorter 	= new TSorterContainer(iconRect, "Icon", kIconSorter, theID);
+	AddChild(fIconSorter);
+	fSorterList->AddItem(fIconSorter);	
 	theID++;
 	
 	// Name
 	BRect nameRect 	= Bounds();
 	nameRect.left 	= iconRect.right + 1;
 	nameRect.right 	= nameRect.left + kDefaultSorterWidth;
-	m_NameSorter 	= new TSorterContainer(nameRect, "Name", kNameSorter, theID);
-	AddChild(m_NameSorter);
-	m_SorterList->AddItem(m_NameSorter);	
+	fNameSorter 	= new TSorterContainer(nameRect, "Name", kNameSorter, theID);
+	AddChild(fNameSorter);
+	fSorterList->AddItem(fNameSorter);	
 	theID++;
 		
 	// Date
 	BRect dateRect 	= Bounds();
 	dateRect.left 	= nameRect.right+1;
 	dateRect.right 	= dateRect.left + kDefaultSorterWidth;
-	m_DateSorter	= new TSorterContainer(dateRect, "Date", kDateSorter, theID);
-	AddChild(m_DateSorter);
-	m_SorterList->AddItem(m_DateSorter);
+	fDateSorter	= new TSorterContainer(dateRect, "Date", kDateSorter, theID);
+	AddChild(fDateSorter);
+	fSorterList->AddItem(fDateSorter);
 	theID++;
 	
 	// Path
 	BRect pathRect 	= Bounds();
 	pathRect.left 	= dateRect.right+1;
 	pathRect.right 	= pathRect.left + kDefaultSorterWidth;
-	m_PathSorter	= new TSorterContainer(pathRect, "Path", kPathSorter, theID);
-	AddChild(m_PathSorter);
-	m_SorterList->AddItem(m_PathSorter);
+	fPathSorter	= new TSorterContainer(pathRect, "Path", kPathSorter, theID);
+	AddChild(fPathSorter);
+	fSorterList->AddItem(fPathSorter);
 	theID++;
 
 	// Type
 	BRect typeRect 	= Bounds();
 	typeRect.left 	= pathRect.right+1;
 	typeRect.right 	= typeRect.left + kDefaultSorterWidth;
-	m_TypeSorter	= new TSorterContainer(typeRect, "Type", kTypeSorter, theID);
-	AddChild(m_TypeSorter);
-	m_SorterList->AddItem(m_TypeSorter);
+	fTypeSorter	= new TSorterContainer(typeRect, "Type", kTypeSorter, theID);
+	AddChild(fTypeSorter);
+	fSorterList->AddItem(fTypeSorter);
 	theID++;
 	
 	// Duration
 	BRect durationRect 	= Bounds();
 	durationRect.left 	= typeRect.right+1;
 	durationRect.right 	= durationRect.left + kDefaultSorterWidth;
-	m_DurationSorter	= new TSorterContainer(durationRect, "Duration", kDurationSorter, theID);
-	AddChild(m_DurationSorter);
-	m_SorterList->AddItem(m_DurationSorter);
+	fDurationSorter	= new TSorterContainer(durationRect, "Duration", kDurationSorter, theID);
+	AddChild(fDurationSorter);
+	fSorterList->AddItem(fDurationSorter);
 	theID++;
 	
 	// Size
 	BRect sizeRect 		= Bounds();
 	sizeRect.left 		= durationRect.right+1;
 	sizeRect.right 		= sizeRect.left + kDefaultSorterWidth;
-	m_SizeSorter		= new TSorterContainer(sizeRect, "Size", kSizeSorter, theID);
-	AddChild(m_SizeSorter);
-	m_SorterList->AddItem(m_SizeSorter);
+	fSizeSorter		= new TSorterContainer(sizeRect, "Size", kSizeSorter, theID);
+	AddChild(fSizeSorter);
+	fSorterList->AddItem(fSizeSorter);
 	theID++;
 		
 	// Audio Info
 	BRect audioRect 	= Bounds();
 	audioRect.left 		= sizeRect.right+1;
 	audioRect.right 	= audioRect.left + kDefaultSorterWidth;
-	m_AudioInfoSorter	= new TSorterContainer(audioRect, "Audio Info", kAudioInfoSorter, theID);
-	AddChild(m_AudioInfoSorter);
-	m_SorterList->AddItem(m_AudioInfoSorter);
+	fAudioInfoSorter	= new TSorterContainer(audioRect, "Audio Info", kAudioInfoSorter, theID);
+	AddChild(fAudioInfoSorter);
+	fSorterList->AddItem(fAudioInfoSorter);
 	theID++;
 		
 	// Video Info
 	BRect videoRect 	= Bounds();
 	videoRect.left 		= audioRect.right+1;
 	videoRect.right 	= videoRect.left + kDefaultSorterWidth;
-	m_VideoInfoSorter	= new TSorterContainer(videoRect, "Video Info", kVideoInfoSorter, theID);
-	AddChild(m_VideoInfoSorter);
-	m_SorterList->AddItem(m_VideoInfoSorter);
+	fVideoInfoSorter	= new TSorterContainer(videoRect, "Video Info", kVideoInfoSorter, theID);
+	AddChild(fVideoInfoSorter);
+	fSorterList->AddItem(fVideoInfoSorter);
 	theID++;
 	
 	// Set Name to be active
-	m_LastSorterClicked = 1;
-	m_NameSorter->MakeActive(true);
+	fLastSorterClicked = 1;
+	fNameSorter->MakeActive(true);
 }
 
 
@@ -206,7 +206,7 @@ void TElementsSorter::Draw(BRect updateRect)
 	PushState();
 	
 	//  Draw dummy header to the right of our rightmost TSorter		
-	TSorterContainer *sorter = static_cast<TSorterContainer *>( m_SorterList->ItemAt( m_SorterList->CountItems()-1) );
+	TSorterContainer *sorter = static_cast<TSorterContainer *>( fSorterList->ItemAt( fSorterList->CountItems()-1) );
 	if (sorter)
 	{	
 		BRect bounds 	= Bounds();
@@ -268,7 +268,7 @@ void TElementsSorter::MessageReceived(BMessage *theMessage)
 		case SORTER_RESIZE_MSG:
 			HandleSorterResize(theMessage);
 			// Tell parent so scroll bars can be adjusted
-			m_Parent->MessageReceived(theMessage);
+			fParent->MessageReceived(theMessage);
 			break;
 			
 		// A sorter is being scrolled vertically
@@ -358,9 +358,9 @@ void TElementsSorter::DeleteItem( int32 theItem )
 		//
 		
 		// Delete from all lists
-		for (int32 index = 0; index < m_SorterList->CountItems(); index++)
+		for (int32 index = 0; index < fSorterList->CountItems(); index++)
 		{
-			TSorterContainer *theContainer = static_cast<TSorterContainer *>( m_SorterList->ItemAt(index));
+			TSorterContainer *theContainer = static_cast<TSorterContainer *>( fSorterList->ItemAt(index));
 			if (theContainer)
 			{
 				TSorterList *theList = theContainer->GetSorterList();
@@ -384,7 +384,7 @@ void TElementsSorter::DeleteItem( int32 theItem )
 		}
 		
 		// Select first item in list
-		TSorterContainer *theContainer = static_cast<TSorterContainer *>( m_SorterList->ItemAt(0));
+		TSorterContainer *theContainer = static_cast<TSorterContainer *>( fSorterList->ItemAt(0));
 		if (theContainer)
 		{
 			TSorterList *theList = theContainer->GetSorterList();
@@ -417,17 +417,17 @@ void TElementsSorter::HandleSorterClick(BMessage *theMessage)
 	
 	if (theMessage->FindInt16("ID", &theID) == B_OK)
 	{
-		if (theID != m_LastSorterClicked)
+		if (theID != fLastSorterClicked)
 		{		
 			// Get sorter from list
-			TSorterContainer *theSorter = static_cast<TSorterContainer *>( m_SorterList->ItemAt(theID) );
+			TSorterContainer *theSorter = static_cast<TSorterContainer *>( fSorterList->ItemAt(theID) );
 			if (theSorter)
 			{
 				// Activate new sorter
 				theSorter->MakeActive(true);
 				
 				// Deactivate previously clicked sorter
-				TSorterContainer *lastSorter = static_cast<TSorterContainer *>( m_SorterList->ItemAt(m_LastSorterClicked) );
+				TSorterContainer *lastSorter = static_cast<TSorterContainer *>( fSorterList->ItemAt(fLastSorterClicked) );
 				if (lastSorter)	
 					lastSorter->MakeActive(false);
 				
@@ -435,7 +435,7 @@ void TElementsSorter::HandleSorterClick(BMessage *theMessage)
 				SynchronizeLists(theSorter);
 				
 				// Save for next go around
-				m_LastSorterClicked = theID;
+				fLastSorterClicked = theID;
 			}
 		}		
 	}
@@ -457,7 +457,7 @@ void TElementsSorter::HandleSorterResize(BMessage *theMessage)
 	if (theMessage->FindInt16("ID", &theID) == B_OK)
 	{	
 		// Get sorter from list
-		TSorterContainer *theSorter = static_cast<TSorterContainer *>( m_SorterList->ItemAt(theID) );
+		TSorterContainer *theSorter = static_cast<TSorterContainer *>( fSorterList->ItemAt(theID) );
 		if (theSorter)
 		{
 			// Get drag point
@@ -477,13 +477,13 @@ void TElementsSorter::HandleSorterResize(BMessage *theMessage)
 					theSorter->ResizeTo(sizeRect.Width(), sizeRect.Height());
 					
 					// Now scoot the other views over
-					for (int32 index = theID+1; index < m_SorterList->CountItems(); index++ )
+					for (int32 index = theID+1; index < fSorterList->CountItems(); index++ )
 					{
-						TSorterContainer *moveSorter = static_cast<TSorterContainer *>( m_SorterList->ItemAt(index) );
+						TSorterContainer *moveSorter = static_cast<TSorterContainer *>( fSorterList->ItemAt(index) );
 						if (moveSorter)
 						{
 							// Get previous item in list for MoveTo coordinates
-							TSorterContainer *prevSorter = static_cast<TSorterContainer *>( m_SorterList->ItemAt(index-1) );
+							TSorterContainer *prevSorter = static_cast<TSorterContainer *>( fSorterList->ItemAt(index-1) );
 							if (prevSorter)
 							{	
 								moveSorter->MoveTo( prevSorter->Frame().right+1, moveSorter->Frame().top);
@@ -508,9 +508,9 @@ void TElementsSorter::HandleSorterResize(BMessage *theMessage)
 void TElementsSorter::HandleSorterScrollV(BMessage *theMessage)
 {
 	// Inform all of our attached TSorterContainer objects
-	for (int32 index = 0; index < m_SorterList->CountItems(); index++)
+	for (int32 index = 0; index < fSorterList->CountItems(); index++)
 	{
-		TSorterContainer *theSorter = static_cast<TSorterContainer *>( m_SorterList->ItemAt(index) );
+		TSorterContainer *theSorter = static_cast<TSorterContainer *>( fSorterList->ItemAt(index) );
 		if (theSorter)
 			theSorter->MessageReceived(theMessage);					
 	}
@@ -536,16 +536,16 @@ void TElementsSorter::HandleSorterSelect(BMessage *theMessage)
 			if (theSorter)
 			{
 					// Select the name sorter of this row
-					m_NameSorter->GetSorterList()->Select( theList->CurrentSelection() );
+					fNameSorter->GetSorterList()->Select( theList->CurrentSelection() );
 					
 					// Deselect all others
-					m_DateSorter->GetSorterList()->DeselectAll();
-					m_PathSorter->GetSorterList()->DeselectAll();
-					m_TypeSorter->GetSorterList()->DeselectAll();
-					m_DurationSorter->GetSorterList()->DeselectAll();
-					m_SizeSorter->GetSorterList()->DeselectAll();
-					m_AudioInfoSorter->GetSorterList()->DeselectAll();
-					m_VideoInfoSorter->GetSorterList()->DeselectAll();
+					fDateSorter->GetSorterList()->DeselectAll();
+					fPathSorter->GetSorterList()->DeselectAll();
+					fTypeSorter->GetSorterList()->DeselectAll();
+					fDurationSorter->GetSorterList()->DeselectAll();
+					fSizeSorter->GetSorterList()->DeselectAll();
+					fAudioInfoSorter->GetSorterList()->DeselectAll();
+					fVideoInfoSorter->GetSorterList()->DeselectAll();
 			}
 		}
 	}
@@ -572,16 +572,16 @@ void TElementsSorter::HandleSorterInvoke(BMessage *theMessage)
 			if (theSorter)
 			{
 					// Select the name sorter of this row
-					m_NameSorter->GetSorterList()->Select( theList->CurrentSelection() );
+					fNameSorter->GetSorterList()->Select( theList->CurrentSelection() );
 					
 					// Deselect all others
-					m_DateSorter->GetSorterList()->DeselectAll();
-					m_PathSorter->GetSorterList()->DeselectAll();
-					m_TypeSorter->GetSorterList()->DeselectAll();
-					m_DurationSorter->GetSorterList()->DeselectAll();
-					m_SizeSorter->GetSorterList()->DeselectAll();
-					m_AudioInfoSorter->GetSorterList()->DeselectAll();
-					m_VideoInfoSorter->GetSorterList()->DeselectAll();
+					fDateSorter->GetSorterList()->DeselectAll();
+					fPathSorter->GetSorterList()->DeselectAll();
+					fTypeSorter->GetSorterList()->DeselectAll();
+					fDurationSorter->GetSorterList()->DeselectAll();
+					fSizeSorter->GetSorterList()->DeselectAll();
+					fAudioInfoSorter->GetSorterList()->DeselectAll();
+					fVideoInfoSorter->GetSorterList()->DeselectAll();
 			}
 		}
 	}
@@ -605,11 +605,11 @@ BRect TElementsSorter::GetScrollArea()
 	BRect bounds = Bounds();
 	
 	// Get first sorter in list
-	TSorterContainer *firstSorter = static_cast<TSorterContainer *>( m_SorterList->FirstItem() );
+	TSorterContainer *firstSorter = static_cast<TSorterContainer *>( fSorterList->FirstItem() );
 	firstFrame = firstSorter->Frame();
 	
 	// Get last sorter in list
-	TSorterContainer *lastSorter = static_cast<TSorterContainer *>( m_SorterList->ItemAt( m_SorterList->CountItems() - 1) );
+	TSorterContainer *lastSorter = static_cast<TSorterContainer *>( fSorterList->ItemAt( fSorterList->CountItems() - 1) );
 	if (lastSorter)
 		lastFrame = lastSorter->Frame();		
 
@@ -630,9 +630,9 @@ BRect TElementsSorter::GetScrollArea()
 void TElementsSorter::SynchronizeLists(TSorterContainer *syncSource)
 {
 	// use syncSource as the list that all others are sorted against
-	for (int32 index = 0; index < m_SorterList->CountItems(); index++)
+	for (int32 index = 0; index < fSorterList->CountItems(); index++)
 	{
-		TSorterContainer *theContainer = static_cast<TSorterContainer *>(m_SorterList->ItemAt(index));
+		TSorterContainer *theContainer = static_cast<TSorterContainer *>(fSorterList->ItemAt(index));
 		if (theContainer)
 		{
 			// Don't sync against ourself
@@ -788,9 +788,9 @@ status_t TElementsSorter::HandleFile(entry_ref &theRef, struct stat &st)
 					BMessage *refMessage = new BMessage(SORTER_REFS_MSG);
 					refMessage->AddRef("FileRef", &theRef);
 				
-					for (int32 index = 0; index < m_SorterList->CountItems(); index++)
+					for (int32 index = 0; index < fSorterList->CountItems(); index++)
 					{
-						TSorterContainer *sorter = static_cast<TSorterContainer *>(m_SorterList->ItemAt(index));
+						TSorterContainer *sorter = static_cast<TSorterContainer *>(fSorterList->ItemAt(index));
 						if (sorter)
 							sorter->MessageReceived(refMessage);					
 					}
@@ -798,9 +798,9 @@ status_t TElementsSorter::HandleFile(entry_ref &theRef, struct stat &st)
 					delete refMessage;
 					
 					// Get active list, sort and sync
-					for (int32 sortIndex = 0; sortIndex < m_SorterList->CountItems(); sortIndex++)
+					for (int32 sortIndex = 0; sortIndex < fSorterList->CountItems(); sortIndex++)
 					{ 
-						TSorterContainer *theContainer = static_cast<TSorterContainer *>(m_SorterList->ItemAt(sortIndex));			
+						TSorterContainer *theContainer = static_cast<TSorterContainer *>(fSorterList->ItemAt(sortIndex));			
 						if (theContainer)
 						{
 							if (theContainer->IsActive())
