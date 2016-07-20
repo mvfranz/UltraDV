@@ -15,7 +15,7 @@
 #ifndef __TTIMEPALETTE_H__
 #define __TTIMEPALETTE_H__
 
-#include <MediaNode.h>
+#include <MessageRunner.h>
 
 class TTimePalette: public BWindow
 {
@@ -23,27 +23,23 @@ class TTimePalette: public BWindow
 		TTimePalette(BRect bounds);
 		~TTimePalette();
 
+		void 	MessageReceived(BMessage* message);
 		bool 	QuitRequested();
-		
+
 		// Accessor Functions
 		TTimePaletteView *GetTimePaletteView(){ return fTimeView; }
 		
 	private:
 		// Member functions
 		void	Init();
-		
-		static status_t run_routine(void *data);
-		void 			RunRoutine();
-
-		
+	
 		// Member variables
 		TTimePaletteView *fTimeView;
 		
-		bool			fTimeToQuit;
 		bool			fIsPlaying;
 		bool			fIsStopping;
 
-		thread_id		fRunThread;
+		BMessageRunner*	fRunner;
 };
 
 #endif

@@ -281,6 +281,9 @@ TCueView::TCueView(BMessage* data) : BView (data)
 
 	fLockButton = (TBitmapButton*)FindView("CueLockButton");
 	fMuteButton = (TBitmapButton*)FindView("CueMuteButton");
+
+	BMessage message(RUN_MESSAGE_RUNNER_MSG);
+ 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
 }
 
 
@@ -302,19 +305,6 @@ TCueView::~TCueView()
 		StopCue(GetCurrentTime());
 	}
 
-	//	Signal threads to quit
-	fTimeToQuit = true;
-
-	//	Quit service thread
-	if (write_port_etc(fPort, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
-		kill_thread(fServiceThread);
-
-	status_t result;
-	wait_for_thread(fServiceThread, &result);
-
-	//	Wait for Run thread
-	wait_for_thread(fRunThread, &result);
-
 	//	Empty out effects list
 	if (fEffectsList) {
 		for (int32 index = 0; index < fEffectsList->CountItems(); index++) {
@@ -326,6 +316,8 @@ TCueView::~TCueView()
 
 		delete fEffectsList;
 	}
+
+	delete fRunner;
 }
 
 
@@ -357,7 +349,6 @@ void TCueView::Init()
 	fAppCursorSet = true;
 
 	//	Set up member variables
-	fTimeToQuit             = false;
 	fIsPlaying              = false;
 	fIsStopping             = false;
 
@@ -465,10 +456,6 @@ void TCueView::Init()
 
 	//	Create effects list
 	fEffectsList = new BList();
-
-	//	Create run thread
-	fRunThread = spawn_thread(run_routine, "CueView::Run", B_NORMAL_PRIORITY, this);
-	resume_thread(fRunThread);
 }
 
 //
@@ -1393,6 +1380,34 @@ void TCueView::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
+		case RUN_MESSAGE_RUNNER_MSG:
+		{
+			//	Do nothing if we have been muted
+			if (!fIsMuted) {
+				const uint32 curTime = GetCurrentTime();
+
+				//	Check and see if we need to start internal playback
+				if ( (fIsPlaying == false) && (curTime >= fStartTime) ) {
+					PlayCue(fStartTime);
+				}
+
+				//	Handle current playback
+				if (fIsPlaying == true) {
+					//	Handle playback at current time
+					if (curTime <= (fStartTime + fDuration))
+						HandlePlayback(curTime);
+					//	Time to stop
+					else
+						StopCue(curTime);
+				}
+			} else {
+				//	Stop cue playback
+				if (fIsPlaying == true)
+					StopCue(GetCurrentTime());
+			}
+			break;
+		}
+
 		if ( message->WasDropped() ) {
 		// Handle both of these cases by calling the channel's
 		// to the cue's channel
@@ -2932,59 +2947,3 @@ void TCueView::SetChannel( TCueChannel* channel)
 {
 	fChannel = channel;
 }
-
-
-#pragma mark -
-#pragma mark === Thread Functions ===
-
-//-------------------------------------------------------------------
-//	run_routine
-//-------------------------------------------------------------------
-//
-//	Static run thread function
-//
-
-status_t TCueView::run_routine(void* data)
-{
-	((TCueView*)data)->RunRoutine();
-	return 0;
-}
-
-//-------------------------------------------------------------------
-//	RunRoutine
-//-------------------------------------------------------------------
-//
-//	Run thread function
-//
-
-void TCueView::RunRoutine()
-{
-	while(!fTimeToQuit) {
-		snooze(20000);
-			//	Do nothing if we have been muted
-			if (!fIsMuted) {
-				const uint32 curTime = GetCurrentTime();
-
-				//	Check and see if we need to start internal playback
-				if ( (fIsPlaying == false) && (curTime >= fStartTime) ) {
-					PlayCue(fStartTime);
-				}
-
-				//	Handle current playback
-				if (fIsPlaying == true) {
-					//	Handle playback at current time
-					if (curTime <= (fStartTime + fDuration))
-						HandlePlayback(curTime);
-					//	Time to stop
-					else
-						StopCue(curTime);
-				}
-			}
-		//	Stop cue playback
-		else{
-			if (fIsPlaying == true)
-				StopCue(GetCurrentTime());
-		}
-	}
-}
-

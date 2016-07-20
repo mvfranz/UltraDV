@@ -16,7 +16,7 @@
 #define __TTRANSPORTPALETTE_H__
 
 //	Includes
-#include <MediaNode.h>
+#include <MessageRunner.h>
 
 //	Class Definition
 class TTransportPalette: public BWindow
@@ -24,7 +24,9 @@ class TTransportPalette: public BWindow
 	public:
 		TTransportPalette(BRect bounds);
 		~TTransportPalette();
-		
+
+		void 	MessageReceived(BMessage* message);
+
 		bool 	QuitRequested();
 		
 		// Accessor Functions
@@ -32,23 +34,14 @@ class TTransportPalette: public BWindow
 	private:
 		// Member functions
 		void		Init();
-		
-		static status_t service_routine(void *data);
-		void 			ServiceRoutine();
-		static status_t run_routine(void *data);
-		void 			RunRoutine();
-
 
 		// Member variables
 		TTransportPaletteView	*fTransportView;
 		
-		bool			fTimeToQuit;
 		bool			fIsPlaying;
 		bool			fIsStopping;
 
-		thread_id		fRunThread;		
-
-		
+		BMessageRunner*	fRunner;
 };
 
 // Transport Buttons

@@ -12,7 +12,7 @@
 #define __TTIMELINEVIEW_H__
 
 //	Includes
-#include <MediaNode.h>
+#include <MessageRunner.h>
 
 // Class Declarations
 class TTimelineView: public BView
@@ -57,10 +57,6 @@ class TTimelineView: public BView
 		
 		void			TrackIndicator(BPoint mousePt);
 		void 			TrackPlayback();	
-
-		static status_t run_routine(void *data);
-		void 			RunRoutine();
-			
 						
 		// Member variables
 		TCueSheetWindow	*fCueSheetWindow;
@@ -70,11 +66,10 @@ class TTimelineView: public BView
 		
 		thread_id		fMouseTracker;
 		
-		bool			fTimeToQuit;
 		bool			fIsPlaying;
 		bool			fIsStopping;
 
-		thread_id		fRunThread;								
+		BMessageRunner* fRunner;
 };
 
 #endif

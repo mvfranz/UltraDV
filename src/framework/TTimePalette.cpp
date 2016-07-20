@@ -40,6 +40,9 @@ TTimePalette::TTimePalette(BRect bounds) : BWindow( bounds, "Locator", B_FLOATIN
 	                                            B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
 {
 	Init();
+
+	BMessage message(RUN_MESSAGE_RUNNER_MSG);
+ 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
 }
 
 //------------------------------------------------------------------
@@ -54,13 +57,7 @@ TTimePalette::TTimePalette(BRect bounds) : BWindow( bounds, "Locator", B_FLOATIN
 
 TTimePalette::~TTimePalette()
 {
-
-	//	Signal threads to quit
-	fTimeToQuit = true;
-
-	status_t result;
-	//	Wait for Run thread
-	wait_for_thread(fRunThread, &result);
+	delete fRunner;
 }
 
 
@@ -79,7 +76,6 @@ void TTimePalette::Init()
 	Lock();
 
 	//	Set up member variables
-	fTimeToQuit     = false;
 	fIsPlaying      = false;
 	fIsStopping     = false;
 
@@ -88,10 +84,6 @@ void TTimePalette::Init()
 
 	// Add view to frame
 	AddChild(fTimeView);
-
-	//	Create run thread
-	fRunThread = spawn_thread(run_routine, "Locator::Run", B_NORMAL_PRIORITY, this);
-	resume_thread(fRunThread);
 
 	Unlock();
 }
@@ -109,43 +101,23 @@ bool TTimePalette::QuitRequested()
 	return false;
 }
 
-#pragma mark -
-#pragma mark === Thread Functions ===
 
-
-//-------------------------------------------------------------------
-//	run_routine
-//-------------------------------------------------------------------
-//
-//	Static run thread function
-//
-
-status_t TTimePalette::run_routine(void* data)
+void
+TTimePalette::MessageReceived(BMessage* message)
 {
-	((TTimePalette*)data)->RunRoutine();
-	return 0;
-}
+	switch (message->what)
+	{
+		case RUN_MESSAGE_RUNNER_MSG:
+		{
+			char text[12];
+			//	Update text
+			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
+			fTimeView->GetTimeText()->SetText(text);
+			fTimeView->GetTimeText()->Sync();
+			break;
+		}
 
-
-
-//-------------------------------------------------------------------
-//	RunRoutine
-//-------------------------------------------------------------------
-//
-//	Run thread function
-//
-
-void TTimePalette::RunRoutine()
-{
-	char text[12];
-
-	while(!fTimeToQuit) {
-		snooze(50000);
-		//	Update text
-		TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
-		Lock();
-		fTimeView->GetTimeText()->SetText(text);
-		fTimeView->GetTimeText()->Sync();
-		Unlock();
+		default:
+			BWindow::MessageReceived(message);
 	}
 }

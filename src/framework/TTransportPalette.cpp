@@ -53,6 +53,9 @@ TTransportPalette::TTransportPalette(BRect bounds) : BWindow( bounds, "Transport
 	                                                      B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
 {
 	Init();
+
+	BMessage message(RUN_MESSAGE_RUNNER_MSG);
+ 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
 }
 
 //------------------------------------------------------------------
@@ -67,12 +70,7 @@ TTransportPalette::TTransportPalette(BRect bounds) : BWindow( bounds, "Transport
 
 TTransportPalette::~TTransportPalette()
 {
-	//	Signal threads to quit
-	fTimeToQuit = true;
-
-	status_t result;
-	//	Wait for Run thread
-	wait_for_thread(fRunThread, &result);
+	delete fRunner;
 }
 
 
@@ -91,7 +89,6 @@ void TTransportPalette::Init()
 	Lock();
 
 	//	Set up member variables
-	fTimeToQuit     = false;
 	fIsPlaying      = false;
 	fIsStopping     = false;
 
@@ -126,11 +123,6 @@ void TTransportPalette::Init()
 	// Add view to frame
 	AddChild(fTransportView);
 
-	//	Create run thread
-	fRunThread = spawn_thread(run_routine, "Transport::Run", B_NORMAL_PRIORITY, this);
-	resume_thread(fRunThread);
-
-
 	Unlock();
 
 	// Show window
@@ -152,40 +144,21 @@ bool TTransportPalette::QuitRequested()
 }
 
 
-#pragma mark -
-#pragma mark === Thread Functions ===
-
-
-//-------------------------------------------------------------------
-//	run_routine
-//-------------------------------------------------------------------
-//
-//	Static run thread function
-//
-
-status_t TTransportPalette::run_routine(void* data)
+void
+TTransportPalette::MessageReceived(BMessage* message)
 {
-	((TTransportPalette*)data)->RunRoutine();
-	return 0;
-}
+	switch (message->what)
+	{
+		case RUN_MESSAGE_RUNNER_MSG:
+		{
+			char text[12];
+			//	Update text
+			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
+			fTransportView->GetTransportText()->SetText(text);
+			break;
+		}
 
-
-
-//-------------------------------------------------------------------
-//	RunRoutine
-//-------------------------------------------------------------------
-//
-//	Run thread function
-//
-
-void TTransportPalette::RunRoutine()
-{
-	char text[12];
-
-	while(!fTimeToQuit) {
-		snooze(50000);
-		//	Update text
-		TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
-		fTransportView->GetTransportText()->SetText(text);
+		default:
+			BWindow::MessageReceived(message);
 	}
 }

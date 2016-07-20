@@ -58,6 +58,9 @@ TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow* parent) :
 
 	// Perform default initialization
 	Init();
+
+	BMessage message(RUN_MESSAGE_RUNNER_MSG);
+ 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
 }
 
 
@@ -98,16 +101,10 @@ TTimelineView::TTimelineView(BMessage* message) : BView(message)
 
 TTimelineView::~TTimelineView()
 {
-	//	Signal threads to quit
-	fTimeToQuit = true;
-
-	status_t result;
-
-	//	Wait for Run thread
-	wait_for_thread(fRunThread, &result);
-
 	// Free Indicator
 	delete fIndicator;
+
+	delete fRunner;
 }
 
 
@@ -175,7 +172,6 @@ void TTimelineView::Init()
 	SetViewColor(B_TRANSPARENT_32_BIT);
 
 	//	Set up member variables
-	fTimeToQuit     = false;
 	fIsPlaying      = false;
 	fIsStopping     = false;
 
@@ -197,11 +193,6 @@ void TTimelineView::Init()
 			((unsigned char*)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
 		}
 	}
-
-	//	Create run thread
-	fRunThread = spawn_thread(run_routine, "TTimelineView::Run", B_NORMAL_PRIORITY, this);
-	resume_thread(fRunThread);
-
 }
 
 #pragma mark -
@@ -321,6 +312,14 @@ void TTimelineView::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
+
+	case RUN_MESSAGE_RUNNER_MSG:
+	{
+		//	Draw playback head
+		TrackPlayback();
+		break;	
+	}
+
 	//	Update position of playback indicator.  Called by Transport button click
 	case TIMELINE_DRAG_MSG:
 	{
@@ -944,40 +943,4 @@ void TTimelineView::AttachedToWindow()
 void TTimelineView::SetParent(TCueSheetWindow* parent)
 {
 	fCueSheetWindow = parent;
-}
-
-
-#pragma mark -
-#pragma mark === Thread Functions ===
-
-
-//-------------------------------------------------------------------
-//	run_routine
-//-------------------------------------------------------------------
-//
-//	Static run thread function
-//
-
-status_t TTimelineView::run_routine(void* data)
-{
-	((TTimelineView*)data)->RunRoutine();
-	return 0;
-}
-
-
-
-//-------------------------------------------------------------------
-//	RunRoutine
-//-------------------------------------------------------------------
-//
-//	Run thread function
-//
-
-void TTimelineView::RunRoutine()
-{
-	while(!fTimeToQuit) {
-		snooze(5000);
-		//	Draw playback head
-		TrackPlayback();
-	}
 }

@@ -65,6 +65,9 @@ TStageView::TStageView(BRect bounds, TStageWindow* parent) : BView(bounds, "Stag
 
 	// Perform default initialization
 	Init();
+
+	BMessage message(RUN_MESSAGE_RUNNER_MSG);
+ 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
 }
 
 //---------------------------------------------------------------------
@@ -88,13 +91,6 @@ TStageView::TStageView(BMessage* archive) : BView(archive)
 
 TStageView::~TStageView()
 {
-	//	Signal threads to quit
-	m_TimeToQuit = true;
-
-	status_t result;
-	//	Wait for Run thread
-	wait_for_thread(m_RunThread, &result);
-
 	if (m_OffscreenBitmap) {
 		m_OffscreenBitmap->Lock();
 		m_OffscreenBitmap->RemoveChild(m_OffscreenView);
@@ -105,6 +101,8 @@ TStageView::~TStageView()
 	// Free StageCue list
 	ClearStageCueList();
 	delete m_StageCueList;
+
+	delete fRunner;
 }
 
 
@@ -120,7 +118,6 @@ void TStageView::Init()
 	SetViewColor(B_TRANSPARENT_32_BIT);
 
 	//	Set up member variables
-	m_TimeToQuit            = false;
 	m_IsPlaying             = false;
 	m_IsStopping            = false;
 
@@ -146,11 +143,6 @@ void TStageView::Init()
 
 	//	Set tool mode to move/select
 	m_ToolMode = kMoveMode;
-
-	//	Create run thread
-	m_RunThread = spawn_thread(run_routine, "StageView::Run", B_NORMAL_PRIORITY, this);
-	resume_thread(m_RunThread);
-
 }
 
 
@@ -310,6 +302,54 @@ void TStageView::MessageReceived(BMessage* message)
 
 	switch (message->what)
 	{
+
+		case RUN_MESSAGE_RUNNER_MSG:
+		{
+			const uint32 curTime = GetCurrentTime();
+
+//			WATCH("TSV::RR IsRunning == true, so set IsPlaying = true\n");
+			//	We are now running...
+// ABH			if (m_IsPlaying == false)
+//				m_IsPlaying = true;
+
+			//	Are we stopping?
+			if (m_IsPlaying == true && m_IsStopping == true) {
+				WATCH("TSV::RR stopping...\n");
+				m_IsPlaying  = false;
+				m_IsStopping = false;
+				if (LockLooper()) {
+					StageDraw(Bounds(), curTime);
+					UnlockLooper();
+				}
+			}
+
+			//	Handle playback
+			if (m_IsPlaying == true) {
+				//	Draw data onto stage
+				WATCH("TSV::RR playing..\n");
+				if (LockLooper()) {
+					StageDraw(Bounds(), curTime);
+					UnlockLooper();
+				}
+			}
+
+		//	We have stopped.  Update stage.
+		else {
+			if (m_IsPlaying == true) {
+				m_IsPlaying  = false;
+				WATCH("TSV::RR stopped so update state\n");
+				if (LockLooper()) {
+					StageDraw(Bounds(), GetCurrentTime());
+					UnlockLooper();
+				}
+			}
+		}
+
+		//	Snooze for a while
+		snooze(20000);
+			break;
+		}
+
 	// End editing session.  Deselect all stage cues and clean up
 	case END_STAGE_EDIT_MSG:
 		if (m_SelectionMode) {
@@ -911,76 +951,5 @@ void TStageView::SetToolMode(uint32 theTool)
 		m_ToolMode = kMoveMode;
 		break;
 
-	}
-}
-
-
-//-------------------------------------------------------------------
-//	run_routine
-//-------------------------------------------------------------------
-//
-//	Static run thread function
-//
-
-status_t TStageView::run_routine(void* data)
-{
-	((TStageView*)data)->RunRoutine();
-	return 0;
-}
-
-
-
-//-------------------------------------------------------------------
-//	RunRoutine
-//-------------------------------------------------------------------
-//
-//	Run thread function
-//
-
-void TStageView::RunRoutine()
-{
-	while(!m_TimeToQuit) {
-			const uint32 curTime = GetCurrentTime();
-
-//			WATCH("TSV::RR IsRunning == true, so set IsPlaying = true\n");
-			//	We are now running...
-// ABH			if (m_IsPlaying == false)
-//				m_IsPlaying = true;
-
-			//	Are we stopping?
-			if (m_IsPlaying == true && m_IsStopping == true) {
-				WATCH("TSV::RR stopping...\n");
-				m_IsPlaying  = false;
-				m_IsStopping = false;
-				if (LockLooper()) {
-					StageDraw(Bounds(), curTime);
-					UnlockLooper();
-				}
-			}
-
-			//	Handle playback
-			if (m_IsPlaying == true) {
-				//	Draw data onto stage
-				WATCH("TSV::RR playing..\n");
-				if (LockLooper()) {
-					StageDraw(Bounds(), curTime);
-					UnlockLooper();
-				}
-			}
-
-		//	We have stopped.  Update stage.
-		else {
-			if (m_IsPlaying == true) {
-				m_IsPlaying  = false;
-				WATCH("TSV::RR stopped so update state\n");
-				if (LockLooper()) {
-					StageDraw(Bounds(), GetCurrentTime());
-					UnlockLooper();
-				}
-			}
-		}
-
-		//	Snooze for a while
-		snooze(20000);
 	}
 }

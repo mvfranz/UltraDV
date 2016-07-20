@@ -12,7 +12,7 @@
 #define __TSTAGEVIEW_H__
 
 //	Includes
-#include <MediaNode.h>
+#include <MessageRunner.h>
 
 //	Enumerations
 typedef enum
@@ -79,13 +79,6 @@ class TStageView : public BView
 		//	Stage Tools
 		void 			SetToolMode(uint32 theTool);
 		
-		//	Thread Functions
-		static status_t service_routine(void *data);
-		void 			ServiceRoutine();
-		static status_t run_routine(void *data);
-		void 			RunRoutine();
-
-		
 		// Member Variables
 		TStageWindow 	*m_Parent;
 		BView 			*m_OffscreenView;
@@ -94,12 +87,11 @@ class TStageView : public BView
 		BList			*m_StageCueList;
 		bool			m_SelectionMode;
 		ToolMode		m_ToolMode;
-		
-		bool			m_TimeToQuit;
+
 		bool			m_IsPlaying;
 		bool			m_IsStopping;
-			
-		thread_id		m_RunThread;		
+
+		BMessageRunner* fRunner;
 
 };
 

@@ -16,7 +16,7 @@
 #define __TCUEVIEW_H__
 
 //	Includes
-#include <MediaNode.h>
+#include <MessageRunner.h>
 
 #include "AppTypes.h"
 #include "TUndo.h"
@@ -218,9 +218,6 @@ class TCueView : public BView
 		bool 			EffectsClick(BPoint where);
 		TCueEffectView	*ClickedEffect(BPoint where);
 		void 			DeleteSelectedEffects();
-		
-		static status_t run_routine(void *data);
-		void 			RunRoutine();
 												
 		//	Member Variables			
 	// ABH missing transparency???
@@ -310,17 +307,12 @@ class TCueView : public BView
 		
 		CueDisplay		fCueDisplayMode;		//	Type of cue display in cue data area
 		
-		bool			fTimeToQuit;
 		bool			fIsPlaying;
 		bool			fIsStopping;
-
-		port_id 		fPort;
-		
-		thread_id		fServiceThread;
-		thread_id		fRunThread;
 		
 		//pattern	cueAnts = {0x1F, 0x3E, 0x7C, 0xF8, 0xF1, 0xE3, 0xC7, 0x8F};
 		pattern			fCueAnts;
+		BMessageRunner* fRunner;
 };
 
 #endif
