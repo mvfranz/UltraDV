@@ -30,6 +30,7 @@ SEARCH_SOURCE += [ FDirName $(TOP) src framework settings ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src framework utils ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src framework views ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src framework windows ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src framework codecs ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src headers ] ;
 
@@ -227,6 +228,21 @@ Application UltraDV :
 	TPictureCue.cpp
 	TTextCue.cpp
 
+	# framework/codecs
+	# TODO: Remove this stuff and
+	# make everything to use BMediaFile
+	AVIUtils.cpp
+	InfoAlert.cpp
+	TAppleVideoCodec.cpp
+	TAudioCodec.cpp
+	TCinepakCodec.cpp
+	TMSRLECodec.cpp
+	TMSVideoCodec.cpp
+	TPCMCodec.cpp
+	TRGBCodec.cpp
+	TRIFFReader.cpp
+	TVideoCodec.cpp
+
 	# editors
 	TAudioEditor.cpp
 	TAudioEditorMenus.cpp
@@ -263,39 +279,6 @@ Application UltraDV :
 	TSorterIconListItem.cpp
 	TSorterList.cpp
 	TSorterListItem.cpp
-
-	# nodes avi_writer
-	AVIConsumer.cpp
-
-	# The main defined there conflicts of course with the main app's
-	# TODO: get out of it at least.
-	#AVIWriterApp.cpp
-
-	# nodes avi_reader
-	AVIAddOn.cpp
-
-	# The main defined there conflicts of course with the main app's
-	#AVIApp.cpp
-
-	AVIProducer.cpp
-	AVIView.cpp
-	AVIViewer.cpp
-	AVIWindow.cpp
-	make_media_addon.cpp
-
-	# nodes shared
-	AVIUtils.cpp
-	InfoAlert.cpp
-	TAppleVideoCodec.cpp
-	TAudioCodec.cpp
-	TCinepakCodec.cpp
-	TMSRLECodec.cpp
-	TMSVideoCodec.cpp
-	TPCMCodec.cpp
-	TRGBCodec.cpp
-	TRIFFReader.cpp
-	TRIFFWriter.cpp
-	TVideoCodec.cpp
 
 	# transitions
 	TRevealBottomLeftTopRightIn.cpp
