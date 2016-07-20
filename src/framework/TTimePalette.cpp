@@ -42,7 +42,7 @@ TTimePalette::TTimePalette(BRect bounds) : BWindow( bounds, "Locator", B_FLOATIN
 	Init();
 
 	BMessage message(RUN_MESSAGE_RUNNER_MSG);
- 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
+	fRunner = new BMessageRunner(BMessenger(this), &message, 1000000);
 }
 
 //------------------------------------------------------------------
