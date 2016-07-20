@@ -23,6 +23,13 @@ SEARCH_SOURCE += [ FDirName $(TOP) src editors ] ;
 SEARCH_SOURCE += [ FDirName $(TOP) src engines ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src framework ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src framework common ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src framework gui ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src framework midi ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src framework settings ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src framework utils ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src framework views ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src framework windows ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src headers ] ;
 
