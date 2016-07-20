@@ -8,12 +8,10 @@ SubDirSysHdrs [ FDirName $(TOP) ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src ] ;
 
-# Add-Ons
-SEARCH_SOURCE += [ FDirName $(TOP) src add-ons ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src add-ons codecs ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues action ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src add-ons cues media ] ;
+# Cues
+SEARCH_SOURCE += [ FDirName $(TOP) src cues ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src cues action ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src cues media ] ;
 
 # Data and resources
 SEARCH_SOURCE += [ FDirName $(TOP) src data ] ;
