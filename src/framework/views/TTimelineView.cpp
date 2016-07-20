@@ -51,8 +51,7 @@
 //
 
 TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow* parent) :
-	BView(bounds, "TimelineView", B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW),
-	BMediaNode("TimelineNode")
+	BView(bounds, "TimelineView", B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW)
 {
 	// Set CueSheet parent
 	fCueSheetWindow = parent;
@@ -69,7 +68,7 @@ TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow* parent) :
 //	Construct from archive
 //
 
-TTimelineView::TTimelineView(BMessage* message) : BView(message), BMediaNode("TimelineNode")
+TTimelineView::TTimelineView(BMessage* message) : BView(message)
 {
 	fCueSheetWindow = NULL;
 
@@ -102,12 +101,7 @@ TTimelineView::~TTimelineView()
 	//	Signal threads to quit
 	fTimeToQuit = true;
 
-	//	Quit service thread
-	if (write_port_etc(fPort, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
-		kill_thread(fServiceThread);
-
 	status_t result;
-	wait_for_thread(fServiceThread, &result);
 
 	//	Wait for Run thread
 	wait_for_thread(fRunThread, &result);
@@ -203,13 +197,6 @@ void TTimelineView::Init()
 			((unsigned char*)fIndicator->Bits())[index] = B_TRANSPARENT_8_BIT;
 		}
 	}
-
-	//	Create our port
-	fPort = create_port(2, "TimeLinePort");
-
-	//	Create port service thread
-	fServiceThread = spawn_thread(service_routine, "TTimelineView:Service", B_NORMAL_PRIORITY, this);
-	resume_thread(fServiceThread);
 
 	//	Create run thread
 	fRunThread = spawn_thread(run_routine, "TTimelineView::Run", B_NORMAL_PRIORITY, this);
@@ -959,89 +946,9 @@ void TTimelineView::SetParent(TCueSheetWindow* parent)
 	fCueSheetWindow = parent;
 }
 
-#pragma mark -
-#pragma mark === BMediaNode Routines ===
-
-//---------------------------------------------------------------------
-//	ControlPort
-//---------------------------------------------------------------------
-//
-//	Return our port ID
-//
-
-port_id TTimelineView::ControlPort() const
-{
-	return fPort;
-}
-
-
-//---------------------------------------------------------------------
-//	AddOn
-//---------------------------------------------------------------------
-//
-//	We are not an add0n,  Return NULL
-//
-
-
-BMediaAddOn* TTimelineView::AddOn( int32* internal_id) const
-{
-	return NULL;
-}
-
 
 #pragma mark -
 #pragma mark === Thread Functions ===
-
-//-------------------------------------------------------------------
-//	service_routine
-//-------------------------------------------------------------------
-//
-//	Static service thread function
-//
-
-status_t TTimelineView::service_routine(void* data)
-{
-	((TTimelineView*)data)->ServiceRoutine();
-
-	return 0;
-}
-
-
-//-------------------------------------------------------------------
-//	ServiceRoutine
-//-------------------------------------------------------------------
-//
-//	Service thread function
-//
-
-void TTimelineView::ServiceRoutine()
-{
-	while (!fTimeToQuit) {
-		//	Read message
-		status_t err  = 0;
-		int32 code = 0;
-		char msg[B_MEDIA_MESSAGE_SIZE];
-
-		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);
-
-		if (err == B_TIMED_OUT)
-			continue;
-
-		if (err < B_OK) {
-			printf("TTimePalette::ServiceRoutine: Unexpected error in read_port(): %x\n", err);
-			continue;
-		}
-
-		// dispatch message
-		if (code == 0x60000000)
-			break;
-
-		if ( (BMediaNode::HandleMessage(code, msg, err)) ) {
-			BMediaNode::HandleBadMessage(code, msg, err);
-		}
-
-	}
-}
 
 
 //-------------------------------------------------------------------
@@ -1070,11 +977,7 @@ void TTimelineView::RunRoutine()
 {
 	while(!fTimeToQuit) {
 		snooze(5000);
-
-		//	Are we running?
-		if (TimeSource()->IsRunning()) {
-			//	Draw playback head
-			TrackPlayback();
-		}
+		//	Draw playback head
+		TrackPlayback();
 	}
 }

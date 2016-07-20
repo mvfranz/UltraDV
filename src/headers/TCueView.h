@@ -39,7 +39,7 @@ typedef enum
 class TCueEffectView;
 
 // Class Definition
-class TCueView : public BView, public BMediaNode
+class TCueView : public BView
 {
 	public:
 		// ABH missing functions ???
@@ -146,11 +146,7 @@ class TCueView : public BView, public BMediaNode
 		void 	SetInstantiated(bool theVal);
 		void	SetEditorOpen(bool theVal);
 		void 	SetChannel( TCueChannel *channel);
-		
-		//	Media Node
-		port_id 	ControlPort() const;
-		BMediaAddOn	*AddOn( int32 *internal_id) const;
-		
+
 		// Accessor Methods
 		inline TCueChannel	 	*GetChannel(){return fChannel;}
 		inline bool 			IsLocked(){ return fIsLocked; }
@@ -223,9 +219,6 @@ class TCueView : public BView, public BMediaNode
 		TCueEffectView	*ClickedEffect(BPoint where);
 		void 			DeleteSelectedEffects();
 		
-		//	Thread Functions
-		static status_t service_routine(void *data);
-		void 			ServiceRoutine();
 		static status_t run_routine(void *data);
 		void 			RunRoutine();
 												

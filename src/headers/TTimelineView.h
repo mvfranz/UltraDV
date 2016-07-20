@@ -15,7 +15,7 @@
 #include <MediaNode.h>
 
 // Class Declarations
-class TTimelineView: public BView, public BMediaNode
+class TTimelineView: public BView
 {
 	public:
 		// Member Functions
@@ -39,10 +39,6 @@ class TTimelineView: public BView, public BMediaNode
 				
 		void 	AttachedToWindow();
 		
-		//	Media Node
-		port_id 	ControlPort() const;
-		BMediaAddOn	*AddOn( int32 *internal_id) const;
-		
 		// Accessor Functions
 		void SetParent(TCueSheetWindow *parent);
 		
@@ -61,9 +57,7 @@ class TTimelineView: public BView, public BMediaNode
 		
 		void			TrackIndicator(BPoint mousePt);
 		void 			TrackPlayback();	
-		
-		static status_t service_routine(void *data);
-		void 			ServiceRoutine();
+
 		static status_t run_routine(void *data);
 		void 			RunRoutine();
 			
@@ -79,10 +73,7 @@ class TTimelineView: public BView, public BMediaNode
 		bool			fTimeToQuit;
 		bool			fIsPlaying;
 		bool			fIsStopping;
-		
-		port_id 		fPort;
-		
-		thread_id		fServiceThread;
+
 		thread_id		fRunThread;								
 };
 

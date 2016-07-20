@@ -360,19 +360,6 @@ void TCueSheetWindow::Init()
 	media_node timeSource = fPlaybackEngine->GetTimeSource();
 	retVal = roster->SetTimeSourceFor(fPlaybackEngine->Node().node, timeSource.node);
 
-	//
-	//	Register media nodes, set their timesource and start them
-	//
-
-	//	TimelineView
-	retVal = roster->SetTimeSourceFor(fTimeline->Node().node, timeSource.node);
-	retVal = roster->StartNode(fTimeline->Node(), 0);
-
-	//	Stage
-	TStageView* stageView = fStageWindow->GetStageView();
-	retVal = roster->SetTimeSourceFor(stageView->Node().node, timeSource.node);
-	retVal = roster->StartNode(stageView->Node(), 0);
-
 	//	Create audio engine
 	fAudioEngine = new TAudioEngine();
 }

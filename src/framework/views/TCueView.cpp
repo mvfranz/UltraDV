@@ -68,8 +68,7 @@
 //
 
 TCueView::TCueView(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime, char* name) :
-	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS ),
-	BMediaNode("CueNode")
+	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS )
 {
 	// Get cue ID
 	fID = id;
@@ -106,8 +105,7 @@ TCueView::TCueView(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime
 //
 
 TCueView::TCueView(int16 id, TCueChannel* parent, BRect bounds, BPoint point, uint32 startTime, char* name) :
-	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS ),
-	BMediaNode("CueNode")
+	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS )
 {
 	// do something with scale, save it???
 	fInsertPoint = point; // ???
@@ -147,8 +145,7 @@ TCueView::TCueView(int16 id, TCueChannel* parent, BRect bounds, BPoint point, ui
 //
 
 TCueView::TCueView(BaseCueChunk* TheChunk, TCueChannel* parent, BRect bounds, char* name) :
-	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS ),
-	BMediaNode("CueNode")
+	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS )
 {
 	// Get cue ID
 //	fID = id;
@@ -186,8 +183,7 @@ TCueView::TCueView(BaseCueChunk* TheChunk, TCueChannel* parent, BRect bounds, ch
 //
 
 TCueView::TCueView(const TCueView* theCue) :
-	BView(theCue->Bounds(), ((BView*)theCue)->Name(), B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW | B_FRAME_EVENTS ),
-	BMediaNode("CueNode")
+	BView(theCue->Bounds(), ((BView*)theCue)->Name(), B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW | B_FRAME_EVENTS )
 {
 	fID                             = theCue->fID;
 	fChannel                        = theCue->fChannel;
@@ -210,7 +206,7 @@ TCueView::TCueView(const TCueView* theCue) :
 //	Create new cue from a BMessage
 //
 
-TCueView::TCueView(BMessage* data) : BView (data), BMediaNode("CueNode")
+TCueView::TCueView(BMessage* data) : BView (data)
 {
 	// Set buttons to NULL
 	fLockButton     = NULL;
@@ -470,22 +466,9 @@ void TCueView::Init()
 	//	Create effects list
 	fEffectsList = new BList();
 
-	//	Create our port
-	fPort = create_port(10, "CuePort");
-
-	//	Create port service thread
-	fServiceThread = spawn_thread(service_routine, "CueView:Service", B_NORMAL_PRIORITY, this);
-	resume_thread(fServiceThread);
-
 	//	Create run thread
 	fRunThread = spawn_thread(run_routine, "CueView::Run", B_NORMAL_PRIORITY, this);
 	resume_thread(fRunThread);
-
-	//	Get pointer to timesource and register node
-	status_t retVal = B_ERROR;
-	media_node timeSource = fChannel->GetCueSheet()->GetParent()->GetPlaybackEngine()->GetTimeSource();
-	retVal = BMediaRoster::Roster()->SetTimeSourceFor(Node().node, timeSource.node);
-	retVal = BMediaRoster::Roster()->StartNode(Node(), 0);
 }
 
 //
@@ -1043,10 +1026,6 @@ void TCueView::MouseDown(BPoint where)
 
 void TCueView::MouseUp(BPoint where)
 {
-	// Do nothing if we are playing
-	if ( TimeSource()->IsRunning() )
-		return;
-
 	// Make sure we aren't locked
 	if ( fChannel->IsLocked() || fIsLocked )
 		return;
@@ -1064,11 +1043,6 @@ void TCueView::MouseUp(BPoint where)
 
 void TCueView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
-
-	// Do nothing if we are playing
-	if ( TimeSource()->IsRunning() )
-		return;
-
 	// Make sure we aren't locked
 	if ( fChannel->IsLocked() || fIsLocked ) {
 		// Inform channel of mouse move.  We are adding the left element of
@@ -1211,10 +1185,6 @@ void TCueView::WindowActivated(bool state)
 
 void TCueView::KeyDown(const char* bytes, int32 numBytes)
 {
-	// Do nothing if we are playing
-	if ( TimeSource()->IsRunning() )
-		return;
-
 	//	Igonore if we are locked
 	if ( fChannel->IsLocked() || fIsLocked )
 		return;
@@ -2965,89 +2935,7 @@ void TCueView::SetChannel( TCueChannel* channel)
 
 
 #pragma mark -
-#pragma mark === BMediaNode Routines ===
-
-//---------------------------------------------------------------------
-//	ControlPort
-//---------------------------------------------------------------------
-//
-//	Return our port ID
-//
-
-port_id TCueView::ControlPort() const
-{
-	return fPort;
-}
-
-
-//---------------------------------------------------------------------
-//	AddOn
-//---------------------------------------------------------------------
-//
-//	We are not an add0n,  Return NULL
-//
-
-
-BMediaAddOn* TCueView::AddOn( int32* internal_id) const
-{
-	return NULL;
-}
-
-
-#pragma mark -
 #pragma mark === Thread Functions ===
-
-//-------------------------------------------------------------------
-//	service_routine
-//-------------------------------------------------------------------
-//
-//	Static service thread function
-//
-
-status_t TCueView::service_routine(void* data)
-{
-	((TCueView*)data)->ServiceRoutine();
-
-	return 0;
-}
-
-
-//-------------------------------------------------------------------
-//	ServiceRoutine
-//-------------------------------------------------------------------
-//
-//	Service thread function
-//
-
-void TCueView::ServiceRoutine()
-{
-	while (!fTimeToQuit) {
-		//	Read message
-		status_t err  = 0;
-		int32 code = 0;
-		char msg[B_MEDIA_MESSAGE_SIZE];
-
-		err = read_port_etc(fPort, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);
-
-		if (err == B_TIMED_OUT)
-			continue;
-
-		if (err < B_OK) {
-			printf("TTimePalette::ServiceRoutine: Unexpected error in read_port(): %x\n", err);
-			continue;
-		}
-
-		// dispatch message
-		if (code == 0x60000000)
-			break;
-
-		if ( (BMediaNode::HandleMessage(code, msg, err)) ) {
-			BMediaNode::HandleBadMessage(code, msg, err);
-		}
-
-	}
-}
-
 
 //-------------------------------------------------------------------
 //	run_routine
@@ -3062,8 +2950,6 @@ status_t TCueView::run_routine(void* data)
 	return 0;
 }
 
-
-
 //-------------------------------------------------------------------
 //	RunRoutine
 //-------------------------------------------------------------------
@@ -3075,9 +2961,6 @@ void TCueView::RunRoutine()
 {
 	while(!fTimeToQuit) {
 		snooze(20000);
-
-		//	Update media_server
-		if (TimeSource()->IsRunning()) {
 			//	Do nothing if we have been muted
 			if (!fIsMuted) {
 				const uint32 curTime = GetCurrentTime();
@@ -3097,7 +2980,6 @@ void TCueView::RunRoutine()
 						StopCue(curTime);
 				}
 			}
-		}
 		//	Stop cue playback
 		else{
 			if (fIsPlaying == true)

@@ -56,8 +56,7 @@
 //
 //
 
-TStageView::TStageView(BRect bounds, TStageWindow* parent) : BView(bounds, "StageView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
-	BMediaNode("StageNode")
+TStageView::TStageView(BRect bounds, TStageWindow* parent) : BView(bounds, "StageView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS)
 {
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
@@ -74,8 +73,7 @@ TStageView::TStageView(BRect bounds, TStageWindow* parent) : BView(bounds, "Stag
 //
 //
 
-TStageView::TStageView(BMessage* archive) : BView(archive),
-	BMediaNode("StageNode")
+TStageView::TStageView(BMessage* archive) : BView(archive)
 {
 	// Perform default initialization
 	Init();
@@ -93,13 +91,7 @@ TStageView::~TStageView()
 	//	Signal threads to quit
 	m_TimeToQuit = true;
 
-	//	Quit service thread
-	if (write_port_etc(m_Port, 0x60000000, NULL, 0, B_TIMEOUT, DEFAULT_TIMEOUT))
-		kill_thread(m_ServiceThread);
-
 	status_t result;
-	wait_for_thread(m_ServiceThread, &result);
-
 	//	Wait for Run thread
 	wait_for_thread(m_RunThread, &result);
 
@@ -154,18 +146,6 @@ void TStageView::Init()
 
 	//	Set tool mode to move/select
 	m_ToolMode = kMoveMode;
-
-	//	Create our port
-	m_Port = create_port(100, "StagePort");
-
-	//	Create port service thread
-	m_ServiceThread = spawn_thread(service_routine, "StageView:Service", B_NORMAL_PRIORITY, this);
-	resume_thread(m_ServiceThread);
-
-// ABH
-	if (TimeSource()->IsRunning()) {
-		WATCH("TSV::Init IsRunning == true!\n");
-	}
 
 	//	Create run thread
 	m_RunThread = spawn_thread(run_routine, "StageView::Run", B_NORMAL_PRIORITY, this);
@@ -935,91 +915,6 @@ void TStageView::SetToolMode(uint32 theTool)
 }
 
 
-#pragma mark -
-#pragma mark === BMediaNode Routines ===
-
-//---------------------------------------------------------------------
-//	ControlPort
-//---------------------------------------------------------------------
-//
-//	Return our port ID
-//
-
-port_id TStageView::ControlPort() const
-{
-	return m_Port;
-}
-
-
-//---------------------------------------------------------------------
-//	AddOn
-//---------------------------------------------------------------------
-//
-//	We are not an add0n,  Return NULL
-//
-
-
-BMediaAddOn* TStageView::AddOn( int32* internal_id) const
-{
-	return NULL;
-}
-
-
-#pragma mark -
-#pragma mark === Thread Functions ===
-
-//-------------------------------------------------------------------
-//	service_routine
-//-------------------------------------------------------------------
-//
-//	Static service thread function
-//
-
-status_t TStageView::service_routine(void* data)
-{
-	((TStageView*)data)->ServiceRoutine();
-
-	return 0;
-}
-
-
-//-------------------------------------------------------------------
-//	ServiceRoutine
-//-------------------------------------------------------------------
-//
-//	Service thread function
-//
-
-void TStageView::ServiceRoutine()
-{
-	while (!m_TimeToQuit) {
-		//	Read message
-		status_t err  = 0;
-		int32 code = 0;
-		char msg[B_MEDIA_MESSAGE_SIZE];
-
-		err = read_port_etc(m_Port, &code, &msg, sizeof(msg), B_TIMEOUT, 10000);
-
-		if (err == B_TIMED_OUT)
-			continue;
-
-		if (err < B_OK) {
-			printf("TStageView::ServiceRoutine: Unexpected error in read_port(): %x\n", err);
-			continue;
-		}
-
-		// dispatch message
-		if (code == 0x60000000)
-			break;
-
-		if ( (BMediaNode::HandleMessage(code, msg, err)) ) {
-			BMediaNode::HandleBadMessage(code, msg, err);
-		}
-
-	}
-}
-
-
 //-------------------------------------------------------------------
 //	run_routine
 //-------------------------------------------------------------------
@@ -1045,8 +940,6 @@ status_t TStageView::run_routine(void* data)
 void TStageView::RunRoutine()
 {
 	while(!m_TimeToQuit) {
-		//	Is out time source running?
-		if (TimeSource()->IsRunning()) {
 			const uint32 curTime = GetCurrentTime();
 
 //			WATCH("TSV::RR IsRunning == true, so set IsPlaying = true\n");
@@ -1074,7 +967,7 @@ void TStageView::RunRoutine()
 					UnlockLooper();
 				}
 			}
-		}
+
 		//	We have stopped.  Update stage.
 		else {
 			if (m_IsPlaying == true) {

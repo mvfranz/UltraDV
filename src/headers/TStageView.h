@@ -30,7 +30,7 @@ typedef enum
 
 
 // Class Definition
-class TStageView : public BView, public BMediaNode
+class TStageView : public BView
 {
 	public:
 		// Member Functions
@@ -55,10 +55,6 @@ class TStageView : public BView, public BMediaNode
 		void 	BlitOffscreen();		
 		BBitmap *CreateComposite(int32 start, int32 stop, int32 theTime, BRect theRect);
 		BBitmap *CopyStageBitmap(BRect theRect);
-		
-		//	BMediaNode
-		port_id 	ControlPort() const;
-		BMediaAddOn	*AddOn( int32 *internal_id) const;
 
 		// Inlines
 		inline BBitmap 	*GetOffscreenBitmap(){ return m_OffscreenBitmap; }
@@ -102,10 +98,7 @@ class TStageView : public BView, public BMediaNode
 		bool			m_TimeToQuit;
 		bool			m_IsPlaying;
 		bool			m_IsStopping;
-
-		port_id 		m_Port;
 			
-		thread_id		m_ServiceThread;
 		thread_id		m_RunThread;		
 
 };
