@@ -207,7 +207,7 @@ Application UltraDV :
 	TVisualEffect.cpp
 	TZoomButton.cpp
 
-	# cues/action
+	# cues
 	TActionCue.cpp
 	TButtonCue.cpp
 	TCDCue.cpp
@@ -216,9 +216,6 @@ Application UltraDV :
 	TPauseCue.cpp
 	#TPauseSetup.cpp
 	TVideoCue.cpp
-
-	# cues/media
-
 	TAnimationCue.cpp
 	TAudioCue.cpp
 	TMIDICue.cpp
