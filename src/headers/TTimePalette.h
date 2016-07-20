@@ -17,20 +17,14 @@
 
 #include <MediaNode.h>
 
-class TTimePalette: public BWindow, public BMediaNode
+class TTimePalette: public BWindow
 {
 	public:
 		TTimePalette(BRect bounds);
 		~TTimePalette();
-		
-		void	MessageReceived(BMessage* message);	
-		
+
 		bool 	QuitRequested();
 		
-		//	MediaNode Functions
-		port_id 	 ControlPort() const;
-		BMediaAddOn	 *AddOn( int32 * internal_id) const;
-
 		// Accessor Functions
 		TTimePaletteView *GetTimePaletteView(){ return fTimeView; }
 		
@@ -38,8 +32,6 @@ class TTimePalette: public BWindow, public BMediaNode
 		// Member functions
 		void	Init();
 		
-		static status_t service_routine(void *data);
-		void 			ServiceRoutine();
 		static status_t run_routine(void *data);
 		void 			RunRoutine();
 
@@ -51,10 +43,7 @@ class TTimePalette: public BWindow, public BMediaNode
 		bool			fIsPlaying;
 		bool			fIsStopping;
 
-		port_id 		fPort;
-		
-		thread_id		fServiceThread;
-		thread_id		fRunThread;		
+		thread_id		fRunThread;
 };
 
 #endif

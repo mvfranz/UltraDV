@@ -19,20 +19,14 @@
 #include <MediaNode.h>
 
 //	Class Definition
-class TTransportPalette: public BWindow, public BMediaNode
+class TTransportPalette: public BWindow
 {
 	public:
 		TTransportPalette(BRect bounds);
 		~TTransportPalette();
 		
-		void	MessageReceived(BMessage* message);	
-		
 		bool 	QuitRequested();
 		
-		//	MediaNode Functions
-		port_id 	 ControlPort() const;
-		BMediaAddOn	 *AddOn( int32 * internal_id) const;
-
 		// Accessor Functions
 		TTransportPaletteView	*GetTransportPaletteView(){ return fTransportView; }
 	private:
@@ -52,9 +46,6 @@ class TTransportPalette: public BWindow, public BMediaNode
 		bool			fIsPlaying;
 		bool			fIsStopping;
 
-		port_id 		fPort;
-		
-		thread_id		fServiceThread;
 		thread_id		fRunThread;		
 
 		

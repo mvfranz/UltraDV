@@ -364,16 +364,6 @@ void TCueSheetWindow::Init()
 	//	Register media nodes, set their timesource and start them
 	//
 
-	//	Locator
-	TTimePalette* timePalette = ((MuseumApp*)be_app)->GetTimePalette();
-	retVal = roster->SetTimeSourceFor(timePalette->Node().node, timeSource.node);
-	retVal = roster->StartNode(timePalette->Node(), 0);
-
-	//	Transport
-	TTransportPalette* transport = ((MuseumApp*)be_app)->GetTransport();
-	retVal = roster->SetTimeSourceFor(transport->Node().node, timeSource.node);
-	retVal = roster->StartNode(transport->Node(), 0);
-
 	//	TimelineView
 	retVal = roster->SetTimeSourceFor(fTimeline->Node().node, timeSource.node);
 	retVal = roster->StartNode(fTimeline->Node(), 0);
