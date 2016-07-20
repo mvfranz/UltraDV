@@ -45,7 +45,6 @@ Application UltraDV :
 	# framework
 
 	AppAlerts.cpp
-	AppGlobals.cpp
 	AppUtils.cpp
 	BaseCueChunk.cpp
 	Benaphore.cpp
