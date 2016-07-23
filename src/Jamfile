@@ -8,38 +8,35 @@ SubDirSysHdrs [ FDirName $(TOP) ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src ] ;
 
-# Cues
-SEARCH_SOURCE += [ FDirName $(TOP) src cues ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src cues action ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src cues media ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src codecs ] ;
 
-# Data and resources
-SEARCH_SOURCE += [ FDirName $(TOP) src data ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src common ] ;
+
+SEARCH_SOURCE += [ FDirName $(TOP) src components ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src components browser ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src components stage ] ;
+
+SEARCH_SOURCE += [ FDirName $(TOP) src cues ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src editors ] ;
 
+SEARCH_SOURCE += [ FDirName $(TOP) src effects ] ;
+
 SEARCH_SOURCE += [ FDirName $(TOP) src engines ] ;
 
-SEARCH_SOURCE += [ FDirName $(TOP) src framework ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src framework common ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src framework gui ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src framework midi ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src framework settings ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src framework utils ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src framework views ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src framework windows ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src framework codecs ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src gui ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src headers ] ;
 
-SEARCH_SOURCE += [ FDirName $(TOP) src nodes ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src nodes avi_reader ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src nodes avi_writer ] ;
-SEARCH_SOURCE += [ FDirName $(TOP) src nodes shared ] ;
+SEARCH_SOURCE += [ FDirName $(TOP) src midi ] ;
+
+SEARCH_SOURCE += [ FDirName $(TOP) src settings ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src sorter ] ;
 
 SEARCH_SOURCE += [ FDirName $(TOP) src transitions ] ;
+
+SEARCH_SOURCE += [ FDirName $(TOP) src windows ] ;
 
 Application UltraDV :
 	# framework

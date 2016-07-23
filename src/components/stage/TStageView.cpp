@@ -203,6 +203,7 @@ status_t TStageView::Archive(BMessage* data, bool deep) const
 
 void TStageView::Draw(BRect updateRect)
 {
+	printf("draw\n");
 	//      Exit if we are playing.  The playback mechanism handles all
 	//	updating of the stage
 	if ( IsPlaying() )
@@ -296,7 +297,6 @@ void TStageView::StageDraw(BRect updateRect, uint32 theTime)
 
 void TStageView::MessageReceived(BMessage* message)
 {
-
 	switch (message->what)
 	{
 
