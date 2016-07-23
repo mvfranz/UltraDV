@@ -363,6 +363,9 @@ void TTimelineView::MessageReceived(BMessage* message)
 void
 TTimelineView::Pulse()
 {
+	if (!IsPlaying())
+		return;
+
 	//	Draw playback head
 	TrackPlayback();
 }
