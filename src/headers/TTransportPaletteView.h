@@ -32,7 +32,9 @@ class TTransportPaletteView: public TBitmapView
 		
 		void 	Draw(BRect updateRect);		
 		void	MessageReceived(BMessage *message);
-		
+
+		void 	Pulse();
+
 		TTimeText	*GetTransportText(){ return fTransportText; }
 		
 		// Member variables	

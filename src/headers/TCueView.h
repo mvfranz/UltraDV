@@ -16,8 +16,6 @@
 #define __TCUEVIEW_H__
 
 //	Includes
-#include <MessageRunner.h>
-
 #include "AppTypes.h"
 #include "TUndo.h"
 // ABH added
@@ -85,7 +83,9 @@ class TCueView : public BView
 		void 			ScrollBy(float horz, float vert);
 		
 		virtual void 	MessageReceived(BMessage *message);
-		
+
+		void			Pulse();
+
 		void 			AttachedToWindow();	
 		void			DetachedFromWindow();
 		void 			Show();
@@ -218,7 +218,7 @@ class TCueView : public BView
 		bool 			EffectsClick(BPoint where);
 		TCueEffectView	*ClickedEffect(BPoint where);
 		void 			DeleteSelectedEffects();
-												
+					
 		//	Member Variables			
 	// ABH missing transparency???
 		float fTransparency; //SetTransparency / GetTransparency; 
@@ -312,7 +312,6 @@ class TCueView : public BView
 		
 		//pattern	cueAnts = {0x1F, 0x3E, 0x7C, 0xF8, 0xF1, 0xE3, 0xC7, 0x8F};
 		pattern			fCueAnts;
-		BMessageRunner* fRunner;
 };
 
 #endif

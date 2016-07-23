@@ -11,8 +11,6 @@
 #ifndef __TTIMELINEVIEW_H__
 #define __TTIMELINEVIEW_H__
 
-//	Includes
-#include <MessageRunner.h>
 
 // Class Declarations
 class TTimelineView: public BView
@@ -38,7 +36,9 @@ class TTimelineView: public BView
 		void 	ResolutionChanged(int32 resizePixels);
 				
 		void 	AttachedToWindow();
-		
+
+		void	Pulse();
+
 		// Accessor Functions
 		void SetParent(TCueSheetWindow *parent);
 		
@@ -68,8 +68,6 @@ class TTimelineView: public BView
 		
 		bool			fIsPlaying;
 		bool			fIsStopping;
-
-		BMessageRunner* fRunner;
 };
 
 #endif

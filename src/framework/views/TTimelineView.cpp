@@ -51,16 +51,13 @@
 //
 
 TTimelineView::TTimelineView(BRect bounds, TCueSheetWindow* parent) :
-	BView(bounds, "TimelineView", B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW)
+	BView(bounds, "TimelineView", B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW | B_PULSE_NEEDED)
 {
 	// Set CueSheet parent
 	fCueSheetWindow = parent;
 
 	// Perform default initialization
 	Init();
-
-	BMessage message(RUN_MESSAGE_RUNNER_MSG);
- 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
 }
 
 
@@ -103,8 +100,6 @@ TTimelineView::~TTimelineView()
 {
 	// Free Indicator
 	delete fIndicator;
-
-	delete fRunner;
 }
 
 
@@ -313,16 +308,10 @@ void TTimelineView::MessageReceived(BMessage* message)
 	switch(message->what)
 	{
 
-	case RUN_MESSAGE_RUNNER_MSG:
-	{
-		//	Draw playback head
-		TrackPlayback();
-		break;	
-	}
-
 	//	Update position of playback indicator.  Called by Transport button click
 	case TIMELINE_DRAG_MSG:
 	{
+		printf("run2\n");
 		//	Update position
 		TrackPlayback();
 	}
@@ -368,6 +357,14 @@ void TTimelineView::MessageReceived(BMessage* message)
 		BView::MessageReceived(message);
 		break;
 	}
+}
+
+
+void
+TTimelineView::Pulse()
+{
+	//	Draw playback head
+	TrackPlayback();
 }
 
 

@@ -39,7 +39,7 @@
 //
 //
 
-TTimePaletteView::TTimePaletteView(BRect bounds) : BView(bounds, "TransportView", B_FOLLOW_ALL, B_WILL_DRAW)
+TTimePaletteView::TTimePaletteView(BRect bounds) : BView(bounds, "TransportView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
 {
 	// Perform default initialization
 	Init();
@@ -272,4 +272,15 @@ void TTimePaletteView::MessageReceived(BMessage* message)
 		BView::MessageReceived(message);
 		break;
 	}
+}
+
+
+void
+TTimePaletteView::Pulse()
+{
+	char text[12];
+	//	Update text
+	TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
+	GetTimeText()->SetText(text);
+	GetTimeText()->Sync();
 }

@@ -362,6 +362,9 @@ void TCueSheetWindow::Init()
 
 	//	Create audio engine
 	fAudioEngine = new TAudioEngine();
+
+	// Set Pulse rate for views that need it
+	SetPulseRate(5000);
 }
 
 #pragma mark -

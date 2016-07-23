@@ -40,9 +40,6 @@ TTimePalette::TTimePalette(BRect bounds) : BWindow( bounds, "Locator", B_FLOATIN
 	                                            B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
 {
 	Init();
-
-	BMessage message(RUN_MESSAGE_RUNNER_MSG);
-	fRunner = new BMessageRunner(BMessenger(this), &message, 1000000);
 }
 
 //------------------------------------------------------------------
@@ -57,7 +54,6 @@ TTimePalette::TTimePalette(BRect bounds) : BWindow( bounds, "Locator", B_FLOATIN
 
 TTimePalette::~TTimePalette()
 {
-	delete fRunner;
 }
 
 
@@ -99,25 +95,4 @@ bool TTimePalette::QuitRequested()
 {
 	Hide();
 	return false;
-}
-
-
-void
-TTimePalette::MessageReceived(BMessage* message)
-{
-	switch (message->what)
-	{
-		case RUN_MESSAGE_RUNNER_MSG:
-		{
-			char text[12];
-			//	Update text
-			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
-			fTimeView->GetTimeText()->SetText(text);
-			fTimeView->GetTimeText()->Sync();
-			break;
-		}
-
-		default:
-			BWindow::MessageReceived(message);
-	}
 }

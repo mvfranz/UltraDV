@@ -11,8 +11,6 @@
 #ifndef __TSTAGEVIEW_H__
 #define __TSTAGEVIEW_H__
 
-//	Includes
-#include <MessageRunner.h>
 
 //	Enumerations
 typedef enum
@@ -49,7 +47,8 @@ class TStageView : public BView
 		void 	FrameResized(float new_width, float new_height);
 				
 		void 	MessageReceived(BMessage *message);
-						
+		void	Pulse();
+	
 		// Compositing Routines
 		void	ClearOffscreen();
 		void 	BlitOffscreen();		
@@ -90,9 +89,6 @@ class TStageView : public BView
 
 		bool			m_IsPlaying;
 		bool			m_IsStopping;
-
-		BMessageRunner* fRunner;
-
 };
 
 #endif

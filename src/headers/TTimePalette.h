@@ -15,7 +15,8 @@
 #ifndef __TTIMEPALETTE_H__
 #define __TTIMEPALETTE_H__
 
-#include <MessageRunner.h>
+#include <Window.h>
+
 
 class TTimePalette: public BWindow
 {
@@ -23,7 +24,6 @@ class TTimePalette: public BWindow
 		TTimePalette(BRect bounds);
 		~TTimePalette();
 
-		void 	MessageReceived(BMessage* message);
 		bool 	QuitRequested();
 
 		// Accessor Functions
@@ -38,8 +38,6 @@ class TTimePalette: public BWindow
 		
 		bool			fIsPlaying;
 		bool			fIsStopping;
-
-		BMessageRunner*	fRunner;
 };
 
 #endif

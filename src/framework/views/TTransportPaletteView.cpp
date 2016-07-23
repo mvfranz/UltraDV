@@ -44,7 +44,7 @@
 //
 //
 
-TTransportPaletteView::TTransportPaletteView(BRect bounds, BBitmap* bitmap) : TBitmapView(bounds, "TransportPaletteView", bitmap, true,  B_FOLLOW_ALL)
+TTransportPaletteView::TTransportPaletteView(BRect bounds, BBitmap* bitmap) : TBitmapView(bounds, "TransportPaletteView", bitmap, true,  B_FOLLOW_ALL | B_PULSE_NEEDED)
 {
 	// Perform default initialization
 	Init();
@@ -385,6 +385,16 @@ void TTransportPaletteView::MessageReceived(BMessage* message)
 	default:
 		break;
 	}
+}
+
+
+void
+TTransportPaletteView::Pulse()
+{
+	char text[12];
+	//	Update text
+	TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
+	GetTransportText()->SetText(text);
 }
 
 #pragma mark -

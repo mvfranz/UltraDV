@@ -49,13 +49,11 @@
 //
 //
 
-TTransportPalette::TTransportPalette(BRect bounds) : BWindow( bounds, "Transport", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
-	                                                      B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
+TTransportPalette::TTransportPalette(BRect bounds)
+	: BWindow( bounds, "Transport", B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
+		B_WILL_ACCEPT_FIRST_CLICK|B_NOT_RESIZABLE|B_NOT_ZOOMABLE|B_NOT_MINIMIZABLE)
 {
 	Init();
-
-	BMessage message(RUN_MESSAGE_RUNNER_MSG);
- 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
 }
 
 //------------------------------------------------------------------
@@ -70,7 +68,6 @@ TTransportPalette::TTransportPalette(BRect bounds) : BWindow( bounds, "Transport
 
 TTransportPalette::~TTransportPalette()
 {
-	delete fRunner;
 }
 
 
@@ -143,22 +140,3 @@ bool TTransportPalette::QuitRequested()
 	return false;
 }
 
-
-void
-TTransportPalette::MessageReceived(BMessage* message)
-{
-	switch (message->what)
-	{
-		case RUN_MESSAGE_RUNNER_MSG:
-		{
-			char text[12];
-			//	Update text
-			TimeToString(GetCurrentTime(), GetCurrentTimeFormat(), text, false);
-			fTransportView->GetTransportText()->SetText(text);
-			break;
-		}
-
-		default:
-			BWindow::MessageReceived(message);
-	}
-}

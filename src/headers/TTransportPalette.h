@@ -15,8 +15,6 @@
 #ifndef __TTRANSPORTPALETTE_H__
 #define __TTRANSPORTPALETTE_H__
 
-//	Includes
-#include <MessageRunner.h>
 
 //	Class Definition
 class TTransportPalette: public BWindow
@@ -24,8 +22,6 @@ class TTransportPalette: public BWindow
 	public:
 		TTransportPalette(BRect bounds);
 		~TTransportPalette();
-
-		void 	MessageReceived(BMessage* message);
 
 		bool 	QuitRequested();
 		
@@ -40,8 +36,6 @@ class TTransportPalette: public BWindow
 		
 		bool			fIsPlaying;
 		bool			fIsStopping;
-
-		BMessageRunner*	fRunner;
 };
 
 // Transport Buttons

@@ -35,7 +35,9 @@ class TTimePaletteView: public BView
 		void 	FrameMoved(BPoint new_position);
 		void 	FrameResized(float new_width, float new_height);
 		void 	MessageReceived(BMessage* message);
-		
+
+		void 	Pulse();
+
 		TTimeText	*GetTimeText(){ return fTimeText; }
 				
 		// Member variables	

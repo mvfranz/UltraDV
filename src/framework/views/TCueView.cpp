@@ -68,7 +68,7 @@
 //
 
 TCueView::TCueView(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime, char* name) :
-	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW|B_FRAME_EVENTS )
+	BView(bounds, name, B_FOLLOW_LEFT | B_FOLLOW_TOP_BOTTOM, B_WILL_DRAW | B_FRAME_EVENTS | B_PULSE_NEEDED )
 {
 	// Get cue ID
 	fID = id;
@@ -281,9 +281,6 @@ TCueView::TCueView(BMessage* data) : BView (data)
 
 	fLockButton = (TBitmapButton*)FindView("CueLockButton");
 	fMuteButton = (TBitmapButton*)FindView("CueMuteButton");
-
-	BMessage message(RUN_MESSAGE_RUNNER_MSG);
- 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
 }
 
 
@@ -316,8 +313,6 @@ TCueView::~TCueView()
 
 		delete fEffectsList;
 	}
-
-	delete fRunner;
 }
 
 
@@ -1380,34 +1375,6 @@ void TCueView::MessageReceived(BMessage* message)
 {
 	switch(message->what)
 	{
-		case RUN_MESSAGE_RUNNER_MSG:
-		{
-			//	Do nothing if we have been muted
-			if (!fIsMuted) {
-				const uint32 curTime = GetCurrentTime();
-
-				//	Check and see if we need to start internal playback
-				if ( (fIsPlaying == false) && (curTime >= fStartTime) ) {
-					PlayCue(fStartTime);
-				}
-
-				//	Handle current playback
-				if (fIsPlaying == true) {
-					//	Handle playback at current time
-					if (curTime <= (fStartTime + fDuration))
-						HandlePlayback(curTime);
-					//	Time to stop
-					else
-						StopCue(curTime);
-				}
-			} else {
-				//	Stop cue playback
-				if (fIsPlaying == true)
-					StopCue(GetCurrentTime());
-			}
-			break;
-		}
-
 		if ( message->WasDropped() ) {
 		// Handle both of these cases by calling the channel's
 		// to the cue's channel
@@ -1548,6 +1515,34 @@ void TCueView::MessageReceived(BMessage* message)
 	}
 }
 
+
+void
+TCueView::Pulse()
+{
+	//	Do nothing if we have been muted
+	if (!fIsMuted) {
+		const uint32 curTime = GetCurrentTime();
+
+		//	Check and see if we need to start internal playback
+		if ( (fIsPlaying == false) && (curTime >= fStartTime) ) {
+			PlayCue(fStartTime);
+		}
+
+		//	Handle current playback
+		if (fIsPlaying == true) {
+			//	Handle playback at current time
+			if (curTime <= (fStartTime + fDuration))
+				HandlePlayback(curTime);
+				//	Time to stop
+			else
+				StopCue(curTime);
+		}
+	} else {
+		//	Stop cue playback
+		if (fIsPlaying == true)
+			StopCue(GetCurrentTime());
+	}
+}
 
 #pragma mark -
 #pragma mark === Cue Duration Routines ===

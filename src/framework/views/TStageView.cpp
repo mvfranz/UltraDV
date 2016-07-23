@@ -56,7 +56,9 @@
 //
 //
 
-TStageView::TStageView(BRect bounds, TStageWindow* parent) : BView(bounds, "StageView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS)
+TStageView::TStageView(BRect bounds, TStageWindow* parent)
+	:
+	BView(bounds, "StageView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS | B_PULSE_NEEDED)
 {
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
@@ -65,9 +67,6 @@ TStageView::TStageView(BRect bounds, TStageWindow* parent) : BView(bounds, "Stag
 
 	// Perform default initialization
 	Init();
-
-	BMessage message(RUN_MESSAGE_RUNNER_MSG);
- 	fRunner = new BMessageRunner(BMessenger(this), &message, 50000);
 }
 
 //---------------------------------------------------------------------
@@ -101,8 +100,6 @@ TStageView::~TStageView()
 	// Free StageCue list
 	ClearStageCueList();
 	delete m_StageCueList;
-
-	delete fRunner;
 }
 
 
@@ -303,53 +300,6 @@ void TStageView::MessageReceived(BMessage* message)
 	switch (message->what)
 	{
 
-		case RUN_MESSAGE_RUNNER_MSG:
-		{
-			const uint32 curTime = GetCurrentTime();
-
-//			WATCH("TSV::RR IsRunning == true, so set IsPlaying = true\n");
-			//	We are now running...
-// ABH			if (m_IsPlaying == false)
-//				m_IsPlaying = true;
-
-			//	Are we stopping?
-			if (m_IsPlaying == true && m_IsStopping == true) {
-				WATCH("TSV::RR stopping...\n");
-				m_IsPlaying  = false;
-				m_IsStopping = false;
-				if (LockLooper()) {
-					StageDraw(Bounds(), curTime);
-					UnlockLooper();
-				}
-			}
-
-			//	Handle playback
-			if (m_IsPlaying == true) {
-				//	Draw data onto stage
-				WATCH("TSV::RR playing..\n");
-				if (LockLooper()) {
-					StageDraw(Bounds(), curTime);
-					UnlockLooper();
-				}
-			}
-
-		//	We have stopped.  Update stage.
-		else {
-			if (m_IsPlaying == true) {
-				m_IsPlaying  = false;
-				WATCH("TSV::RR stopped so update state\n");
-				if (LockLooper()) {
-					StageDraw(Bounds(), GetCurrentTime());
-					UnlockLooper();
-				}
-			}
-		}
-
-		//	Snooze for a while
-		snooze(20000);
-			break;
-		}
-
 	// End editing session.  Deselect all stage cues and clean up
 	case END_STAGE_EDIT_MSG:
 		if (m_SelectionMode) {
@@ -395,6 +345,51 @@ void TStageView::MessageReceived(BMessage* message)
 	}
 
 }
+
+
+void
+TStageView::Pulse()
+{
+	const uint32 curTime = GetCurrentTime();
+
+	// WATCH("TSV::RR IsRunning == true, so set IsPlaying = true\n");
+	// We are now running...
+	//ABH if (m_IsPlaying == false)
+	//m_IsPlaying = true;
+
+	//	Are we stopping?
+	if (m_IsPlaying == true && m_IsStopping == true) {
+		WATCH("TSV::RR stopping...\n");
+		m_IsPlaying  = false;
+		m_IsStopping = false;
+		if (LockLooper()) {
+			StageDraw(Bounds(), curTime);
+			UnlockLooper();
+		}
+	}
+
+	//	Handle playback
+	if (m_IsPlaying == true) {
+		//	Draw data onto stage
+		WATCH("TSV::RR playing..\n");
+		if (LockLooper()) {
+			StageDraw(Bounds(), curTime);
+			UnlockLooper();
+		}
+	}
+	//	We have stopped.  Update stage.
+	else {
+		if (m_IsPlaying == true) {
+			m_IsPlaying  = false;
+			WATCH("TSV::RR stopped so update state\n");
+			if (LockLooper()) {
+				StageDraw(Bounds(), GetCurrentTime());
+				UnlockLooper();
+			}
+		}
+	}
+}
+
 
 //---------------------------------------------------------------------
 //	SendMessageToCues

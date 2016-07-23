@@ -136,7 +136,5 @@
 #define ADD_REF_MSG					'ARmg'
 #define	BROWSER_ICON_DRAG_MSG		'BRdm'
 
-#define RUN_MESSAGE_RUNNER_MSG		'RMRM'
-
 #endif
 
