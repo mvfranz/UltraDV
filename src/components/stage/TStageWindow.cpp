@@ -162,23 +162,3 @@ status_t TStageWindow::Archive(BMessage* data, bool deep) const
 	return myErr;
 
 }
-
-
-#pragma mark -
-#pragma mark === Message Handling ===
-
-//---------------------------------------------------------------------
-//	MessageReceived
-//---------------------------------------------------------------------
-//
-//
-
-void TStageWindow::MessageReceived(BMessage* message)
-{
-	switch (message->what)
-	{
-	default:
-		BWindow::MessageReceived(message);
-		break;
-	}
-}

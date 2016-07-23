@@ -117,18 +117,6 @@ void TBrowserWindow::MessageReceived(BMessage* message)
 #pragma mark -
 #pragma mark === Window Handling ===
 
-//---------------------------------------------------------------------
-//	MessageReceived
-//---------------------------------------------------------------------
-//
-//
-
-void TBrowserWindow::WindowActivated(bool active)
-{
-	// Inform parent
-	BWindow::WindowActivated(active);
-}
-
 
 //------------------------------------------------------------------
 //	QuitRequested

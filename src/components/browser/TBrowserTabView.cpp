@@ -175,20 +175,6 @@ void TBrowserTabView::MessageReceived(BMessage* message)
 	}
 }
 
-//---------------------------------------------------------------------
-//	WindowActivated
-//---------------------------------------------------------------------
-//
-//	Inform our attached views
-//
-
-void TBrowserTabView::WindowActivated(bool state)
-{
-
-	BTabView::WindowActivated(state);
-}
-
-
 #pragma mark -
 #pragma mark === Drawing Functions ===
 
@@ -209,57 +195,6 @@ void TBrowserTabView::Draw(BRect updateRect)
 	// Inform parent
 	BTabView::Draw(updateRect);
 }
-
-
-#pragma mark -
-#pragma mark === Frame Routines ===
-
-//---------------------------------------------------------------------
-//	FrameResized
-//---------------------------------------------------------------------
-//
-//
-
-
-//void TBrowserTabView::FrameResized(float width, float height)
-//{
-//	BTabView::FrameResized(width, height);
-//}
-
-
-
-#pragma mark -
-#pragma mark === Mouse Routines ===
-
-//---------------------------------------------------------------------
-//	MouseDown
-//---------------------------------------------------------------------
-//
-//	Handle mouse down events
-//
-
-void TBrowserTabView::MouseDown(BPoint where)
-{
-
-	// Inform parent
-	BTabView::MouseDown(where);
-}
-
-
-//---------------------------------------------------------------------
-//	MouseUp
-//---------------------------------------------------------------------
-//
-//	Handle mouse up events
-//
-
-void TBrowserTabView::MouseUp(BPoint where)
-{
-
-	// Inform parent
-	BTabView::MouseUp(where);
-}
-
 
 //---------------------------------------------------------------------
 //	MouseMoved
@@ -288,7 +223,4 @@ void TBrowserTabView::MouseMoved( BPoint where, uint32 code, const BMessage* mes
 
 	BTabView::MouseMoved(where, code, message);
 }
-
-
-
 

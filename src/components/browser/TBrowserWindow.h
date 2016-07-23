@@ -25,8 +25,7 @@ class TBrowserWindow: public BWindow
 		~TBrowserWindow();
 		
 		void	MessageReceived(BMessage* message);	
-		
-		void 	WindowActivated(bool active);
+
 		bool 	QuitRequested();
 						
 	private:	

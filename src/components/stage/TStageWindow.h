@@ -29,8 +29,6 @@ class TStageWindow: public BWindow
 		static	BArchivable *Instantiate(BMessage *data);
 		virtual	status_t	Archive(BMessage *data, bool deep = true) const;
 
-		void	MessageReceived(BMessage* message);	
-		
 		// Accessor Functions
 		inline TCueSheetWindow 	*GetCueSheet(){ return fCueSheet; }
 		inline TStageView 	   	*GetStageView(){ return fStageView; }
