@@ -25,11 +25,7 @@ class TNumberTextView : public BTextView
 		// Member Functions
 		TNumberTextView(BRect bounds, char *name, uint32 resizing);
 		~TNumberTextView();
-		
-		void Draw(BRect inRect);
-		void MouseDown(BPoint where);
-		void MouseUp(BPoint where);
-		void MouseMoved(BPoint where, uint32 code, const BMessage *message);
+
 		void KeyDown(const char *bytes, int32 numBytes);
 		void MakeFocus(bool focusState = TRUE);
 		void MessageReceived(BMessage *message);

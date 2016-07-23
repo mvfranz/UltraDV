@@ -26,10 +26,7 @@ class TNumberTextControl : public BTextControl
 		TNumberTextControl(BRect frame, const char *name, const char *label, const char *initial_text, BMessage *message);
 		~TNumberTextControl();
 
-		void MouseDown(BPoint where);
 		void KeyDown(const char *bytes, int32 numBytes);
-		//void MakeFocus(bool focusState = TRUE);
-		//void MessageReceived(BMessage *message);
 		
 		bool AcceptsDrop(const BMessage *message);
 		bool AcceptsPaste(BClipboard *clipboard);	

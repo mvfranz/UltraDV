@@ -32,8 +32,6 @@ class TElementsView: public BView
 		void	MessageReceived(BMessage *theMessage);		
 		void 	Draw(BRect updateRect);
 		void 	MouseDown(BPoint where);
-		void 	MouseUp(BPoint where);
-		void 	MouseMoved(	BPoint where, uint32 code, const BMessage *a_message);
 		void	WindowActivated(bool state);
 		void 	FrameResized(float w,float h);
 				

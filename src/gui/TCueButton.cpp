@@ -118,18 +118,6 @@ void TCueButton::MouseDown(BPoint where)
 
 
 //---------------------------------------------------------------------
-//	MouseUp
-//---------------------------------------------------------------------
-//
-//	Handle mouse up events
-//
-
-void TCueButton::MouseUp(BPoint where)
-{
-}
-
-
-//---------------------------------------------------------------------
 //	MouseMoved
 //---------------------------------------------------------------------
 //
@@ -199,66 +187,3 @@ void TCueButton::MouseMoved( BPoint where, uint32 code, const BMessage* message 
 		}
 	}
 }
-
-
-//---------------------------------------------------------------------
-//	WindowActivated
-//---------------------------------------------------------------------
-//
-//	Handle window activated events
-//
-
-void TCueButton::WindowActivated(bool state)
-{
-}
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//	Handle key down event
-//
-
-void TCueButton::KeyDown(const char* bytes, int32 numBytes)
-{
-}
-
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//	Handle key up event
-//
-
-void TCueButton::KeyUp(const char* bytes, int32 numBytes)
-{
-}
-
-
-
-//---------------------------------------------------------------------
-//	FrameMoved
-//---------------------------------------------------------------------
-//
-//	Handle movement of frame
-//
-
-void TCueButton::FrameMoved(BPoint new_position)
-{
-}
-
-
-//---------------------------------------------------------------------
-//	FrameResized
-//---------------------------------------------------------------------
-//
-//	Handle resize of frame
-//
-
-void TCueButton::FrameResized(float new_width, float new_height)
-{
-}
-

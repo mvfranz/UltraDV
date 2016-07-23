@@ -32,7 +32,6 @@ class TMuseumSlider : public BSlider
 			
 		// Drawing Functions
 		void 			DrawText();
-		virtual void	SetValue(int32 value);
 						
 	private:
 	

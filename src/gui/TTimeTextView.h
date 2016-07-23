@@ -29,8 +29,6 @@ class TTimeTextView : public BTextView
 		
 		virtual void Draw(BRect inRect);
 		virtual void MouseDown(BPoint where);
-		virtual void MouseUp(BPoint where);
-		virtual void MouseMoved(BPoint where, uint32 code, const BMessage *message);
 		virtual void KeyDown(const char *bytes, int32 numBytes);
 		virtual void MakeFocus(bool focusState = TRUE);
 		virtual void MessageReceived(BMessage *message);

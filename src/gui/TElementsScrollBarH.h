@@ -26,17 +26,7 @@ class TElementsScrollBarH : public BScrollBar
 		TElementsScrollBarH(BRect frame, const char *name, BView *target, float min, float max);
 		~TElementsScrollBarH();
 			
-		void	AttachedToWindow();
 		void	ValueChanged(float newValue);
-		void	MessageReceived(BMessage *msg);
-		void	MouseDown(BPoint pt);
-		void	MouseUp(BPoint pt);
-		void	MouseMoved(BPoint pt, uint32 code, const BMessage *msg);
-		void	DetachedFromWindow();
-		void	Draw(BRect updateRect);
-		void	FrameMoved(BPoint new_position);
-		void	FrameResized(float new_width, float new_height);
-
 
 	private:
 	

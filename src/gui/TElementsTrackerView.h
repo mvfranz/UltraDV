@@ -22,13 +22,6 @@ class TElementsTrackerView: public BView
 		// Member functions
 		TElementsTrackerView(BRect bounds, TElementsView *parent);
 		~TElementsTrackerView();
-		void Draw(BRect updateRect);
-		void MouseDown(BPoint where);
-		void MouseUp(BPoint where);
-		void MouseMoved(	BPoint where, uint32 code, const BMessage *a_message);
-		//void WindowActivated(bool state);
-		//void KeyDown(const char *bytes, int32 numBytes);
-		//void KeyUp(const char *bytes, int32 numBytes);
 		
 		// Member variables	
 		

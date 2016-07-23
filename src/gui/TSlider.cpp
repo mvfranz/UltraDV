@@ -56,18 +56,3 @@ TSlider::TSlider(BMessage* data) : BSlider(data)
 TSlider::~TSlider()
 {
 }
-
-
-
-//-------------------------------------------------------------------
-//	Destructor
-//-------------------------------------------------------------------
-//
-//
-
-void TSlider::SetValue(int32 value)
-{
-	// Pass to parent
-	BSlider::SetValue(value);
-}
-

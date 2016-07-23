@@ -76,20 +76,3 @@ void TMuseumSlider::DrawText()
 		Looper()->Unlock();
 	}
 }
-
-
-#pragma mark -
-#pragma mark === Value Functions ===
-
-//-------------------------------------------------------------------
-//	SetValue
-//-------------------------------------------------------------------
-//
-//
-
-void TMuseumSlider::SetValue(int32 value)
-{
-	// Pass to parent
-	BSlider::SetValue(value);
-
-}

@@ -155,42 +155,6 @@ void TNumberBevelTextView::MouseDown(BPoint where)
 
 
 //---------------------------------------------------------------------
-//	MouseUp
-//---------------------------------------------------------------------
-//
-//
-
-void TNumberBevelTextView::MouseUp(BPoint where)
-{
-	BView::MouseUp(where);
-}
-
-
-//---------------------------------------------------------------------
-//	MouseMoved
-//---------------------------------------------------------------------
-//
-//
-
-void TNumberBevelTextView::MouseMoved(BPoint where, uint32 code, const BMessage* message)
-{
-	BView::MouseMoved(where, code, message);
-}
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//
-
-void TNumberBevelTextView::KeyDown(const char* bytes, int32 numBytes)
-{
-	BView::KeyDown(bytes, numBytes);
-}
-
-
-//---------------------------------------------------------------------
 //	MakeFocus
 //---------------------------------------------------------------------
 //
@@ -204,28 +168,3 @@ void TNumberBevelTextView::MakeFocus(bool focusState)
 
 	BView::MakeFocus(focusState);
 }
-
-
-#pragma mark -
-#pragma mark === Message Handling ===
-
-
-//---------------------------------------------------------------------
-//	MessageReceived
-//---------------------------------------------------------------------
-//
-//
-
-void TNumberBevelTextView::MessageReceived(BMessage* message)
-{
-
-	switch(message->what)
-	{
-
-	default:
-		BView::MessageReceived(message);
-		break;
-	}
-
-}
-

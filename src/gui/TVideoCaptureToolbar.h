@@ -24,8 +24,6 @@ class TVideoCaptureToolbar: public BView
 		TVideoCaptureToolbar(BRect bounds);
 		~TVideoCaptureToolbar();
 		void Draw(BRect updateRect);
-		void KeyDown(const char *bytes, int32 numBytes);		
-		void MessageReceived(BMessage* message);
 		
 	private:
 		// Member Functions

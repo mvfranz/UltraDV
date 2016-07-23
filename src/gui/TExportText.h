@@ -27,7 +27,6 @@ class TExportText : public BStringView
 		
 		void		Draw(BRect bounds);
 
-		void		MessageReceived(BMessage *msg);
 		void		MouseDown(BPoint pt);
 
 	private:

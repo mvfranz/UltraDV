@@ -113,29 +113,6 @@ void TActionCuePalette::Refresh()
 
 //------------------------------------------------------------------
 //
-//	Function:	MessageReceived()
-//
-//	Desc:
-//
-//------------------------------------------------------------------
-//
-//
-
-void TActionCuePalette::MessageReceived(BMessage* message)
-{
-	switch (message->what)
-	{
-
-	default:
-		BWindow::MessageReceived(message);
-		break;
-
-	}
-}
-
-
-//------------------------------------------------------------------
-//
 //	QuitRequested()
 //
 //------------------------------------------------------------------

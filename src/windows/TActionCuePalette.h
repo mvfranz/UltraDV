@@ -21,8 +21,7 @@ class TActionCuePalette: public BWindow
 	public:
 		TActionCuePalette();
 		~TActionCuePalette();
-		
-		void		MessageReceived(BMessage* message);	
+
 		void		Refresh();	
 		
 		bool 		QuitRequested();

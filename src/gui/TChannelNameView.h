@@ -31,7 +31,6 @@ class TChannelNameView : public BStringView
 
 		void		Draw(BRect bounds);
 
-		void		MessageReceived(BMessage *msg);
 		void		MouseDown(BPoint pt);
 		
 		//	Accessor Functions

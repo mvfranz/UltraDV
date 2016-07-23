@@ -29,11 +29,7 @@ class TExportTimeView: public BView
 		void 	Draw(BRect updateRect);
 		void	DrawInText();
 		void	DrawOutText();
-		
-		void 	MouseDown(BPoint where);
-		void 	MouseUp(BPoint where);
-		void 	MouseMoved(BPoint where, uint32 code, const BMessage *a_message);
-		
+
 		void 	AttachedToWindow();
 		
 		//	Accessor Functions

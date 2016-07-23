@@ -266,44 +266,6 @@ void TExportTimeView::DrawOutText()
 	Looper()->Unlock();
 }
 
-
-#pragma mark -
-#pragma mark === Mouse Handling ===
-
-//---------------------------------------------------------------------
-//	MouseDown
-//---------------------------------------------------------------------
-//
-//	Handle mouse down events
-//
-
-void TExportTimeView::MouseDown(BPoint where)
-{
-}
-
-
-//---------------------------------------------------------------------
-//	MouseUp
-//---------------------------------------------------------------------
-//
-//	Handle mouse up events
-//
-
-void TExportTimeView::MouseUp(BPoint where)
-{
-}
-
-//---------------------------------------------------------------------
-//	MouseMoved
-//---------------------------------------------------------------------
-//
-//	Handle mouse moved events
-//
-
-void TExportTimeView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
-{
-}
-
 #pragma mark -
 #pragma mark === Dialog Routines ===
 

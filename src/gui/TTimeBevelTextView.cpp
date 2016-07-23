@@ -130,66 +130,6 @@ void TTimeBevelTextView::Draw(BRect inRect)
 }
 
 
-//---------------------------------------------------------------------
-//	MouseDown
-//---------------------------------------------------------------------
-//
-//
-
-void TTimeBevelTextView::MouseDown(BPoint where)
-{
-	BView::MouseDown(where);
-}
-
-
-//---------------------------------------------------------------------
-//	MouseUp
-//---------------------------------------------------------------------
-//
-//
-
-void TTimeBevelTextView::MouseUp(BPoint where)
-{
-	BView::MouseUp(where);
-}
-
-
-//---------------------------------------------------------------------
-//	MouseMoved
-//---------------------------------------------------------------------
-//
-//
-
-void TTimeBevelTextView::MouseMoved(BPoint where, uint32 code, const BMessage* message)
-{
-	BView::MouseMoved(where, code, message);
-}
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//
-
-void TTimeBevelTextView::KeyDown(const char* bytes, int32 numBytes)
-{
-	BView::KeyDown(bytes, numBytes);
-}
-
-
-//---------------------------------------------------------------------
-//	MakeFocus
-//---------------------------------------------------------------------
-//
-//
-
-void TTimeBevelTextView::MakeFocus(bool focusState)
-{
-	BView::MakeFocus(focusState);
-}
-
-
 #pragma mark -
 #pragma mark === Message Handling ===
 

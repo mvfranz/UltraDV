@@ -327,29 +327,6 @@ void TElementsView::MouseDown(BPoint where)
 }
 
 
-//---------------------------------------------------------------------
-//	MouseUp
-//---------------------------------------------------------------------
-//
-//	Handle mouse up events
-//
-
-void TElementsView::MouseUp(BPoint where)
-{
-}
-
-
-//---------------------------------------------------------------------
-//	MouseMoved
-//---------------------------------------------------------------------
-//
-//	Handle mouse moved events
-//
-
-void TElementsView::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
-{
-}
-
 #pragma mark -
 #pragma mark === Window Routines ===
 

@@ -27,11 +27,6 @@ class TTimeBevelTextView : public BView
 		~TTimeBevelTextView();
 		
 		void Draw(BRect inRect);
-		void MouseDown(BPoint where);
-		void MouseUp(BPoint where);
-		void MouseMoved(BPoint where, uint32 code, const BMessage *message);
-		void KeyDown(const char *bytes, int32 numBytes);
-		void MakeFocus(bool focusState = TRUE);
 		void MessageReceived(BMessage *message);
 		
 		// Accessor Functions

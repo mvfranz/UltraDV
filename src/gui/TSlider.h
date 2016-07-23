@@ -27,13 +27,6 @@ class TSlider : public BSlider
 		TSlider(BMessage *message);
 		
 		~TSlider();
-				
-		virtual	void  SetValue(int32 value);
-		
-	private:
-	
-	protected:
-	
 };
 
 #endif
