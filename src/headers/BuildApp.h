@@ -104,7 +104,6 @@ class _IMPEXP_MUSEUM TTimeTextView;
 class _IMPEXP_MUSEUM TTimelineView;
 class _IMPEXP_MUSEUM TTimePalette;
 class _IMPEXP_MUSEUM TTimePaletteView;
-class _IMPEXP_MUSEUM TTimer;
 class _IMPEXP_MUSEUM TTimeScalerView;
 class _IMPEXP_MUSEUM TToolbar;
 class _IMPEXP_MUSEUM TTransition;

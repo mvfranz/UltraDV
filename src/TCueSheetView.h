@@ -37,9 +37,6 @@ class TCueSheetView: public BView
 		void 	MessageReceived(BMessage* message);
 		void 	WindowActivated(bool state);
 		void 	KeyDown(const char *bytes, int32 numBytes);
-		void 	KeyUp(const char *bytes, int32 numBytes);
-		void 	FrameMoved(BPoint new_position);
-		void 	FrameResized(float new_width, float new_height);	
 					
 		// Selection routines
 		bool 	HasCues();

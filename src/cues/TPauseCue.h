@@ -75,7 +75,7 @@ class TPauseCue : public TCueView
 		
 		void 	LoadCueIcon();
 		
-		TTimer	*fPauseTimer;
+		BMessageRunner* fPauseTimer;
 
 	protected:
 				

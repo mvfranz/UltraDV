@@ -171,7 +171,6 @@ Application UltraDV :
 	TTimelineView.cpp
 	TTimePalette.cpp
 	TTimePaletteView.cpp
-	TTimer.cpp
 	TTimeScalerView.cpp
 	TTimeText.cpp
 	TTimeTextView.cpp

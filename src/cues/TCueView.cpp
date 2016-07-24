@@ -50,7 +50,6 @@
 
 #include "TBitmapButton.h"
 
-#include "TTimer.h"
 #include "TPlaybackEngine.h"
 
 #include "TCueMenu.h"
@@ -1695,7 +1694,7 @@ void TCueView::Select()
 		}
 
 		// Fire up marching ant thread
-		fAntThread = new TTimer(this, new BMessage(MARCH_ANTS_MSG), 120000);
+		fAntThread = new BMessageRunner(this, new BMessage(MARCH_ANTS_MSG), 120000);
 	}
 }
 

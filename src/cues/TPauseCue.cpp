@@ -28,7 +28,6 @@
 // ABH does not exist
 #include "TPauseSetup.h"
 #include "TPlaybackEngine.h"
-#include "TTimer.h"
 #include "TBitmapView.h"
 
 
@@ -398,16 +397,13 @@ void TPauseCue::DoPause(TPlaybackEngine* theEngine)
 		theEngine->Pause();
 		snooze(fPauseDuration * 1000);
 		theEngine->Resume();
-		/*
-		   BMessage *timerMsg = new BMessage(PAUSE_DONE_MSG);
-		   if (timerMsg)
-		   {
-		        timerMsg->AddPointer("PlaybackEngine", theEngine);
-		        theEngine->Pause();
-		        fPauseTimer = new TTimer(this, timerMsg, fPauseDuration * 1000);
-		   }
-		 */
-	}
+        BMessage *timerMsg = new BMessage(PAUSE_DONE_MSG);
+        if (timerMsg) {
+			timerMsg->AddPointer("PlaybackEngine", theEngine);
+			theEngine->Pause();
+			fPauseTimer = new BMessageRunner(this, timerMsg, fPauseDuration * 1000);
+		}
+    }
 	break;
 
 	case kMousePause:

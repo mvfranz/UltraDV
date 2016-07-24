@@ -115,7 +115,7 @@ class TStageCue
 		TStageView	*fStage;	
 		TVisualCue	*fChannelCue;		
 		bool		fIsSelected;
-		TTimer		*fAntThread;
+		BMessageRunner* fAntThread;
 		
 		// Resize control zones
 		TPolygon fTopLeftResize;

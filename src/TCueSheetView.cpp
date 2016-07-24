@@ -584,48 +584,8 @@ void TCueSheetView::KeyDown(const char* bytes, int32 numBytes)
 	}
 }
 
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//	Handle key up event
-//
-
-void TCueSheetView::KeyUp(const char* bytes, int32 numBytes)
-{
-}
-
-
-
-//---------------------------------------------------------------------
-//	FrameMoved
-//---------------------------------------------------------------------
-//
-//	Handle movement of frame
-//
-
-void TCueSheetView::FrameMoved(BPoint new_position)
-{
-}
-
-
-//---------------------------------------------------------------------
-//	FrameResized
-//---------------------------------------------------------------------
-//
-//	Handle resize of frame
-//
-
-void TCueSheetView::FrameResized(float new_width, float new_height)
-{
-}
-
-
 #pragma mark -
 #pragma mark === List Handling Routine ===
-
 
 //---------------------------------------------------------------------
 //	FreeChannelList

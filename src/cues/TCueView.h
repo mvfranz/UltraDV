@@ -296,7 +296,7 @@ class TCueView : public BView
 							
 		int32			fMinCueWidth;			// Minimum width of a cue
 					
-		TTimer			*fAntThread;
+		BMessageRunner	*fAntThread;
 		
 		entry_ref		fFileRef;				// Cues data file entry_ref	
 		BFile			*fFile;				// Cues file
