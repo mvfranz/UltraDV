@@ -54,7 +54,6 @@ Application UltraDV :
 	TActionCuePalette.cpp
 	TActionCuePaletteView.cpp
 	TAddChannel.cpp
-	TArray.cpp
 	TAudibleEffect.cpp
 	TAudioCaptureToolbar.cpp
 	TAudioCaptureWindow.cpp

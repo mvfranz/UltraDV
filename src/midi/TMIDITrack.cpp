@@ -18,7 +18,6 @@
 #include <app/Application.h>
 #include <support/Debug.h>
 
-#include "TArray.h"
 #include "TMIDITrack.h"
 #include "TCueView.h"
 #include "TMIDICue.h"

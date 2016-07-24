@@ -16,7 +16,6 @@
 #define __TMIDITRACK_H__
 
 #include "MuseumMidiDefs.h"
-#include "TArray.h"
 
 
 //
