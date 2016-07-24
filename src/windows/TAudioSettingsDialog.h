@@ -25,8 +25,6 @@ class TAudioSettingsDialog: public BWindow
 		TAudioSettingsDialog(BRect bounds);
 		
 		void	MessageReceived(BMessage* message);	
-		
-		void 	WindowActivated(bool active);
 		bool 	QuitRequested();
 						
 	private:	

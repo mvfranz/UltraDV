@@ -211,41 +211,6 @@ void TTextCue::RenderBitmapData()
 
 
 #pragma mark -
-#pragma mark === Mouse Handling ===
-
-//---------------------------------------------------------------------
-//	MouseDown
-//---------------------------------------------------------------------
-//
-//	Handle mouse down events
-//
-
-void TTextCue::MouseDown(BPoint where)
-{
-	// Pass up to parent
-	TVisualCue::MouseDown(where);
-}
-
-
-//---------------------------------------------------------------------
-//	MessageReceived
-//---------------------------------------------------------------------
-//
-//	Receive messages
-//
-void TTextCue::MessageReceived(BMessage* message)
-{
-	switch(message->what)
-	{
-
-	default:
-		TVisualCue::MessageReceived(message);
-		break;
-	}
-}
-
-
-#pragma mark -
 #pragma mark === Editor ===
 //---------------------------------------------------------------------
 //	OpenEditor

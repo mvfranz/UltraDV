@@ -29,12 +29,7 @@ class	TTextCue : public TVisualCue
 		
 		void 	Draw(BRect updateRect);
 		void 	RenderBitmapData();
-		
-		void MouseDown(BPoint where);		
-		void MessageReceived(BMessage *message);
-				
-		// Member Variables
-		
+
 	private:
 		// Member Functions
 		void 	Init();

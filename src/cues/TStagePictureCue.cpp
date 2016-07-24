@@ -345,18 +345,6 @@ void TStagePictureCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_
 
 
 //---------------------------------------------------------------------
-//	WindowActivated
-//---------------------------------------------------------------------
-//
-//	Handle window activated events
-//
-
-void TStagePictureCue::WindowActivated(bool state)
-{
-}
-
-
-//---------------------------------------------------------------------
 //	KeyDown
 //---------------------------------------------------------------------
 //
@@ -367,32 +355,6 @@ void TStagePictureCue::KeyDown(const char* bytes, int32 numBytes)
 {
 
 	BView::KeyDown(bytes, numBytes);
-}
-
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//	Handle key up event
-//
-
-void TStagePictureCue::KeyUp(const char* bytes, int32 numBytes)
-{
-}
-
-
-
-//---------------------------------------------------------------------
-//	FrameMoved
-//---------------------------------------------------------------------
-//
-//	Handle movement of frame
-//
-
-void TStagePictureCue::FrameMoved(BPoint new_position)
-{
 }
 
 
@@ -434,29 +396,6 @@ void TStagePictureCue::SetBitmap(BBitmap* bitmap)
 		fOffscreenView->DrawBitmap(fBitmap);
 		fOffscreenView->Sync();
 		fOffscreenView->Looper()->Unlock();
-	}
-}
-
-
-
-#pragma mark -
-#pragma mark === Message Handling ===
-
-//---------------------------------------------------------------------
-//	MessageReceived
-//---------------------------------------------------------------------
-//
-//
-
-void TStagePictureCue::MessageReceived(BMessage* message)
-{
-
-	switch (message->what)
-	{
-
-	default:
-		TStageCue::MessageReceived(message);
-		break;
 	}
 }
 

@@ -48,12 +48,6 @@ class TPauseCue : public TCueView
 		status_t 	Archive(BMessage *data, bool deep) const;		
 		
 		void 	Draw(BRect updateRect);
-		void 	MouseDown(BPoint where);		
-		void 	MouseUp(BPoint where);		
-		void 	MouseMoved( BPoint where, uint32 code, const BMessage *a_message );
-		void 	WindowActivated(bool state);
-		void 	KeyDown(const char *bytes, int32 numBytes);
-		void 	KeyUp(const char *bytes, int32 numBytes);
 		void 	MessageReceived(BMessage *message);
 		
 		void 	Preroll(double currentTime);

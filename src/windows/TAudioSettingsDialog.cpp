@@ -100,22 +100,6 @@ void TAudioSettingsDialog::MessageReceived(BMessage* message)
 }
 
 
-#pragma mark -
-#pragma mark === Window Handling ===
-
-//---------------------------------------------------------------------
-//	MessageReceived
-//---------------------------------------------------------------------
-//
-//
-
-void TAudioSettingsDialog::WindowActivated(bool active)
-{
-	// Inform parent
-	BWindow::WindowActivated(active);
-}
-
-
 //------------------------------------------------------------------
 //	QuitRequested
 //------------------------------------------------------------------

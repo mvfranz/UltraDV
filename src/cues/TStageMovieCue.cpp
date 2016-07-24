@@ -372,58 +372,6 @@ void TStageMovieCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_me
 
 
 //---------------------------------------------------------------------
-//	WindowActivated
-//---------------------------------------------------------------------
-//
-//	Handle window activated events
-//
-
-void TStageMovieCue::WindowActivated(bool state)
-{
-}
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//	Handle key down event
-//
-
-void TStageMovieCue::KeyDown(const char* bytes, int32 numBytes)
-{
-
-	BView::KeyDown(bytes, numBytes);
-}
-
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//	Handle key up event
-//
-
-void TStageMovieCue::KeyUp(const char* bytes, int32 numBytes)
-{
-}
-
-
-
-//---------------------------------------------------------------------
-//	FrameMoved
-//---------------------------------------------------------------------
-//
-//	Handle movement of frame
-//
-
-void TStageMovieCue::FrameMoved(BPoint new_position)
-{
-}
-
-
-//---------------------------------------------------------------------
 //	FrameResized
 //---------------------------------------------------------------------
 //

@@ -221,100 +221,6 @@ void TButtonCue::Draw(BRect updateRect)
 }
 
 //---------------------------------------------------------------------
-//	MouseDown
-//---------------------------------------------------------------------
-//
-//	Handle mouse down events
-//
-
-void TButtonCue::MouseDown(BPoint where)
-{
-	// Pass up to parent
-	TCueView::MouseDown(where);
-}
-
-
-//---------------------------------------------------------------------
-//	MouseUp
-//---------------------------------------------------------------------
-//
-//	Handle mouse up events
-//
-
-void TButtonCue::MouseUp(BPoint where)
-{
-	// Pass up to parent
-	TCueView::MouseUp(where);
-}
-
-//---------------------------------------------------------------------
-//	MouseMoved
-//---------------------------------------------------------------------
-//
-//	Handle mouse moved events
-//
-
-void TButtonCue::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
-{
-	// Pass up to parent
-	TCueView::MouseMoved(where, code, a_message);
-}
-
-//---------------------------------------------------------------------
-//	WindowActivated
-//---------------------------------------------------------------------
-//
-//	Handle window activated events
-//
-
-void TButtonCue::WindowActivated(bool state)
-{
-}
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//	Handle key down event
-//
-
-void TButtonCue::KeyDown(const char* bytes, int32 numBytes)
-{
-	TCueView::KeyDown(bytes, numBytes);
-}
-
-
-
-//---------------------------------------------------------------------
-//	KeyDown
-//---------------------------------------------------------------------
-//
-//	Handle key up event
-//
-
-void TButtonCue::KeyUp(const char* bytes, int32 numBytes)
-{
-}
-
-
-//---------------------------------------------------------------------
-//	MessageReceived
-//---------------------------------------------------------------------
-//
-//	Receive messages
-//
-void TButtonCue::MessageReceived(BMessage* message)
-{
-	switch(message->what)
-	{
-	default:
-		TCueView::MessageReceived(message);
-		break;
-	}
-}
-
-//---------------------------------------------------------------------
 //	OpenEditor
 //---------------------------------------------------------------------
 //
@@ -325,7 +231,6 @@ void TButtonCue::OpenEditor()
 {
 
 }
-
 
 #pragma mark -
 #pragma mark === Utility Functions ===
