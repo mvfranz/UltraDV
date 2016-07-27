@@ -23,7 +23,6 @@
 #include <support/Debug.h>
 
 #include "AppConstants.h"
-#include "AppGlobals.h"
 #include "AppMessages.h"
 #include "MenuMessages.h"
 #include "MuseumApp.h"

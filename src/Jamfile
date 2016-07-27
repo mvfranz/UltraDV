@@ -44,7 +44,6 @@ Application UltraDV :
 	AppAlerts.cpp
 	AppUtils.cpp
 	BaseCueChunk.cpp
-	Benaphore.cpp
 	DebugUtils.cpp
 	fft.cpp
 	FileIO.cpp
