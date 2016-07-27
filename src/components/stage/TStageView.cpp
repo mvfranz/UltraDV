@@ -203,7 +203,6 @@ status_t TStageView::Archive(BMessage* data, bool deep) const
 
 void TStageView::Draw(BRect updateRect)
 {
-	printf("draw\n");
 	//      Exit if we are playing.  The playback mechanism handles all
 	//	updating of the stage
 	if ( IsPlaying() )
@@ -233,20 +232,20 @@ void TStageView::StageDraw(BRect updateRect, uint32 theTime)
 	//	Clear offscreen bits
 	ClearOffscreen();
 
-	printf("TSV::SD: start\n");
+	//printf("TSV::SD: start\n");
 	if (!m_Parent)
-		printf("TSV::SD m_Parent is null!\n");
+		return;
 
 	//	Get cue data at time
 	TCueSheetWindow* testCueSheet = m_Parent->GetCueSheet();
 	if (!testCueSheet)
-		printf("TSV::SD testCueSheet is null!\n");
+		return;
+
 	TCueSheetView* testCueSheetView = testCueSheet->GetCueSheetView();
 	if (!testCueSheetView)
-		printf("TSV::SD testCueSheetView is null!\n");
-	BList* channelList = m_Parent->GetCueSheet()->GetCueSheetView()->GetChannelList();
+		return;
 
-	printf("TSV:SD: end\n");
+	BList* channelList = m_Parent->GetCueSheet()->GetCueSheetView()->GetChannelList();
 
 	if (channelList) {
 		for (int32 index = 0; index < channelList->CountItems(); index++) {
@@ -351,42 +350,9 @@ void
 TStageView::Pulse()
 {
 	const uint32 curTime = GetCurrentTime();
-
-	// WATCH("TSV::RR IsRunning == true, so set IsPlaying = true\n");
-	// We are now running...
-	//ABH if (m_IsPlaying == false)
-	//m_IsPlaying = true;
-
-	//	Are we stopping?
-	if (m_IsPlaying == true && m_IsStopping == true) {
-		WATCH("TSV::RR stopping...\n");
-		m_IsPlaying  = false;
-		m_IsStopping = false;
-		if (LockLooper()) {
-			StageDraw(Bounds(), curTime);
-			UnlockLooper();
-		}
-	}
-
-	//	Handle playback
-	if (m_IsPlaying == true) {
-		//	Draw data onto stage
-		WATCH("TSV::RR playing..\n");
-		if (LockLooper()) {
-			StageDraw(Bounds(), curTime);
-			UnlockLooper();
-		}
-	}
-	//	We have stopped.  Update stage.
-	else {
-		if (m_IsPlaying == true) {
-			m_IsPlaying  = false;
-			WATCH("TSV::RR stopped so update state\n");
-			if (LockLooper()) {
-				StageDraw(Bounds(), GetCurrentTime());
-				UnlockLooper();
-			}
-		}
+	if (LockLooper()) {
+		StageDraw(Bounds(), curTime);
+		UnlockLooper();
 	}
 }
 
