@@ -86,9 +86,6 @@ class TStageView : public BView
 		BList			*m_StageCueList;
 		bool			m_SelectionMode;
 		ToolMode		m_ToolMode;
-
-		bool			m_IsPlaying;
-		bool			m_IsStopping;
 };
 
 #endif

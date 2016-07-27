@@ -831,7 +831,7 @@ void TVisualCue::SetDisplayMode(CueDisplay theMode)
 
 void TVisualCue::SetQualityMode(DisplayQuality theMode)
 {
-	/*
+
 	   //	Do nothing if we are alreay set to requested mode
 	   if (theMode == fDisplayQuality)
 	        return;
@@ -861,7 +861,7 @@ void TVisualCue::SetQualityMode(DisplayQuality theMode)
 	        default:
 	                TRESPASS();
 	                break;
-	   }*/
+	   }
 }
 
 #pragma mark -
@@ -912,7 +912,6 @@ bool TVisualCue::IsOnStage()
 
 void TVisualCue::UpdateStageCue()
 {
-	/*
 	   if (IsOnStage())
 	   {
 	        TStageWindow *theStage	= static_cast<MuseumApp *>(be_app)->GetCueSheet()->GetStage();
@@ -923,6 +922,5 @@ void TVisualCue::UpdateStageCue()
 	        stageView->Draw( GetDrawArea());
 	        theStage->Unlock();
 	   }
-	 */
 }
 

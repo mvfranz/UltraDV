@@ -114,10 +114,6 @@ void TStageView::Init()
 	// We handle our own drawing
 	SetViewColor(B_TRANSPARENT_32_BIT);
 
-	//	Set up member variables
-	m_IsPlaying             = false;
-	m_IsStopping            = false;
-
 	// Create offscreen bitmap and view
 	m_OffscreenBitmap       = new BBitmap(Bounds(), B_RGB_32_BIT, true);
 	m_OffscreenView         = new BView( m_OffscreenBitmap->Bounds(), "OffscreenView", B_FOLLOW_ALL, B_WILL_DRAW);
