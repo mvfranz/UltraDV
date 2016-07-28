@@ -95,7 +95,7 @@ class TCueSheetView: public BView
 				
 		// Accessor function
 		inline 	TCueSheetWindow *GetParent(){ ASSERT(fParent); return fParent; }
-		inline 	BList 			*GetChannelList(){ printf("TCSV:GetChannelList.h: before return\n"); 
+		inline 	BList 			*GetChannelList(){ 
 									ASSERT(fChannelList);
 									return fChannelList; }
 		inline 	int32 			GetTotalChannels(){ return fChannelList->CountItems(); }

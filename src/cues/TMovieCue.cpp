@@ -40,20 +40,6 @@
 #include "TCueEffectView.h"
 #include "TVisualEffect.h"
 
-#include "TRIFFReader.h"
-
-#include "TVideoCodec.h"
-#include "TAppleVideoCodec.h"
-#include "TCinepakCodec.h"
-#include "TMSRLECodec.h"
-#include "TMSVideoCodec.h"
-#include "TRGBCodec.h"
-
-#include "TAudioCodec.h"
-#include "TPCMCodec.h"
-
-#include "AVIUtils.h"
-
 #include "TMovieCue.h"
 
 
@@ -64,7 +50,9 @@
 //
 
 TMovieCue::TMovieCue(int16 id, TCueChannel* parent, BRect bounds, uint32 startTime) :
-	TVisualCue(id, parent, bounds, startTime, "MovieCue")
+	TVisualCue(id, parent, bounds, startTime, "MovieCue"),
+	fMediaFile(NULL),
+	fVideoTrack(NULL)
 {
 	// Load picture file
 	ShowPanel();
@@ -78,7 +66,9 @@ TMovieCue::TMovieCue(int16 id, TCueChannel* parent, BRect bounds, uint32 startTi
 //	Construct from an entry_ref
 
 TMovieCue::TMovieCue(entry_ref &theRef, int16 id,  TCueChannel* parent, BRect bounds, uint32 startTime) :
-	TVisualCue(id, parent, bounds, startTime, "PictureCue")
+	TVisualCue(id, parent, bounds, startTime, "PictureCue"),
+	fMediaFile(NULL),
+	fVideoTrack(NULL)
 {
 	// Init member variables
 	fEditor         = NULL;
@@ -138,16 +128,14 @@ TMovieCue::TMovieCue(BMessage* theMessage) : TVisualCue(theMessage)
 
 TMovieCue::~TMovieCue()
 {
-	//	Free our RIFFReader
-	if (fReader)
-		delete fReader;
+	/*delete fFile;
 
 	// Clean up
 	if (fFile) {
 		fFile->Unset();
 		delete fFile;
 		fFile = NULL;
-	}
+	}*/
 
 	// Close editor
 	if ( fEditorOpen && fEditor) {
@@ -159,6 +147,8 @@ TMovieCue::~TMovieCue()
 	//	Free offscreen
 	if (fBitmap)
 		delete fBitmap;
+
+	delete fMediaFile;
 }
 
 
@@ -175,28 +165,15 @@ void TMovieCue::Init()
 {
 	bool retVal;
 
-	//	Set up RIFFReader
-	fReader = new TRIFFReader(fFile);
-
-	//	Create audio and video codec
-	retVal = InitCodecs();
-
 	//	Init current frames
-	fCurrentVideoFrame = 0;
-	fCurrentAudioFrame = 0;
-
-	//	Get AVIHeader
-	AVIHeader* header = fReader->GetAVIHeader();
-
-	//	Create offscreen
-	BRect movieRect( 0, 0, header->Width-1, header->Height-1);
-	fBitmap = new BBitmap(movieRect, B_RGB32);
+	//fCurrentVideoFrame = 0;
+	//fCurrentAudioFrame = 0;
 
 	// Default initialization
 	TVisualCue::Init();
 
 	// Set up area rectangles
-	fCuePosition->Outline(movieRect);
+	fCuePosition->Outline(fBitmap->Bounds());
 
 	// Editor is closed
 	fEditorOpen = false;
@@ -219,9 +196,7 @@ void TMovieCue::Init()
 	fCanPath                        = true;
 
 	//	Calculate duration in milliseconds
-	fMSecsPerFrame = header->TimeBetweenFrames / 1000;
-	fDuration           = header->TotalNumberOfFrames * fMSecsPerFrame;
-
+	fDuration = (int32)fVideoTrack->Duration()/1000;
 
 	// Add the cue to the cue channel
 	if ( fChannel->CanInsertCue(this, fInsertTime, true)) {
@@ -234,173 +209,6 @@ void TMovieCue::Init()
 
 	// Adjust cue length based on duration
 	ResizeTo( TimeToPixels(fDuration, GetCurrentTimeFormat(), GetCurrentResolution()), Bounds().Height());
-}
-
-
-//---------------------------------------------------------------------
-//	InitCodecs
-//---------------------------------------------------------------------
-//
-//	Determine compression and initializae codec
-//
-
-bool TMovieCue::InitCodecs()
-{
-	bool retVal = false;
-
-	retVal = InitAudioCodec();
-	retVal = InitVideoCodec();
-
-	return retVal;
-}
-
-
-//---------------------------------------------------------------------
-//	InitVideoCodec
-//---------------------------------------------------------------------
-//
-//	Determine video compression and initializae codec
-//
-
-bool TMovieCue::InitVideoCodec()
-{
-	if (fReader->HasVideo() == false)
-		return false;
-
-	fVideoCodec = NULL;
-
-	//	Get video header to determine compression type
-	AVIVIDSHeader* vidsHeader = fReader->GetVIDSHeader();
-
-	//	Determine compression and create codec
-	switch(vidsHeader->Compression)
-	{
-	//	Uncompressed RGB
-	case RIFF_RGB:
-	case RIFF_rgb:
-		fVideoCodec = new TRGBCodec(fReader);
-		break;
-
-	//	Apple Video "Road Pizza"
-	case RIFF_rpza:
-	case RIFF_azpr:
-		fVideoCodec = new TAppleVideoCodec(fReader);
-		break;
-
-	//	Microsoft Video 01
-	case RIFF_wham:
-	case RIFF_WHAM:
-	case RIFF_cram:
-	case RIFF_CRAM:
-	case kRiff_msvc_Chunk:
-	case kRiff_MSVC_Chunk:
-		fVideoCodec = new TMSVideoCodec(fReader);
-		break;
-
-	//	Microsoft RLE
-	case RIFF_RLE8:
-	case RIFF_rle8:
-		fVideoCodec = new TMSRLECodec(fReader);
-		break;
-
-	//	Radius Cinepak "Compact Video"
-	case RIFF_cvid:
-	case RIFF_CVID:
-		fVideoCodec = new TCinepakCodec(fReader);
-		break;
-
-	default:
-		ErrorAlert("Unhandled CODEC.");
-
-			#ifdef DEBUG
-		printf("Unhandled CODEC: ");
-		DumpRIFFID(vidsHeader->Compression);
-			#endif
-		return false;
-		break;
-	}
-
-	if (fVideoCodec)
-		return true;
-	else
-		return false;
-}
-
-
-//---------------------------------------------------------------------
-//	InitAudioCodec
-//---------------------------------------------------------------------
-//
-//	Determine audio compression and initializae codec
-//
-
-bool TMovieCue::InitAudioCodec()
-{
-	if (fReader->HasAudio() == false)
-		return false;
-
-	fAudioCodec = NULL;
-
-	//	Get video header to determine compression type
-	AVIAUDSHeader* audsHeader = fReader->GetAUDSHeader();
-
-	//	Determine compression and create codec
-	switch(audsHeader->Format)
-	{
-	case WAVE_FORMAT_PCM:
-		fAudioCodec = new TPCMCodec(fReader);
-		break;
-
-	/*
-	   case WAVE_FORMAT_ADPCM:
-	        {
-	                switch(audsHeader.Size)
-	                {
-	                        case 4:
-	                                fAudioType = kAudioADPCM;
-	                                break;
-
-	                        default:
-	                                fAudioType = kAudioInvalid;
-	                                break;
-	                }
-	        }
-	        break;
-
-	   case WAVE_FORMAT_DVI_ADPCM:
-	        {
-	                fAudioType = kAudioDVI;
-	        }
-	        break;
-
-	   case WAVE_FORMAT_MULAW:
-	        {
-	                fAudioType = kAudioULaw;
-	        }
-	        break;
-
-	   case WAVE_FORMAT_GSM610:
-	        {
-	                fAudioType = kAudioMSGSM;
-	        }
-	        break;*/
-
-	default:
-	{
-		ErrorAlert("Unhandled Audio CODEC.");
-
-				#ifdef DEBUG
-		printf("Unhandled Audio CODEC: ");
-				#endif
-		return false;
-	}
-	break;
-	}
-
-	if (fAudioCodec)
-		return true;
-	else
-		return false;
 }
 
 
@@ -621,6 +429,7 @@ void TMovieCue::HidePanel()
 
 bool TMovieCue::LoadMovieFile(BMessage* message)
 {
+	//	Create offscreen
 
 	bool retVal = false;
 
@@ -633,8 +442,48 @@ bool TMovieCue::LoadMovieFile(BMessage* message)
 	// Create BFile from ref...
 	fFile = new BFile(&fFileRef, B_READ_ONLY);
 
-	//	Verify that we have an AVI file
-	retVal = IsRIFFFile(fFile);
+	fMediaFile = new BMediaFile(fFile);
+
+	status_t err = fMediaFile->InitCheck();
+	if (err != B_OK)
+		return false;
+
+	// Check if we have a video track
+	media_format format;
+	media_format encFormat;
+	memset(&format, 0, sizeof(media_format));
+
+	for (int32 i = 0; i < fMediaFile->CountTracks(); i++) {
+		BMediaTrack* track = fMediaFile->TrackAt(i);
+		if (track->InitCheck() != B_OK)
+			continue;
+
+		err = track->EncodedFormat(&encFormat);
+		if (err != B_OK)
+			continue;
+
+		fBitmap = new BBitmap(BRect(0, 0, encFormat.u.encoded_video.output.display.line_width-1,
+			encFormat.u.encoded_video.output.display.line_count-1), B_RGB32);
+
+		memset(&format, 0, sizeof(media_format));
+		format.u.raw_video.display.bytes_per_row = fBitmap->BytesPerRow();
+		format.u.raw_video.last_active = (int32) (fBitmap->Bounds().Height() - 1.0);
+		format.u.raw_video.orientation = B_VIDEO_TOP_LEFT_RIGHT;
+		format.u.raw_video.pixel_width_aspect = 1;
+		format.u.raw_video.pixel_height_aspect = 3;
+		format.u.raw_video.display.format = B_RGB32;
+		format.u.raw_video.display.line_width = fBitmap->Bounds().Width();
+		format.u.raw_video.display.line_count = fBitmap->Bounds().Height();
+
+		err = track->DecodedFormat(&format);
+		if (err != B_OK)
+			continue;
+		if (format.u.raw_video.display.format == B_RGB32) {
+			fVideoTrack = track;
+			retVal = true;
+			break;
+		}
+	}
 
 	//	Return the value
 	return retVal;
@@ -684,26 +533,19 @@ void TMovieCue::OpenEditor()
 
 void TMovieCue::HandlePlayback(uint32 theTime)
 {
-	//	Calculate the frame for this time
-	fCurrentVideoFrame = (theTime - fStartTime) / fMSecsPerFrame;
 
-	//	Check for out of bounds.  Set to last frame of file.
-	if (fCurrentVideoFrame >= fReader->VideoFrameCount())
-		fCurrentVideoFrame = fReader->VideoFrameCount() - 1;
+	// TODO: rework the process chain
 
-	//	Get the frame
-	AVIVideoFrame* theFrame = (AVIVideoFrame*)fReader->GetVideoFrameList()->ItemAt(fCurrentVideoFrame);
-	if (!theFrame) {
-		printf("AVIProducer::INVALID FRAME!\n");
+	if (fVideoTrack->InitCheck() != B_OK)
 		return;
-	}
 
-	//	Decode frame
-	bool retVal = fVideoCodec->DecodeFrame(theFrame, fBitmap->Bits(), B_RGB32);
-	if (!retVal) {
-		printf("AVIProducer::DecodeFrame FAILURE!\n");
+	if (fBitmap == NULL)
 		return;
-	}
+
+	bigtime_t frames;
+	media_header header;
+	if (fVideoTrack->ReadFrames(fBitmap->Bits(), &frames, &header) != B_OK)
+		return;
 
 	//	Process with any effects
 	RenderData(theTime, fCuePosition->Enclosure(false));

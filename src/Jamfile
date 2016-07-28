@@ -216,21 +216,6 @@ Application UltraDV :
 	TPictureCue.cpp
 	TTextCue.cpp
 
-	# framework/codecs
-	# TODO: Remove this stuff and
-	# make everything to use BMediaFile
-	AVIUtils.cpp
-	InfoAlert.cpp
-	TAppleVideoCodec.cpp
-	TAudioCodec.cpp
-	TCinepakCodec.cpp
-	TMSRLECodec.cpp
-	TMSVideoCodec.cpp
-	TPCMCodec.cpp
-	TRGBCodec.cpp
-	TRIFFReader.cpp
-	TVideoCodec.cpp
-
 	# editors
 	TAudioEditor.cpp
 	TAudioEditorMenus.cpp

@@ -461,7 +461,7 @@ void TCueSheetView::MessageReceived(BMessage* message)
 
 				//	Update data to stage
 				if (stageView->LockLooper()) {
-					stageView->StageDraw(stageView->Bounds(), theTime);
+				//	stageView->StageDraw(stageView->Bounds(), theTime);
 					stageView->UnlockLooper();
 				}
 			}

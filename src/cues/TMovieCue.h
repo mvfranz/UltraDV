@@ -17,12 +17,9 @@
 
 // Includes
 #include "TVisualCue.h"
+#include "TVideoEditor.h"
 
-// Forward Declaration
-class TRIFFReader;
-class TAudioCodec;
-class TVideoCodec;
-class TVideoEditor;
+#include <MediaFile.h>
 
 
 // Class Definition
@@ -45,19 +42,9 @@ class TMovieCue : public TVisualCue
 		//	Utility Functions
 		BBitmap	*GetBitmap(uint32 theTime);
 				
-		// Member Variables
-				
-		// Accessor Functions		
-		inline TRIFFReader *RIFFReader(){ return fReader; }
-		inline TAudioCodec *AudioCodec(){ return fAudioCodec; }
-		inline TVideoCodec *VideoCodec(){ return fVideoCodec; }
-		
 	private:
 		// Member Functions
 		void 	Init();
-		bool 	InitCodecs();
-		bool 	InitVideoCodec();
-		bool 	InitAudioCodec();
 				
 		bool 	LoadMovieFile(BMessage *message);
 		void 	OpenEditor();
@@ -77,13 +64,8 @@ class TMovieCue : public TVisualCue
 		// Member Variables
 		TVideoEditor 	*fEditor;
 		
-		TRIFFReader		*fReader;		
-		TAudioCodec		*fAudioCodec;
-		TVideoCodec		*fVideoCodec;
-		
-		uint32			fMSecsPerFrame;
-		uint32 			fCurrentVideoFrame;
-		uint32 			fCurrentAudioFrame;
+		BMediaFile*		fMediaFile;
+		BMediaTrack*	fVideoTrack;
 };
 
 #endif

@@ -41,9 +41,6 @@
 #include "TVideoEditorControlsView.h"
 #include "TVideoEditorText.h"
 
-#include "TRIFFReader.h"
-#include "TVideoCodec.h"
-
 #include "TVideoEditor.h"
 
 //	Globals
@@ -226,6 +223,7 @@ void TVideoEditor::Init()
 	//	Init tracking variables
 	fCurrentVideoFrame = 0;
 
+	/*
 	//	Get pointer to cue's RIFFReader
 	fReader = fMovieCue->RIFFReader();
 
@@ -252,7 +250,7 @@ void TVideoEditor::Init()
 	if (!retVal) {
 		printf("AVIProducer::DecodeFrame FAILURE!\n");
 		return;
-	}
+	}*/
 
 	// Load in file info
 	InitMovieAttributes();
@@ -464,7 +462,7 @@ void TVideoEditor::StepForward()
 	Stop();
 
 	// Increment frame and redraw
-	fCurrentVideoFrame++;
+	/*fCurrentVideoFrame++;
 
 	// Protect against overflow
 	if ( fCurrentVideoFrame >= fReader->VideoFrameCount()) {
@@ -482,7 +480,7 @@ void TVideoEditor::StepForward()
 
 		// Update time
 		//fTime->SetText(  );
-	}
+	}*/
 
 }
 
@@ -528,7 +526,7 @@ void TVideoEditor::SeekEnd()
 {
 	Stop();
 
-	//	Go to last frame
+	/*//	Go to last frame
 	fCurrentVideoFrame = fReader->VideoFrameCount() - 1;
 
 	// Load frame
@@ -543,7 +541,7 @@ void TVideoEditor::SeekEnd()
 		//char tmpText[13];
 		//TimeToString(fCurrentTime, fVideoChunk.frame_rate, tmpText, false);
 		//fTimeText->SetText(tmpText);
-	}
+	}*/
 }
 
 //---------------------------------------------------------------------
@@ -603,7 +601,7 @@ void TVideoEditor::SetupTextItems()
 	smallFont.SetSize(10);
 
 	//	Get AVIHeader
-	AVIHeader* header = fReader->GetAVIHeader();
+	/*AVIHeader* header = fReader->GetAVIHeader();
 	const uint32 mSecsPerFrame = header->TimeBetweenFrames / 1000;
 	const uint32 duration      = header->TotalNumberOfFrames * mSecsPerFrame;
 
@@ -626,7 +624,7 @@ void TVideoEditor::SetupTextItems()
 	timeFont.SetSize(20);
 	fTimeText->SetFontAndColor(&timeFont, 0, kGreen);
 	TimeToString(fCurrentTime, header->DataRate, tmpText, false);
-	fTimeText->SetText("00:00:00:00");
+	fTimeText->SetText("00:00:00:00");*/
 }
 
 //-------------------------------------------------------------------
@@ -1075,7 +1073,7 @@ bool TVideoEditor::LoadAndDecode(uint32 frameNum, BBitmap* bitmap)
 	bool retVal = false;
 
 	//	Load first frame into display
-	AVIVideoFrame* theFrame = (AVIVideoFrame*)fReader->GetVideoFrameList()->ItemAt(frameNum);
+	/*AVIVideoFrame* theFrame = (AVIVideoFrame*)fReader->GetVideoFrameList()->ItemAt(frameNum);
 	if (!theFrame) {
 		printf("AVIProducer::INVALID FRAME! %d\n", frameNum);
 		return retVal;
@@ -1086,7 +1084,7 @@ bool TVideoEditor::LoadAndDecode(uint32 frameNum, BBitmap* bitmap)
 	if (!retVal) {
 		printf("AVIProducer::DecodeFrame FAILURE!\n");
 		return retVal;
-	}
+	}*/
 
 	return retVal;
 }

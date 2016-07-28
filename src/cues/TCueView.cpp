@@ -1518,7 +1518,7 @@ void
 TCueView::Pulse()
 {
 	//	Do nothing if we have been muted
-	if (!fIsMuted) {
+	/*if (!fIsMuted) {
 		const uint32 curTime = GetCurrentTime();
 
 		//	Check and see if we need to start internal playback
@@ -1527,7 +1527,7 @@ TCueView::Pulse()
 		}
 
 		//	Handle current playback
-		if (fIsPlaying == true) {
+		if (IsPlaying() == true) {
 			//	Handle playback at current time
 			if (curTime <= (fStartTime + fDuration))
 				HandlePlayback(curTime);
@@ -1539,7 +1539,7 @@ TCueView::Pulse()
 		//	Stop cue playback
 		if (fIsPlaying == true)
 			StopCue(GetCurrentTime());
-	}
+	}*/
 }
 
 #pragma mark -
