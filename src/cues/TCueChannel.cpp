@@ -29,7 +29,6 @@
 #include "MenuMessages.h"
 #include "MuseumApp.h"
 
-#include "TPlaybackEngine.h"
 #include "TCueSheetWindow.h"
 #include "TCueSheetView.h"
 #include "TTimelineView.h"

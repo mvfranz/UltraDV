@@ -44,9 +44,6 @@ TStageWindow::TStageWindow(BRect bounds, TCueSheetWindow* cueSheet) : BWindow( b
 
 	//	Defualt initialization
 	Init();
-
-	// 120 fps
-	SetPulseRate(1000000/120);
 }
 
 

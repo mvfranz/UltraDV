@@ -785,7 +785,7 @@ void UpdateStage()
 	stageWindow->Lock();
 	TStageView* theView = cueSheet->GetStage()->GetStageView();
 	if (theView) {
-		theView->StageDraw(theView->Bounds(), GetCurrentTime());
+		theView->UpdateStage(theView->Bounds(), GetCurrentTime());
 		theView->Invalidate();
 	}
 	stageWindow->Unlock();

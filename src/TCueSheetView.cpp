@@ -40,7 +40,6 @@
 #include "TTimePalette.h"
 #include "TTimePaletteView.h"
 #include "TMuseumClipboard.h"
-#include "TPlaybackEngine.h"
 #include "THeaderContainerView.h"
 #include "TPasteCues.h"
 
@@ -461,7 +460,8 @@ void TCueSheetView::MessageReceived(BMessage* message)
 
 				//	Update data to stage
 				if (stageView->LockLooper()) {
-				//	stageView->StageDraw(stageView->Bounds(), theTime);
+					stageView->UpdateStage(stageView->Bounds(), theTime);
+					stageView->Invalidate();
 					stageView->UnlockLooper();
 				}
 			}
@@ -1114,8 +1114,8 @@ void TCueSheetView::InsertChannel(BMessage* message)
 	TStageWindow* theStage  = fParent->GetStage();
 	TStageView* stageView = theStage->GetStageView();
 	if (theStage->Lock()) {
-		stageView->StageDraw( stageView->Bounds(), GetCurrentTime() );
-		stageView->Draw(stageView->Bounds());
+		stageView->UpdateStage( stageView->Bounds(), GetCurrentTime() );
+		stageView->Invalidate();
 		theStage->Unlock();
 	}
 }
@@ -1325,12 +1325,11 @@ void TCueSheetView::DragInsertChannel(TCueChannel* insertChannel, TCueChannel* a
 				}
 			}
 		}
-
 		// Update stage
 		TStageWindow* theStage  = fParent->GetStage();
 		TStageView* stageView = theStage->GetStageView();
 		theStage->Lock();
-		stageView->StageDraw( stageView->Bounds(), GetCurrentTime() );
+		stageView->UpdateStage( stageView->Bounds(), GetCurrentTime() );
 		stageView->Invalidate();
 		theStage->Unlock();
 	}

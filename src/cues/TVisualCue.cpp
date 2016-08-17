@@ -918,8 +918,8 @@ void TVisualCue::UpdateStageCue()
 	        TStageView       *stageView = theStage->GetStageView();
 
 	        theStage->Lock();
-	        stageView->StageDraw( GetDrawArea(), GetCurrentTime());
-	        stageView->Draw( GetDrawArea());
+	        stageView->UpdateStage( GetDrawArea(), GetCurrentTime());
+	        stageView->Invalidate( GetDrawArea());
 	        theStage->Unlock();
 	   }
 }

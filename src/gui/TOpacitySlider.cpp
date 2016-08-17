@@ -104,8 +104,8 @@ void TOpacitySlider::SetValue(int32 value)
 		if ( fDialog->GetRealtimePreview() == true ) {
 			if (fCue->IsOnStage()) {
 				fStage->Lock();
-				fStageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
-				fStageView->Draw( fCue->GetDrawArea());
+				fStageView->UpdateStage( fCue->GetDrawArea(), GetCurrentTime());
+				fStageView->Invalidate( fCue->GetDrawArea());
 				fStage->Unlock();
 			}
 		}

@@ -58,7 +58,7 @@
 
 TStageView::TStageView(BRect bounds, TStageWindow* parent)
 	:
-	BView(bounds, "StageView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS | B_PULSE_NEEDED)
+	BView(bounds, "StageView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS | B_SUBPIXEL_PRECISE)
 {
 	// We don't need a background color
 	SetViewColor(B_TRANSPARENT_32_BIT);
@@ -217,13 +217,13 @@ void TStageView::Draw(BRect updateRect)
 
 
 //---------------------------------------------------------------------
-//	StageDraw
+//	UpdateStage
 //---------------------------------------------------------------------
 //
 //	Draws cue data onto the stage view.
 //
 
-void TStageView::StageDraw(BRect updateRect, uint32 theTime)
+void TStageView::UpdateStage(BRect updateRect, uint32 theTime)
 {
 	//	Clear offscreen bits
 	ClearOffscreen();
@@ -340,18 +340,6 @@ void TStageView::MessageReceived(BMessage* message)
 	}
 
 }
-
-
-void
-TStageView::Pulse()
-{
-	const uint32 curTime = GetCurrentTime();
-	if (LockLooper()) {
-		StageDraw(Bounds(), curTime);
-		UnlockLooper();
-	}
-}
-
 
 //---------------------------------------------------------------------
 //	SendMessageToCues
@@ -600,8 +588,8 @@ void TStageView::FrameResized(float new_width, float new_height)
 	m_OffscreenBitmap->Unlock();
 
 	Looper()->Lock();
-	StageDraw(Bounds(), GetCurrentTime());
-	Draw(Bounds());
+	UpdateStage(Bounds(), GetCurrentTime());
+	Invalidate(Bounds());
 	Looper()->Unlock();
 
 	// Pass to superclass

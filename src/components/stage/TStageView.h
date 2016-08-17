@@ -40,14 +40,14 @@ class TStageView : public BView
 		virtual	status_t	Archive(BMessage *data, bool deep = true) const;
 				
 		void 	Draw(BRect updateRect);
-		void 	StageDraw(BRect updateRect, uint32 theTime);
-		
+
+		void 	UpdateStage(BRect updateRect, uint32 theTime);
+
 		void 	MouseDown(BPoint where);
 		void 	MouseMoved(	BPoint where, uint32 code, const BMessage *a_message);
 		void 	FrameResized(float new_width, float new_height);
 				
 		void 	MessageReceived(BMessage *message);
-		void	Pulse();
 	
 		// Compositing Routines
 		void	ClearOffscreen();

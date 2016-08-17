@@ -534,8 +534,8 @@ void TScaleDialog::UpdateCue()
 		TStageView* stageView = theStage->GetStageView();
 
 		theStage->Lock();
-		stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
-		stageView->Draw( fCue->GetDrawArea());
+		stageView->UpdateStage( fCue->GetDrawArea(), GetCurrentTime());
+		stageView->Invalidate( fCue->GetDrawArea());
 		theStage->Unlock();
 	}
 }

@@ -226,8 +226,8 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 				TStageView* stageView = theStage->GetStageView();
 
 				theStage->Lock();
-				stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
-				stageView->Draw( fCue->GetDrawArea());
+				stageView->UpdateStage( fCue->GetDrawArea(), GetCurrentTime());
+				stageView->Invalidate( fCue->GetDrawArea());
 				theStage->Unlock();
 			}
 		}
@@ -294,8 +294,8 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 				TStageView* stageView = theStage->GetStageView();
 
 				theStage->Lock();
-				stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
-				stageView->Draw( fCue->GetDrawArea());
+				stageView->UpdateStage( fCue->GetDrawArea(), GetCurrentTime());
+				stageView->Invalidate( fCue->GetDrawArea());
 				theStage->Unlock();
 			}
 		}
@@ -327,8 +327,8 @@ void TOpacityDialog::MessageReceived(BMessage* message)
 				TStageView* stageView = theStage->GetStageView();
 
 				theStage->Lock();
-				stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
-				stageView->Draw( fCue->GetDrawArea());
+				stageView->UpdateStage( fCue->GetDrawArea(), GetCurrentTime());
+				stageView->Invalidate( fCue->GetDrawArea());
 				theStage->Unlock();
 			}
 		}
@@ -370,9 +370,10 @@ void TOpacityDialog::UpdateCue()
 		TStageWindow* theStage  = static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetStage();
 		TStageView* stageView = theStage->GetStageView();
 
+		// TODO: Check draw mechanism
 		theStage->Lock();
-		stageView->StageDraw( fCue->GetDrawArea(), GetCurrentTime());
-		stageView->Draw( fCue->GetDrawArea());
+		stageView->UpdateStage( fCue->GetDrawArea(), GetCurrentTime());
+		stageView->Invalidate( fCue->GetDrawArea());
 		theStage->Unlock();
 	}
 }

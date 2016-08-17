@@ -673,8 +673,8 @@ void TStageCue::DragPicture(BPoint thePoint)
 			//	Draw new bitmap position if control key is down
 			if ( IsControlKeyDown()) {
 				if (fStage->LockLooper()) {
-					fStage->StageDraw(fChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
-					fStage->Draw(fStage->Bounds());
+					fStage->UpdateStage(fChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
+					fStage->Invalidate();
 					fStage->UnlockLooper();
 				}
 			}
@@ -684,8 +684,8 @@ void TStageCue::DragPicture(BPoint thePoint)
 
 	//	Draw new position
 	if ( fStage->LockLooper()) {
-		fStage->StageDraw(fChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
-		fStage->Draw(fStage->Bounds());
+		fStage->UpdateStage(fChannelCue->CuePosition()->Enclosure(), GetCurrentTime());
+		fStage->Invalidate();
 		fStage->UnlockLooper();
 	}
 }
