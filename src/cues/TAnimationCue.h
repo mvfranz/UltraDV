@@ -27,8 +27,8 @@ class	TAnimationCue : public TVisualCue
 		TAnimationCue(BMessage *theMessage);
 		~TAnimationCue();
 										
-		__declspec(dllexport) static	BArchivable *Instantiate(BMessage *data);
-		__declspec(dllexport) status_t 	Archive(BMessage *data, bool deep) const;
+		static	BArchivable *Instantiate(BMessage *data);
+		status_t 	Archive(BMessage *data, bool deep) const;
 		
 		void Draw(BRect updateRect);
 	

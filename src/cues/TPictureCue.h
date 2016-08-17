@@ -20,7 +20,7 @@
 #include "TPictureCueEditor.h"
 
 // 	Class Definition
-class __declspec(dllexport) TPictureCue : public TVisualCue
+class TPictureCue : public TVisualCue
 {
 	public:
 		// 	Member Functions				

@@ -24,8 +24,8 @@ class	TTextCue : public TVisualCue
 		TTextCue(BMessage *theMessage);
 		~TTextCue();
 				
-		static		__declspec(dllexport) BArchivable *Instantiate(BMessage *data);
-		status_t 	__declspec(dllexport) Archive(BMessage *data, bool deep) const;
+		static		BArchivable *Instantiate(BMessage *data);
+		status_t 	Archive(BMessage *data, bool deep) const;
 		
 		void 	Draw(BRect updateRect);
 		void 	RenderBitmapData();

@@ -27,7 +27,7 @@ class TRotateDialog;
 
 
 // 	Class Definition
-class __declspec(dllexport) TVisualCue : public TCueView
+class TVisualCue : public TCueView
 {
 	public:
 		// ABH missing opacity methods???
