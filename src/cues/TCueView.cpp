@@ -49,8 +49,6 @@
 
 #include "TBitmapButton.h"
 
-#include "TPlaybackEngine.h"
-
 #include "TCueMenu.h"
 #include "TCueEffect.h"
 #include "TCueEffectView.h"
@@ -849,7 +847,7 @@ void TCueView::DrawEffects(BRect updateRect)
 void TCueView::MouseDown(BPoint where)
 {
 	// Do nothing if we are playing
-	if ( ((TCueSheetWindow*)fChannel->Window())->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 
 	// Make sure we aren't locked

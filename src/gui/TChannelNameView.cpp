@@ -24,8 +24,6 @@
 #include "AppUtils.h"
 #include "ResourceManager.h"
 
-#include "TPlaybackEngine.h"
-
 #include "TCueSheetWindow.h"
 #include "TCueSheetView.h"
 #include "TChannelNameView.h"
@@ -159,7 +157,7 @@ void TChannelNameView::Draw(BRect bounds)
 void TChannelNameView::MouseDown(BPoint pt)
 {
 	// Do nothing if we are playing
-	if ( ((TCueSheetWindow*)fChannel->Window())->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 
 	// If the option key is down, allow user to change the text

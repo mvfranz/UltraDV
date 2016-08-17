@@ -251,7 +251,7 @@ void TCueChannel::CreateHeader(THeaderContainerView* container, float height)
 void TCueChannel::MouseDown(BPoint where)
 {
 	// Do nothing if we are playing
-	if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 
 	fCueSheet->DeselectAllCues();
@@ -295,7 +295,7 @@ void TCueChannel::MouseDown(BPoint where)
 void TCueChannel::MouseUp(BPoint where)
 {
 	// Do nothing if we are playing
-	if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 }
 
@@ -310,7 +310,7 @@ void TCueChannel::MouseUp(BPoint where)
 void TCueChannel::MouseMoved( BPoint where, uint32 code, const BMessage* a_message )
 {
 	// Do nothing if we are playing
-	if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 
 	// Exit if panel is open
@@ -473,7 +473,7 @@ void TCueChannel::MessageReceived(BMessage* message)
 		case CUE_ICON_DRAG_MSG:
 		{
 			// Do nothing if we are playing
-			if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+			if (IsPlaying())
 				return;
 
 			// Make sure we aren't locked
@@ -495,7 +495,7 @@ void TCueChannel::MessageReceived(BMessage* message)
 		case BROWSER_ICON_DRAG_MSG:
 		{
 			// Do nothing if we are playing
-			if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+			if (IsPlaying())
 				return;
 
 			// Make sure we aren't locked
@@ -521,7 +521,7 @@ void TCueChannel::MessageReceived(BMessage* message)
 			static_cast<MuseumApp*>(be_app)->fIsCueDrag = false;
 
 			// Do nothing if we are playing
-			if ( fCueSheet->GetParent()->GetPlaybackEngine()->IsPlaying() )
+			if (IsPlaying())
 				return;
 
 			// Make sure we aren't locked

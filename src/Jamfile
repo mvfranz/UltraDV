@@ -244,7 +244,7 @@ Application UltraDV :
 	# engines
 	TAudioEngine.cpp
 	TMIDIEngine.cpp
-	TPlaybackEngine.cpp
+	TVideoEngine.cpp
 
 	# sorter
 	TSorterBar.cpp

@@ -57,7 +57,7 @@
 #include "TTimeScalerView.h"
 #include "TToolbar.h"
 #include "TMuseumClipboard.h"
-#include "TPlaybackEngine.h"
+#include "TVideoEngine.h"
 #include "TAudioEngine.h"
 
 #include "TCueSheetWindow.h"
@@ -161,8 +161,8 @@ TCueSheetWindow::TCueSheetWindow(BMessage* data) : BWindow (data)
 	static_cast<MuseumApp*>(be_app)->GetCueSheetList()->AddItem(this);
 
 	//      Create playbackEngine
-	fPlaybackEngine = new TPlaybackEngine(fCueSheetView);
-	ASSERT(fPlaybackEngine);
+	fVideoEngine = new TVideoEngine(fCueSheetView);
+	ASSERT(fVideoEngine);
 
 	//	Attach palettes and stage to playbackEngine
 	//TTimePalette *timePalette = static_cast<MuseumApp*>(be_app)->GetTimePalette();
@@ -195,9 +195,9 @@ TCueSheetWindow::~TCueSheetWindow()
 		delete fAudioEngine;
 
 	// Stop playback
-	if (fPlaybackEngine) {
+	if (fVideoEngine) {
 		//fPlaybackEngine->Stop();
-		delete fPlaybackEngine;
+		delete fVideoEngine;
 	}
 }
 
@@ -351,14 +351,9 @@ void TCueSheetWindow::Init()
 	//	Get reference to MediaRoster
 	BMediaRoster* roster = BMediaRoster::Roster();
 
-	// Create PlaybackEngine and register it
-	fPlaybackEngine = new TPlaybackEngine(fCueSheetView);
-	ASSERT(fPlaybackEngine);
-	roster->RegisterNode(fPlaybackEngine);
-
-	//	Get pointer to timesource and set playback engine to it
-	media_node timeSource = fPlaybackEngine->GetTimeSource();
-	retVal = roster->SetTimeSourceFor(fPlaybackEngine->Node().node, timeSource.node);
+	// Create the video engine
+	fVideoEngine = new TVideoEngine(fCueSheetView);
+	ASSERT(fVideoEngine);
 
 	//	Create audio engine
 	fAudioEngine = new TAudioEngine();

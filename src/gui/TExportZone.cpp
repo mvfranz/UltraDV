@@ -26,8 +26,6 @@
 #include "ResourceManager.h"
 #include "MuseumApp.h"
 
-#include "TPlaybackEngine.h"
-
 #include "TCueSheetWindow.h"
 #include "TCueSheetView.h"
 #include "TExportTimeView.h"
@@ -245,7 +243,7 @@ void TExportZone::MouseDown(BPoint where)
 void TExportZone::MouseUp(BPoint where)
 {
 	// Do nothing if we are playing
-	if ( fCueSheetWindow->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 
 }
@@ -262,7 +260,7 @@ void TExportZone::MouseMoved( BPoint where, uint32 code, const BMessage* message
 {
 
 	// Do nothing if we are playing
-	if ( fCueSheetWindow->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 
 	// Do nothing if window is inactive

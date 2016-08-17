@@ -25,7 +25,6 @@
 
 #include "TTimeText.h"
 #include "TBitmapView.h"
-#include "TPlaybackEngine.h"
 #include "TCueSheetWindow.h"
 
 #include "TTimePaletteView.h"

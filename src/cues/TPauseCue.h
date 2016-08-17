@@ -55,7 +55,7 @@ class TPauseCue : public TCueView
 		void	Preroll(TPlaybackEvent *PlaybackEvent, double currentTime);
 		void 	Play();
 		void 	Pause();
-		void 	DoPause(TPlaybackEngine *theEngine);
+		void 	DoPause(TVideoEngine *theEngine);
 		void 	Resume();
 		void 	Stop();
 		

@@ -38,8 +38,6 @@
 #include "TStageToolsView.h"
 #include "TMouseWatcher.h"
 
-#include "TPlaybackEngine.h"
-
 #include "TTransportPalette.h"
 
 #include "TStageView.h"

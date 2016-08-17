@@ -41,7 +41,6 @@
 #include "TCueSheetScrollBarV.h"
 
 #include "TMouseWatcher.h"
-#include "TPlaybackEngine.h"
 
 
 //---------------------------------------------------------------------
@@ -203,7 +202,7 @@ void TTimelineView::Init()
 void TTimelineView::MouseDown(BPoint where)
 {
 	// Do nothing if we are playing
-	if ( fCueSheetWindow->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 
 	// Activate cue sheet
@@ -241,7 +240,7 @@ void TTimelineView::MouseDown(BPoint where)
 void TTimelineView::MouseUp(BPoint where)
 {
 	// Do nothing if we are playing
-	if ( fCueSheetWindow->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 
 }
@@ -258,7 +257,7 @@ void TTimelineView::MouseMoved( BPoint where, uint32 code, const BMessage* messa
 {
 
 	// Do nothing if we are playing
-	if ( fCueSheetWindow->GetPlaybackEngine()->IsPlaying() )
+	if (IsPlaying())
 		return;
 
 	// Exit if panel is open

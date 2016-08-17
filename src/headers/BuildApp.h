@@ -75,7 +75,7 @@ class TMuteButton;
 class TNumberBevelTextView;
 class TNumberTextControl;
 class TNumberTextView;
-class TPlaybackEngine;
+class TVideoEngine;
 class TPlaybackEvent;
 class TPlaybackList;	
 class TPreset;

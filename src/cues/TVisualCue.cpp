@@ -26,7 +26,6 @@
 #include "AppUtils.h"
 #include "ResourceManager.h"
 
-#include "TPlaybackEngine.h"
 #include "TBitmapView.h"
 #include "TCueView.h"
 #include "TCueChannel.h"

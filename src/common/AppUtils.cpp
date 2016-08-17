@@ -31,7 +31,7 @@
 
 #include "TStageWindow.h"
 #include "TStageView.h"
-#include "TPlaybackEngine.h"
+#include "TVideoEngine.h"
 
 #include "AppUtils.h"
 
@@ -675,7 +675,7 @@ timecode_type GetCurrentTimeFormat()
 
 bool IsPlaying()
 {
-	if ( static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetPlaybackEngine()->IsPlaying() )
+	if ( static_cast<MuseumApp*>(be_app)->GetCueSheet()->GetVideoEngine()->IsStarted() )
 		return true;
 	else
 		return false;

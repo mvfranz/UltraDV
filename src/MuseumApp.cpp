@@ -47,7 +47,6 @@
 #include "TBrowserWindow.h"
 #include "TStageTools.h"
 
-#include "TPlaybackEngine.h"
 #include "TTimelineView.h"
 #include "TPreset.h"
 

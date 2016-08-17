@@ -20,6 +20,7 @@
 
 #include "AppConstants.h"
 #include "AppMessages.h"
+#include "AppUtils.h"
 #include "ResourceManager.h"
 
 #include "TCueView.h"
@@ -27,7 +28,7 @@
 #include "TPauseCue.h"
 // ABH does not exist
 #include "TPauseSetup.h"
-#include "TPlaybackEngine.h"
+#include "TVideoEngine.h"
 #include "TBitmapView.h"
 
 
@@ -255,9 +256,9 @@ void TPauseCue::MessageReceived(BMessage* message)
 	switch(message->what)
 	{
 	case PAUSE_DONE_MSG:
-		TPlaybackEngine* theEngine;
-		message->FindPointer("PlaybackEngine", (void**)&theEngine);
-		theEngine->Resume();
+		TVideoEngine* theEngine;
+		message->FindPointer("VideoEngine", (void**)&theEngine);
+		theEngine->Stop(GetCurrentTime());
 		break;
 
 	default:
@@ -383,7 +384,7 @@ void TPauseCue::Pause()
 //	as Pause() is reactive.  DoPause() is proactive
 //
 
-void TPauseCue::DoPause(TPlaybackEngine* theEngine)
+void TPauseCue::DoPause(TVideoEngine* theEngine)
 {
 	if (fPauseTimer) {
 		delete fPauseTimer;
@@ -394,13 +395,13 @@ void TPauseCue::DoPause(TPlaybackEngine* theEngine)
 	{
 	case kSecondsPause:
 	{
-		theEngine->Pause();
+		theEngine->Stop(GetCurrentTime());
 		snooze(fPauseDuration * 1000);
-		theEngine->Resume();
+		theEngine->Start(GetCurrentTime());
         BMessage *timerMsg = new BMessage(PAUSE_DONE_MSG);
         if (timerMsg) {
-			timerMsg->AddPointer("PlaybackEngine", theEngine);
-			theEngine->Pause();
+			timerMsg->AddPointer("VideoEngine", theEngine);
+			theEngine->Stop(GetCurrentTime());
 			fPauseTimer = new BMessageRunner(this, timerMsg, fPauseDuration * 1000);
 		}
     }

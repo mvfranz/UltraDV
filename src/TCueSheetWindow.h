@@ -55,7 +55,7 @@ class TCueSheetWindow: public BWindow
 		
 		// Accessor Functions
 		inline TCueSheetPrefs		*GetCueSheetPrefs(){ return &fCueSheetPrefs; }
-		inline TPlaybackEngine		*GetPlaybackEngine(){ return fPlaybackEngine; }
+		inline TVideoEngine			*GetVideoEngine(){ return fVideoEngine; }
 		inline TAudioEngine			*GetAudioEngine(){ return fAudioEngine; }
 		inline TStageWindow			*GetStage(){ return fStageWindow; }
 		inline THeaderContainerView *GetHeaderContainer() { return fHeaderContainer; }
@@ -76,7 +76,7 @@ class TCueSheetWindow: public BWindow
 	private:				
 		// Member variables
 		TUndoEngine				*fUndoEngine;
-		TPlaybackEngine			*fPlaybackEngine;
+		TVideoEngine			*fVideoEngine;
 		TAudioEngine			*fAudioEngine;
 		TCueSheetPrefs	 		fCueSheetPrefs;					
 		TStageWindow			*fStageWindow;

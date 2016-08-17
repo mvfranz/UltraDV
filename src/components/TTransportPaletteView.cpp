@@ -31,7 +31,7 @@
 #include "TTransportPalette.h"
 #include "TTimeText.h"
 #include "TTimelineView.h"
-#include "TPlaybackEngine.h"
+#include "TVideoEngine.h"
 
 #include "TTransportPaletteView.h"
 
@@ -274,8 +274,8 @@ void TTransportPaletteView::MessageReceived(BMessage* message)
 	{
 		//	Stop playback
 		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
-		TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
-		engine->Stop(0, true);
+		TVideoEngine* engine = cueSheet->GetVideoEngine();
+		engine->Stop(0);
 
 		//	Reset current time
 		cueSheet->GetCueSheetView()->SetCurrentTime(StartTime());
@@ -294,8 +294,8 @@ void TTransportPaletteView::MessageReceived(BMessage* message)
 	{
 		//	Stop playback
 		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
-		TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
-		engine->Stop(0, true);
+		TVideoEngine* engine = cueSheet->GetVideoEngine();
+		engine->Stop(0);
 
 		//	Set current time
 		uint32 time = GetCurrentTime();
@@ -313,12 +313,12 @@ void TTransportPaletteView::MessageReceived(BMessage* message)
 	}
 	break;
 
-	//	Start PlaybackEngine time source
+	//	Start VideoEngine time source
 	case PLAY_BUTTON_MSG:
 	{
 		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
 		if (cueSheet) {
-			TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
+			TVideoEngine* engine = cueSheet->GetVideoEngine();
 			if (engine)
 				engine->Start(0);
 		}
@@ -330,9 +330,9 @@ void TTransportPaletteView::MessageReceived(BMessage* message)
 	{
 		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
 		if (cueSheet) {
-			TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
+			TVideoEngine* engine = cueSheet->GetVideoEngine();
 			if (engine)
-				engine->Stop(0, true);
+				engine->Stop(0);
 		}
 	}
 	break;
@@ -341,8 +341,8 @@ void TTransportPaletteView::MessageReceived(BMessage* message)
 	{
 		//	Stop playback
 		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
-		TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
-		engine->Stop(0, true);
+		TVideoEngine* engine = cueSheet->GetVideoEngine();
+		engine->Stop(0);
 
 		//	Set current time
 		uint32 time = GetCurrentTime();
@@ -364,8 +364,8 @@ void TTransportPaletteView::MessageReceived(BMessage* message)
 	{
 		//	Stop playback
 		TCueSheetWindow* cueSheet = static_cast<MuseumApp*>(be_app)->GetCueSheet();
-		TPlaybackEngine* engine = cueSheet->GetPlaybackEngine();
-		engine->Stop(0, true);
+		TVideoEngine* engine = cueSheet->GetVideoEngine();
+		engine->Stop(0);
 
 		//	Reset current time
 		cueSheet->GetCueSheetView()->SetCurrentTime( StartTime() + Duration());
