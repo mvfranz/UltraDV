@@ -225,7 +225,7 @@ void TCueSheetWindow::Init()
 	fPanelOpen = false;
 
 	// Create the stage window
-	BRect stageRect(0,0,320,240);
+	BRect stageRect(0,0,420,340);
 	fStageWindow = new TStageWindow(stageRect, this);
 	CenterWindow(fStageWindow);
 
