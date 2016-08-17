@@ -190,6 +190,7 @@ void TCueSheetView::Init()
 		// Add it to the channel list
 		fChannelList->AddItem(newChannel);
 	}
+	SetCurrentTime(0);
 }
 
 #pragma mark -
