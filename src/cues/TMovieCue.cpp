@@ -165,10 +165,6 @@ void TMovieCue::Init()
 {
 	bool retVal;
 
-	//	Init current frames
-	//fCurrentVideoFrame = 0;
-	//fCurrentAudioFrame = 0;
-
 	// Default initialization
 	TVisualCue::Init();
 
@@ -179,21 +175,23 @@ void TMovieCue::Init()
 	fEditorOpen = false;
 
 	// Set up default settings
-	fIsLocked                       = false;
+	fIsLocked               = false;
 	fIsSelected             = false;
-	fLowColor                       = kWhite;
+	fLowColor               = kWhite;
 	fHighColor              = kBlack;
 	fIsPrepared             = false;
 	fIsPlaying              = false;
-	fIsVisible                      = true;
+	fIsVisible              = true;
 	fHasDuration            = true;
-	fCanLoop                        = true;
+	fCanLoop                = true;
 	fCanStretch             = true;
 	fCanEnvelope            = true;
 	fHasEditor              = true;
-	fCanWindow                      = true;
+	fCanWindow              = true;
 	fCanTransition          = true;
-	fCanPath                        = true;
+	fCanPath                = true;
+
+	fCurrentTime			= 0;
 
 	//	Calculate duration in milliseconds
 	fDuration = (int32)fVideoTrack->Duration()/1000;
@@ -332,7 +330,6 @@ void TMovieCue::MessageReceived(BMessage* message)
 	case B_REFS_RECEIVED:
 	{
 		fPanel->Hide();
-
 		// Attempt to load audio file
 		if ( LoadMovieFile(message) ) {
 			Init();
@@ -429,8 +426,6 @@ void TMovieCue::HidePanel()
 
 bool TMovieCue::LoadMovieFile(BMessage* message)
 {
-	//	Create offscreen
-
 	bool retVal = false;
 
 	message->FindRef("refs", 0, &fFileRef);
@@ -481,6 +476,7 @@ bool TMovieCue::LoadMovieFile(BMessage* message)
 		if (format.u.raw_video.display.format == B_RGB32) {
 			fVideoTrack = track;
 			retVal = true;
+			fMediaFormat = format;
 			break;
 		}
 	}
@@ -533,21 +529,38 @@ void TMovieCue::OpenEditor()
 
 void TMovieCue::HandlePlayback(uint32 theTime)
 {
-
-	// TODO: rework the process chain
-
 	if (fVideoTrack->InitCheck() != B_OK)
 		return;
 
 	if (fBitmap == NULL)
 		return;
 
-	bigtime_t frames;
-	media_header header;
-	if (fVideoTrack->ReadFrames(fBitmap->Bits(), &frames, &header) != B_OK)
-		return;
+	bigtime_t seekTime = theTime * 1000;
+	bigtime_t performanceTime = seekTime;
+	bigtime_t frameTime = 1000000 / fMediaFormat.u.raw_video.field_rate;
 
-	//	Process with any effects
+	if (performanceTime-fCurrentTime >= (240*frameTime)
+			|| performanceTime-fCurrentTime < 0) {
+		status_t ret = fVideoTrack->FindKeyFrameForTime(&seekTime,
+			B_MEDIA_SEEK_CLOSEST_BACKWARD);
+
+		if (ret != B_OK)
+			return;
+
+		ret = fVideoTrack->SeekToTime(&seekTime);
+		if (ret != B_OK)
+			return;
+	}
+
+	int64 frames = 1;
+	media_header header;
+	while (fVideoTrack->ReadFrames(fBitmap->Bits(), &frames, &header) == B_OK) {
+		fCurrentTime = header.start_time;
+		if (header.start_time >= performanceTime)
+			break;
+	}
+
+	// Process with any effects
 	RenderData(theTime, fCuePosition->Enclosure(false));
 }
 

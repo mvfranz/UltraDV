@@ -66,6 +66,8 @@ class TMovieCue : public TVisualCue
 		
 		BMediaFile*		fMediaFile;
 		BMediaTrack*	fVideoTrack;
+		media_format	fMediaFormat;
+		bigtime_t		fCurrentTime;
 };
 
 #endif
