@@ -246,9 +246,15 @@ void TStageView::UpdateStage(BRect updateRect, uint32 theTime)
 			TCueChannel* theChannel = (TCueChannel*)channelList->ItemAt(index);
 			if (theChannel) {
 				TVisualCue* theCue = theChannel->GetVisualCueAtTime(theTime);
+
 				if (theCue) {
 					//	Proceed only if visible
 					if (!theCue->IsMuted()) {
+
+						// CD: Was done in the video engine before
+						if (!theCue->IsMuted())
+							theCue->HandlePlayback(theTime);
+
 						//	Get cues m_RenderSem
 						sem_id renderSem = theCue->GetRenderSem();
 						acquire_sem(renderSem);

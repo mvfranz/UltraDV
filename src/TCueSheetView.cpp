@@ -439,7 +439,7 @@ void TCueSheetView::MessageReceived(BMessage* message)
 	case TIMELINE_DRAG_MSG:
 	case UPDATE_TIMELINE_MSG:
 	{
-		if (fLiveUpdate) {
+		if (!IsPlaying() && fLiveUpdate) {
 			// Get StageView
 			TStageView* stageView = fParent->GetStage()->GetStageView();
 

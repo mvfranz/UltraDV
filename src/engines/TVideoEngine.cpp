@@ -13,6 +13,7 @@
 #include "TStageView.h"
 #include "TStageWindow.h"
 #include "TVideoEngine.h"
+#include "TVisualCue.h"
 
 
 TVideoEngine::TVideoEngine(TCueSheetView* cueSheetView)
@@ -86,23 +87,10 @@ TVideoEngine::StageThread()
 
 			BList* channelList = fCueSheetView->GetChannelList();
 			if (stageView) {
-				//	Create list of cues at this time
-				for (int32 index = 0; index < channelList->CountItems(); index++) {
-					TCueChannel* theChannel = (TCueChannel*)channelList->ItemAt(index);
-					if (theChannel) {
-						TCueView* theCue = theChannel->GetCueAtTime(newTime);
-						if (theCue) {
-							if (!theCue->IsMuted())
-								theCue->HandlePlayback(newTime);
-						}
-					}
-				}
-
 				if (stageView->LockLooper()) {
 					stageView->UpdateStage(stageView->Bounds(), newTime);
 					stageView->UnlockLooper();
 				}
-
 				snooze(1000000/GetFPSValue(GetCurrentTimeFormat()));
 			}
 		} else {
